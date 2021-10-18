@@ -7,15 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390778DF271D1A2200B4735B /* GoogleService-Info.plist */; };
 		39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD19F271D126800B4DAFA /* AppDelegate.swift */; };
 		39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */; };
 		39EDD1A4271D126800B4DAFA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A3271D126800B4DAFA /* ViewController.swift */; };
 		39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A5271D126800B4DAFA /* Main.storyboard */; };
 		39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A8271D126E00B4DAFA /* Assets.xcassets */; };
 		39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */; };
+		AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E83461B41D9606803364ABF /* Pods_toPether.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		390778DF271D1A2200B4735B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		39EDD19C271D126800B4DAFA /* toPether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toPether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EDD19F271D126800B4DAFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +27,9 @@
 		39EDD1A8271D126E00B4DAFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39EDD1AB271D126E00B4DAFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E83461B41D9606803364ABF /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
+		FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +49,8 @@
 			children = (
 				39EDD19E271D126800B4DAFA /* toPether */,
 				39EDD19D271D126800B4DAFA /* Products */,
+				B64BFF78F2BA81C79BA05FB5 /* Pods */,
+				8943DD2F25C9251C2D810A1A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,8 +72,27 @@
 				39EDD1A8271D126E00B4DAFA /* Assets.xcassets */,
 				39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */,
 				39EDD1AD271D126E00B4DAFA /* Info.plist */,
+				390778DF271D1A2200B4735B /* GoogleService-Info.plist */,
 			);
 			path = toPether;
+			sourceTree = "<group>";
+		};
+		8943DD2F25C9251C2D810A1A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3E83461B41D9606803364ABF /* Pods_toPether.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B64BFF78F2BA81C79BA05FB5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */,
+				5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +102,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39EDD1B0271D126E00B4DAFA /* Build configuration list for PBXNativeTarget "toPether" */;
 			buildPhases = (
+				88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */,
 				39EDD198271D126800B4DAFA /* Sources */,
 				39EDD199271D126800B4DAFA /* Frameworks */,
 				39EDD19A271D126800B4DAFA /* Resources */,
+				A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,10 +158,53 @@
 				39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */,
 				39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */,
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
+				390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-toPether-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-toPether/Pods-toPether-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-toPether/Pods-toPether-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-toPether/Pods-toPether-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		39EDD198271D126800B4DAFA /* Sources */ = {
@@ -284,6 +357,7 @@
 		};
 		39EDD1B1271D126E00B4DAFA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -311,6 +385,7 @@
 		};
 		39EDD1B2271D126E00B4DAFA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
