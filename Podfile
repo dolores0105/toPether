@@ -12,4 +12,6 @@ target 'toPether' do
   pod 'FirebaseCore'
   pod 'FirebaseFirestoreSwift'
 
+  pod 'SwiftLint'
+
 end

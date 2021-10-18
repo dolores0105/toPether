@@ -91,7 +91,6 @@
 				FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */,
 				5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -107,6 +106,7 @@
 				39EDD199271D126800B4DAFA /* Frameworks */,
 				39EDD19A271D126800B4DAFA /* Resources */,
 				A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */,
+				390778E1271D1FC300B4735B /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -165,6 +165,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		390778E1271D1FC300B4735B /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
 		88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
