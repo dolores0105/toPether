@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390778DF271D1A2200B4735B /* GoogleService-Info.plist */; };
+		3907919A271DA7B100B4735B /* PetPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39079199271DA7B100B4735B /* PetPhotoCollectionViewCell.swift */; };
+		3907919D271DB56900B4735B /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFont.swift */; };
+		3907919F271DB6A600B4735B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColor.swift */; };
+		390791A1271DC01300B4735B /* MemberNamesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A0271DC01300B4735B /* MemberNamesCollectionViewCell.swift */; };
 		39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD19F271D126800B4DAFA /* AppDelegate.swift */; };
 		39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */; };
 		39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A3271D126800B4DAFA /* HomeViewController.swift */; };
@@ -19,6 +23,10 @@
 
 /* Begin PBXFileReference section */
 		390778DF271D1A2200B4735B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		39079199271DA7B100B4735B /* PetPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		3907919C271DB56900B4735B /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		3907919E271DB6A600B4735B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		390791A0271DC01300B4735B /* MemberNamesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberNamesCollectionViewCell.swift; sourceTree = "<group>"; };
 		39EDD19C271D126800B4DAFA /* toPether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toPether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EDD19F271D126800B4DAFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +69,31 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		39079195271D7D2100B4735B /* UIObjects */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIObjects;
+			sourceTree = "<group>";
+		};
+		39079198271DA78000B4735B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				39079199271DA7B100B4735B /* PetPhotoCollectionViewCell.swift */,
+				390791A0271DC01300B4735B /* MemberNamesCollectionViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3907919B271DB54800B4735B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				3907919C271DB56900B4735B /* UIFont.swift */,
+				3907919E271DB6A600B4735B /* UIColor.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		39EDD193271D126800B4DAFA = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +115,9 @@
 		39EDD19E271D126800B4DAFA /* toPether */ = {
 			isa = PBXGroup;
 			children = (
+				3907919B271DB54800B4735B /* Extension */,
+				39079195271D7D2100B4735B /* UIObjects */,
+				39079198271DA78000B4735B /* View */,
 				39079194271D715700B4735B /* Controller */,
 				390778E2271D70B700B4735B /* Resource */,
 				39EDD19F271D126800B4DAFA /* AppDelegate.swift */,
@@ -246,7 +282,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
+				390791A1271DC01300B4735B /* MemberNamesCollectionViewCell.swift in Sources */,
+				3907919F271DB6A600B4735B /* UIColor.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
+				3907919A271DA7B100B4735B /* PetPhotoCollectionViewCell.swift in Sources */,
+				3907919D271DB56900B4735B /* UIFont.swift in Sources */,
 				39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
