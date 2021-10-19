@@ -28,8 +28,23 @@ class HomeViewController: UIViewController {
         return stackView
     }()
     
+    let petProvider = PetProvider()
+    var pets = [Pet]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        petProvider.setPetData() // set mock data
+        petProvider.fetchPetData { result in
+            switch result {
+            case .success(let pets):
+                self.pets = pets
+                print("fetch:", self.pets)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
         
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
