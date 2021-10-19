@@ -43,8 +43,6 @@ class MemberNamesCollectionViewCell: UICollectionViewCell {
     func configAddMemberButton() {
         addMemberButton = UIButton()
         addMemberButton.backgroundColor = .mainYellow
-//        addMemberButton.layer.borderWidth = 1
-//        addMemberButton.layer.borderColor = UIColor.red.cgColor
         addMemberButton.layer.cornerRadius = frame.height / 2
         addMemberButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(addMemberButton)
