@@ -4,19 +4,29 @@
 //
 //  Created by 林宜萱 on 2021/10/18.
 //
-
+// swiftlint:disable function_body_length
 import UIKit
 
 class HomeViewController: UIViewController {
     
     var petPhotosCollectionView: UICollectionView!
     var fakeView: UIView! // for collectionView
-    var blueBorderView: UIView!
+    var petInfoButton: BorderButton!
     var petName: UILabel!
     var petAge: UILabel!
     var genderImageView: UIImageView!
     var membersCollectionView: UICollectionView!
-    var button: UIButton!
+    var button: BorderButton!
+    let iconsOfButtons: [String] = ["icons_message.png", "icons_foodRecords.png", "icons_medicalRecords.png", "icons_gallery.png"]
+    let buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +35,10 @@ class HomeViewController: UIViewController {
         self.navigationItem.title = "toPether"
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24)]
         
+        // MARK: UI objects layout
         let petsLayout = UICollectionViewFlowLayout()
-        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        petsLayout.minimumLineSpacing = 4
+        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
+        petsLayout.minimumLineSpacing = 20
         petsLayout.minimumInteritemSpacing = 20
         petsLayout.scrollDirection = .horizontal
         petsLayout.itemSize.width = view.bounds.width - 64
@@ -50,19 +61,16 @@ class HomeViewController: UIViewController {
             petPhotosCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.5)
         ])
         
-        blueBorderView = UIView()
-        blueBorderView.backgroundColor = .white
-        blueBorderView.layer.borderWidth = 1
-        blueBorderView.layer.borderColor = UIColor.mainBlue.cgColor
-        blueBorderView.layer.cornerRadius = 10
-        blueBorderView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(blueBorderView)
+        
+        petInfoButton = BorderButton()
+        view.addSubview(petInfoButton)
         NSLayoutConstraint.activate([
-            blueBorderView.topAnchor.constraint(equalTo: petPhotosCollectionView.bottomAnchor, constant: 20),
-            blueBorderView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            blueBorderView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            blueBorderView.heightAnchor.constraint(equalToConstant: 84)
+            petInfoButton.topAnchor.constraint(equalTo: petPhotosCollectionView.bottomAnchor, constant: 20),
+            petInfoButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            petInfoButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            petInfoButton.heightAnchor.constraint(equalToConstant: 84)
         ])
+        
         
         petName = UILabel()
         petName.text = "Ronaldo"
@@ -71,11 +79,12 @@ class HomeViewController: UIViewController {
         petName.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(petName)
         NSLayoutConstraint.activate([
-            petName.topAnchor.constraint(equalTo: blueBorderView.topAnchor, constant: 16),
-            petName.leadingAnchor.constraint(equalTo: blueBorderView.leadingAnchor, constant: 16),
-            petName.trailingAnchor.constraint(equalTo: blueBorderView.trailingAnchor, constant: -16),
+            petName.topAnchor.constraint(equalTo: petInfoButton.topAnchor, constant: 16),
+            petName.leadingAnchor.constraint(equalTo: petInfoButton.leadingAnchor, constant: 16),
+            petName.trailingAnchor.constraint(equalTo: petInfoButton.trailingAnchor, constant: -16),
             petName.heightAnchor.constraint(equalToConstant: 28)
         ])
+        
         
         petAge = UILabel()
         petAge.text = "5y 3m"
@@ -85,10 +94,11 @@ class HomeViewController: UIViewController {
         view.addSubview(petAge)
         NSLayoutConstraint.activate([
             petAge.topAnchor.constraint(equalTo: petName.bottomAnchor, constant: 4),
-            petAge.leadingAnchor.constraint(equalTo: blueBorderView.leadingAnchor, constant: 16),
-            petAge.widthAnchor.constraint(equalTo: blueBorderView.widthAnchor, multiplier: 0.5),
+            petAge.leadingAnchor.constraint(equalTo: petInfoButton.leadingAnchor, constant: 16),
+            petAge.widthAnchor.constraint(equalTo: petInfoButton.widthAnchor, multiplier: 0.5),
             petAge.heightAnchor.constraint(equalToConstant: 22)
         ])
+        
         
         genderImageView = UIImageView()
         genderImageView.contentMode = .scaleAspectFill
@@ -98,10 +108,11 @@ class HomeViewController: UIViewController {
         view.addSubview(genderImageView)
         NSLayoutConstraint.activate([
             genderImageView.centerYAnchor.constraint(equalTo: petAge.centerYAnchor),
-            genderImageView.trailingAnchor.constraint(equalTo: blueBorderView.trailingAnchor, constant: -16),
+            genderImageView.trailingAnchor.constraint(equalTo: petInfoButton.trailingAnchor, constant: -16),
             genderImageView.widthAnchor.constraint(equalToConstant: 22),
             genderImageView.heightAnchor.constraint(equalToConstant: 22)
         ])
+        
         
         let membersLayout = UICollectionViewFlowLayout()
         membersLayout.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
@@ -117,24 +128,34 @@ class HomeViewController: UIViewController {
         membersCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(membersCollectionView)
         NSLayoutConstraint.activate([
-            membersCollectionView.topAnchor.constraint(equalTo: blueBorderView.bottomAnchor, constant: 20),
+            membersCollectionView.topAnchor.constraint(equalTo: petInfoButton.bottomAnchor, constant: 20),
             membersCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             membersCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64),
             membersCollectionView.heightAnchor.constraint(equalToConstant: 28)
         ])
-
-        button = UIButton()
-        button.layer.borderColor = UIColor.mainBlue.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .white
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
+        
+        
+        view.addSubview(buttonStackView)
+        iconsOfButtons.forEach { (icons) in
+            button = BorderButton()
+            button.imageView?.contentMode = .scaleAspectFill
+            button.clipsToBounds = true
+            if #available(iOS 15.0, *) {
+                var configuration = UIButton.Configuration.filled()
+                configuration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
+            } else {
+                button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            }
+            button.setImage(UIImage(named: icons), for: .normal)
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: 64),
+                button.widthAnchor.constraint(equalToConstant: 64)
+            ])
+            buttonStackView.addArrangedSubview(button)
+        }
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: membersCollectionView.bottomAnchor, constant: 24),
-            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            button.heightAnchor.constraint(equalToConstant: 64),
-            button.widthAnchor.constraint(equalToConstant: 64)
+            buttonStackView.topAnchor.constraint(equalTo: membersCollectionView.bottomAnchor, constant: 24),
+            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
         ])
     }
 
@@ -157,7 +178,7 @@ extension HomeViewController: UICollectionViewDataSource {
         case petPhotosCollectionView:
             return 4
         case membersCollectionView:
-            return 10
+            return 3 // max number of layout in SE2 (members max == 8)
         default:
             return 0
         }
@@ -187,7 +208,13 @@ extension HomeViewController: UICollectionViewDataSource {
         } else {
             let memberCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MemberNamesCollectionViewCell", for: indexPath)
             guard let memberCell = memberCell as? MemberNamesCollectionViewCell else { return memberCell }
-//            memberCell.backgroundColor = .orange
+
+            switch indexPath.item {
+            case 0, 1:
+                memberCell.configNameLabel()
+            default:
+                memberCell.configAddMemberButton()
+            }
             return memberCell
         }
     }
