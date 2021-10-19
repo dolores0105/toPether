@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //HomePage
         let homeViewController = HomeViewController()
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
-        homeNavigationController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "icons_home_normal.png"), selectedImage: UIImage(named: "icons_home_selected.png"))
+        homeNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsHomeNormal.obj, selectedImage: Img.iconsHomeSelected.obj)
         
         let tabBarViewController = UITabBarController()
         tabBarViewController.setViewControllers([homeNavigationController], animated: false)
