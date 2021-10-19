@@ -33,12 +33,13 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        petProvider.setPetData() // set mock data
-        petProvider.fetchPetData { result in
+        petProvider.setPetData()
+        petProvider.fetchPetData { [weak self] result in
             switch result {
             case .success(let pets):
+                guard let self = self else { return }
                 self.pets = pets
+                self.reloadData(pet: self.pets)
                 print("fetch:", self.pets)
             case .failure(let error):
                 print(error)
@@ -173,9 +174,23 @@ class HomeViewController: UIViewController {
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
         ])
     }
-
+    
+    // MARK: functions
+    func reloadData(pet: [Pet]) {
+        self.petPhotosCollectionView.reloadData()
+        self.petName.text = pet[0].petName
+        self.petAge.text = String(pet[0].birthday)
+        if pet[0].petGender == "male" {
+            self.genderImageView.image = UIImage(named: "icons_gender_male.png")
+        } else {
+            self.genderImageView.image = UIImage(named: "icons_gender_female.png")
+        }
+        self.membersCollectionView.reloadData()
+    }
+    
 }
 
+// MARK: Extension
 extension HomeViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         switch collectionView {
@@ -191,9 +206,9 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case petPhotosCollectionView:
-            return 4
+            return self.pets.count
         case membersCollectionView:
-            return 3 // max number of layout in SE2 (members max == 8)
+            return 1 // max number of layout in SE2 (members max == 8)
         default:
             return 0
         }
@@ -204,20 +219,13 @@ extension HomeViewController: UICollectionViewDataSource {
         if collectionView == self.petPhotosCollectionView {
             let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetPhotoCollectionViewCell", for: indexPath)
             guard let petCell = petCell as? PetPhotoCollectionViewCell else { return petCell }
-
-            switch indexPath.item {
-            case 0:
-                petCell.backgroundColor = .mainBlue
-            case 1:
-                petCell.backgroundColor = .mainBlue
-            case 2:
-                petCell.backgroundColor = .mainBlue
-            case 3:
-                petCell.backgroundColor = .mainBlue
-            default:
-                petCell.backgroundColor = .mainBlue
-            }
-
+            
+            guard let jpegData06decodedData = NSData(base64Encoded: pets[indexPath.item].photo, options: NSData.Base64DecodingOptions()),
+                    let decodedImage = UIImage(data: jpegData06decodedData as Data) else { return petCell }
+            let petImage = decodedImage as UIImage
+            
+            petCell.imageView.image = petImage
+            
             return petCell
             
         } else {
@@ -225,7 +233,7 @@ extension HomeViewController: UICollectionViewDataSource {
             guard let memberCell = memberCell as? MemberNamesCollectionViewCell else { return memberCell }
 
             switch indexPath.item {
-            case 0, 1:
+            case 0..<2:
                 memberCell.configNameLabel()
             default:
                 memberCell.configAddMemberButton()

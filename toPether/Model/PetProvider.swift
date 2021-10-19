@@ -12,15 +12,19 @@ class PetProvider {
     var passPetDataClosure: ((_ petData: [Pet]) -> Void)?
     
     func setPetData() {
+        let image = UIImage(named: "icons_medicalRecords")
+        guard let image = image, let jpegData06 = image.jpegData(compressionQuality: 0.6) else { return }
+        let imageBase64String = jpegData06.base64EncodedString()
+        
         let pets = Firestore.firestore().collection("pets")
         let document = pets.document()
         
         let pet = Pet(
             petId: document.documentID,
             petName: "Kesha",
-            petGender: "male",
+            petGender: "female",
             birthday: NSDate().timeIntervalSince1970,
-            photo: "https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-600x400.jpg",
+            photo: imageBase64String,
             groupMembersId: ["HSCnG2TeFczYF3404Mq7"]
         )
         
