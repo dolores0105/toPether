@@ -27,8 +27,8 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        petProvider.setPetData()
-        petProvider.fetchPetData { [weak self] result in
+//        firebaseModel.setPetData(name: "Lala", gender: "male", year: 3, month: 4, photo: Img.iconsGallery.obj)
+//        firebaseModel.setPetData(name: "Kiki", gender: "male", year: 0, month: 8, photo: Img.iconsGallery.obj)
 //        firebaseModel.setMember()
 //        firebaseModel.setMember()
         firebaseModel.fetchPetData { [weak self] result in

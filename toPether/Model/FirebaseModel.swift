@@ -12,21 +12,29 @@ class FirebaseModel {
 
     var members: [Member]?
     
-    func setPetData() {
-        let image = Img.iconsHomeSelected.obj
-        guard let jpegData06 = image.jpegData(compressionQuality: 0.6) else { return }
+    // MARK: pet
+    func getBirthday(year: Int, month: Int) -> Date? { // 當使用者選完了寵物的年月，用這個去得到生日，記在Pet裡
+        let calendar = Calendar.current
+        let today = Date()
+        return calendar.date(byAdding: DateComponents(year: -year, month: -month), to: today)
+    }
+
+    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberId: [String] = ["HSCnG2TeFczYF3404Mq7"]) {
+        guard let jpegData06 = photo.jpegData(compressionQuality: 0.6) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
+        
+        guard let birthday = getBirthday(year: year, month: month) else { return }
         
         let pets = Firestore.firestore().collection("pets")
         let document = pets.document()
         
         let pet = Pet(
             petId: document.documentID,
-            petName: "Kesha",
-            petGender: "female",
-            birthday: Date(),
+            petName: name,
+            petGender: gender,
+            birthday: birthday,
             photo: imageBase64String,
-            groupMembersId: ["HSCnG2TeFczYF3404Mq7"]
+            groupMembersId: memberId
         )
         
         do {
