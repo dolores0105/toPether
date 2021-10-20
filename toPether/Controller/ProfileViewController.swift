@@ -11,10 +11,10 @@ import IQKeyboardManagerSwift
 class ProfileViewController: UIViewController {
     
     var navigationBackgroundView: NavigationBackgroundView!
-    var nameTitleLabel: UILabel!
+    var nameTitleLabel: MediumLabel!
     var iconImageView: UIImageView!
     var editNameButton: IconButton!
-    var textField: WhiteBorderTextField!
+    var textField: NoBorderTextField!
     var memberName: String? {
         didSet {
             if memberName != nil && memberName == "" {
@@ -22,6 +22,9 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    var furkidsTitleLabel: MediumLabel!
+    var addPetButton: IconButton!
+    var petTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,17 +43,14 @@ class ProfileViewController: UIViewController {
             navigationBackgroundView.heightAnchor.constraint(equalToConstant: 200)
         ])
         
-        nameTitleLabel = UILabel()
+        nameTitleLabel = MediumLabel(size: 18)
         nameTitleLabel.text = "Name"
         nameTitleLabel.textColor = .white
-        nameTitleLabel.font = UIFont.medium(size: 18)
         view.addSubview(nameTitleLabel)
-        nameTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             nameTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             nameTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            nameTitleLabel.widthAnchor.constraint(equalToConstant: 60),
-            nameTitleLabel.heightAnchor.constraint(equalToConstant: 20)
+            nameTitleLabel.widthAnchor.constraint(equalToConstant: 60)
         ])
         
         editNameButton = IconButton(self, action: #selector(tapEditName), img: Img.iconsEdit)
@@ -63,13 +63,51 @@ class ProfileViewController: UIViewController {
             editNameButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-        textField = WhiteBorderTextField(name: memberName)
+        textField = NoBorderTextField(name: memberName)
         textField.delegate = self
         view.addSubview(textField)
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: nameTitleLabel.bottomAnchor, constant: 8),
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
+        ])
+        
+        furkidsTitleLabel = MediumLabel(size: 18)
+        furkidsTitleLabel.text = "Furkids"
+        furkidsTitleLabel.textColor = .mainBlue
+        view.addSubview(furkidsTitleLabel)
+        NSLayoutConstraint.activate([
+            furkidsTitleLabel.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 40),
+            furkidsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 66)
+        ])
+        
+        addPetButton = IconButton(self, action: #selector(tapAddPet), img: Img.iconsAdd)
+        addPetButton.layer.borderWidth = 0
+        view.addSubview(addPetButton)
+        NSLayoutConstraint.activate([
+            addPetButton.centerYAnchor.constraint(equalTo: furkidsTitleLabel.centerYAnchor),
+            addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            addPetButton.widthAnchor.constraint(equalToConstant: 66),
+            addPetButton.heightAnchor.constraint(equalToConstant: 66)
+        ])
+        
+        petTableView = UITableView()
+        petTableView.register(PetTableViewCell.self, forCellReuseIdentifier: "PetTableViewCell")
+        petTableView.separatorColor = .clear
+        petTableView.estimatedRowHeight = 100
+        petTableView.rowHeight = UITableView.automaticDimension
+        petTableView.allowsSelection = false
+        petTableView.delegate = self
+        petTableView.dataSource = self
+        petTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(petTableView)
+        NSLayoutConstraint.activate([
+            petTableView.topAnchor.constraint(equalTo: furkidsTitleLabel.bottomAnchor, constant: 30),
+            petTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            petTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            petTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            
         ])
         
     }
@@ -81,20 +119,42 @@ class ProfileViewController: UIViewController {
     
     @objc func tapEditName(sender: UIButton) {
         textField.isEnabled = true
-        textField.layer.borderWidth = 1
+        textField.becomeFirstResponder()
+    }
+    
+    @objc func tapAddPet(sender: UIButton) {
+        
     }
 }
 
 extension ProfileViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         memberName = textField.text
+        //then update to firebase
+        
         self.view.endEditing(true)
+        
         if textField.hasText {
             textField.isEnabled = false
-            textField.layer.borderWidth = 0
         } else {
             textField.isEnabled = true
-            textField.layer.borderWidth = 1
         }
     }
+}
+
+extension ProfileViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
+        guard let cell = cell as? PetTableViewCell else { return cell }
+
+        return cell
+    }
+}
+
+extension ProfileViewController: UITableViewDelegate {
+    
 }

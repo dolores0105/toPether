@@ -8,14 +8,12 @@
 import UIKit
 import IQKeyboardManagerSwift
 
-class WhiteBorderTextField: UITextField {
+class NoBorderTextField: UITextField {
 
     convenience init(name: String?) {
         self.init()
         backgroundColor = .clear
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.white.cgColor
-        layer.cornerRadius = 10
+        layer.borderWidth = 0
         textColor = .white
         addDoneOnKeyboardWithTarget(self, action: #selector(dismissKeyboard))
         translatesAutoresizingMaskIntoConstraints = false
