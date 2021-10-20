@@ -43,8 +43,8 @@ class PetCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             
             petImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            petImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            petImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            petImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            petImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
             petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 2 / 3)
             
         ])
@@ -53,8 +53,8 @@ class PetCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(petInfoButton)
         NSLayoutConstraint.activate([
             petInfoButton.topAnchor.constraint(equalTo: petImageView.bottomAnchor, constant: 20),
-            petInfoButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            petInfoButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            petInfoButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            petInfoButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
             petInfoButton.heightAnchor.constraint(equalToConstant: 84)
         ])
         

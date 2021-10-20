@@ -10,7 +10,6 @@ import UIKit
 class HomeViewController: UIViewController {
     
     var petCollectionView: UICollectionView!
-
     let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -23,6 +22,7 @@ class HomeViewController: UIViewController {
     
     let petProvider = PetProvider()
     var pets = [Pet]()
+    var petIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,17 +46,19 @@ class HomeViewController: UIViewController {
         
         // MARK: UI objects layout
         let petsLayout = UICollectionViewFlowLayout()
-        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
-        petsLayout.minimumLineSpacing = 20
-        petsLayout.minimumInteritemSpacing = 20
+        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        petsLayout.minimumLineSpacing = 0
+        petsLayout.minimumInteritemSpacing = 0
         petsLayout.scrollDirection = .horizontal
-        petsLayout.itemSize.width = view.bounds.width - 64
+        petsLayout.itemSize.width = view.bounds.width
         petsLayout.itemSize.height = view.bounds.height / 3 * 2
         
         petCollectionView = UICollectionView(frame: .zero, collectionViewLayout: petsLayout)
         petCollectionView.backgroundColor = .clear
         petCollectionView.showsHorizontalScrollIndicator = false
         petCollectionView.bounces = false
+        petCollectionView.allowsSelection = false
+        petCollectionView.isPagingEnabled = true
         petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: "PetCollectionViewCell")
         petCollectionView.delegate = self
         petCollectionView.dataSource = self
@@ -112,12 +114,7 @@ extension HomeViewController: UICollectionViewDataSource {
         
         let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
         guard let petCell = petCell as? PetCollectionViewCell else { return petCell }
-            
-//            guard let jpegData06decodedData = NSData(base64Encoded: pets[indexPath.item].photo, options: NSData.Base64DecodingOptions()),
-//                    let decodedImage = UIImage(data: jpegData06decodedData as Data) else { return petCell }
-//            let petImage = decodedImage as UIImage
-//            
-//            petCell.petImageView.image = petImage
+        
         petCell.reload(pet: pets[indexPath.item])
         return petCell
 
@@ -125,5 +122,9 @@ extension HomeViewController: UICollectionViewDataSource {
 }
 
 extension HomeViewController: UICollectionViewDelegate {
-
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = petCollectionView.visibleCells.first, let index = petCollectionView.indexPath(for: cell)?.row else { return }
+        petIndex = index
+        print("current index by didEndDisplaying:", petIndex)
+    }
 }
