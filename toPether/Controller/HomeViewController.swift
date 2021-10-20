@@ -20,14 +20,18 @@ class HomeViewController: UIViewController {
         return stackView
     }()
     
-    let petProvider = PetProvider()
+    let firebaseModel = FirebaseModel()
     var pets = [Pet]()
+    var members = [Member]()
     var petIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         petProvider.setPetData()
         petProvider.fetchPetData { [weak self] result in
+//        firebaseModel.setMember()
+//        firebaseModel.setMember()
+        firebaseModel.fetchPetData { [weak self] result in
             switch result {
             case .success(let pets):
                 guard let self = self else { return }
@@ -69,7 +73,7 @@ class HomeViewController: UIViewController {
             petCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             petCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             petCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            petCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 2 / 3)
+            petCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 3 / 4)
         ])
         
         view.addSubview(buttonStackView)
@@ -86,9 +90,7 @@ class HomeViewController: UIViewController {
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             buttonStackView.topAnchor.constraint(equalTo: petCollectionView.bottomAnchor, constant: 20),
-            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64),
-            buttonStackView.heightAnchor.constraint(equalToConstant: 64)
+            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     
@@ -115,9 +117,21 @@ extension HomeViewController: UICollectionViewDataSource {
         let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
         guard let petCell = petCell as? PetCollectionViewCell else { return petCell }
         
-        petCell.reload(pet: pets[indexPath.item])
+        firebaseModel.queryMembers(ids: pets[indexPath.item].groupMembersId) { [weak self] result in
+            switch result {
+            case .success(let members):
+                guard let self = self else { return }
+                self.members = members
+                print("fetch members:", self.members)
+                petCell.reload(pet: self.pets[indexPath.item], members: members)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        
+        
         return petCell
-
     }
 }
 

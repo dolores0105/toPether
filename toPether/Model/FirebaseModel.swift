@@ -1,5 +1,5 @@
 //
-//  PetProvider.swift
+//  FirebaseModel.swift
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/19.
@@ -7,9 +7,10 @@
 
 import Firebase
 
-class PetProvider {
+class FirebaseModel {
     let dataBase = Firestore.firestore()
-    var passPetDataClosure: ((_ petData: [Pet]) -> Void)?
+
+    var members: [Member]?
     
     func setPetData() {
         let image = Img.iconsHomeSelected.obj
@@ -44,6 +45,44 @@ class PetProvider {
                     try? querySnapshot.data(as: Pet.self)
                 })
                 completion(Result.success(pets))
+            }
+            
+            if let error = error {
+                completion(Result.failure(error))
+            }
+        }
+    }
+    
+    // MARK: Member
+    func setMember() {
+        let members = Firestore.firestore().collection("members")
+        let document = members.document()
+        
+        let member = Member(
+            memberId: document.documentID,
+            memberName: "Dodo",
+            pets: ["E5ebgGOiKj8uQC7UgLKK", "BfaFAFa8avMTjnUEnuOK"],
+            qrCode: document.documentID
+        )
+        
+        do {
+            try document.setData(from: member)
+        } catch let error {
+            print("set pet data error:", error)
+        }
+    }
+    
+    func queryMembers(ids: [String], completion: @escaping (Result<[Member], Error>) -> Void) {
+        dataBase.collection("members").whereField("memberId", in: ids).getDocuments { (querySnapshot, error) in
+            if let querySnapshot = querySnapshot {
+                
+                let members = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Member.self)
+                })
+                completion(Result.success(members))
+                
+//                print("queryMembers:", members)
+//                print("count:", members.count)
             }
             
             if let error = error {

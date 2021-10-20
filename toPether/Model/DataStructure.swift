@@ -26,6 +26,6 @@ struct Pet: Codable {
 struct Member: Codable {
     var memberId: String
     var memberName: String
-    var petsId: [String]
+    var pets: [String]
     var qrCode: String
 }

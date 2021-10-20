@@ -22,7 +22,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .equalCentering
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -45,7 +45,7 @@ class PetCollectionViewCell: UICollectionViewCell {
             petImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             petImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             petImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
-            petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 2 / 3)
+            petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 2, constant: 50)
             
         ])
         
@@ -85,7 +85,6 @@ class PetCollectionViewCell: UICollectionViewCell {
         genderImageView = UIImageView()
         genderImageView.contentMode = .scaleAspectFill
         genderImageView.clipsToBounds = true
-        
         genderImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(genderImageView)
         NSLayoutConstraint.activate([
@@ -97,11 +96,11 @@ class PetCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(memberStackView)
         NSLayoutConstraint.activate([
-            memberStackView.topAnchor.constraint(equalTo: petInfoButton.bottomAnchor, constant: 24),
-            memberStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32),
+            memberStackView.topAnchor.constraint(equalTo: petInfoButton.bottomAnchor, constant: 16),
+            memberStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
         
-        addMemberButton = CircleButton()
+        addMemberButton = CircleButton(name: "")
         addMemberButton.backgroundColor = .mainYellow
     }
     
@@ -109,7 +108,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func reload(pet: Pet) {
+    func reload(pet: Pet, members: [Member]) {
         petImageView.image = pet.photoImage
         petAge.text = pet.birthday.description
         petName.text = pet.petName
@@ -120,18 +119,12 @@ class PetCollectionViewCell: UICollectionViewCell {
         }
 
         memberStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        queryMembers(ids: pet.groupMembersId)
-    }
-    
-    private func queryMembers(ids: [String]) {
-//        db.collection("members").whereField("memberId", in: ids).getDocument { [weak self] documents, error in //fetch member documents
-//            self?.updateMembers(documents) //update stackview numbers and label
-//        }
+        updateMembers(members)
     }
     
     private func updateMembers(_ members: [Member]) {
         members.forEach { member in
-            circleButton = CircleButton(name: member.memberName)
+            circleButton = CircleButton(name: member.memberName.first?.description ?? "")
             memberStackView.addArrangedSubview(circleButton)
         }
         memberStackView.addArrangedSubview(addMemberButton)
