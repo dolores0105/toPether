@@ -78,12 +78,16 @@ class HomeViewController: UIViewController {
         
         view.addSubview(buttonStackView)
         let buttons = [
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsFoodRecords),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsGenderMale),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsFoodRecords),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsMedicalRecords),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]
         buttons.forEach { button in
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: 64),
+                button.widthAnchor.constraint(equalToConstant: 64)
+            ])
             buttonStackView.addArrangedSubview(button)
         }
         

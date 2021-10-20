@@ -14,4 +14,6 @@ target 'toPether' do
 
   pod 'SwiftLint'
 
+  pod 'IQKeyboardManagerSwift'
+
 end

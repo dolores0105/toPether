@@ -1,11 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "iconsMedicalRecord@2x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icons_medicalRecords.png",
+      "filename" : "iconsMedicalRecord@3x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

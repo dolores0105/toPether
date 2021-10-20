@@ -19,6 +19,7 @@
 		390791AE271F008B00B4735B /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AD271F008B00B4735B /* UIImage.swift */; };
 		390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AF271FFB8900B4735B /* ProfileViewController.swift */; };
 		390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */; };
+		390791B62720138200B4735B /* WhiteBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B52720138200B4735B /* WhiteBorderTextField.swift */; };
 		39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD19F271D126800B4DAFA /* AppDelegate.swift */; };
 		39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */; };
 		39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A3271D126800B4DAFA /* HomeViewController.swift */; };
@@ -41,6 +42,7 @@
 		390791AD271F008B00B4735B /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		390791AF271FFB8900B4735B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBackgroundView.swift; sourceTree = "<group>"; };
+		390791B52720138200B4735B /* WhiteBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteBorderTextField.swift; sourceTree = "<group>"; };
 		39EDD19C271D126800B4DAFA /* toPether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toPether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EDD19F271D126800B4DAFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				390791AB271ECF1E00B4735B /* IconButton.swift */,
 				390791A9271ECEC900B4735B /* CircleButton.swift */,
 				390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */,
+				390791B52720138200B4735B /* WhiteBorderTextField.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				390791A6271E78F800B4735B /* FirebaseModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
+				390791B62720138200B4735B /* WhiteBorderTextField.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFont.swift in Sources */,
 				390791A8271E8C9900B4735B /* DataStructure.swift in Sources */,
 				39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */,
