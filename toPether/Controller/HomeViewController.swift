@@ -129,8 +129,6 @@ extension HomeViewController: UICollectionViewDataSource {
             }
         }
         
-        
-        
         return petCell
     }
 }
