@@ -8,19 +8,24 @@
 import Foundation
 import FirebaseFirestoreSwift
 import Firebase
+import UIKit
 
 struct Pet: Codable {
     var petId: String
     var petName: String
     var petGender: String
-    var birthday: TimeInterval
+    var birthday: Date
     var photo: String
     var groupMembersId: [String]
+    
+    var photoImage: UIImage {
+        UIImage(data: Data(base64Encoded: photo) ?? .init()) ?? .init()
+    }
 }
 
 struct Member: Codable {
     var memberId: String
     var memberName: String
-    var petsId: [String]
+    var pets: [String]
     var qrCode: String
 }
