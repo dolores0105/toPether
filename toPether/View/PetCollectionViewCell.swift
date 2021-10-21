@@ -35,7 +35,6 @@ class PetCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         petImageView = UIImageView()
-        petImageView.backgroundColor = .orange
 //        petImageView.layer.cornerRadius = 10
         petImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(petImageView)

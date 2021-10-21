@@ -22,6 +22,8 @@
 		390791B62720138200B4735B /* NoBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B52720138200B4735B /* NoBorderTextField.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
+		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
+		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
 		39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD19F271D126800B4DAFA /* AppDelegate.swift */; };
 		39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */; };
 		39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A3271D126800B4DAFA /* HomeViewController.swift */; };
@@ -47,6 +49,8 @@
 		390791B52720138200B4735B /* NoBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBorderTextField.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
+		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
+		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
 		39EDD19C271D126800B4DAFA /* toPether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toPether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EDD19F271D126800B4DAFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 				390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */,
 				390791B52720138200B4735B /* NoBorderTextField.swift */,
 				395FD009272052D8005911AA /* MediumLabel.swift */,
+				395FD00D27214AB6005911AA /* RegularLabel.swift */,
+				395FD00B27213C3B005911AA /* RoundCornerImageView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -328,7 +334,9 @@
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
+				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFont.swift in Sources */,
+				395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */,
 				390791A8271E8C9900B4735B /* DataStructure.swift in Sources */,
 				39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */,
 				390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */,
