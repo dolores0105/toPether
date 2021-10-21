@@ -25,6 +25,7 @@ class ProfileViewController: UIViewController {
     var furkidsTitleLabel: MediumLabel!
     var addPetButton: IconButton!
     var petTableView: UITableView!
+    var ownedPets = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +111,7 @@ class ProfileViewController: UIViewController {
             
         ])
         
+        ownedPets = ["d", "c", "e"] // mock
     }
     
     // MARK: functions
@@ -144,7 +146,7 @@ extension ProfileViewController: UITextFieldDelegate {
 
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        return ownedPets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -157,4 +159,21 @@ extension ProfileViewController: UITableViewDataSource {
 
 extension ProfileViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+            
+            print("Delete number", indexPath.row, "pet")
+            self.ownedPets.remove(at: indexPath.row) // delete pet data array
+            self.petTableView.deleteRows(at: [indexPath], with: .left)
+            completionHandler(true)
+        }
+        
+        deleteAction.image = Img.iconsDelete.obj
+        deleteAction.backgroundColor = .white
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+
 }
