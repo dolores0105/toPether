@@ -1,5 +1,5 @@
 //
-//  FirebaseModel.swift
+//  PetModel.swift
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/19.
@@ -7,7 +7,7 @@
 
 import Firebase
 
-class FirebaseModel {
+class PetModel {
     let dataBase = Firestore.firestore()
 
     var members: [Member]?
@@ -19,7 +19,7 @@ class FirebaseModel {
         return calendar.date(byAdding: DateComponents(year: -year, month: -month), to: today)
     }
 
-    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberId: [String] = ["HSCnG2TeFczYF3404Mq7"]) {
+    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberId: [String]) {
         guard let jpegData06 = photo.jpegData(compressionQuality: 0.6) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
@@ -61,36 +61,17 @@ class FirebaseModel {
         }
     }
     
-    // MARK: Member
-    func setMember() {
-        let members = Firestore.firestore().collection("members")
-        let document = members.document()
-        
-        let member = Member(
-            memberId: document.documentID,
-            memberName: "Dodo",
-            pets: ["E5ebgGOiKj8uQC7UgLKK", "BfaFAFa8avMTjnUEnuOK"],
-            qrCode: document.documentID
-        )
-        
-        do {
-            try document.setData(from: member)
-        } catch let error {
-            print("set pet data error:", error)
-        }
-    }
-    
-    func queryMembers(ids: [String], completion: @escaping (Result<[Member], Error>) -> Void) {
-        dataBase.collection("members").whereField("memberId", in: ids).getDocuments { (querySnapshot, error) in
+    // MARK: Query pets
+    // Use pets array of a members data to query pets data that is owned by that member
+    func queryPets(ids: [String], completion: @escaping (Result<[Pet], Error>) -> Void) {
+        dataBase.collection("pets").whereField("petId", in: ids).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
-                let members = querySnapshot.documents.compactMap({ querySnapshot in
-                    try? querySnapshot.data(as: Member.self)
+                let pets = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Pet.self)
                 })
-                completion(Result.success(members))
+                completion(Result.success(pets))
                 
-//                print("queryMembers:", members)
-//                print("count:", members.count)
             }
             
             if let error = error {
