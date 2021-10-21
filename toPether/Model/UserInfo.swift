@@ -8,5 +8,5 @@
 import Foundation
 
 class UserInfo {
-    var userId: String? = nil
+    var userId: String?
 }

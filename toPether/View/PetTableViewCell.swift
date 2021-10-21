@@ -91,7 +91,7 @@ class PetTableViewCell: UITableViewCell {
     
     func reload(pet: Pet) {
         petImageView.image = pet.photoImage
-        nameLabel.text = pet.petName
+        nameLabel.text = pet.name
         
         var year: Int?
         var month: Int?
@@ -99,13 +99,13 @@ class PetTableViewCell: UITableViewCell {
         guard let year = year, let month = month else { return }
         ageLabel.text = "\(year)y  \(month)m"
         
-        if pet.petGender == "male" {
+        if pet.gender == "male" {
             genderImageView.image = Img.iconsGenderMale.obj
         } else {
             genderImageView.image = Img.iconsGenderFemale.obj
         }
         
-        memberNumberButton.setTitle("+ \(pet.groupMembersId.count)", for: .normal)
+        memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
     }
     
     private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示

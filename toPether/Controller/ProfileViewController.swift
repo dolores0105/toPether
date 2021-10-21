@@ -26,11 +26,9 @@ class ProfileViewController: UIViewController {
     var addPetButton: IconButton!
     var petTableView: UITableView!
     
-    let userInfo = UserInfo()
-    var currentUser = [Member]() // should be only one element
+    var currentUser: Member! = MemberModel.shared.current
     let petModel = PetModel()
     var pets = [Pet]()
-    let memberModel = MemberModel()
 
     
     override func viewDidLoad() {
@@ -71,8 +69,8 @@ class ProfileViewController: UIViewController {
             editNameButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-        textField = NoBorderTextField(name: self.currentUser.first?.memberName)
-        textField.delegate = self
+        textField = NoBorderTextField(name: currentUser.name)
+        textField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
         view.addSubview(textField)
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: nameTitleLabel.bottomAnchor, constant: 8),
@@ -119,44 +117,21 @@ class ProfileViewController: UIViewController {
         ])
         
         // MARK: Query data
-        userInfo.userId = "xzhcxjKGZGKuX3zGgMid" // mock
+        textField.text = currentUser.name
         queryData()
     }
     
     // MARK: functions
     func queryData() {
-        let semaphore = DispatchSemaphore(value: 1)
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self, let userId = self.userInfo.userId else { return }
-            semaphore.wait()
-            print("----query current user start----")
-            self.memberModel.queryCurrentUser(id: userId) { [weak self] result in
-                switch result {
-                case .success(let user):
-                    guard let self = self else { return }
-                    self.currentUser = user
-                    self.textField.text = self.currentUser.first?.memberName
-                    print("current user info at profile", self.currentUser)
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                }
-            }
-            
-            semaphore.wait()
-            guard let petIds = self.currentUser.first?.pets else { return }
-            print("----query current user start----")
-            self.petModel.queryPets(ids: petIds) { [weak self] result in
-                switch result {
-                case .success(let pets):
-                    guard let self = self else { return }
-                    self.pets = pets
-                    self.petTableView.reloadData()
-                    print("fetch pets at profile:", self.pets)
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                }
+        petModel.queryPets(ids: currentUser.petIds) { [weak self] result in
+            switch result {
+            case .success(let pets):
+                guard let self = self else { return }
+                self.pets = pets
+                self.petTableView.reloadData()
+                print("fetch pets at profile:", self.pets)
+            case .failure(let error):
+                print(error)
             }
         }
     }
@@ -170,31 +145,22 @@ class ProfileViewController: UIViewController {
         textField.becomeFirstResponder()
     }
     
+    @objc private func nameEndEditing(_ textField: UITextField) {
+        print(textField.text)
+        currentUser.name = textField.text ?? currentUser.name
+        MemberModel.shared.updateCurrentUser()
+        textField.isEnabled = !textField.hasText
+        view.endEditing(true)
+    }
+    
     @objc func tapAddPet(sender: UIButton) {
         
     }
 }
 
-extension ProfileViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        memberName = textField.text
-        
-        guard let memberName = memberName, let userId = userInfo.userId else { return }
-        memberModel.update(updatedName: memberName, documentId: userId)
-        
-        self.view.endEditing(true)
-        
-        if textField.hasText {
-            textField.isEnabled = false
-        } else {
-            textField.isEnabled = true
-        }
-    }
-}
-
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.pets.count
+        return pets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -209,12 +175,17 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
-            
-            print("Delete number", indexPath.row, "pet")
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+
+            self.currentUser.petIds.remove(at: indexPath.row)
             self.pets.remove(at: indexPath.row)
-            self.petTableView.deleteRows(at: [indexPath], with: .left)
-            // notify delete to firebase
+            print("self.pets", self.pets)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .left)
+            tableView.endUpdates()
+            
+            MemberModel.shared.updateCurrentUser()
             
             completionHandler(true)
         }

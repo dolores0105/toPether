@@ -15,15 +15,10 @@ class NoBorderTextField: UITextField {
         backgroundColor = .clear
         layer.borderWidth = 0
         textColor = .white
-        addDoneOnKeyboardWithTarget(self, action: #selector(dismissKeyboard))
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 40)
         ])
-    }
-    
-    @objc func dismissKeyboard(sender: UITextField) {
-        endEditing(true)
     }
 }

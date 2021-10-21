@@ -10,22 +10,22 @@ import FirebaseFirestoreSwift
 import Firebase
 import UIKit
 
-struct Pet: Codable {
-    var petId: String
-    var petName: String
-    var petGender: String
-    var birthday: Date
-    var photo: String
-    var groupMembersId: [String]
+class Pet: Codable {
+    var id: String = ""
+    var name: String = ""
+    var gender: String = ""
+    var birthday: Date = .init(timeIntervalSince1970: 0)
+    var photo: String = ""
+    var memberIds: [String] = []
     
     var photoImage: UIImage {
         UIImage(data: Data(base64Encoded: photo) ?? .init()) ?? .init()
     }
 }
 
-struct Member: Codable {
-    var memberId: String
-    var memberName: String
-    var pets: [String]
-    var qrCode: String
+class Member: Codable {
+    var id: String = ""
+    var name: String = ""
+    var petIds: [String] = []
+    var qrCode: String = ""
 }

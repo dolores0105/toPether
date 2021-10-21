@@ -9,8 +9,6 @@ import Firebase
 
 class PetModel {
     let dataBase = Firestore.firestore()
-
-    var members: [Member]?
     
     // MARK: pet
     func getBirthday(year: Int, month: Int) -> Date? { // 當使用者選完了寵物的年月，用這個去得到生日，記在Pet裡
@@ -19,7 +17,7 @@ class PetModel {
         return calendar.date(byAdding: DateComponents(year: -year, month: -month), to: today)
     }
 
-    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberId: [String]) {
+    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String]) {
         guard let jpegData06 = photo.jpegData(compressionQuality: 0.6) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
@@ -28,14 +26,13 @@ class PetModel {
         let pets = Firestore.firestore().collection("pets")
         let document = pets.document()
         
-        let pet = Pet(
-            petId: document.documentID,
-            petName: name,
-            petGender: gender,
-            birthday: birthday,
-            photo: imageBase64String,
-            groupMembersId: memberId
-        )
+        let pet = Pet()
+        pet.id = document.documentID
+        pet.name = name
+        pet.gender = gender
+        pet.birthday = birthday
+        pet.photo = imageBase64String
+        pet.memberIds = memberIds
         
         do {
             try document.setData(from: pet)
@@ -64,7 +61,7 @@ class PetModel {
     // MARK: Query pets
     // Use pets array of a members data to query pets data that is owned by that member
     func queryPets(ids: [String], completion: @escaping (Result<[Pet], Error>) -> Void) {
-        dataBase.collection("pets").whereField("petId", in: ids).getDocuments { (querySnapshot, error) in
+        dataBase.collection("pets").whereField(FieldPath.documentID(), in: ids).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
                 let pets = querySnapshot.documents.compactMap({ querySnapshot in
@@ -72,9 +69,7 @@ class PetModel {
                 })
                 completion(Result.success(pets))
                 
-            }
-            
-            if let error = error {
+            } else if let error = error {
                 completion(Result.failure(error))
             }
         }
