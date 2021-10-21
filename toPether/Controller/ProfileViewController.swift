@@ -71,7 +71,7 @@ class ProfileViewController: UIViewController {
             editNameButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-        textField = NoBorderTextField(name: memberName)
+        textField = NoBorderTextField(name: self.currentUser.first?.memberName)
         textField.delegate = self
         view.addSubview(textField)
         NSLayoutConstraint.activate([
@@ -178,7 +178,9 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         memberName = textField.text
-        //then update to firebase
+        
+        guard let memberName = memberName, let userId = userInfo.userId else { return }
+        memberModel.update(updatedName: memberName, documentId: userId)
         
         self.view.endEditing(true)
         
