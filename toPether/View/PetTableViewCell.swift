@@ -88,4 +88,30 @@ class PetTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func reload(pet: Pet) {
+        petImageView.image = pet.photoImage
+        nameLabel.text = pet.petName
+        
+        var year: Int?
+        var month: Int?
+        (year, month) = getYearMonth(from: pet.birthday)
+        guard let year = year, let month = month else { return }
+        ageLabel.text = "\(year)y  \(month)m"
+        
+        if pet.petGender == "male" {
+            genderImageView.image = Img.iconsGenderMale.obj
+        } else {
+            genderImageView.image = Img.iconsGenderFemale.obj
+        }
+        
+        memberNumberButton.setTitle("+ \(pet.groupMembersId.count)", for: .normal)
+    }
+    
+    private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示
+        let calendar = Calendar.current
+        let today = Date()
+        let components = calendar.dateComponents([.year, .month], from: birthday, to: today)
+        return (components.year, components.month)
+    }
 }

@@ -109,7 +109,6 @@ class PetCollectionViewCell: UICollectionViewCell {
 
     func reload(pet: Pet, members: [Member]) {
         petImageView.image = pet.photoImage
-        petAge.text = pet.birthday.description
         petName.text = pet.petName
         
         var year: Int?

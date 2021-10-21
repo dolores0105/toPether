@@ -25,7 +25,13 @@ class ProfileViewController: UIViewController {
     var furkidsTitleLabel: MediumLabel!
     var addPetButton: IconButton!
     var petTableView: UITableView!
-    var ownedPets = [String]()
+    
+    let userInfo = UserInfo()
+    var currentUser = [Member]() // should be only one element
+    let petModel = PetModel()
+    var pets = [Pet]()
+    let memberModel = MemberModel()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +50,7 @@ class ProfileViewController: UIViewController {
             navigationBackgroundView.heightAnchor.constraint(equalToConstant: 200)
         ])
         
+        // MARK: UI objects
         nameTitleLabel = MediumLabel(size: 18)
         nameTitleLabel.text = "Name"
         nameTitleLabel.textColor = .white
@@ -111,10 +118,49 @@ class ProfileViewController: UIViewController {
             
         ])
         
-        ownedPets = ["d", "c", "e"] // mock
+        // MARK: Query data
+        userInfo.userId = "xzhcxjKGZGKuX3zGgMid" // mock
+        queryData()
     }
     
     // MARK: functions
+    func queryData() {
+        let semaphore = DispatchSemaphore(value: 1)
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self, let userId = self.userInfo.userId else { return }
+            semaphore.wait()
+            print("----query current user start----")
+            self.memberModel.queryCurrentUser(id: userId) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    guard let self = self else { return }
+                    self.currentUser = user
+                    self.textField.text = self.currentUser.first?.memberName
+                    print("current user info at profile", self.currentUser)
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            
+            semaphore.wait()
+            guard let petIds = self.currentUser.first?.pets else { return }
+            print("----query current user start----")
+            self.petModel.queryPets(ids: petIds) { [weak self] result in
+                switch result {
+                case .success(let pets):
+                    guard let self = self else { return }
+                    self.pets = pets
+                    self.petTableView.reloadData()
+                    print("fetch pets at profile:", self.pets)
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
     @objc func tapQrcode(sender: UIBarButtonItem) {
         
     }
@@ -146,13 +192,14 @@ extension ProfileViewController: UITextFieldDelegate {
 
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ownedPets.count
+        return self.pets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
         guard let cell = cell as? PetTableViewCell else { return cell }
-
+        
+        cell.reload(pet: pets[indexPath.row])
         return cell
     }
 }
@@ -163,8 +210,10 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
             
             print("Delete number", indexPath.row, "pet")
-            self.ownedPets.remove(at: indexPath.row) // delete pet data array
+            self.pets.remove(at: indexPath.row)
             self.petTableView.deleteRows(at: [indexPath], with: .left)
+            // notify delete to firebase
+            
             completionHandler(true)
         }
         

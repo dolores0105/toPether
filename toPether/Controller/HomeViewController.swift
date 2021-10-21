@@ -32,44 +32,9 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         userInfo.userId = "xzhcxjKGZGKuX3zGgMid" // mock
-        guard let userId = self.userInfo.userId else { return }
+//        guard let userId = self.userInfo.userId else { return }
 //        petModel.setPetData(name: "Pon", gender: "male", year: 5, month: 6, photo: Img.iconsDelete.obj, memberId: [userId])
-        let semaphore = DispatchSemaphore(value: 1)
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self, let userId = self.userInfo.userId else { return }
-            semaphore.wait()
-            print("----query current user start----")
-            self.memberModel.queryCurrentUser(id: userId) { [weak self] result in
-                switch result {
-                case .success(let user):
-                    guard let self = self else { return }
-                    self.currentUser = user
-                    print("current user info", self.currentUser)
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                }
-            }
-            print("----query current user end----")
-            
-            semaphore.wait()
-            guard let petIds = self.currentUser.first?.pets else { return }
-            print("ownded pets", petIds)
-            print("----query current user start----")
-            self.petModel.queryPets(ids: petIds) { [weak self] result in
-                switch result {
-                case .success(let pets):
-                    guard let self = self else { return }
-                    self.pets = pets
-                    self.petCollectionView.reloadData()
-                    print("fetch pets:", self.pets)
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                }
-            }
-            print("----query current user end----")
-        }
+        queryData()
         
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
@@ -128,6 +93,45 @@ class HomeViewController: UIViewController {
     // MARK: functions
     @objc private func tapXXXButton(_: BorderButton) {
         // switch
+    }
+    
+    func queryData() {
+        let semaphore = DispatchSemaphore(value: 1)
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self, let userId = self.userInfo.userId else { return }
+            semaphore.wait()
+            print("----query current user start----")
+            self.memberModel.queryCurrentUser(id: userId) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    guard let self = self else { return }
+                    self.currentUser = user
+                    print("current user info", self.currentUser)
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            print("----query current user end----")
+            
+            semaphore.wait()
+            guard let petIds = self.currentUser.first?.pets else { return }
+            print("ownded pets", petIds)
+            print("----query current user start----")
+            self.petModel.queryPets(ids: petIds) { [weak self] result in
+                switch result {
+                case .success(let pets):
+                    guard let self = self else { return }
+                    self.pets = pets
+                    self.petCollectionView.reloadData()
+                    print("fetch pets:", self.pets)
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            print("----query current user end----")
+        }
     }
 }
 
