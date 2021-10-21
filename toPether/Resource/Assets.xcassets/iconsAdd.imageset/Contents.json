@@ -1,16 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iconsMessage@1x.png",
+      "filename" : "iconsAdd@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconsMessage@2x.png",
+      "filename" : "iconsAdd@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "iconsAdd@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

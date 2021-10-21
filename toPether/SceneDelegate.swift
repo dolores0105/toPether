@@ -23,8 +23,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         homeNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsHomeNormal.obj, selectedImage: Img.iconsHomeSelected.obj)
         
+        //ProfilePage
+        let profileViewController = ProfileViewController()
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        profileNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsProfileNormal.obj, selectedImage: Img.iconsProfileSelected.obj)
+        
         let tabBarViewController = UITabBarController()
-        tabBarViewController.setViewControllers([homeNavigationController], animated: false)
+        tabBarViewController.setViewControllers([homeNavigationController, profileNavigationController], animated: false)
         
         window!.backgroundColor = .white
         window?.rootViewController = tabBarViewController

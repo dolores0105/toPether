@@ -19,30 +19,57 @@ class HomeViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
-    let firebaseModel = FirebaseModel()
+
+    let userInfo = UserInfo()
+    let petModel = PetModel()
     var pets = [Pet]()
+    let memberModel = MemberModel()
+    var currentUser = [Member]() // should be only one element
     var members = [Member]()
     var petIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        firebaseModel.setPetData(name: "Lala", gender: "male", year: 3, month: 4, photo: Img.iconsGallery.obj)
-//        firebaseModel.setPetData(name: "Kiki", gender: "male", year: 0, month: 8, photo: Img.iconsGallery.obj)
-//        firebaseModel.setMember()
-//        firebaseModel.setMember()
-        firebaseModel.fetchPetData { [weak self] result in
-            switch result {
-            case .success(let pets):
-                guard let self = self else { return }
-                self.pets = pets
-                self.petCollectionView.reloadData()
-                print("fetch:", self.pets)
-            case .failure(let error):
-                print(error)
-            }
-        }
         
+        userInfo.userId = "xzhcxjKGZGKuX3zGgMid" // mock
+        guard let userId = self.userInfo.userId else { return }
+//        petModel.setPetData(name: "Pon", gender: "male", year: 5, month: 6, photo: Img.iconsDelete.obj, memberId: [userId])
+        let semaphore = DispatchSemaphore(value: 1)
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self, let userId = self.userInfo.userId else { return }
+            semaphore.wait()
+            print("----query current user start----")
+            self.memberModel.queryCurrentUser(id: userId) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    guard let self = self else { return }
+                    self.currentUser = user
+                    print("current user info", self.currentUser)
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            print("----query current user end----")
+            
+            semaphore.wait()
+            guard let petIds = self.currentUser.first?.pets else { return }
+            print("ownded pets", petIds)
+            print("----query current user start----")
+            self.petModel.queryPets(ids: petIds) { [weak self] result in
+                switch result {
+                case .success(let pets):
+                    guard let self = self else { return }
+                    self.pets = pets
+                    self.petCollectionView.reloadData()
+                    print("fetch pets:", self.pets)
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            print("----query current user end----")
+        }
         
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
@@ -78,12 +105,16 @@ class HomeViewController: UIViewController {
         
         view.addSubview(buttonStackView)
         let buttons = [
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsFoodRecords),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsGenderMale),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsFoodRecords),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsMedicalRecords),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]
         buttons.forEach { button in
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: 64),
+                button.widthAnchor.constraint(equalToConstant: 64)
+            ])
             buttonStackView.addArrangedSubview(button)
         }
         
@@ -94,12 +125,10 @@ class HomeViewController: UIViewController {
         ])
     }
     
-    
     // MARK: functions
     @objc private func tapXXXButton(_: BorderButton) {
-        //switch
+        // switch
     }
-     
 }
 
 // MARK: Extension
@@ -117,7 +146,7 @@ extension HomeViewController: UICollectionViewDataSource {
         let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
         guard let petCell = petCell as? PetCollectionViewCell else { return petCell }
         
-        firebaseModel.queryMembers(ids: pets[indexPath.item].groupMembersId) { [weak self] result in
+        memberModel.queryMembers(ids: pets[indexPath.item].groupMembersId) { [weak self] result in
             switch result {
             case .success(let members):
                 guard let self = self else { return }
@@ -128,8 +157,6 @@ extension HomeViewController: UICollectionViewDataSource {
                 print(error)
             }
         }
-        
-        
         
         return petCell
     }

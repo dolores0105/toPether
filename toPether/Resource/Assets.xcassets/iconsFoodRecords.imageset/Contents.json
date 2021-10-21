@@ -1,11 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "iconsFoodRecords@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icons_foodRecords.png",
+      "filename" : "iconsFoodRecords@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

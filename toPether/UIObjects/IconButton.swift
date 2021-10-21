@@ -24,10 +24,5 @@ class IconButton: BorderButton {
         
         setImage(img.obj, for: .normal)
         addTarget(target, action: action, for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 64),
-            widthAnchor.constraint(equalToConstant: 64)
-        ])
     }
 }

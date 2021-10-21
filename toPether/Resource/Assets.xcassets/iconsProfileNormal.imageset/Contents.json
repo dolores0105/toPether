@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "iconsMessage@1x.png",
+      "filename" : "iconsProfileNormal@2x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconsMessage@2x.png",
+      "filename" : "iconsProfileNormal@3x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -18,5 +18,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }
