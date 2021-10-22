@@ -109,11 +109,6 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
-//    func petDataListener() {
-//        PetModel.shared.petIdsListener()
-//        queryData()
-//    }
 }
 
 // MARK: Extension
