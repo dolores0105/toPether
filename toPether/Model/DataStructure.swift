@@ -10,7 +10,11 @@ import FirebaseFirestoreSwift
 import Firebase
 import UIKit
 
-class Pet: Codable {
+protocol BaseObject {
+    var id: String { get set }
+}
+
+class Pet: BaseObject, Codable {
     var id: String = ""
     var name: String = ""
     var gender: String = ""
@@ -23,7 +27,7 @@ class Pet: Codable {
     }
 }
 
-class Member: Codable {
+class Member: BaseObject, Codable {
     var id: String = ""
     var name: String = ""
     var petIds: [String] = []

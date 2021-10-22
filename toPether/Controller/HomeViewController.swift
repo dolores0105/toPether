@@ -20,7 +20,6 @@ class HomeViewController: UIViewController {
         return stackView
     }()
 
-//    let petModel = PetModel()
     var pets = [Pet]()
     var currentUser: Member! = MemberModel.shared.current
     var members = [Member]()
@@ -32,7 +31,9 @@ class HomeViewController: UIViewController {
 //        guard let userId = self.user.userId else { return }
 //        petModel.setPetData(name: "momo", gender: "female", year: 4, month: 6, photo: Img.iconsDelete.obj, memberIds: [])
 //        memberModel.setMember()
+        MemberModel.shared.setMember(name: "Lucy")
         queryData()
+        petDataListener()
         
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
@@ -105,6 +106,11 @@ class HomeViewController: UIViewController {
                 print(error)
             }
         }
+    }
+    
+    func petDataListener() {
+        PetModel.shared.petIdsListener()
+        queryData()
     }
 }
 

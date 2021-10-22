@@ -16,17 +16,16 @@ class MemberModel {
     var current: Member?
     
     // MARK: SetData
-    func setMember() {
+    func setMember(name: String) {
         let members = Firestore.firestore().collection("members")
         let document = members.document()
         
         let member = Member()
         member.id = document.documentID
-        member.name = "Dodo"
-        member.petIds = ["E5ebgGOiKj8uQC7UgLKK", "BfaFAFa8avMTjnUEnuOK"]
+        member.name = name
+        member.petIds = []
         member.qrCode = document.documentID
 
-        
         do {
             try document.setData(from: member)
         } catch {
