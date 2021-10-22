@@ -8,6 +8,10 @@
 import Firebase
 
 class PetModel {
+    
+    private init() {}
+    static let shared = PetModel()
+    
     let dataBase = Firestore.firestore()
     
     // MARK: pet
@@ -41,27 +45,10 @@ class PetModel {
         }
     }
     
-    func fetchPetData(completion: @escaping (Result<[Pet], Error>) -> Void) {
-
-        dataBase.collection("pets").getDocuments { (querySnapshot, error) in
-            if let querySnapshot = querySnapshot {
-                
-                let pets = querySnapshot.documents.compactMap({ querySnapshot in
-                    try? querySnapshot.data(as: Pet.self)
-                })
-                completion(Result.success(pets))
-            }
-            
-            if let error = error {
-                completion(Result.failure(error))
-            }
-        }
-    }
-    
     // MARK: Query pets
-    // Use pets array of a members data to query pets data that is owned by that member
+    // Use petIds array of a members data to query pets data that is owned by that member
     func queryPets(ids: [String], completion: @escaping (Result<[Pet], Error>) -> Void) {
-        dataBase.collection("pets").whereField(FieldPath.documentID(), in: ids).getDocuments { (querySnapshot, error) in
+        dataBase.collection("pets").whereField(FieldPath.documentID(), in: ids).order(by: FieldPath.documentID()).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
                 let pets = querySnapshot.documents.compactMap({ querySnapshot in
@@ -74,4 +61,6 @@ class PetModel {
             }
         }
     }
+    
+    
 }

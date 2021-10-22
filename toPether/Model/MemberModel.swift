@@ -65,38 +65,10 @@ class MemberModel {
     // MARK: update
     func updateCurrentUser() {
         guard let user = current else { return }
-        print(current?.name)
         do {
             try dataBase.collection("members").document(user.id).setData(from: user)
         } catch {
             print(error)
         }
-//        let batch = dataBase.batch()
-//        let member = dataBase.collection("members").document(documentId)
-//        batch.updateData(["memberName": updatedName], forDocument: member)
-//
-//        batch.commit { error in
-//            if let error = error {
-//                print("Error writing batch \(error)")
-//            } else {
-//                print("Update member name succeeded")
-//            }
-//        }
-    }
-    
-    // MARK: delete
-    func deletePet(petId: String) { // 不要這個了
-        guard let id = current?.id else { return }
-//        let batch = dataBase.batch()
-//        let member = dataBase.collection("members").document(documentId)
-//        batch.updateData(["pets": petIds], forDocument: member)
-//
-//        batch.commit { error in
-//            if let error = error {
-//                print("Error writing batch \(error)")
-//            } else {
-//                print("Update deleting pet succeeded")
-//            }
-//        }
     }
 }

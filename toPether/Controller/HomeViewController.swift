@@ -20,7 +20,7 @@ class HomeViewController: UIViewController {
         return stackView
     }()
 
-    let petModel = PetModel()
+//    let petModel = PetModel()
     var pets = [Pet]()
     var currentUser: Member! = MemberModel.shared.current
     var members = [Member]()
@@ -94,7 +94,7 @@ class HomeViewController: UIViewController {
     }
     
     func queryData() {
-        petModel.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             switch result {
             case .success(let pets):
                 guard let self = self else { return }

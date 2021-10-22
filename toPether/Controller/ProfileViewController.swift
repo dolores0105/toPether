@@ -27,7 +27,6 @@ class ProfileViewController: UIViewController {
     var petTableView: UITableView!
     
     var currentUser: Member! = MemberModel.shared.current
-    let petModel = PetModel()
     var pets = [Pet]()
 
     
@@ -70,6 +69,7 @@ class ProfileViewController: UIViewController {
         ])
         
         textField = NoBorderTextField(name: currentUser.name)
+        textField.isEnabled = false
         textField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
         view.addSubview(textField)
         NSLayoutConstraint.activate([
@@ -123,7 +123,7 @@ class ProfileViewController: UIViewController {
     
     // MARK: functions
     func queryData() {
-        petModel.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             switch result {
             case .success(let pets):
                 guard let self = self else { return }
@@ -180,12 +180,12 @@ extension ProfileViewController: UITableViewDelegate {
 
             self.currentUser.petIds.remove(at: indexPath.row)
             self.pets.remove(at: indexPath.row)
-            print("self.pets", self.pets)
+            print("self.currentUser.petIds", self.currentUser.petIds)
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .left)
             tableView.endUpdates()
             
-            MemberModel.shared.updateCurrentUser()
+            MemberModel.shared.updateCurrentUser() // update deleted petIds
             
             completionHandler(true)
         }
