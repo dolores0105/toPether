@@ -13,7 +13,6 @@ class PetModel {
     static let shared = PetModel()
     
     let dataBase = Firestore.firestore()
-    var current: Member?
     
     // MARK: pet
     func getBirthday(year: Int, month: Int) -> Date? { // 當使用者選完了寵物的年月，用這個去得到生日，記在Pet裡
@@ -59,27 +58,6 @@ class PetModel {
                 
             } else if let error = error {
                 completion(Result.failure(error))
-            }
-        }
-    }
-    
-    func petIdsListener() {
-        guard let user = current else { return }
-        dataBase.collection("members").whereField("id", isEqualTo: user.id).addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                print("Error fetching snapshots: \(error!)")
-                return
-            }
-            snapshot.documentChanges.forEach { diff in
-                if (diff.type == .added) {
-                    print("New pet: \(diff.document.data())")
-                }
-                if (diff.type == .modified) {
-                    print("Modified pet: \(diff.document.data())")
-                }
-                if (diff.type == .removed) {
-                    print("Removed pet: \(diff.document.data())")
-                }
             }
         }
     }

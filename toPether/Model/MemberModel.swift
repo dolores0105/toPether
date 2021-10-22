@@ -70,4 +70,15 @@ class MemberModel {
             print(error)
         }
     }
+    
+    func addUserListener(completion: @escaping (Result<Member, Error>) -> Void) {
+        guard let user = current else { return }
+        dataBase.collection("members").document(user.id).addSnapshotListener { documentSnapshot, error in
+            if let member = try? documentSnapshot?.data(as: Member.self) {
+                completion(.success(member))
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
 }

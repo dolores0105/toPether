@@ -33,7 +33,9 @@ class HomeViewController: UIViewController {
 //        memberModel.setMember()
         MemberModel.shared.setMember(name: "Lucy")
         queryData()
-        petDataListener()
+        MemberModel.shared.addUserListener { [weak self] _ in
+            self?.queryData()
+        }
         
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
@@ -108,10 +110,10 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func petDataListener() {
-        PetModel.shared.petIdsListener()
-        queryData()
-    }
+//    func petDataListener() {
+//        PetModel.shared.petIdsListener()
+//        queryData()
+//    }
 }
 
 // MARK: Extension
