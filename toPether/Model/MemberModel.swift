@@ -13,7 +13,7 @@ class MemberModel {
     static let shared = MemberModel()
     
     let dataBase = Firestore.firestore()
-    var current: Member?
+    var current: Member? // set value at splash page
     
     // MARK: SetData
     func setMember(name: String) {

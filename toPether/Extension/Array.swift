@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension Array where Element: BaseObject {
+extension Array where Element: BaseObject { // make array sorted by ids
     func sorted(by ids: [String]) -> [Element] {
         var items = [Element]()
         for id in ids {

@@ -20,7 +20,7 @@
 		390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AF271FFB8900B4735B /* ProfileViewController.swift */; };
 		390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */; };
 		390791B62720138200B4735B /* NoBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B52720138200B4735B /* NoBorderTextField.swift */; };
-		394A77192721D65700978254 /* AutoLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* AutoLoginVC.swift */; };
+		394A77192721D65700978254 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashVC.swift */; };
 		394A771B2722990B00978254 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* Array.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
@@ -50,7 +50,7 @@
 		390791AF271FFB8900B4735B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBackgroundView.swift; sourceTree = "<group>"; };
 		390791B52720138200B4735B /* NoBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBorderTextField.swift; sourceTree = "<group>"; };
-		394A77182721D65700978254 /* AutoLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLoginVC.swift; sourceTree = "<group>"; };
+		394A77182721D65700978254 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 			children = (
 				39EDD1A3271D126800B4DAFA /* HomeViewController.swift */,
 				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
-				394A77182721D65700978254 /* AutoLoginVC.swift */,
+				394A77182721D65700978254 /* SplashVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -344,7 +344,7 @@
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
-				394A77192721D65700978254 /* AutoLoginVC.swift in Sources */,
+				394A77192721D65700978254 /* SplashVC.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
 				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFont.swift in Sources */,

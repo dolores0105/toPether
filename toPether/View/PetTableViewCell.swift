@@ -106,6 +106,8 @@ class PetTableViewCell: UITableViewCell {
         }
         
         memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
+        
+        //add pet listener
     }
     
     private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示

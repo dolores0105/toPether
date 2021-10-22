@@ -7,6 +7,8 @@
 // swiftlint:disable function_body_length
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class PetCollectionViewCell: UICollectionViewCell {
 
@@ -125,7 +127,17 @@ class PetCollectionViewCell: UICollectionViewCell {
 
         memberStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         updateMembers(members)
+        
+        // remove instance listener, Stop listening to changes
+        // add pet listener
+        
+//        listener.remove()
+//        listener = db.collection("pets").addSnapshotListener { querySnapshot, error in
+//
+//        }
     }
+    
+    private var listener: ListenerRegistration?
     
     private func updateMembers(_ members: [Member]) {
         members.forEach { member in
