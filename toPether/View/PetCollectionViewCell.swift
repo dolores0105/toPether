@@ -7,6 +7,8 @@
 // swiftlint:disable function_body_length
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class PetCollectionViewCell: UICollectionViewCell {
 
@@ -109,8 +111,7 @@ class PetCollectionViewCell: UICollectionViewCell {
 
     func reload(pet: Pet, members: [Member]) {
         petImageView.image = pet.photoImage
-        petAge.text = pet.birthday.description
-        petName.text = pet.petName
+        petName.text = pet.name
         
         var year: Int?
         var month: Int?
@@ -118,7 +119,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         guard let year = year, let month = month else { return }
         petAge.text = "\(year)y  \(month)m"
         
-        if pet.petGender == "male" {
+        if pet.gender == "male" {
             genderImageView.image = Img.iconsGenderMale.obj
         } else {
             genderImageView.image = Img.iconsGenderFemale.obj
@@ -126,11 +127,21 @@ class PetCollectionViewCell: UICollectionViewCell {
 
         memberStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         updateMembers(members)
+        
+        // remove instance listener, Stop listening to changes
+        // add pet listener
+        
+//        listener.remove()
+//        listener = db.collection("pets").addSnapshotListener { querySnapshot, error in
+//
+//        }
     }
+    
+    private var listener: ListenerRegistration?
     
     private func updateMembers(_ members: [Member]) {
         members.forEach { member in
-            circleButton = CircleButton(name: member.memberName.first?.description ?? "")
+            circleButton = CircleButton(name: member.name.first?.description ?? "")
             memberStackView.addArrangedSubview(circleButton)
         }
         memberStackView.addArrangedSubview(addMemberButton)

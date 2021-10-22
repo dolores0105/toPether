@@ -25,7 +25,10 @@ class ProfileViewController: UIViewController {
     var furkidsTitleLabel: MediumLabel!
     var addPetButton: IconButton!
     var petTableView: UITableView!
-    var ownedPets = [String]()
+    
+    var currentUser: Member! = MemberModel.shared.current
+    var pets = [Pet]()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +47,7 @@ class ProfileViewController: UIViewController {
             navigationBackgroundView.heightAnchor.constraint(equalToConstant: 200)
         ])
         
+        // MARK: UI objects
         nameTitleLabel = MediumLabel(size: 18)
         nameTitleLabel.text = "Name"
         nameTitleLabel.textColor = .white
@@ -64,8 +68,9 @@ class ProfileViewController: UIViewController {
             editNameButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-        textField = NoBorderTextField(name: memberName)
-        textField.delegate = self
+        textField = NoBorderTextField(name: currentUser.name)
+        textField.isEnabled = false
+        textField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
         view.addSubview(textField)
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: nameTitleLabel.bottomAnchor, constant: 8),
@@ -111,10 +116,26 @@ class ProfileViewController: UIViewController {
             
         ])
         
-        ownedPets = ["d", "c", "e"] // mock
+        // MARK: Query data
+        textField.text = currentUser.name
+        queryData()
     }
     
     // MARK: functions
+    func queryData() {
+        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+            switch result {
+            case .success(let pets):
+                guard let self = self else { return }
+                self.pets = pets
+                self.petTableView.reloadData()
+                print("fetch pets at profile:", self.pets)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     @objc func tapQrcode(sender: UIBarButtonItem) {
         
     }
@@ -124,35 +145,29 @@ class ProfileViewController: UIViewController {
         textField.becomeFirstResponder()
     }
     
+    @objc private func nameEndEditing(_ textField: UITextField) {
+        print(textField.text)
+        currentUser.name = textField.text ?? currentUser.name
+        MemberModel.shared.updateCurrentUser()
+        textField.isEnabled = !textField.hasText
+        view.endEditing(true)
+    }
+    
     @objc func tapAddPet(sender: UIButton) {
         
     }
 }
 
-extension ProfileViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        memberName = textField.text
-        //then update to firebase
-        
-        self.view.endEditing(true)
-        
-        if textField.hasText {
-            textField.isEnabled = false
-        } else {
-            textField.isEnabled = true
-        }
-    }
-}
-
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ownedPets.count
+        return pets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
         guard let cell = cell as? PetTableViewCell else { return cell }
-
+        
+        cell.reload(pet: pets[indexPath.row])
         return cell
     }
 }
@@ -160,11 +175,18 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+
+            self.currentUser.petIds.remove(at: indexPath.row)
+            self.pets.remove(at: indexPath.row)
+            print("self.currentUser.petIds", self.currentUser.petIds)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .left)
+            tableView.endUpdates()
             
-            print("Delete number", indexPath.row, "pet")
-            self.ownedPets.remove(at: indexPath.row) // delete pet data array
-            self.petTableView.deleteRows(at: [indexPath], with: .left)
+            MemberModel.shared.updateCurrentUser() // update deleted petIds
+            
             completionHandler(true)
         }
         

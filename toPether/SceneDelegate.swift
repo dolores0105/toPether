@@ -17,22 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        
-        //HomePage
-        let homeViewController = HomeViewController()
-        let homeNavigationController = UINavigationController(rootViewController: homeViewController)
-        homeNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsHomeNormal.obj, selectedImage: Img.iconsHomeSelected.obj)
-        
-        //ProfilePage
-        let profileViewController = ProfileViewController()
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-        profileNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsProfileNormal.obj, selectedImage: Img.iconsProfileSelected.obj)
-        
-        let tabBarViewController = UITabBarController()
-        tabBarViewController.setViewControllers([homeNavigationController, profileNavigationController], animated: false)
-        
         window!.backgroundColor = .white
-        window?.rootViewController = tabBarViewController
+        window?.rootViewController = SplashVC()
         window?.makeKeyAndVisible()
     }
 

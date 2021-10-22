@@ -20,55 +20,21 @@ class HomeViewController: UIViewController {
         return stackView
     }()
 
-    let userInfo = UserInfo()
-    let petModel = PetModel()
     var pets = [Pet]()
-    let memberModel = MemberModel()
-    var currentUser = [Member]() // should be only one element
+    var currentUser: Member! = MemberModel.shared.current
     var members = [Member]()
     var petIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userInfo.userId = "xzhcxjKGZGKuX3zGgMid" // mock
-        guard let userId = self.userInfo.userId else { return }
-//        petModel.setPetData(name: "Pon", gender: "male", year: 5, month: 6, photo: Img.iconsDelete.obj, memberId: [userId])
-        let semaphore = DispatchSemaphore(value: 1)
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self, let userId = self.userInfo.userId else { return }
-            semaphore.wait()
-            print("----query current user start----")
-            self.memberModel.queryCurrentUser(id: userId) { [weak self] result in
-                switch result {
-                case .success(let user):
-                    guard let self = self else { return }
-                    self.currentUser = user
-                    print("current user info", self.currentUser)
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                }
-            }
-            print("----query current user end----")
-            
-            semaphore.wait()
-            guard let petIds = self.currentUser.first?.pets else { return }
-            print("ownded pets", petIds)
-            print("----query current user start----")
-            self.petModel.queryPets(ids: petIds) { [weak self] result in
-                switch result {
-                case .success(let pets):
-                    guard let self = self else { return }
-                    self.pets = pets
-                    self.petCollectionView.reloadData()
-                    print("fetch pets:", self.pets)
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                }
-            }
-            print("----query current user end----")
+//        guard let userId = self.user.userId else { return }
+//        petModel.setPetData(name: "momo", gender: "female", year: 4, month: 6, photo: Img.iconsDelete.obj, memberIds: [])
+//        memberModel.setMember()
+        MemberModel.shared.setMember(name: "Lucy")
+        queryData()
+        MemberModel.shared.addUserListener { [weak self] _ in
+            self?.queryData()
         }
         
         // MARK: Navigation controller
@@ -129,6 +95,25 @@ class HomeViewController: UIViewController {
     @objc private func tapXXXButton(_: BorderButton) {
         // switch
     }
+    
+    func queryData() {
+        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+            switch result {
+            case .success(let pets):
+                guard let self = self else { return }
+                self.pets = pets
+                self.petCollectionView.reloadData()
+                print("fetch pets:", self.pets)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+//    func petDataListener() {
+//        PetModel.shared.petIdsListener()
+//        queryData()
+//    }
 }
 
 // MARK: Extension
@@ -146,15 +131,17 @@ extension HomeViewController: UICollectionViewDataSource {
         let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
         guard let petCell = petCell as? PetCollectionViewCell else { return petCell }
         
-        memberModel.queryMembers(ids: pets[indexPath.item].groupMembersId) { [weak self] result in
-            switch result {
-            case .success(let members):
-                guard let self = self else { return }
-                self.members = members
-                print("fetch members:", self.members)
-                petCell.reload(pet: self.pets[indexPath.item], members: members)
-            case .failure(let error):
-                print(error)
+        if case let memberIds = pets[indexPath.item].memberIds, !memberIds.isEmpty {
+            MemberModel.shared.queryMembers(ids: memberIds) { [weak self] result in
+                switch result {
+                case .success(let members):
+                    guard let self = self else { return }
+                    self.members = members
+                    print("fetch members:", self.members)
+                    petCell.reload(pet: self.pets[indexPath.item], members: members)
+                case .failure(let error):
+                    print(error)
+                }
             }
         }
         
