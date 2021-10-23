@@ -22,7 +22,7 @@ class PetModel {
     }
 
     func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String]) {
-        guard let jpegData06 = photo.jpegData(compressionQuality: 0.6) else { return }
+        guard let jpegData06 = photo.jpegData(compressionQuality: 0.5) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
         guard let birthday = getBirthday(year: year, month: month) else { return }
@@ -40,7 +40,7 @@ class PetModel {
         
         do {
             try document.setData(from: pet)
-            print("Create a pet succee")
+            print(pet)
         } catch let error {
             print("set pet data error:", error)
         }

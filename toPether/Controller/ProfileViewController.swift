@@ -35,6 +35,8 @@ class ProfileViewController: UIViewController {
         self.navigationItem.title = "Profile"
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
+        
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidLoad() {
@@ -46,7 +48,7 @@ class ProfileViewController: UIViewController {
             navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 200)
+            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 250)
         ])
         
         // MARK: UI objects
