@@ -103,6 +103,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         
         addMemberButton = CircleButton(name: "")
         addMemberButton.backgroundColor = .mainYellow
+        addMemberButton.setImage(Img.iconsAddWhite.obj, for: .normal)
     }
     
     required init?(coder: NSCoder) {
@@ -142,8 +143,18 @@ class PetCollectionViewCell: UICollectionViewCell {
     private func updateMembers(_ members: [Member]) {
         members.forEach { member in
             circleButton = CircleButton(name: member.name.first?.description ?? "")
+            circleButton.layer.cornerRadius = 28 / 2
+            NSLayoutConstraint.activate([
+                circleButton.heightAnchor.constraint(equalToConstant: 28),
+                circleButton.widthAnchor.constraint(equalToConstant: 28)
+            ])
             memberStackView.addArrangedSubview(circleButton)
         }
+        addMemberButton.layer.cornerRadius = 28 / 2
+        NSLayoutConstraint.activate([
+            addMemberButton.heightAnchor.constraint(equalToConstant: 28),
+            addMemberButton.widthAnchor.constraint(equalToConstant: 28)
+        ])
         memberStackView.addArrangedSubview(addMemberButton)
     }
     

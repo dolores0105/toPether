@@ -96,8 +96,8 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             addPetButton.centerYAnchor.constraint(equalTo: furkidsTitleLabel.centerYAnchor),
             addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            addPetButton.widthAnchor.constraint(equalToConstant: 66),
-            addPetButton.heightAnchor.constraint(equalToConstant: 66)
+            addPetButton.widthAnchor.constraint(equalToConstant: 50),
+            addPetButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         petTableView = UITableView()
