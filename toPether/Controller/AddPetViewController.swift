@@ -25,10 +25,9 @@ class AddPetViewController: UIViewController {
     var ageTitleLabel: MediumLabel!
     let agePickerView = UIPickerView()
     var ageTextField: BlueBorderTextField!
+    var okButton: RoundButton!
     
     let genders = ["male", "female"]
-//    let years = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
-//    let months = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     let years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     var selectedGender: String?
@@ -140,6 +139,15 @@ class AddPetViewController: UIViewController {
             ageTextField.leadingAnchor.constraint(equalTo: ageTitleLabel.leadingAnchor),
             ageTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
+        
+        okButton = RoundButton(text: "OK", size: 18)
+        okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
+        view.addSubview(okButton)
+        NSLayoutConstraint.activate([
+            okButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            okButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32)
+        ])
     }
 
     // MARK: functions
@@ -147,6 +155,9 @@ class AddPetViewController: UIViewController {
         
     }
     
+    @objc func tapOK(sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension AddPetViewController: UIPickerViewDelegate {

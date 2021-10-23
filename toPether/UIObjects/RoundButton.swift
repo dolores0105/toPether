@@ -9,16 +9,17 @@ import UIKit
 
 class RoundButton: UIButton {
     
-    convenience init(text: String?) {
+    convenience init(text: String?, size: CGFloat) {
         self.init()
         setTitle(text, for: .normal)
-        setTitleColor(.deepBlueGrey, for: .normal) // normal status
-        backgroundColor = .lightBlueGrey // normal status
+        setTitleColor(.mainBlue, for: .normal)
+        titleLabel?.font = UIFont.medium(size: size)
+        backgroundColor = .mainYellow
         layer.cornerRadius = 10
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 28)
+            heightAnchor.constraint(equalToConstant: 48)
         ])
     }
     
