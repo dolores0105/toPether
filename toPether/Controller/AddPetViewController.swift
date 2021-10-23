@@ -13,7 +13,6 @@ class AddPetViewController: UIViewController {
         self.currentUser = currentUser
     }
     private var currentUser: Member!
-    private var memberIds = [String]()
     
     private var petImageView: RoundCornerImageView!
     private var uploadImageView: UIImageView!
@@ -26,6 +25,8 @@ class AddPetViewController: UIViewController {
     private var ageTitleLabel: MediumLabel!
     private let agePickerView = UIPickerView()
     private var ageTextField: BlueBorderTextField!
+    private var okButton: RoundButton!
+    
     private let genders = ["male", "female"]
     private let years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     private let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -90,6 +91,7 @@ class AddPetViewController: UIViewController {
         ])
         
         nameTextField = BlueBorderTextField(text: nil)
+        nameTextField.delegate = self
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
             nameTextField.topAnchor.constraint(equalTo: nameTitleLabel.bottomAnchor, constant: 8),
@@ -113,6 +115,7 @@ class AddPetViewController: UIViewController {
         
         genderTextField = BlueBorderTextField(text: nil)
         genderTextField.inputView = genderPickerView
+        genderTextField.delegate = self
         view.addSubview(genderTextField)
         NSLayoutConstraint.activate([
             genderTextField.topAnchor.constraint(equalTo: genderTitleLabel.bottomAnchor, constant: 8),
@@ -136,6 +139,7 @@ class AddPetViewController: UIViewController {
         
         ageTextField = BlueBorderTextField(text: nil)
         ageTextField.inputView = agePickerView
+        ageTextField.delegate = self
         view.addSubview(ageTextField)
         NSLayoutConstraint.activate([
             ageTextField.topAnchor.constraint(equalTo: ageTitleLabel.bottomAnchor, constant: 8),
@@ -144,6 +148,8 @@ class AddPetViewController: UIViewController {
         ])
         
         okButton = RoundButton(text: "OK", size: 18)
+        okButton.isEnabled = false
+        okButton.backgroundColor = .lightBlueGrey
         okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
         view.addSubview(okButton)
         NSLayoutConstraint.activate([
@@ -163,6 +169,7 @@ class AddPetViewController: UIViewController {
     }
     
     @objc func tapOK(sender: UIButton) {
+        var memberIds = [String]()
         memberIds.append(currentUser.id)
         PetModel.shared.setPetData(
             name: nameTextField.text ?? "no value",
@@ -190,6 +197,19 @@ extension AddPetViewController: UIImagePickerControllerDelegate {
 
 extension AddPetViewController: UINavigationControllerDelegate {
     
+}
+
+
+extension AddPetViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if petImageView.image != nil && nameTextField.text != nil && genderTextField.text != nil && ageTextField.text != nil {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
+    }
 }
 
 
