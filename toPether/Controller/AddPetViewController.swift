@@ -13,26 +13,25 @@ class AddPetViewController: UIViewController {
         self.currentUser = currentUser
     }
     private var currentUser: Member!
+    private var memberIds = [String]()
     
-    var petImageView: RoundCornerImageView!
-    var uploadImageView: UIImageView!
-    var uploadImageButton: UIButton!
-    var nameTitleLabel: MediumLabel!
-    var nameTextField: BlueBorderTextField!
-    var genderTitleLabel: MediumLabel!
-    let genderPickerView = UIPickerView()
-    var genderTextField: BlueBorderTextField!
-    var ageTitleLabel: MediumLabel!
-    let agePickerView = UIPickerView()
-    var ageTextField: BlueBorderTextField!
-    var okButton: RoundButton!
-    
-    let genders = ["male", "female"]
-    let years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    var selectedGender: String?
-    var selectedYear: Int?
-    var selectedMonth: Int?
+    private var petImageView: RoundCornerImageView!
+    private var uploadImageView: UIImageView!
+    private var selectImageButton: UIButton!
+    private var nameTitleLabel: MediumLabel!
+    private var nameTextField: BlueBorderTextField!
+    private var genderTitleLabel: MediumLabel!
+    private let genderPickerView = UIPickerView()
+    private var genderTextField: BlueBorderTextField!
+    private var ageTitleLabel: MediumLabel!
+    private let agePickerView = UIPickerView()
+    private var ageTextField: BlueBorderTextField!
+    private let genders = ["male", "female"]
+    private let years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    private let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    private var selectedGender: String?
+    private var selectedYear: Int?
+    private var selectedMonth: Int?
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
@@ -67,16 +66,16 @@ class AddPetViewController: UIViewController {
             uploadImageView.heightAnchor.constraint(equalToConstant: 24)
         ])
         
-        uploadImageButton = BorderButton()
-        uploadImageButton.addTarget(self, action: #selector(tapUploadImg), for: .touchUpInside)
-        uploadImageButton.backgroundColor = .clear
-        uploadImageButton.layer.borderWidth = 0
-        view.addSubview(uploadImageButton)
+        selectImageButton = BorderButton()
+        selectImageButton.addTarget(self, action: #selector(tapSelectImg), for: .touchUpInside)
+        selectImageButton.backgroundColor = .clear
+        selectImageButton.layer.borderWidth = 0
+        view.addSubview(selectImageButton)
         NSLayoutConstraint.activate([
-            uploadImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            uploadImageButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            uploadImageButton.heightAnchor.constraint(equalToConstant: 80),
-            uploadImageButton.widthAnchor.constraint(equalTo: uploadImageButton.heightAnchor)
+            selectImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            selectImageButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            selectImageButton.heightAnchor.constraint(equalToConstant: 80),
+            selectImageButton.widthAnchor.constraint(equalTo: selectImageButton.heightAnchor)
         ])
         
         
@@ -85,7 +84,7 @@ class AddPetViewController: UIViewController {
         nameTitleLabel.text = "Name"
         view.addSubview(nameTitleLabel)
         NSLayoutConstraint.activate([
-            nameTitleLabel.topAnchor.constraint(equalTo: uploadImageButton.bottomAnchor, constant: 32),
+            nameTitleLabel.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 32),
             nameTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             nameTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -155,14 +154,44 @@ class AddPetViewController: UIViewController {
     }
 
     // MARK: functions
-    @objc func tapUploadImg(sender: UIButton) {
-        
+    @objc func tapSelectImg(sender: UIButton) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.modalPresentationStyle = .popover
+        imagePickerController.delegate = self
+        self.present(imagePickerController, animated: true, completion: {})
     }
     
     @objc func tapOK(sender: UIButton) {
+        memberIds.append(currentUser.id)
+        PetModel.shared.setPetData(
+            name: nameTextField.text ?? "no value",
+            gender: genderTextField.text ?? "male",
+            year: selectedYear ?? 0,
+            month: selectedMonth ?? 0,
+            photo: petImageView.image ?? Img.iconsEdit.obj,
+            memberIds: memberIds
+        )
         navigationController?.popViewController(animated: true)
     }
 }
+
+// MARK: Extension
+extension AddPetViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        guard let image = info[.originalImage] as? UIImage else { return }
+        petImageView.image = image
+        
+        picker.dismiss(animated: true, completion: nil)
+        uploadImageView.isHidden = true
+    }
+}
+
+extension AddPetViewController: UINavigationControllerDelegate {
+    
+}
+
 
 extension AddPetViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {

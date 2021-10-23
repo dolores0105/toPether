@@ -31,7 +31,7 @@ class HomeViewController: UIViewController {
 //        guard let userId = self.user.userId else { return }
 //        petModel.setPetData(name: "momo", gender: "female", year: 4, month: 6, photo: Img.iconsDelete.obj, memberIds: [])
 //        memberModel.setMember()
-        MemberModel.shared.setMember(name: "Lucy")
+//        MemberModel.shared.setMember(name: "Lucy")
         queryData()
         MemberModel.shared.addUserListener { [weak self] _ in
             self?.queryData()
