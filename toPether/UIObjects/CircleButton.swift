@@ -16,12 +16,6 @@ class CircleButton: UIButton {
         backgroundColor = .white
         layer.borderWidth = 1
         layer.borderColor = UIColor.deepBlueGrey.cgColor
-        layer.cornerRadius = 28 / 2
         translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 28),
-            widthAnchor.constraint(equalToConstant: 28)
-        ])
     }
 }

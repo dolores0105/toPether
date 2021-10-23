@@ -30,13 +30,15 @@ class ProfileViewController: UIViewController {
     var pets = [Pet]()
 
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Profile"
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
@@ -94,8 +96,8 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             addPetButton.centerYAnchor.constraint(equalTo: furkidsTitleLabel.centerYAnchor),
             addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            addPetButton.widthAnchor.constraint(equalToConstant: 66),
-            addPetButton.heightAnchor.constraint(equalToConstant: 66)
+            addPetButton.widthAnchor.constraint(equalToConstant: 50),
+            addPetButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         petTableView = UITableView()
@@ -146,7 +148,6 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func nameEndEditing(_ textField: UITextField) {
-        print(textField.text)
         currentUser.name = textField.text ?? currentUser.name
         MemberModel.shared.updateCurrentUser()
         textField.isEnabled = !textField.hasText
@@ -154,7 +155,8 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapAddPet(sender: UIButton) {
-        
+        let addPetViewController = AddPetViewController(currentUser: currentUser)
+        self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
 

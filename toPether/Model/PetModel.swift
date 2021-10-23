@@ -40,6 +40,7 @@ class PetModel {
         
         do {
             try document.setData(from: pet)
+            print("Create a pet succee")
         } catch let error {
             print("set pet data error:", error)
         }
