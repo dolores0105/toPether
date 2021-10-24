@@ -9,7 +9,7 @@ import UIKit
 
 class PetTableViewCell: UITableViewCell {
     
-    private var borderButton: BorderButton!
+    private var borderView: UIView!
     private var petImageView: RoundCornerImageView!
     private var nameLabel: MediumLabel!
     private var genderImageView: RoundCornerImageView!
@@ -19,23 +19,27 @@ class PetTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        borderButton = BorderButton()
-        contentView.addSubview(borderButton)
+        borderView = UIView()
+        borderView.layer.borderWidth = 1
+        borderView.layer.borderColor = UIColor.mainBlue.cgColor
+        borderView.layer.cornerRadius = 10
+        borderView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(borderView)
         NSLayoutConstraint.activate([
-            borderButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            borderButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            borderButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            borderButton.heightAnchor.constraint(equalToConstant: 64),
-            borderButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            borderView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            borderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            borderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            borderView.heightAnchor.constraint(equalToConstant: 64),
+            borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         
         petImageView = RoundCornerImageView(img: nil)
         petImageView.backgroundColor = .gray //mock
         contentView.addSubview(petImageView)
         NSLayoutConstraint.activate([
-            petImageView.bottomAnchor.constraint(equalTo: borderButton.bottomAnchor, constant: -12),
-            petImageView.topAnchor.constraint(equalTo: borderButton.topAnchor, constant: 12),
-            petImageView.leadingAnchor.constraint(equalTo: borderButton.leadingAnchor, constant: 12),
+            petImageView.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -12),
+            petImageView.topAnchor.constraint(equalTo: borderView.topAnchor, constant: 12),
+            petImageView.leadingAnchor.constraint(equalTo: borderView.leadingAnchor, constant: 12),
             petImageView.widthAnchor.constraint(equalTo: petImageView.heightAnchor)
         ])
         
@@ -46,7 +50,7 @@ class PetTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: petImageView.topAnchor, constant: -6),
             nameLabel.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 16),
-            nameLabel.trailingAnchor.constraint(equalTo: borderButton.trailingAnchor, constant: -16)
+            nameLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16)
         ])
         
         genderImageView = RoundCornerImageView(img: Img.iconsGenderFemale.obj)
@@ -78,7 +82,7 @@ class PetTableViewCell: UITableViewCell {
         contentView.addSubview(memberNumberButton)
         NSLayoutConstraint.activate([
             memberNumberButton.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),
-            memberNumberButton.trailingAnchor.constraint(equalTo: borderButton.trailingAnchor, constant: -16),
+            memberNumberButton.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16),
             memberNumberButton.widthAnchor.constraint(equalToConstant: 50),
             memberNumberButton.heightAnchor.constraint(equalToConstant: 20)
         ])

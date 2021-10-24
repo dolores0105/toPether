@@ -8,11 +8,13 @@
 import UIKit
 
 class AddPetViewController: UIViewController {
-    convenience init(currentUser: Member) {
+    convenience init(currentUser: Member, selectedPet: Pet?) {
         self.init()
         self.currentUser = currentUser
+        self.selectedPet = selectedPet
     }
     private var currentUser: Member!
+    private var selectedPet: Pet?
     
     private var petImageView: RoundCornerImageView!
     private var uploadImageView: UIImageView!

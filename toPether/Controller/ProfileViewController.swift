@@ -107,7 +107,7 @@ class ProfileViewController: UIViewController {
         petTableView.separatorColor = .clear
         petTableView.estimatedRowHeight = 100
         petTableView.rowHeight = UITableView.automaticDimension
-        petTableView.allowsSelection = false
+        petTableView.allowsSelection = true
         petTableView.delegate = self
         petTableView.dataSource = self
         petTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -160,7 +160,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapAddPet(sender: UIButton) {
-        let addPetViewController = AddPetViewController(currentUser: currentUser)
+        let addPetViewController = AddPetViewController(currentUser: currentUser, selectedPet: nil)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
@@ -176,6 +176,12 @@ extension ProfileViewController: UITableViewDataSource {
         
         cell.reload(pet: pets[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPet = pets[indexPath.row]
+        let editPetViewController = AddPetViewController(currentUser: currentUser, selectedPet: selectedPet)
+        self.navigationController?.pushViewController(editPetViewController, animated: true)
     }
 }
 
