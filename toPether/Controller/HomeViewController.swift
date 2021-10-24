@@ -29,7 +29,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
 //        guard let userId = self.user.userId else { return }
-//        petModel.setPetData(name: "momo", gender: "female", year: 4, month: 6, photo: Img.iconsDelete.obj, memberIds: [])
 //        memberModel.setMember()
 //        MemberModel.shared.setMember(name: "Lucy")
         queryData()

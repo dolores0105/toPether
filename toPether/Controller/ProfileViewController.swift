@@ -123,6 +123,9 @@ class ProfileViewController: UIViewController {
         // MARK: Query data
         textField.text = currentUser.name
         queryData()
+        MemberModel.shared.addUserListener { [weak self] _ in
+            self?.queryData()
+        }
     }
     
     // MARK: functions
