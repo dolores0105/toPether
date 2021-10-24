@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class PetTableViewCell: UITableViewCell {
     
@@ -15,6 +17,8 @@ class PetTableViewCell: UITableViewCell {
     private var genderImageView: RoundCornerImageView!
     private var ageLabel: RegularLabel!
     private var memberNumberButton: UIButton!
+    
+    private var listener: ListenerRegistration?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -90,6 +94,12 @@ class PetTableViewCell: UITableViewCell {
     }
     
     func reload(pet: Pet) {
+        updateCell(pet: pet)
+        
+        addListener(pet: pet)
+    }
+    
+    func updateCell(pet: Pet) {
         petImageView.image = pet.photoImage
         nameLabel.text = pet.name
         
@@ -106,8 +116,22 @@ class PetTableViewCell: UITableViewCell {
         }
         
         memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
-        
-        //add pet listener
+    }
+    
+    func addListener(pet: Pet) {
+            listener?.remove() // remove instance listener, Stop listening to changes
+        // add pet listener
+            listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let pet):
+                    self.updateCell(pet: pet)
+
+                case .failure(let error):
+                    print("addListener error", error)
+                }
+                
+            })
     }
     
     private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示

@@ -146,7 +146,7 @@ class PetCollectionViewCell: UICollectionViewCell {
                 switch result {
                 case .success(let pet):
                     self.updateCell(pet: pet, members: members)
-                    print("reload collection cell")
+
                 case .failure(let error):
                     print("addListener error", error)
                 }
