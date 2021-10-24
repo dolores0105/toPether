@@ -12,7 +12,6 @@ import FirebaseFirestore
 
 class PetCollectionViewCell: UICollectionViewCell {
 
-    
     private var petImageView: UIImageView!
     
     private var petInfoButton: BorderButton!
@@ -32,6 +31,9 @@ class PetCollectionViewCell: UICollectionViewCell {
     
     private var circleButton: CircleButton!
     private var addMemberButton: CircleButton!
+    
+    private var listener: ListenerRegistration?
+    private var lastpet: Pet?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -111,6 +113,12 @@ class PetCollectionViewCell: UICollectionViewCell {
     }
 
     func reload(pet: Pet, members: [Member]) {
+        updateCell(pet: pet, members: members)
+        
+        addListener(pet: pet, members: members)
+    }
+    
+    func updateCell(pet: Pet, members: [Member]) {
         petImageView.image = pet.photoImage
         petName.text = pet.name
         
@@ -128,21 +136,22 @@ class PetCollectionViewCell: UICollectionViewCell {
 
         memberStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         updateMembers(members)
-        
-        // remove instance listener, Stop listening to changes
-        // add pet listener
-        
-//        listener.remove()
-//        listener = db.collection("pets").addSnapshotListener { querySnapshot, error in
-//
-//        }
     }
     
-    private var listener: ListenerRegistration?
     func addListener(pet: Pet, members: [Member]) {
-        listener?.remove()
-        self.reload(pet: pet, members: members)
-        print("add pet listener")
+            listener?.remove() // remove instance listener, Stop listening to changes
+        // add pet listener
+            listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let pet):
+                    self.updateCell(pet: pet, members: members)
+                    print("reload collection cell")
+                case .failure(let error):
+                    print("addListener error", error)
+                }
+                
+            })
     }
     
     private func updateMembers(_ members: [Member]) {

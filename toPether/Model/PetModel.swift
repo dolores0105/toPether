@@ -82,7 +82,7 @@ class PetModel {
         }
     }
     
-    func addPetListener(pet: Pet, completion: @escaping (Result<Pet, Error>) -> Void) -> ListenerRegistration? {
+    func addPetListener(pet: Pet, completion: @escaping (Result<Pet, Error>) -> Void) -> ListenerRegistration {
         dataBase.collection("pets").document(pet.id).addSnapshotListener { documentSnapshot, error in
             if let pet = try? documentSnapshot?.data(as: Pet.self) {
                 completion(.success(pet))

@@ -139,16 +139,6 @@ extension HomeViewController: UICollectionViewDataSource {
             }
         }
         
-        _ = PetModel.shared.addPetListener(pet: pets[indexPath.item]) { [weak self] result in
-            switch result {
-            case .success(let pet):
-                guard let self = self else { return }
-                petCell.addListener(pet: pet, members: self.members)
-            case .failure(let error):
-                print("add petListener error:", error)
-            }
-        }
-        
         return petCell
     }
 }
