@@ -20,7 +20,14 @@ class PetModel {
         let today = Date()
         return calendar.date(byAdding: DateComponents(year: -year, month: -month), to: today)
     }
-
+    
+    func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示
+        let calendar = Calendar.current
+        let today = Date()
+        let components = calendar.dateComponents([.year, .month], from: birthday, to: today)
+        return (components.year, components.month)
+    }
+    
     func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String], completion: @escaping (Result<String, Error>) -> Void) {
         guard let jpegData06 = photo.jpegData(compressionQuality: 0.4) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
