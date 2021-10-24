@@ -139,6 +139,11 @@ class PetCollectionViewCell: UICollectionViewCell {
     }
     
     private var listener: ListenerRegistration?
+    func addListener(pet: Pet, members: [Member]) {
+        listener?.remove()
+        self.reload(pet: pet, members: members)
+        print("add pet listener")
+    }
     
     private func updateMembers(_ members: [Member]) {
         members.forEach { member in

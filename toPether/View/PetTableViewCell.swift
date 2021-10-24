@@ -34,7 +34,6 @@ class PetTableViewCell: UITableViewCell {
         ])
         
         petImageView = RoundCornerImageView(img: nil)
-        petImageView.backgroundColor = .gray //mock
         contentView.addSubview(petImageView)
         NSLayoutConstraint.activate([
             petImageView.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -12),
@@ -44,7 +43,6 @@ class PetTableViewCell: UITableViewCell {
         ])
         
         nameLabel = MediumLabel(size: 18)
-        nameLabel.text = "Pet mock name" // mock
         nameLabel.textColor = .mainBlue
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
@@ -63,7 +61,6 @@ class PetTableViewCell: UITableViewCell {
         ])
         
         ageLabel = RegularLabel(size: 14)
-        ageLabel.text = "0y 6m mock" // mock
         ageLabel.textColor = .deepBlueGrey
         contentView.addSubview(ageLabel)
         NSLayoutConstraint.activate([
@@ -75,7 +72,6 @@ class PetTableViewCell: UITableViewCell {
         memberNumberButton = UIButton()
         memberNumberButton.translatesAutoresizingMaskIntoConstraints = false
         memberNumberButton.titleLabel?.font = UIFont.regular(size: 14)
-        memberNumberButton.setTitle("+12", for: .normal) // mock
         memberNumberButton.setTitleColor(.deepBlueGrey, for: .normal)
         memberNumberButton.backgroundColor = .lightBlueGrey
         memberNumberButton.layer.cornerRadius = 10

@@ -227,7 +227,7 @@ extension AddPetViewController: UIImagePickerControllerDelegate {
         guard let image = info[.originalImage] as? UIImage, let selectedPet = selectedPet else { return }
         petImageView.image = image
         
-        guard let jpegData06 = image.jpegData(compressionQuality: 0.3) else { return }
+        guard let jpegData06 = image.jpegData(compressionQuality: 0.2) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         selectedPet.photo = imageBase64String
         
