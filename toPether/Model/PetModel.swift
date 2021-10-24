@@ -29,7 +29,7 @@ class PetModel {
     }
     
     func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String], completion: @escaping (Result<String, Error>) -> Void) {
-        guard let jpegData06 = photo.jpegData(compressionQuality: 0.4) else { return }
+        guard let jpegData06 = photo.jpegData(compressionQuality: 0.3) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
         guard let birthday = getBirthday(year: year, month: month) else { return }
@@ -69,6 +69,16 @@ class PetModel {
             } else if let error = error {
                 completion(Result.failure(error))
             }
+        }
+    }
+    
+    // MARK: update
+    func updatePet(id: String, pet: Pet) {
+        do {
+            try dataBase.collection("pets").document(id).setData(from: pet)
+            print("update pet:", pet)
+        } catch {
+            print("update error", error)
         }
     }
 }

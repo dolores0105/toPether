@@ -190,25 +190,32 @@ class AddPetViewController: UIViewController {
     }
     
     @objc func tapOK(sender: UIButton) {
-        var memberIds = [String]()
-        memberIds.append(currentUser.id)
-        PetModel.shared.setPetData(
-            name: nameTextField.text ?? "no value",
-            gender: genderTextField.text ?? "male",
-            year: selectedYear ?? 0,
-            month: selectedMonth ?? 0,
-            photo: petImageView.image ?? Img.iconsEdit.obj,
-            memberIds: memberIds
-        ) { [weak self] result in
-            switch result {
-            case .success(let petId):
-                guard let self = self else { return }
-                self.currentUser.petIds.append(petId)
-                MemberModel.shared.updateCurrentUser()
-            case .failure(let error):
-                print("update petId to currentUser error:", error)
+        
+        if selectedPet == nil { // Create a pet
+            var memberIds = [String]()
+            memberIds.append(currentUser.id)
+            PetModel.shared.setPetData(
+                name: nameTextField.text ?? "no value",
+                gender: genderTextField.text ?? "male",
+                year: selectedYear ?? 0,
+                month: selectedMonth ?? 0,
+                photo: petImageView.image ?? Img.iconsEdit.obj,
+                memberIds: memberIds
+            ) { [weak self] result in
+                switch result {
+                case .success(let petId):
+                    guard let self = self else { return }
+                    self.currentUser.petIds.append(petId)
+                    MemberModel.shared.updateCurrentUser()
+                case .failure(let error):
+                    print("update petId to currentUser error:", error)
+                }
             }
+        } else { // Update pet
+            guard let selectedPet = selectedPet else { return }
+            PetModel.shared.updatePet(id: selectedPet.id, pet: selectedPet)
         }
+        
         navigationController?.popViewController(animated: true)
     }
 }
@@ -217,8 +224,12 @@ class AddPetViewController: UIViewController {
 extension AddPetViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
-        guard let image = info[.originalImage] as? UIImage else { return }
+        guard let image = info[.originalImage] as? UIImage, let selectedPet = selectedPet else { return }
         petImageView.image = image
+        
+        guard let jpegData06 = image.jpegData(compressionQuality: 0.3) else { return }
+        let imageBase64String = jpegData06.base64EncodedString()
+        selectedPet.photo = imageBase64String
         
         picker.dismiss(animated: true, completion: nil)
         uploadImageView.isHidden = true
@@ -232,9 +243,18 @@ extension AddPetViewController: UINavigationControllerDelegate {
 
 extension AddPetViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
         if petImageView.image != nil && nameTextField.text != nil && genderTextField.text != nil && ageTextField.text != nil {
+            
+            guard let selectedPet = selectedPet else { return }
+            selectedPet.name = nameTextField.text!
+            selectedPet.gender = genderTextField.text!
+            guard let birthday = PetModel.shared.getBirthday(year: selectedYear!, month: selectedMonth!) else { return }
+            selectedPet.birthday = birthday
+
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
+            
         } else {
             okButton.isEnabled = false
             okButton.backgroundColor = .lightBlueGrey
