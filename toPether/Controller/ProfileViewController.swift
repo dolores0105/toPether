@@ -35,6 +35,8 @@ class ProfileViewController: UIViewController {
         self.navigationItem.title = "Profile"
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
+        
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidLoad() {
@@ -46,7 +48,7 @@ class ProfileViewController: UIViewController {
             navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 200)
+            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 250)
         ])
         
         // MARK: UI objects
@@ -105,7 +107,7 @@ class ProfileViewController: UIViewController {
         petTableView.separatorColor = .clear
         petTableView.estimatedRowHeight = 100
         petTableView.rowHeight = UITableView.automaticDimension
-        petTableView.allowsSelection = false
+        petTableView.allowsSelection = true
         petTableView.delegate = self
         petTableView.dataSource = self
         petTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,6 +123,9 @@ class ProfileViewController: UIViewController {
         // MARK: Query data
         textField.text = currentUser.name
         queryData()
+        MemberModel.shared.addUserListener { [weak self] _ in
+            self?.queryData()
+        }
     }
     
     // MARK: functions
@@ -155,7 +160,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapAddPet(sender: UIButton) {
-        let addPetViewController = AddPetViewController(currentUser: currentUser)
+        let addPetViewController = AddPetViewController(currentUser: currentUser, selectedPet: nil)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
@@ -171,6 +176,12 @@ extension ProfileViewController: UITableViewDataSource {
         
         cell.reload(pet: pets[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPet = pets[indexPath.row]
+        let editPetViewController = AddPetViewController(currentUser: currentUser, selectedPet: selectedPet)
+        self.navigationController?.pushViewController(editPetViewController, animated: true)
     }
 }
 

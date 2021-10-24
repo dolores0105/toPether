@@ -6,47 +6,53 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class PetTableViewCell: UITableViewCell {
     
-    private var borderButton: BorderButton!
+    private var borderView: UIView!
     private var petImageView: RoundCornerImageView!
     private var nameLabel: MediumLabel!
     private var genderImageView: RoundCornerImageView!
     private var ageLabel: RegularLabel!
     private var memberNumberButton: UIButton!
     
+    private var listener: ListenerRegistration?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        borderButton = BorderButton()
-        contentView.addSubview(borderButton)
+        borderView = UIView()
+        borderView.layer.borderWidth = 1
+        borderView.layer.borderColor = UIColor.mainBlue.cgColor
+        borderView.layer.cornerRadius = 10
+        borderView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(borderView)
         NSLayoutConstraint.activate([
-            borderButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            borderButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            borderButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            borderButton.heightAnchor.constraint(equalToConstant: 64),
-            borderButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            borderView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            borderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            borderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            borderView.heightAnchor.constraint(equalToConstant: 64),
+            borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         
         petImageView = RoundCornerImageView(img: nil)
-        petImageView.backgroundColor = .gray //mock
         contentView.addSubview(petImageView)
         NSLayoutConstraint.activate([
-            petImageView.bottomAnchor.constraint(equalTo: borderButton.bottomAnchor, constant: -12),
-            petImageView.topAnchor.constraint(equalTo: borderButton.topAnchor, constant: 12),
-            petImageView.leadingAnchor.constraint(equalTo: borderButton.leadingAnchor, constant: 12),
+            petImageView.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -12),
+            petImageView.topAnchor.constraint(equalTo: borderView.topAnchor, constant: 12),
+            petImageView.leadingAnchor.constraint(equalTo: borderView.leadingAnchor, constant: 12),
             petImageView.widthAnchor.constraint(equalTo: petImageView.heightAnchor)
         ])
         
         nameLabel = MediumLabel(size: 18)
-        nameLabel.text = "Pet mock name" // mock
         nameLabel.textColor = .mainBlue
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: petImageView.topAnchor, constant: -6),
             nameLabel.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 16),
-            nameLabel.trailingAnchor.constraint(equalTo: borderButton.trailingAnchor, constant: -16)
+            nameLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16)
         ])
         
         genderImageView = RoundCornerImageView(img: Img.iconsGenderFemale.obj)
@@ -59,7 +65,6 @@ class PetTableViewCell: UITableViewCell {
         ])
         
         ageLabel = RegularLabel(size: 14)
-        ageLabel.text = "0y 6m mock" // mock
         ageLabel.textColor = .deepBlueGrey
         contentView.addSubview(ageLabel)
         NSLayoutConstraint.activate([
@@ -71,14 +76,13 @@ class PetTableViewCell: UITableViewCell {
         memberNumberButton = UIButton()
         memberNumberButton.translatesAutoresizingMaskIntoConstraints = false
         memberNumberButton.titleLabel?.font = UIFont.regular(size: 14)
-        memberNumberButton.setTitle("+12", for: .normal) // mock
         memberNumberButton.setTitleColor(.deepBlueGrey, for: .normal)
         memberNumberButton.backgroundColor = .lightBlueGrey
         memberNumberButton.layer.cornerRadius = 10
         contentView.addSubview(memberNumberButton)
         NSLayoutConstraint.activate([
             memberNumberButton.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),
-            memberNumberButton.trailingAnchor.constraint(equalTo: borderButton.trailingAnchor, constant: -16),
+            memberNumberButton.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16),
             memberNumberButton.widthAnchor.constraint(equalToConstant: 50),
             memberNumberButton.heightAnchor.constraint(equalToConstant: 20)
         ])
@@ -90,6 +94,12 @@ class PetTableViewCell: UITableViewCell {
     }
     
     func reload(pet: Pet) {
+        updateCell(pet: pet)
+        
+        addListener(pet: pet)
+    }
+    
+    func updateCell(pet: Pet) {
         petImageView.image = pet.photoImage
         nameLabel.text = pet.name
         
@@ -106,8 +116,22 @@ class PetTableViewCell: UITableViewCell {
         }
         
         memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
-        
-        //add pet listener
+    }
+    
+    func addListener(pet: Pet) {
+            listener?.remove() // remove instance listener, Stop listening to changes
+        // add pet listener
+            listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let pet):
+                    self.updateCell(pet: pet)
+
+                case .failure(let error):
+                    print("addListener error", error)
+                }
+                
+            })
     }
     
     private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示
