@@ -178,7 +178,16 @@ class AddPetViewController: UIViewController {
             month: selectedMonth ?? 0,
             photo: petImageView.image ?? Img.iconsEdit.obj,
             memberIds: memberIds
-        )
+        ) { [weak self] result in
+            switch result {
+            case .success(let petId):
+                guard let self = self else { return }
+                self.currentUser.petIds.append(petId)
+                MemberModel.shared.updateCurrentUser()
+            case .failure(let error):
+                print("update petId to currentUser error:", error)
+            }
+        }
         navigationController?.popViewController(animated: true)
     }
 }

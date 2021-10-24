@@ -21,8 +21,8 @@ class PetModel {
         return calendar.date(byAdding: DateComponents(year: -year, month: -month), to: today)
     }
 
-    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String]) {
-        guard let jpegData06 = photo.jpegData(compressionQuality: 0.5) else { return }
+    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String], completion: @escaping (Result<String, Error>) -> Void) {
+        guard let jpegData06 = photo.jpegData(compressionQuality: 0.4) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
         guard let birthday = getBirthday(year: year, month: month) else { return }
@@ -40,9 +40,11 @@ class PetModel {
         
         do {
             try document.setData(from: pet)
+            completion(Result.success(pet.id))
             print(pet)
         } catch let error {
             print("set pet data error:", error)
+            completion(Result.failure(error))
         }
     }
     
