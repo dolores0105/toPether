@@ -61,6 +61,18 @@ class MemberModel {
         }
     }
     
+    // 3. Use memberId to query a single member's data
+    func queryMember(id: String, completion: @escaping (Member?) -> Void) {
+        dataBase.collection("members").document(id).getDocument { (querySnapshot, error) in
+            
+            if let member = try? querySnapshot?.data(as: Member.self) {
+                completion(member)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
     // MARK: update
     func updateCurrentUser() {
         guard let user = current else { return }
