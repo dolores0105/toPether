@@ -10,7 +10,13 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
+protocol PetCollectionViewCellDelegate: AnyObject {
+    func pushToInviteVC(pet: Pet)
+}
+
 class PetCollectionViewCell: UICollectionViewCell {
+    
+    weak var delegate: PetCollectionViewCellDelegate?
 
     private var petImageView: UIImageView!
     
@@ -33,7 +39,7 @@ class PetCollectionViewCell: UICollectionViewCell {
     private var addMemberButton: CircleButton!
     
     private var listener: ListenerRegistration?
-    private var lastpet: Pet?
+    var pet: Pet?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -97,6 +103,8 @@ class PetCollectionViewCell: UICollectionViewCell {
             genderImageView.heightAnchor.constraint(equalToConstant: 22)
         ])
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapStackView))
+        memberStackView.addGestureRecognizer(tap)
         contentView.addSubview(memberStackView)
         NSLayoutConstraint.activate([
             memberStackView.topAnchor.constraint(equalTo: petInfoButton.bottomAnchor, constant: 16),
@@ -119,6 +127,7 @@ class PetCollectionViewCell: UICollectionViewCell {
     }
     
     func updateCell(pet: Pet, members: [Member]) {
+        self.pet = pet
         petImageView.image = pet.photoImage
         petName.text = pet.name
         
@@ -163,6 +172,7 @@ class PetCollectionViewCell: UICollectionViewCell {
                 circleButton.widthAnchor.constraint(equalToConstant: 28)
             ])
             memberStackView.addArrangedSubview(circleButton)
+            circleButton.isUserInteractionEnabled = false
         }
         addMemberButton.layer.cornerRadius = 28 / 2
         NSLayoutConstraint.activate([
@@ -170,6 +180,7 @@ class PetCollectionViewCell: UICollectionViewCell {
             addMemberButton.widthAnchor.constraint(equalToConstant: 28)
         ])
         memberStackView.addArrangedSubview(addMemberButton)
+        addMemberButton.isUserInteractionEnabled = false
     }
     
     private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示
@@ -177,5 +188,11 @@ class PetCollectionViewCell: UICollectionViewCell {
         let today = Date()
         let components = calendar.dateComponents([.year, .month], from: birthday, to: today)
         return (components.year, components.month)
+    }
+    
+    @objc func tapStackView(sender: AnyObject) {
+        guard let pet = self.pet else { return }
+        delegate?.pushToInviteVC(pet: pet)
+        print("pass pet", pet.name)
     }
 }

@@ -28,9 +28,6 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        guard let userId = self.user.userId else { return }
-//        memberModel.setMember()
-//        MemberModel.shared.setMember(name: "Lucy")
         queryData()
         MemberModel.shared.addUserListener { [weak self] _ in
             self?.queryData()
@@ -139,6 +136,8 @@ extension HomeViewController: UICollectionViewDataSource {
             }
         }
         
+        petCell.delegate = self
+        
         return petCell
     }
 }
@@ -148,5 +147,12 @@ extension HomeViewController: UICollectionViewDelegate {
         guard let cell = petCollectionView.visibleCells.first, let index = petCollectionView.indexPath(for: cell)?.row else { return }
         petIndex = index
         print("current index by didEndDisplaying:", petIndex)
+    }
+}
+
+extension HomeViewController: PetCollectionViewCellDelegate {
+    func pushToInviteVC(pet: Pet) {
+        let inviteVC = InviteViewController(pet: pet)
+        self.navigationController?.pushViewController(inviteVC, animated: true)
     }
 }
