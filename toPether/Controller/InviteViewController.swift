@@ -84,10 +84,13 @@ class InviteViewController: UIViewController {
         // check the memberId that user inputs is existing
         MemberModel.shared.queryMember(id: memberId) { [weak self] member in
             guard let self = self else { return }
-            if member != nil {
-                print("the member is existing", member!.id)
+            if let member = member {
+                print("the member is existing", member.id)
                 // add petId to member's petIds
                 // add memberId to pet's memberIds
+                self.pet.memberIds.append(member.id)
+                PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+                
                 self.navigationController?.popViewController(animated: true)
             } else {
                 print("NOT existing")
@@ -104,7 +107,7 @@ class InviteViewController: UIViewController {
 extension InviteViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        guard let id = idTextField.text else {
+        guard idTextField.hasText else {
             okButton.isEnabled = false
             okButton.backgroundColor = .lightBlueGrey
             return
@@ -112,7 +115,7 @@ extension InviteViewController: UITextFieldDelegate {
         okButton.isEnabled = true
         okButton.backgroundColor = .mainYellow
         
-        memberId = id
+        memberId = idTextField.text
         print("input memberId", memberId ?? "")
     }
 }
