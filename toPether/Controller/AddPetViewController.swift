@@ -93,6 +93,7 @@ class AddPetViewController: UIViewController {
         ])
         
         nameTextField = BlueBorderTextField(text: nil)
+        nameTextField.setLeftPaddingPoints(amount: 12)
         nameTextField.delegate = self
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
@@ -116,6 +117,7 @@ class AddPetViewController: UIViewController {
         genderPickerView.dataSource = self
         
         genderTextField = BlueBorderTextField(text: nil)
+        genderTextField.setLeftPaddingPoints(amount: 12)
         genderTextField.inputView = genderPickerView
         genderTextField.delegate = self
         view.addSubview(genderTextField)
@@ -140,6 +142,7 @@ class AddPetViewController: UIViewController {
         agePickerView.dataSource = self
         
         ageTextField = BlueBorderTextField(text: nil)
+        ageTextField.setLeftPaddingPoints(amount: 12)
         ageTextField.inputView = agePickerView
         ageTextField.delegate = self
         view.addSubview(ageTextField)
@@ -186,7 +189,8 @@ class AddPetViewController: UIViewController {
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.modalPresentationStyle = .popover
         imagePickerController.delegate = self
-        self.present(imagePickerController, animated: true, completion: {})
+        imagePickerController.allowsEditing = true
+        self.present(imagePickerController, animated: true, completion: nil)
     }
     
     @objc func tapOK(sender: UIButton) {
@@ -223,16 +227,25 @@ class AddPetViewController: UIViewController {
 // MARK: Extension
 extension AddPetViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-
-        guard let image = info[.originalImage] as? UIImage, let selectedPet = selectedPet else { return }
-        petImageView.image = image
         
-        guard let jpegData06 = image.jpegData(compressionQuality: 0.2) else { return }
+        var pickedImage: UIImage?
+        
+        if let editedImage = info[.editedImage] as? UIImage {
+            pickedImage = editedImage
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            pickedImage = originalImage
+            print("originalImage size:", originalImage.size)
+        }
+        
+        petImageView.image = pickedImage
+        picker.dismiss(animated: true, completion: nil)
+        uploadImageView.isHidden = true
+        
+        guard let selectedPet = selectedPet, let pickedImage = pickedImage else { return }
+        guard let jpegData06 = pickedImage.jpegData(compressionQuality: 0.2) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         selectedPet.photo = imageBase64String
         
-        picker.dismiss(animated: true, completion: nil)
-        uploadImageView.isHidden = true
     }
 }
 
@@ -246,14 +259,14 @@ extension AddPetViewController: UITextFieldDelegate {
         
         if petImageView.image != nil && nameTextField.text != nil && genderTextField.text != nil && ageTextField.text != nil {
             
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+            
             guard let selectedPet = selectedPet else { return }
             selectedPet.name = nameTextField.text!
             selectedPet.gender = genderTextField.text!
             guard let birthday = PetModel.shared.getBirthday(year: selectedYear!, month: selectedMonth!) else { return }
             selectedPet.birthday = birthday
-
-            okButton.isEnabled = true
-            okButton.backgroundColor = .mainYellow
             
         } else {
             okButton.isEnabled = false

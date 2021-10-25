@@ -105,6 +105,7 @@ class ProfileViewController: UIViewController {
         petTableView = UITableView()
         petTableView.register(PetTableViewCell.self, forCellReuseIdentifier: "PetTableViewCell")
         petTableView.separatorColor = .clear
+        petTableView.backgroundColor = .white
         petTableView.estimatedRowHeight = 100
         petTableView.rowHeight = UITableView.automaticDimension
         petTableView.allowsSelection = true
@@ -173,7 +174,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
         guard let cell = cell as? PetTableViewCell else { return cell }
-        
+        cell.selectionStyle = .none
         cell.reload(pet: pets[indexPath.row])
         return cell
     }

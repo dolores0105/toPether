@@ -23,6 +23,8 @@ class PetTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        contentView.backgroundColor = .white
+        
         borderView = UIView()
         borderView.layer.borderWidth = 1
         borderView.layer.borderColor = UIColor.mainBlue.cgColor
