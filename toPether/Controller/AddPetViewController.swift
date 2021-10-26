@@ -82,9 +82,9 @@ class AddPetViewController: UIViewController {
         ])
         
         
-        nameTitleLabel = MediumLabel(size: 16)
-        nameTitleLabel.textColor = .mainBlue
-        nameTitleLabel.text = "Name"
+        nameTitleLabel = MediumLabel(size: 16, text: "Name", textColor: .mainBlue)
+//        nameTitleLabel.textColor = .mainBlue
+//        nameTitleLabel.text = "Name"
         view.addSubview(nameTitleLabel)
         NSLayoutConstraint.activate([
             nameTitleLabel.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 32),
@@ -103,9 +103,9 @@ class AddPetViewController: UIViewController {
         ])
         
         
-        genderTitleLabel = MediumLabel(size: 16)
-        genderTitleLabel.textColor = .mainBlue
-        genderTitleLabel.text = "Gender"
+        genderTitleLabel = MediumLabel(size: 16, text: "Gender", textColor: .mainBlue)
+//        genderTitleLabel.textColor = .mainBlue
+//        genderTitleLabel.text = "Gender"
         view.addSubview(genderTitleLabel)
         NSLayoutConstraint.activate([
             genderTitleLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 32),
@@ -128,7 +128,7 @@ class AddPetViewController: UIViewController {
         ])
         
         
-        ageTitleLabel = MediumLabel(size: 16)
+        ageTitleLabel = MediumLabel(size: 16, text: "Age", textColor: .mainBlue)
         ageTitleLabel.textColor = .mainBlue
         ageTitleLabel.text = "Age"
         view.addSubview(ageTitleLabel)

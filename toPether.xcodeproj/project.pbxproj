@@ -25,6 +25,8 @@
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
 		394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771E272305B000978254 /* BlueBorderTextField.swift */; };
 		394A77212723067300978254 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77202723067300978254 /* RoundButton.swift */; };
+		39558C9B2727B46400523D43 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9A2727B46400523D43 /* BlurView.swift */; };
+		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
@@ -60,6 +62,8 @@
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
 		394A771E272305B000978254 /* BlueBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBorderTextField.swift; sourceTree = "<group>"; };
 		394A77202723067300978254 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		39558C9A2727B46400523D43 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
@@ -106,9 +110,10 @@
 			children = (
 				394A77182721D65700978254 /* SplashVC.swift */,
 				39EDD1A3271D126800B4DAFA /* HomeViewController.swift */,
+				39C6669F2726B30100400C84 /* InviteViewController.swift */,
 				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
 				394A771C2722FE6C00978254 /* AddPetViewController.swift */,
-				39C6669F2726B30100400C84 /* InviteViewController.swift */,
+				39558C9C2727CED900523D43 /* GetInvitationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 				395FD009272052D8005911AA /* MediumLabel.swift */,
 				395FD00D27214AB6005911AA /* RegularLabel.swift */,
 				395FD00B27213C3B005911AA /* RoundCornerImageView.swift */,
+				39558C9A2727B46400523D43 /* BlurView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -350,6 +356,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				390791AC271ECF1E00B4735B /* IconButton.swift in Sources */,
+				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
+				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
 				395FD00A272052D8005911AA /* MediumLabel.swift in Sources */,

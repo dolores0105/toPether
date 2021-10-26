@@ -9,10 +9,12 @@ import UIKit
 
 class MediumLabel: UILabel {
 
-    convenience init(size: CGFloat) {
+    convenience init(size: CGFloat, text: String?, textColor: UIColor) {
         self.init()
         
         font = UIFont.medium(size: size)
+        self.text = text
+        self.textColor = textColor
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
