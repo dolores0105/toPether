@@ -113,6 +113,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         
         addMemberButton = CircleButton(name: "")
         addMemberButton.backgroundColor = .mainYellow
+        addMemberButton.layer.borderColor = UIColor.lightBlueGrey.cgColor
         addMemberButton.setImage(Img.iconsAddWhite.obj, for: .normal)
     }
     
@@ -120,10 +121,11 @@ class PetCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func reload(pet: Pet, members: [Member]) {
-        updateCell(pet: pet, members: members)
+    func reload(pet: Pet) {
+//        updateCell(pet: pet, members: members)
         
-        addListener(pet: pet, members: members)
+        self.pet = pet // initialize pet for reloading each time
+        addListener(pet: pet)
     }
     
     func updateCell(pet: Pet, members: [Member]) {
@@ -147,20 +149,33 @@ class PetCollectionViewCell: UICollectionViewCell {
         updateMembers(members)
     }
     
-    func addListener(pet: Pet, members: [Member]) {
-            listener?.remove() // remove instance listener, Stop listening to changes
-        // add pet listener
-            listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let pet):
-                    self.updateCell(pet: pet, members: members)
+    func addListener(pet: Pet) {
+        listener?.remove() // remove instance listener, Stop listening to changes
 
-                case .failure(let error):
-                    print("addListener error", error)
+        listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let pet):
+                
+                // self.pet?.memberIds.count != pet.memberIds.count &&
+                if !pet.memberIds.isEmpty {
+                    MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+                        switch result {
+                        case .success(let members):
+                            guard let self = self else { return }
+
+                            self.updateCell(pet: pet, members: members)
+                            
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
                 }
                 
-            })
+            case .failure(let error):
+                print("addListener error", error)
+            }
+        })
     }
     
     private func updateMembers(_ members: [Member]) {

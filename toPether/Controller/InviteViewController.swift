@@ -18,6 +18,7 @@ class InviteViewController: UIViewController {
     
     private var inputTitleLabel: MediumLabel!
     private var idTextField: BlueBorderTextField!
+    private var wrongInputLabel: RegularLabel!
     private var okButton: RoundButton!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,13 +56,24 @@ class InviteViewController: UIViewController {
             idTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
         
+        wrongInputLabel = RegularLabel(size: 14)
+        wrongInputLabel.textColor = .red
+        wrongInputLabel.text = "Could not find this user."
+        wrongInputLabel.isHidden = true
+        view.addSubview(wrongInputLabel)
+        NSLayoutConstraint.activate([
+            wrongInputLabel.topAnchor.constraint(equalTo: idTextField.bottomAnchor, constant: 8),
+            wrongInputLabel.leadingAnchor.constraint(equalTo: idTextField.leadingAnchor),
+            wrongInputLabel.trailingAnchor.constraint(equalTo: idTextField.trailingAnchor)
+        ])
+        
         okButton = RoundButton(text: "ok", size: 18)
         okButton.isEnabled = false
         okButton.backgroundColor = .lightBlueGrey
         okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
         view.addSubview(okButton)
         NSLayoutConstraint.activate([
-            okButton.topAnchor.constraint(equalTo: idTextField.bottomAnchor, constant: 40),
+            okButton.topAnchor.constraint(equalTo: wrongInputLabel.bottomAnchor, constant: 32),
             okButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -69,17 +81,47 @@ class InviteViewController: UIViewController {
     
     // MARK: functions
     @objc func tapOK(sender: UIButton) {
-        // add petId to member's petIds
-        // add memberId to pet's memberIds
-        
-        navigationController?.popViewController(animated: true)
+        // check the memberId that user inputs is existing
+        MemberModel.shared.queryMember(id: memberId) { [weak self] member in
+            guard let self = self else { return }
+            if let member = member {
+                print("the member is existing", member.id)
+                // add petId to member's petIds <--應該是被加的時候，update current user
+//                if !member.petIds.contains(self.pet.id) {
+//                    member.petIds.append(self.pet.id)
+//                    MemberModel.shared.updateCurrentUser()
+//                }
+                
+                // add memberId to pet's memberIds
+                if !self.pet.memberIds.contains(member.id) {
+                    self.pet.memberIds.append(member.id)
+                    PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    self.idTextField.text = ""
+                    self.idTextField.becomeFirstResponder()
+                    self.wrongInputLabel.isHidden = false
+                    self.wrongInputLabel.text = "You've toPether \(self.pet.name)."
+                    self.okButton.isEnabled = false
+                    self.okButton.backgroundColor = .lightBlueGrey
+                }
+
+            } else {
+                print("NOT existing")
+                self.idTextField.text = ""
+                self.idTextField.becomeFirstResponder()
+                self.wrongInputLabel.isHidden = false
+                self.okButton.isEnabled = false
+                self.okButton.backgroundColor = .lightBlueGrey
+            }
+        }
     }
 }
 
 extension InviteViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        guard let id = idTextField.text else {
+        guard idTextField.hasText else {
             okButton.isEnabled = false
             okButton.backgroundColor = .lightBlueGrey
             return
@@ -87,7 +129,7 @@ extension InviteViewController: UITextFieldDelegate {
         okButton.isEnabled = true
         okButton.backgroundColor = .mainYellow
         
-        memberId = id
+        memberId = idTextField.text
         print("input memberId", memberId ?? "")
     }
 }
