@@ -48,8 +48,8 @@ class PetTableViewCell: UITableViewCell {
             petImageView.widthAnchor.constraint(equalTo: petImageView.heightAnchor)
         ])
         
-        nameLabel = MediumLabel(size: 18)
-        nameLabel.textColor = .mainBlue
+        nameLabel = MediumLabel(size: 18, text: nil, textColor: .mainBlue)
+//        nameLabel.textColor = .mainBlue
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: petImageView.topAnchor, constant: -6),

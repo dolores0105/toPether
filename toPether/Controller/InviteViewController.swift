@@ -36,7 +36,7 @@ class InviteViewController: UIViewController {
         
         print(pet.name)
         
-        inputTitleLabel = MediumLabel(size: 16)
+        inputTitleLabel = MediumLabel(size: 16, text: "User ID", textColor: .mainBlue)
         inputTitleLabel.textColor = .mainBlue
         inputTitleLabel.text = "User ID"
         view.addSubview(inputTitleLabel)

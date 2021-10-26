@@ -3,33 +3,32 @@
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/20.
-//
+// swiftlint:disable function_body_length
 
 import UIKit
 import IQKeyboardManagerSwift
 
 class ProfileViewController: UIViewController {
     
-    var navigationBackgroundView: NavigationBackgroundView!
-    var nameTitleLabel: MediumLabel!
-    var iconImageView: UIImageView!
-    var editNameButton: IconButton!
-    var textField: NoBorderTextField!
-    var memberName: String? {
+    private var navigationBackgroundView: NavigationBackgroundView!
+    private var nameTitleLabel: MediumLabel!
+    private var iconImageView: UIImageView!
+    private var editNameButton: IconButton!
+    private var textField: NoBorderTextField!
+    private var memberName: String? {
         didSet {
             if memberName != nil && memberName == "" {
                 textField.isEnabled = false
             }
         }
     }
-    var furkidsTitleLabel: MediumLabel!
-    var addPetButton: IconButton!
-    var petTableView: UITableView!
+    private var furkidsTitleLabel: MediumLabel!
+    private var addPetButton: IconButton!
+    private var petTableView: UITableView!
     
-    var currentUser: Member! = MemberModel.shared.current
-    var pets = [Pet]()
+    private var currentUser: Member! = MemberModel.shared.current
+    private var pets = [Pet]()
 
-    
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Profile"
@@ -52,9 +51,9 @@ class ProfileViewController: UIViewController {
         ])
         
         // MARK: UI objects
-        nameTitleLabel = MediumLabel(size: 18)
-        nameTitleLabel.text = "Name"
-        nameTitleLabel.textColor = .white
+        nameTitleLabel = MediumLabel(size: 18, text: "Name", textColor: .white)
+//        nameTitleLabel.text = "Name"
+//        nameTitleLabel.textColor = .white
         view.addSubview(nameTitleLabel)
         NSLayoutConstraint.activate([
             nameTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -82,9 +81,9 @@ class ProfileViewController: UIViewController {
             textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
         ])
         
-        furkidsTitleLabel = MediumLabel(size: 18)
-        furkidsTitleLabel.text = "Furkids"
-        furkidsTitleLabel.textColor = .mainBlue
+        furkidsTitleLabel = MediumLabel(size: 18, text: "Furkids", textColor: .mainBlue)
+//        furkidsTitleLabel.text = "Furkids"
+//        furkidsTitleLabel.textColor = .mainBlue
         view.addSubview(furkidsTitleLabel)
         NSLayoutConstraint.activate([
             furkidsTitleLabel.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 40),
@@ -145,7 +144,8 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapQrcode(sender: UIBarButtonItem) {
-        
+        let getInvitationVC = GetInvitationViewController(currentUser: currentUser)
+        present(getInvitationVC, animated: true, completion: nil)
     }
     
     @objc func tapEditName(sender: UIButton) {
