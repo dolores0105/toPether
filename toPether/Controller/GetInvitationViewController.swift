@@ -39,6 +39,23 @@ class GetInvitationViewController: UIViewController {
         currentUserIdLabel.isUserInteractionEnabled = true
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         currentUserIdLabel.addGestureRecognizer(gestureRecognizer)
+        
+        // MARK: data
+        MemberModel.shared.addUserListener { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(.added(members: _ )):
+                break
+            case .success(.modified(members: _ )):
+                self.dismiss(animated: true) {
+                    print("dismiss add animation")
+                }
+            case .success(.removed(members: _ )):
+                break
+            case .failure(let error):
+                print("lisener error at getInvitationVC", error)
+            }
+        }
     }
     
     @objc func handleLongPress(recognizer: UIGestureRecognizer) {
