@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 class GetInvitationViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class GetInvitationViewController: UIViewController {
     
     private var invitationTitleLabel: MediumLabel!
     private var currentUserIdLabel: MediumLabel!
+    private var animationView: AnimationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +42,17 @@ class GetInvitationViewController: UIViewController {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         currentUserIdLabel.addGestureRecognizer(gestureRecognizer)
         
+        animationView = .init(name: "LottieDone")
+        animationView.contentMode = .scaleAspectFit
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
+        ])
+        
         // MARK: data
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
@@ -47,9 +60,12 @@ class GetInvitationViewController: UIViewController {
             case .success(.added(members: _ )):
                 break
             case .success(.modified(members: _ )):
-                self.dismiss(animated: true) {
-                    print("dismiss add animation")
-                }
+                self.animationView?.play(completion: { (finished) in
+                    self.dismiss(animated: true) {
+                        print("addUserListener at getInvitaionVC")
+                    }
+                })
+                
             case .success(.removed(members: _ )):
                 break
             case .failure(let error):
