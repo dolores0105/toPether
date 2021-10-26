@@ -21,4 +21,8 @@ class MediumLabel: UILabel {
             heightAnchor.constraint(equalToConstant: 24)
         ])
     }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
 }
