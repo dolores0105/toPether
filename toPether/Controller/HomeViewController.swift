@@ -25,6 +25,14 @@ class HomeViewController: UIViewController {
     var members = [Member]()
     var petIndex: Int = 0
     
+    override func viewWillAppear(_ animated: Bool) {
+        // MARK: Navigation controller
+        self.navigationItem.title = "toPether"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24)]
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,10 +40,6 @@ class HomeViewController: UIViewController {
         MemberModel.shared.addUserListener { [weak self] _ in
             self?.queryData()
         }
-        
-        // MARK: Navigation controller
-        self.navigationItem.title = "toPether"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24)]
         
         // MARK: UI objects layout
         let petsLayout = UICollectionViewFlowLayout()
@@ -121,21 +125,9 @@ extension HomeViewController: UICollectionViewDataSource {
         
         let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
         guard let petCell = petCell as? PetCollectionViewCell else { return petCell }
-        
-        if case let memberIds = pets[indexPath.item].memberIds, !memberIds.isEmpty {
-            MemberModel.shared.queryMembers(ids: memberIds) { [weak self] result in
-                switch result {
-                case .success(let members):
-                    guard let self = self else { return }
-                    self.members = members
-                    print("fetch members:", self.members)
-                    petCell.reload(pet: self.pets[indexPath.item], members: members)
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-        
+
+        petCell.reload(pet: self.pets[indexPath.item])
+
         petCell.delegate = self
         
         return petCell

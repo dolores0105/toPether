@@ -76,7 +76,7 @@ class PetModel {
     func updatePet(id: String, pet: Pet) {
         do {
             try dataBase.collection("pets").document(id).setData(from: pet)
-            print("update pet:", pet)
+            print("update pet:", pet.id)
         } catch {
             print("update error", error)
         }

@@ -58,7 +58,7 @@ class InviteViewController: UIViewController {
         
         wrongInputLabel = RegularLabel(size: 14)
         wrongInputLabel.textColor = .red
-        wrongInputLabel.text = "找不到使用者，請再輸入一次"
+        wrongInputLabel.text = "Could not find this user."
         wrongInputLabel.isHidden = true
         view.addSubview(wrongInputLabel)
         NSLayoutConstraint.activate([
@@ -86,12 +86,26 @@ class InviteViewController: UIViewController {
             guard let self = self else { return }
             if let member = member {
                 print("the member is existing", member.id)
-                // add petId to member's petIds
-                // add memberId to pet's memberIds
-                self.pet.memberIds.append(member.id)
-                PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+                // add petId to member's petIds <--應該是被加的時候，update current user
+//                if !member.petIds.contains(self.pet.id) {
+//                    member.petIds.append(self.pet.id)
+//                    MemberModel.shared.updateCurrentUser()
+//                }
                 
-                self.navigationController?.popViewController(animated: true)
+                // add memberId to pet's memberIds
+                if !self.pet.memberIds.contains(member.id) {
+                    self.pet.memberIds.append(member.id)
+                    PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    self.idTextField.text = ""
+                    self.idTextField.becomeFirstResponder()
+                    self.wrongInputLabel.isHidden = false
+                    self.wrongInputLabel.text = "You've toPether \(self.pet.name)."
+                    self.okButton.isEnabled = false
+                    self.okButton.backgroundColor = .lightBlueGrey
+                }
+
             } else {
                 print("NOT existing")
                 self.idTextField.text = ""
