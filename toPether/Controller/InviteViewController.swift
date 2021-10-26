@@ -86,11 +86,11 @@ class InviteViewController: UIViewController {
             guard let self = self else { return }
             if let member = member {
                 print("the member is existing", member.id)
-                // add petId to member's petIds <--應該是被加的時候，update current user
-//                if !member.petIds.contains(self.pet.id) {
-//                    member.petIds.append(self.pet.id)
-//                    MemberModel.shared.updateCurrentUser()
-//                }
+                // add petId to member's petIds
+                if !member.petIds.contains(self.pet.id) {
+                    member.petIds.append(self.pet.id)
+                    MemberModel.shared.updateMember(member: member)
+                }
                 
                 // add memberId to pet's memberIds
                 if !self.pet.memberIds.contains(member.id) {

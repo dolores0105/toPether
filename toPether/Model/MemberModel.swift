@@ -64,7 +64,7 @@ class MemberModel {
     // 3. Use memberId to query a single member's data
     func queryMember(id: String, completion: @escaping (Member?) -> Void) {
         dataBase.collection("members").document(id).getDocument { (querySnapshot, error) in
-            
+            guard error == nil else { return }
             if let member = try? querySnapshot?.data(as: Member.self) {
                 completion(member)
             } else {
@@ -78,6 +78,14 @@ class MemberModel {
         guard let user = current else { return }
         do {
             try dataBase.collection("members").document(user.id).setData(from: user)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updateMember(member: Member) {
+        do {
+            try dataBase.collection("members").document(member.id).setData(from: member)
         } catch {
             print(error)
         }
