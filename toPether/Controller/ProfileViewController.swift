@@ -52,8 +52,6 @@ class ProfileViewController: UIViewController {
         
         // MARK: UI objects
         nameTitleLabel = MediumLabel(size: 18, text: "Name", textColor: .white)
-//        nameTitleLabel.text = "Name"
-//        nameTitleLabel.textColor = .white
         view.addSubview(nameTitleLabel)
         NSLayoutConstraint.activate([
             nameTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -82,8 +80,6 @@ class ProfileViewController: UIViewController {
         ])
         
         furkidsTitleLabel = MediumLabel(size: 18, text: "Furkids", textColor: .mainBlue)
-//        furkidsTitleLabel.text = "Furkids"
-//        furkidsTitleLabel.textColor = .mainBlue
         view.addSubview(furkidsTitleLabel)
         NSLayoutConstraint.activate([
             furkidsTitleLabel.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 40),
@@ -122,14 +118,30 @@ class ProfileViewController: UIViewController {
         
         // MARK: Query data
         textField.text = currentUser.name
-        queryData()
-        MemberModel.shared.addUserListener { [weak self] _ in
-            self?.queryData()
+        queryData(currentUser: currentUser)
+        MemberModel.shared.addUserListener { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(.added(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+                
+            case .success(.modified(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+                
+            case .success(.removed(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+                
+            case .failure(let error):
+                print("lisener error at profileVC", error)
+            }
         }
     }
     
     // MARK: functions
-    func queryData() {
+    func queryData(currentUser: Member) {
         PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             switch result {
             case .success(let pets):

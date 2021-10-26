@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 class InviteViewController: UIViewController {
     
@@ -20,6 +21,7 @@ class InviteViewController: UIViewController {
     private var idTextField: BlueBorderTextField!
     private var wrongInputLabel: RegularLabel!
     private var okButton: RoundButton!
+    private var animationView: AnimationView!
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
@@ -77,6 +79,18 @@ class InviteViewController: UIViewController {
             okButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
+        
+        animationView = .init(name: "LottieDone")
+        animationView.contentMode = .scaleAspectFit
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        animationView.isHidden = true
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
+        ])
     }
     
     // MARK: functions
@@ -86,17 +100,22 @@ class InviteViewController: UIViewController {
             guard let self = self else { return }
             if let member = member {
                 print("the member is existing", member.id)
-                // add petId to member's petIds <--應該是被加的時候，update current user
-//                if !member.petIds.contains(self.pet.id) {
-//                    member.petIds.append(self.pet.id)
-//                    MemberModel.shared.updateCurrentUser()
-//                }
+                // add petId to member's petIds
+                if !member.petIds.contains(self.pet.id) {
+                    member.petIds.append(self.pet.id)
+                    MemberModel.shared.updateMember(member: member)
+                }
                 
                 // add memberId to pet's memberIds
                 if !self.pet.memberIds.contains(member.id) {
                     self.pet.memberIds.append(member.id)
                     PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
-                    self.navigationController?.popViewController(animated: true)
+                    
+                    self.animationView.isHidden = false
+                    self.animationView?.play(completion: { (finished) in
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                    
                 } else {
                     self.idTextField.text = ""
                     self.idTextField.becomeFirstResponder()

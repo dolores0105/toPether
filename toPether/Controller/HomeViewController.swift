@@ -36,9 +36,25 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        queryData()
-        MemberModel.shared.addUserListener { [weak self] _ in
-            self?.queryData()
+        queryData(currentUser: currentUser)
+        MemberModel.shared.addUserListener { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(.added(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+                
+            case .success(.modified(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+                
+            case .success(.removed(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+                
+            case .failure(let error):
+                print("lisener error at profileVC", error)
+            }
         }
         
         // MARK: UI objects layout
@@ -96,14 +112,14 @@ class HomeViewController: UIViewController {
         // switch
     }
     
-    func queryData() {
+    func queryData(currentUser: Member) {
         PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             switch result {
             case .success(let pets):
                 guard let self = self else { return }
                 self.pets = pets
                 self.petCollectionView.reloadData()
-                print("fetch pets:", self.pets)
+                print("fetch pets at profile:", self.pets)
             case .failure(let error):
                 print(error)
             }

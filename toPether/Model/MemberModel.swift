@@ -7,6 +7,12 @@
 
 import Firebase
 
+enum ListenerType {
+    case added(members: [Member])
+    case modified(members: [Member])
+    case removed(members: [Member])
+}
+
 class MemberModel {
     
     private init() {}
@@ -64,7 +70,6 @@ class MemberModel {
     // 3. Use memberId to query a single member's data
     func queryMember(id: String, completion: @escaping (Member?) -> Void) {
         dataBase.collection("members").document(id).getDocument { (querySnapshot, error) in
-            
             if let member = try? querySnapshot?.data(as: Member.self) {
                 completion(member)
             } else {
@@ -83,13 +88,41 @@ class MemberModel {
         }
     }
     
-    func addUserListener(completion: @escaping (Result<Member, Error>) -> Void) {
+    func updateMember(member: Member) {
+        do {
+            try dataBase.collection("members").document(member.id).setData(from: member)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func addUserListener(completion: @escaping (Result<ListenerType, Error>) -> Void) {
         guard let user = current else { return }
-        dataBase.collection("members").document(user.id).addSnapshotListener { documentSnapshot, error in
-            if let member = try? documentSnapshot?.data(as: Member.self) {
-                completion(.success(member))
+        dataBase.collection("members").whereField("id", isEqualTo: user.id).addSnapshotListener { querySnapshot, error in
+            
+            if let querySnapshot = querySnapshot {
+                
+                let members = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Member.self)
+                })
+                
+                querySnapshot.documentChanges.forEach { diff in
+                    switch diff.type {
+                    case .added:
+                        print("add")
+                        completion(.success(.added(members: members)))
+                        
+                    case .modified:
+                        print("modifi")
+                        completion(.success(.modified(members: members)))
+                    case .removed:
+                        print("remove")
+                        completion(.success(.removed(members: members)))
+                    }
+                }
+                
             } else if let error = error {
-                completion(.failure(error))
+                completion(Result.failure(error))
             }
         }
     }

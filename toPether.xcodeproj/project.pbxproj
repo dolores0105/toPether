@@ -27,6 +27,7 @@
 		394A77212723067300978254 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77202723067300978254 /* RoundButton.swift */; };
 		39558C9B2727B46400523D43 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9A2727B46400523D43 /* BlurView.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
+		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
@@ -64,6 +65,7 @@
 		394A77202723067300978254 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		39558C9A2727B46400523D43 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
+		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				39558C9E2728498A00523D43 /* LottieDone.json */,
 				390778DF271D1A2200B4735B /* GoogleService-Info.plist */,
 				39EDD1A8271D126E00B4DAFA /* Assets.xcassets */,
 			);
@@ -284,6 +287,7 @@
 				39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */,
 				39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */,
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
+				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
 				390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
