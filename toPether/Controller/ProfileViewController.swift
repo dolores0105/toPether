@@ -26,7 +26,7 @@ class ProfileViewController: UIViewController {
     private var addPetButton: IconButton!
     private var petTableView: UITableView!
     
-    private var currentUser: Member! = MemberModel.shared.current
+    private var currentUser: Member! = MemberModel.shared.current // 只有一開始跟membermodel.current一樣，後續需要再持續更新
     private var pets = [Pet]()
 
     override func viewWillAppear(_ animated: Bool) {
@@ -166,7 +166,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func nameEndEditing(_ textField: UITextField) {
-        currentUser.name = textField.text ?? currentUser.name
+        MemberModel.shared.current?.name = textField.text ?? currentUser.name
         MemberModel.shared.updateCurrentUser()
         textField.isEnabled = !textField.hasText
         view.endEditing(true)
@@ -203,15 +203,20 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
-
-            self.currentUser.petIds.remove(at: indexPath.row)
-            self.pets.remove(at: indexPath.row)
-            print("self.currentUser.petIds", self.currentUser.petIds)
+            
+            // update deleted petIds
+            MemberModel.shared.current?.petIds.remove(at: indexPath.row)
+            MemberModel.shared.updateCurrentUser()
+            
+            // update that pet's memberIds
+            if let indexOfMemberId = self.pets[indexPath.row].memberIds.firstIndex(of: self.currentUser.id) {
+                self.pets[indexPath.row].memberIds.remove(at: indexOfMemberId)
+                PetModel.shared.updatePet(id: self.pets[indexPath.row].id, pet: self.pets[indexPath.row])
+            }
+            
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .left)
             tableView.endUpdates()
-            
-            MemberModel.shared.updateCurrentUser() // update deleted petIds
             
             completionHandler(true)
         }
