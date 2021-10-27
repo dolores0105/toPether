@@ -66,8 +66,8 @@ class PetTableViewCell: UITableViewCell {
             genderImageView.widthAnchor.constraint(equalTo: genderImageView.heightAnchor)
         ])
         
-        ageLabel = RegularLabel(size: 14)
-        ageLabel.textColor = .deepBlueGrey
+        ageLabel = RegularLabel(size: 14, text: nil, textColor: .deepBlueGrey)
+//        ageLabel.textColor = .deepBlueGrey
         contentView.addSubview(ageLabel)
         NSLayoutConstraint.activate([
             ageLabel.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),

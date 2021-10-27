@@ -58,9 +58,9 @@ class InviteViewController: UIViewController {
             idTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
         
-        wrongInputLabel = RegularLabel(size: 14)
-        wrongInputLabel.textColor = .red
-        wrongInputLabel.text = "Could not find this user."
+        wrongInputLabel = RegularLabel(size: 14, text: "Could not find this user.", textColor: .red)
+//        wrongInputLabel.textColor = .red
+//        wrongInputLabel.text = "Could not find this user."
         wrongInputLabel.isHidden = true
         view.addSubview(wrongInputLabel)
         NSLayoutConstraint.activate([

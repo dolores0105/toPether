@@ -9,10 +9,12 @@ import UIKit
 
 class RegularLabel: UILabel {
 
-    convenience init(size: CGFloat) {
+    convenience init(size: CGFloat, text: String?, textColor: UIColor) {
         self.init()
         
         font = UIFont.regular(size: size)
+        self.text = text
+        self.textColor = textColor
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

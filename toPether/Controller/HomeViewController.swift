@@ -89,7 +89,7 @@ class HomeViewController: UIViewController {
         let buttons = [
             IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsFoodRecords),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsMedicalRecords),
+            IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]
         buttons.forEach { button in
@@ -108,6 +108,11 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: functions
+    @objc private func tapMedicalButton(_: BorderButton) {
+        let medicalVC = MedicalViewController(selectedPet: self.pets[petIndex])
+        navigationController?.pushViewController(medicalVC, animated: true)
+    }
+    
     @objc private func tapXXXButton(_: BorderButton) {
         // switch
     }
