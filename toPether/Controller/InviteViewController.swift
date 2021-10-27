@@ -112,7 +112,7 @@ class InviteViewController: UIViewController {
                     PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
                     
                     self.animationView.isHidden = false
-                    self.animationView?.play(completion: { (finished) in
+                    self.animationView?.play(completion: { _ in
                         self.navigationController?.popViewController(animated: true)
                     })
                     

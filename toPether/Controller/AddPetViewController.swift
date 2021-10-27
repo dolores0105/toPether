@@ -83,8 +83,6 @@ class AddPetViewController: UIViewController {
         
         
         nameTitleLabel = MediumLabel(size: 16, text: "Name", textColor: .mainBlue)
-//        nameTitleLabel.textColor = .mainBlue
-//        nameTitleLabel.text = "Name"
         view.addSubview(nameTitleLabel)
         NSLayoutConstraint.activate([
             nameTitleLabel.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 32),
@@ -102,10 +100,7 @@ class AddPetViewController: UIViewController {
             nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
         
-        
         genderTitleLabel = MediumLabel(size: 16, text: "Gender", textColor: .mainBlue)
-//        genderTitleLabel.textColor = .mainBlue
-//        genderTitleLabel.text = "Gender"
         view.addSubview(genderTitleLabel)
         NSLayoutConstraint.activate([
             genderTitleLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 32),
@@ -129,8 +124,6 @@ class AddPetViewController: UIViewController {
         
         
         ageTitleLabel = MediumLabel(size: 16, text: "Age", textColor: .mainBlue)
-        ageTitleLabel.textColor = .mainBlue
-        ageTitleLabel.text = "Age"
         view.addSubview(ageTitleLabel)
         NSLayoutConstraint.activate([
             ageTitleLabel.topAnchor.constraint(equalTo: genderTextField.bottomAnchor, constant: 32),
@@ -205,11 +198,10 @@ class AddPetViewController: UIViewController {
                 month: selectedMonth ?? 0,
                 photo: petImageView.image ?? Img.iconsEdit.obj,
                 memberIds: memberIds
-            ) { [weak self] result in
+            ) { result in
                 switch result {
                 case .success(let petId):
-                    guard let self = self else { return }
-                    self.currentUser.petIds.append(petId)
+                    MemberModel.shared.current?.petIds.append(petId)
                     MemberModel.shared.updateCurrentUser()
                 case .failure(let error):
                     print("update petId to currentUser error:", error)
