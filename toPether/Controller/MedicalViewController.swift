@@ -70,7 +70,7 @@ class MedicalViewController: UIViewController {
         medicalTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(medicalTableView)
         NSLayoutConstraint.activate([
-            medicalTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 32),
+            medicalTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
             medicalTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)

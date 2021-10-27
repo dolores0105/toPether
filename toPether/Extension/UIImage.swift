@@ -23,6 +23,7 @@ enum Img: String {
     case iconsAdd
     case iconsDelete
     case iconsAddWhite
+    case iconsLocate
     
     var obj: UIImage {
         return UIImage(named: rawValue)!

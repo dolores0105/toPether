@@ -22,6 +22,7 @@
 		390791B62720138200B4735B /* NoBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B52720138200B4735B /* NoBorderTextField.swift */; };
 		3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612C27292E90007FC7C1 /* MedicalViewController.swift */; };
 		3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */; };
+		3917613127298C28007FC7C1 /* BorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917613027298C28007FC7C1 /* BorderView.swift */; };
 		394A77192721D65700978254 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashVC.swift */; };
 		394A771B2722990B00978254 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* Array.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -62,6 +63,7 @@
 		390791B52720138200B4735B /* NoBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBorderTextField.swift; sourceTree = "<group>"; };
 		3917612C27292E90007FC7C1 /* MedicalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalViewController.swift; sourceTree = "<group>"; };
 		3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalTableViewCell.swift; sourceTree = "<group>"; };
+		3917613027298C28007FC7C1 /* BorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderView.swift; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -133,12 +135,13 @@
 				390791AB271ECF1E00B4735B /* IconButton.swift */,
 				390791A9271ECEC900B4735B /* CircleButton.swift */,
 				394A77202723067300978254 /* RoundButton.swift */,
-				390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */,
 				390791B52720138200B4735B /* NoBorderTextField.swift */,
 				394A771E272305B000978254 /* BlueBorderTextField.swift */,
 				395FD009272052D8005911AA /* MediumLabel.swift */,
 				395FD00D27214AB6005911AA /* RegularLabel.swift */,
 				395FD00B27213C3B005911AA /* RoundCornerImageView.swift */,
+				390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */,
+				3917613027298C28007FC7C1 /* BorderView.swift */,
 				39558C9A2727B46400523D43 /* BlurView.swift */,
 			);
 			path = UIObjects;
@@ -369,6 +372,7 @@
 				3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */,
 				3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */,
 				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
+				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
 				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,

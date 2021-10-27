@@ -17,8 +17,8 @@ class RegularLabel: UILabel {
         self.textColor = textColor
         translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 20)
-        ])
+//        NSLayoutConstraint.activate([
+//            heightAnchor.constraint(equalToConstant: 20)
+//        ])
     }
 }
