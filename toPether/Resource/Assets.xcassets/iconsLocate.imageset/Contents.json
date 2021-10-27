@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iconsAddWhite@1x.png",
+      "filename" : "iconsLocate@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconsAddWhite@2x.png",
+      "filename" : "iconsLocate@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iconsAddWhite@3x.png",
+      "filename" : "iconsLocate@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -19,8 +19,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "original"
   }
 }

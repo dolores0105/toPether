@@ -118,7 +118,7 @@ class ProfileViewController: UIViewController {
         
         // MARK: Query data
         textField.text = currentUser.name
-        queryData(currentUser: currentUser)
+        queryData(currentUser: MemberModel.shared.current ?? self.currentUser)
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -173,7 +173,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapAddPet(sender: UIButton) {
-        let addPetViewController = AddPetViewController(currentUser: currentUser, selectedPet: nil)
+        let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
@@ -193,7 +193,7 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPet = pets[indexPath.row]
-        let editPetViewController = AddPetViewController(currentUser: currentUser, selectedPet: selectedPet)
+        let editPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: selectedPet)
         self.navigationController?.pushViewController(editPetViewController, animated: true)
     }
 }
@@ -209,14 +209,12 @@ extension ProfileViewController: UITableViewDelegate {
             MemberModel.shared.updateCurrentUser()
             
             // update that pet's memberIds
-            if let indexOfMemberId = self.pets[indexPath.row].memberIds.firstIndex(of: self.currentUser.id) {
-                self.pets[indexPath.row].memberIds.remove(at: indexOfMemberId)
-                PetModel.shared.updatePet(id: self.pets[indexPath.row].id, pet: self.pets[indexPath.row])
+            guard let indexOfMemberId = self.pets[indexPath.row].memberIds.firstIndex(of: self.currentUser.id) else {
+                print("can't find indexOfMemberId")
+                return
             }
-            
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .left)
-            tableView.endUpdates()
+            self.pets[indexPath.row].memberIds.remove(at: indexOfMemberId)
+            PetModel.shared.updatePet(id: self.pets[indexPath.row].id, pet: self.pets[indexPath.row])
             
             completionHandler(true)
         }

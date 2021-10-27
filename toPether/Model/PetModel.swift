@@ -91,4 +91,61 @@ class PetModel {
             }
         }
     }
+    
+    /* ---------------------Medical---------------------------- */
+    // MARK: Medical
+    func setMedical(petId: String, symptoms: String, dateOfVisit: Date, clinic: String, vetOrder: String, completion: @escaping (Result<Medical, Error>) -> Void) {
+        
+        let medicals = Firestore.firestore().collection("pets").document(petId).collection("medicals")
+        let document = medicals.document()
+        
+        let medicalRecord = Medical()
+        medicalRecord.id = document.documentID
+        medicalRecord.symptoms = symptoms
+        medicalRecord.dateOfVisit = dateOfVisit
+        medicalRecord.clinic = clinic
+        medicalRecord.vetOrder = vetOrder
+        
+        do {
+            try document.setData(from: medicalRecord)
+            completion(Result.success(medicalRecord))
+        } catch let error {
+            print("set medicalRecord error:", error)
+            completion(Result.failure(error))
+        }
+    }
+    
+    func queryMedicals(petId: String, completion: @escaping (Result<[Medical], Error>) -> Void) {
+        dataBase.collection("pets").document(petId).collection("medicals").order(by: "dateOfVisit", descending: true).getDocuments { (querySnapshot, error) in
+            if let querySnapshot = querySnapshot {
+                
+                let medicals = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Medical.self)
+                })
+                completion(Result.success(medicals))
+                
+            } else if let error = error {
+                completion(Result.failure(error))
+            }
+        }
+    }
+    
+    func updateMedical(petId: String, recordId: String, medical: Medical) { // completion
+        do {
+            try dataBase.collection("pets").document(petId).collection("medicals").document(recordId).setData(from: medical)
+            print("update medical:", medical.id)
+        } catch {
+            print("update medical error", error)
+        }
+    }
+    
+    func deleteMedical(petId: String, recordId: String) { // completion
+        dataBase.collection("pets").document(petId).collection("medicals").document(recordId).delete() { error in
+            if let error = error {
+                print("Error removing medical document: \(error)")
+            } else {
+                print("removed", recordId)
+            }
+        }
+    }
 }

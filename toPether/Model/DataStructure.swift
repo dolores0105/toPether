@@ -33,3 +33,11 @@ class Member: BaseObject, Codable {
     var petIds: [String] = []
     var qrCode: String = ""
 }
+
+class Medical: BaseObject, Codable {
+    var id: String = ""
+    var symptoms: String = ""
+    var dateOfVisit: Date = .init(timeIntervalSince1970: 0)
+    var clinic: String = ""
+    var vetOrder: String = ""
+}

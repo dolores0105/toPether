@@ -16,6 +16,8 @@ class BlueBorderTextField: UITextField {
         layer.borderColor = UIColor.mainBlue.cgColor
         layer.cornerRadius = 10
         textColor = .mainBlue
+        placeholder = text
+        setLeftPaddingPoints(amount: 12)
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

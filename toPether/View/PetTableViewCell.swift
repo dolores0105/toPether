@@ -49,7 +49,6 @@ class PetTableViewCell: UITableViewCell {
         ])
         
         nameLabel = MediumLabel(size: 18, text: nil, textColor: .mainBlue)
-//        nameLabel.textColor = .mainBlue
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: petImageView.topAnchor, constant: -6),
@@ -66,8 +65,7 @@ class PetTableViewCell: UITableViewCell {
             genderImageView.widthAnchor.constraint(equalTo: genderImageView.heightAnchor)
         ])
         
-        ageLabel = RegularLabel(size: 14)
-        ageLabel.textColor = .deepBlueGrey
+        ageLabel = RegularLabel(size: 14, text: nil, textColor: .deepBlueGrey)
         contentView.addSubview(ageLabel)
         NSLayoutConstraint.activate([
             ageLabel.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),

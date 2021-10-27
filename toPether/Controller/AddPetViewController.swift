@@ -91,7 +91,6 @@ class AddPetViewController: UIViewController {
         ])
         
         nameTextField = BlueBorderTextField(text: nil)
-        nameTextField.setLeftPaddingPoints(amount: 12)
         nameTextField.delegate = self
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
@@ -112,7 +111,6 @@ class AddPetViewController: UIViewController {
         genderPickerView.dataSource = self
         
         genderTextField = BlueBorderTextField(text: nil)
-        genderTextField.setLeftPaddingPoints(amount: 12)
         genderTextField.inputView = genderPickerView
         genderTextField.delegate = self
         view.addSubview(genderTextField)
@@ -135,7 +133,6 @@ class AddPetViewController: UIViewController {
         agePickerView.dataSource = self
         
         ageTextField = BlueBorderTextField(text: nil)
-        ageTextField.setLeftPaddingPoints(amount: 12)
         ageTextField.inputView = agePickerView
         ageTextField.delegate = self
         view.addSubview(ageTextField)
