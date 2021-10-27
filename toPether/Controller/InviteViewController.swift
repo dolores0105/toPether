@@ -49,7 +49,6 @@ class InviteViewController: UIViewController {
         ])
         
         idTextField = BlueBorderTextField(text: nil)
-        idTextField.setLeftPaddingPoints(amount: 12)
         idTextField.delegate = self
         view.addSubview(idTextField)
         NSLayoutConstraint.activate([
@@ -59,8 +58,6 @@ class InviteViewController: UIViewController {
         ])
         
         wrongInputLabel = RegularLabel(size: 14, text: "Could not find this user.", textColor: .red)
-//        wrongInputLabel.textColor = .red
-//        wrongInputLabel.text = "Could not find this user."
         wrongInputLabel.isHidden = true
         view.addSubview(wrongInputLabel)
         NSLayoutConstraint.activate([
