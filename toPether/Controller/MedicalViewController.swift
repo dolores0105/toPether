@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class MedicalViewController: UIViewController {
     
@@ -15,6 +17,7 @@ class MedicalViewController: UIViewController {
     }
     private var selectedPet: Pet!
     private var medicals = [Medical]()
+    private var listener: ListenerRegistration?
 //    private var medicalRecords = [Date: [Medical]]()
     
     private var navigationBackgroundView: NavigationBackgroundView!
@@ -122,10 +125,6 @@ class MedicalViewController: UIViewController {
 // MARK: extension
 extension MedicalViewController: UITableViewDataSource {
     
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 2
-//    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.medicals.count
     }
@@ -135,12 +134,33 @@ extension MedicalViewController: UITableViewDataSource {
         guard let cell = cell as? MedicalTableViewCell else { return cell }
         cell.selectionStyle = .none
         cell.reload(medical: medicals[indexPath.row])
+        
+//        listener?.remove()
+        listener = PetModel.shared.addMedicalListener(petId: selectedPet.id, recordId: medicals[indexPath.row].id, completion: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                
+                PetModel.shared.queryMedicals(petId: self.selectedPet.id) { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                        
+                    case .success(let records):
+                        self.medicals = records
+                        self.medicalTableView.reloadData()
+                        
+                    case .failure(let error):
+                        print("query medical error", error)
+                    }
+                }
+                
+            case .failure(let error):
+                print("addMedicalListener error", error)
+            }
+        })
+        
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        "section \(section)"
-//    }
 }
 
 extension MedicalViewController: UITableViewDelegate {

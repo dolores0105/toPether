@@ -148,4 +148,14 @@ class PetModel {
             }
         }
     }
+    
+    func addMedicalListener(petId: String, recordId: String, completion: @escaping (Result<Medical, Error>) -> Void) -> ListenerRegistration {
+        dataBase.collection("pets").document(petId).collection("medicals").document(recordId).addSnapshotListener { documentSnapshot, error in
+            if let medical = try? documentSnapshot?.data(as: Medical.self) {
+                completion(.success(medical))
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
 }
