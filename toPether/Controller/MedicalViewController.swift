@@ -14,6 +14,8 @@ class MedicalViewController: UIViewController {
         self.selectedPet = selectedPet
     }
     private var selectedPet: Pet!
+    private var medicals = [Medical]()
+//    private var medicalRecords = [Date: [Medical]]()
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var petNameLabel: RegularLabel!
@@ -75,42 +77,39 @@ class MedicalViewController: UIViewController {
             medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+        // MARK: data
         /* Create
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
         dateComponents.year = 2020
         dateComponents.month = 10
-        dateComponents.day = 27
-         dateComponents.hour = 15
-         dateComponents.minute = 30
+        dateComponents.day = 28
         let mockdate = dateComponents.date
         
         PetModel.shared.setMedical(petId: selectedPet.id, symptoms: "Mock symptoms", dateOfVisit: mockdate!, clinic: "Clinic", vetOrder: "Brush") { result in
             switch result {
             case .success(let medical):
-                print("medical mock", medical)
+                print("medical mock", medical.dateOfVisit)
             case .failure(let error):
                 print("medical mock error", error)
             }
         }
-        
-        
-        PetModel.shared.queryMedicals(petId: selectedPet.id) { result in // Read
+        */
+        // Read
+        PetModel.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let records):
-                for index in records {
-                    print("medical records", index.id)
-                }
-                let medicals = records
-                medicals.first?.symptoms = "Test againnnnn"
-                PetModel.shared.updateMedical(petId: self.selectedPet.id, recordId: records[0].id, medical: medicals.first!) // Update
+                self.medicals = records
+                self.medicalTableView.reloadData()
+//                self.medicalRecords = Dictionary(grouping: medicals, by: { $0.dateOfVisit })
                 
-                PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: records[1].id) // Delete
             case .failure(let error):
                 print("query medical error", error)
             }
         }
-        */
+        
     }
     
     // MARK: Functions
@@ -123,25 +122,25 @@ class MedicalViewController: UIViewController {
 // MARK: extension
 extension MedicalViewController: UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 2
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return self.medicals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
         guard let cell = cell as? MedicalTableViewCell else { return cell }
         cell.selectionStyle = .none
-//        cell.reload(medicals: medicals[indexPath.row])
+        cell.reload(medical: medicals[indexPath.row])
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        "section \(section)"
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        "section \(section)"
+//    }
 }
 
 extension MedicalViewController: UITableViewDelegate {

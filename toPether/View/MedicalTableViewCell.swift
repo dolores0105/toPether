@@ -11,6 +11,8 @@ class MedicalTableViewCell: UITableViewCell {
     
     private var borderView: BorderView!
     private var symptomLabel: MediumLabel!
+    private var dateImageView: RoundCornerImageView!
+    private var dateLabel: RegularLabel!
     private var locateImageView: RoundCornerImageView!
     private var clinicLabel: RegularLabel!
     private var vetOrderLabel: RegularLabel!
@@ -29,9 +31,7 @@ class MedicalTableViewCell: UITableViewCell {
             borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
         
-        symptomLabel = MediumLabel(size: 18,
-                                   text: "Mock symptoms Mock symptoms Mock symptoms Mock symptoms Mock symptoms Mock symptoms",
-                                   textColor: .mainBlue)
+        symptomLabel = MediumLabel(size: 18, text: nil, textColor: .mainBlue)
         symptomLabel.numberOfLines = 0
         contentView.addSubview(symptomLabel)
         NSLayoutConstraint.activate([
@@ -40,16 +40,33 @@ class MedicalTableViewCell: UITableViewCell {
             symptomLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -12)
         ])
         
+        dateImageView = RoundCornerImageView(img: Img.iconsClock.obj)
+        contentView.addSubview(dateImageView)
+        NSLayoutConstraint.activate([
+            dateImageView.topAnchor.constraint(equalTo: symptomLabel.bottomAnchor, constant: 12),
+            dateImageView.leadingAnchor.constraint(equalTo: borderView.leadingAnchor, constant: 12),
+            dateImageView.heightAnchor.constraint(equalToConstant: 18),
+            dateImageView.widthAnchor.constraint(equalTo: dateImageView.heightAnchor)
+        ])
+        
+        dateLabel = RegularLabel(size: 14, text: nil, textColor: .deepBlueGrey)
+        contentView.addSubview(dateLabel)
+        NSLayoutConstraint.activate([
+            dateLabel.centerYAnchor.constraint(equalTo: dateImageView.centerYAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: dateImageView.trailingAnchor, constant: 12),
+            dateLabel.widthAnchor.constraint(equalToConstant: 80)
+        ])
+        
         locateImageView = RoundCornerImageView(img: Img.iconsLocate.obj)
         contentView.addSubview(locateImageView)
         NSLayoutConstraint.activate([
-            locateImageView.topAnchor.constraint(equalTo: symptomLabel.bottomAnchor, constant: 12),
-            locateImageView.leadingAnchor.constraint(equalTo: borderView.leadingAnchor, constant: 12),
-            locateImageView.heightAnchor.constraint(equalToConstant: 20),
+            locateImageView.centerYAnchor.constraint(equalTo: dateImageView.centerYAnchor),
+            locateImageView.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 12),
+            locateImageView.heightAnchor.constraint(equalToConstant: 18),
             locateImageView.widthAnchor.constraint(equalTo: locateImageView.heightAnchor)
         ])
         
-        clinicLabel = RegularLabel(size: 14, text: "mock clinic", textColor: .deepBlueGrey)
+        clinicLabel = RegularLabel(size: 14, text: nil, textColor: .deepBlueGrey)
         contentView.addSubview(clinicLabel)
         NSLayoutConstraint.activate([
             clinicLabel.centerYAnchor.constraint(equalTo: locateImageView.centerYAnchor),
@@ -58,7 +75,7 @@ class MedicalTableViewCell: UITableViewCell {
         ])
         
         vetOrderLabel = RegularLabel(size: 17,
-                                     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum",
+                                     text: nil,
                                      textColor: .deepBlueGrey)
         vetOrderLabel.numberOfLines = 0
         contentView.addSubview(vetOrderLabel)
@@ -76,17 +93,14 @@ class MedicalTableViewCell: UITableViewCell {
     
     // MARK: functions
     func reload(medical: Medical) {
-        updateCell(medical: medical)
-        addListener()
-    }
-    
-    func updateCell(medical: Medical) {
         symptomLabel.text = medical.symptoms
         clinicLabel.text = medical.clinic
         vetOrderLabel.text = medical.vetOrder
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d YYYY"
+        dateFormatter.timeZone = TimeZone.current
+        dateLabel.text = dateFormatter.string(from: medical.dateOfVisit)
     }
     
-    func addListener() {
-        // updateCell(medical: <#T##Medical#>)
-    }
 }
