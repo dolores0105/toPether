@@ -61,6 +61,7 @@ class MedicalRecordViewController: UIViewController {
     }
     private func configSymptomsTextField() {
         symptomsTextField = BlueBorderTextField(text: nil)
+        symptomsTextField.delegate = self
         view.addSubview(symptomsTextField)
         NSLayoutConstraint.activate([
             symptomsTextField.topAnchor.constraint(equalTo: symptomsLabel.bottomAnchor, constant: 8),
@@ -104,6 +105,7 @@ class MedicalRecordViewController: UIViewController {
     
     private func configClinicTextField() {
         clinicTextField = BlueBorderTextField(text: nil)
+        clinicTextField.delegate = self
         view.addSubview(clinicTextField)
         NSLayoutConstraint.activate([
             clinicTextField.topAnchor.constraint(equalTo: clinicLabel.bottomAnchor, constant: 8),
@@ -124,6 +126,7 @@ class MedicalRecordViewController: UIViewController {
     
     private func configVetOrderTextField() {
         vetOrderTextField = BlueBorderTextField(text: nil)
+        vetOrderTextField.delegate = self
         view.addSubview(vetOrderTextField)
         NSLayoutConstraint.activate([
             vetOrderTextField.topAnchor.constraint(equalTo: vetOrderLabel.bottomAnchor, constant: 8),
@@ -151,6 +154,27 @@ class MedicalRecordViewController: UIViewController {
     }
     
     @objc func tapOK() {
+
+    }
+}
+
+extension MedicalRecordViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
+        if symptomsTextField.text != nil && clinicTextField.text != nil && vetOrderTextField.text != nil {
+            
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+            
+            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = clinicTextField.text, let vetOrder = vetOrderTextField.text else { return }
+            medical.symptoms = symptoms
+            medical.dateOfVisit = dateOfVisitDatePicker.date
+            medical.clinic = clinic
+            medical.vetOrder = vetOrder
+            
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
     }
 }

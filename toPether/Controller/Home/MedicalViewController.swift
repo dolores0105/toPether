@@ -167,6 +167,12 @@ extension MedicalViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedMedical = medicals[indexPath.row]
+        let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: selectedMedical)
+        navigationController?.pushViewController(medicalRecordVC, animated: true)
+    }
 }
 
 extension MedicalViewController: UITableViewDelegate {
