@@ -149,10 +149,16 @@ class PetModel {
         }
     }
     
-    func addMedicalListener(petId: String, recordId: String, completion: @escaping (Result<Medical, Error>) -> Void) -> ListenerRegistration {
-        dataBase.collection("pets").document(petId).collection("medicals").document(recordId).addSnapshotListener { documentSnapshot, error in
-            if let medical = try? documentSnapshot?.data(as: Medical.self) {
-                completion(.success(medical))
+    func addMedicalsListener(petId: String, completion: @escaping (Result<[Medical], Error>) -> Void) {
+        dataBase.collection("pets").document(petId).collection("medicals").addSnapshotListener { querySnapshot, error in
+            
+            if let querySnapshot = querySnapshot {
+                let medicals = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Medical.self)
+                })
+                let sortedmedicals = medicals.sorted { $0.dateOfVisit > $1.dateOfVisit }
+                completion(.success(sortedmedicals))
+                
             } else if let error = error {
                 completion(.failure(error))
             }

@@ -18,7 +18,6 @@ class MedicalViewController: UIViewController {
     private var selectedPet: Pet!
     private var medicals = [Medical]()
     private var listener: ListenerRegistration?
-//    private var medicalRecords = [Date: [Medical]]()
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var petNameLabel: RegularLabel!
@@ -65,7 +64,7 @@ class MedicalViewController: UIViewController {
         
         medicalTableView = UITableView()
         medicalTableView.register(MedicalTableViewCell.self, forCellReuseIdentifier: "MedicalTableViewCell")
-//        medicalTableView.separatorColor = .clear
+        medicalTableView.separatorColor = .clear
         medicalTableView.backgroundColor = .white
         medicalTableView.estimatedRowHeight = 100
         medicalTableView.rowHeight = UITableView.automaticDimension
@@ -106,13 +105,22 @@ class MedicalViewController: UIViewController {
             case .success(let records):
                 self.medicals = records
                 self.medicalTableView.reloadData()
-//                self.medicalRecords = Dictionary(grouping: medicals, by: { $0.dateOfVisit })
                 
             case .failure(let error):
                 print("query medical error", error)
             }
         }
         
+        PetModel.shared.addMedicalsListener(petId: selectedPet.id) { result in
+            switch result {
+            case .success(let records):
+                self.medicals = records
+                self.medicalTableView.reloadData()
+                
+            case .failure(let error):
+                print("query medical error", error)
+            }
+        }
     }
     
     // MARK: Functions
@@ -135,34 +143,25 @@ extension MedicalViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         cell.reload(medical: medicals[indexPath.row])
         
-//        listener?.remove()
-        listener = PetModel.shared.addMedicalListener(petId: selectedPet.id, recordId: medicals[indexPath.row].id, completion: { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(_):
-                
-                PetModel.shared.queryMedicals(petId: self.selectedPet.id) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                        
-                    case .success(let records):
-                        self.medicals = records
-                        self.medicalTableView.reloadData()
-                        
-                    case .failure(let error):
-                        print("query medical error", error)
-                    }
-                }
-                
-            case .failure(let error):
-                print("addMedicalListener error", error)
-            }
-        })
-        
         return cell
     }
 }
 
 extension MedicalViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+            
+            PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id)
+            
+            completionHandler(true)
+        }
+        
+        deleteAction.image = Img.iconsDelete.obj
+        deleteAction.backgroundColor = .white
+        
+        let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeAction.performsFirstActionWithFullSwipe = false
+        return swipeAction
+    }
 }
