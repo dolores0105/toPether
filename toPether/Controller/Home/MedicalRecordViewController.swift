@@ -154,7 +154,26 @@ class MedicalRecordViewController: UIViewController {
     }
     
     @objc func tapOK() {
-
+        if medical == nil {
+            PetModel.shared.setMedical(
+                petId: selectedPet.id,
+                symptoms: symptomsTextField.text ?? "no symptoms",
+                dateOfVisit: dateOfVisitDatePicker.date,
+                clinic: clinicTextField.text ?? "no clinic",
+                vetOrder: vetOrderTextField.text ?? "no orders") { [weak self] result in
+                    guard let self = self else { return }
+                    
+                    switch result {
+                    case .success(_):
+                        self.navigationController?.popViewController(animated: true)
+                        
+                    case .failure(let error):
+                        print("set medical record error:", error)
+                    }
+                }
+        } else {
+            print("update")
+        }
     }
 }
 
