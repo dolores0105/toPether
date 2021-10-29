@@ -9,8 +9,11 @@ import UIKit
 
 class MedicalTableViewCell: UITableViewCell {
     
+    private var dotView: UIView!
+    private var lineView: UIView!
     private var borderView: BorderView!
     private var symptomLabel: MediumLabel!
+    private var dateLabel: MediumLabel!
     private var locateImageView: RoundCornerImageView!
     private var clinicLabel: RegularLabel!
     private var vetOrderLabel: RegularLabel!
@@ -20,18 +23,50 @@ class MedicalTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = .white
         
+        dotView = UIView()
+        dotView.backgroundColor = .white
+        dotView.layer.borderWidth = 4
+        dotView.layer.borderColor = UIColor.mainYellow.cgColor
+        dotView.layer.cornerRadius = 10
+        contentView.addSubview(dotView)
+        dotView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dotView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            dotView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            dotView.heightAnchor.constraint(equalToConstant: 20),
+            dotView.widthAnchor.constraint(equalTo: dotView.heightAnchor)
+        ])
+        
+        lineView = UIView()
+        lineView.backgroundColor = .lightBlueGrey
+        contentView.addSubview(lineView)
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            lineView.centerXAnchor.constraint(equalTo: dotView.centerXAnchor),
+            lineView.widthAnchor.constraint(equalToConstant: 2),
+            lineView.topAnchor.constraint(equalTo: dotView.centerYAnchor),
+            lineView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+        contentView.bringSubviewToFront(dotView)
+        
+        dateLabel = MediumLabel(size: 16, text: nil, textColor: .deepBlueGrey)
+        contentView.addSubview(dateLabel)
+        NSLayoutConstraint.activate([
+            dateLabel.centerYAnchor.constraint(equalTo: dotView.centerYAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: dotView.trailingAnchor, constant: 12),
+            dateLabel.widthAnchor.constraint(equalToConstant: 160)
+        ])
+        
         borderView = BorderView()
         contentView.addSubview(borderView)
         NSLayoutConstraint.activate([
-            borderView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            borderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32),
+            borderView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12),
+            borderView.leadingAnchor.constraint(equalTo: dotView.trailingAnchor, constant: 12),
             borderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32),
-            borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
+            borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24)
         ])
         
-        symptomLabel = MediumLabel(size: 18,
-                                   text: "Mock symptoms Mock symptoms Mock symptoms Mock symptoms Mock symptoms Mock symptoms",
-                                   textColor: .mainBlue)
+        symptomLabel = MediumLabel(size: 18, text: nil, textColor: .mainBlue)
         symptomLabel.numberOfLines = 0
         contentView.addSubview(symptomLabel)
         NSLayoutConstraint.activate([
@@ -43,13 +78,13 @@ class MedicalTableViewCell: UITableViewCell {
         locateImageView = RoundCornerImageView(img: Img.iconsLocate.obj)
         contentView.addSubview(locateImageView)
         NSLayoutConstraint.activate([
-            locateImageView.topAnchor.constraint(equalTo: symptomLabel.bottomAnchor, constant: 12),
-            locateImageView.leadingAnchor.constraint(equalTo: borderView.leadingAnchor, constant: 12),
-            locateImageView.heightAnchor.constraint(equalToConstant: 20),
+            locateImageView.topAnchor.constraint(equalTo: symptomLabel.bottomAnchor, constant: 8),
+            locateImageView.leadingAnchor.constraint(equalTo: symptomLabel.leadingAnchor),
+            locateImageView.heightAnchor.constraint(equalToConstant: 18),
             locateImageView.widthAnchor.constraint(equalTo: locateImageView.heightAnchor)
         ])
         
-        clinicLabel = RegularLabel(size: 14, text: "mock clinic", textColor: .deepBlueGrey)
+        clinicLabel = RegularLabel(size: 14, text: nil, textColor: .deepBlueGrey)
         contentView.addSubview(clinicLabel)
         NSLayoutConstraint.activate([
             clinicLabel.centerYAnchor.constraint(equalTo: locateImageView.centerYAnchor),
@@ -57,9 +92,7 @@ class MedicalTableViewCell: UITableViewCell {
             clinicLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -12)
         ])
         
-        vetOrderLabel = RegularLabel(size: 17,
-                                     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum",
-                                     textColor: .deepBlueGrey)
+        vetOrderLabel = RegularLabel(size: 17, text: nil, textColor: .deepBlueGrey)
         vetOrderLabel.numberOfLines = 0
         contentView.addSubview(vetOrderLabel)
         NSLayoutConstraint.activate([
@@ -76,17 +109,14 @@ class MedicalTableViewCell: UITableViewCell {
     
     // MARK: functions
     func reload(medical: Medical) {
-        updateCell(medical: medical)
-        addListener()
-    }
-    
-    func updateCell(medical: Medical) {
         symptomLabel.text = medical.symptoms
         clinicLabel.text = medical.clinic
         vetOrderLabel.text = medical.vetOrder
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d YYYY"
+        dateFormatter.timeZone = TimeZone.current
+        dateLabel.text = dateFormatter.string(from: medical.dateOfVisit)
     }
     
-    func addListener() {
-        // updateCell(medical: <#T##Medical#>)
-    }
 }

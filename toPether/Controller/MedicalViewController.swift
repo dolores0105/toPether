@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class MedicalViewController: UIViewController {
     
@@ -14,11 +16,16 @@ class MedicalViewController: UIViewController {
         self.selectedPet = selectedPet
     }
     private var selectedPet: Pet!
+    private var medicals = [Medical]()
+    private var listener: ListenerRegistration?
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var petNameLabel: RegularLabel!
-    private var searchTextField: BlueBorderTextField!
+    private var searchBar: UISearchBar!
     private var medicalTableView: UITableView!
+
+    private var searching = false
+    private var searchedMedicals = [Medical]()
     
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
@@ -50,17 +57,26 @@ class MedicalViewController: UIViewController {
             petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         
-        searchTextField = BlueBorderTextField(text: "Search symptoms or vet's orders")
-        view.addSubview(searchTextField)
+        searchBar = UISearchBar()
+        searchBar.backgroundImage = UIImage()
+        searchBar.placeholder = "Search symptoms or vet's orders"
+        searchBar.delegate = self
+        searchBar.searchTextField.backgroundColor = .white
+        searchBar.layer.borderWidth = 1
+        searchBar.layer.borderColor = UIColor.mainBlue.cgColor
+        searchBar.layer.cornerRadius = 10
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchBar)
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
-            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            searchBar.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            searchBar.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         medicalTableView = UITableView()
         medicalTableView.register(MedicalTableViewCell.self, forCellReuseIdentifier: "MedicalTableViewCell")
-//        medicalTableView.separatorColor = .clear
+        medicalTableView.separatorColor = .clear
         medicalTableView.backgroundColor = .white
         medicalTableView.estimatedRowHeight = 100
         medicalTableView.rowHeight = UITableView.automaticDimension
@@ -70,47 +86,53 @@ class MedicalViewController: UIViewController {
         medicalTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(medicalTableView)
         NSLayoutConstraint.activate([
-            medicalTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
+            medicalTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
             medicalTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+        // MARK: data
         /* Create
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
         dateComponents.year = 2020
         dateComponents.month = 10
-        dateComponents.day = 27
-         dateComponents.hour = 15
-         dateComponents.minute = 30
+        dateComponents.day = 28
         let mockdate = dateComponents.date
         
         PetModel.shared.setMedical(petId: selectedPet.id, symptoms: "Mock symptoms", dateOfVisit: mockdate!, clinic: "Clinic", vetOrder: "Brush") { result in
             switch result {
             case .success(let medical):
-                print("medical mock", medical)
+                print("medical mock", medical.dateOfVisit)
             case .failure(let error):
                 print("medical mock error", error)
             }
         }
-        
-        
-        PetModel.shared.queryMedicals(petId: selectedPet.id) { result in // Read
+        */
+        // Read
+        PetModel.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let records):
-                for index in records {
-                    print("medical records", index.id)
-                }
-                let medicals = records
-                medicals.first?.symptoms = "Test againnnnn"
-                PetModel.shared.updateMedical(petId: self.selectedPet.id, recordId: records[0].id, medical: medicals.first!) // Update
+                self.medicals = records
+                self.medicalTableView.reloadData()
                 
-                PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: records[1].id) // Delete
             case .failure(let error):
                 print("query medical error", error)
             }
         }
-        */
+        
+        PetModel.shared.addMedicalsListener(petId: selectedPet.id) { result in
+            switch result {
+            case .success(let records):
+                self.medicals = records
+                self.medicalTableView.reloadData()
+                
+            case .failure(let error):
+                print("query medical error", error)
+            }
+        }
     }
     
     // MARK: Functions
@@ -123,27 +145,65 @@ class MedicalViewController: UIViewController {
 // MARK: extension
 extension MedicalViewController: UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        if searching {
+            return searchedMedicals.count
+        } else {
+            return medicals.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
         guard let cell = cell as? MedicalTableViewCell else { return cell }
         cell.selectionStyle = .none
-//        cell.reload(medicals: medicals[indexPath.row])
+        
+        if searching {
+            cell.reload(medical: searchedMedicals[indexPath.row])
+        } else {
+            cell.reload(medical: medicals[indexPath.row])
+        }
+        
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        "section \(section)"
     }
 }
 
 extension MedicalViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+            
+            PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id)
+            
+            completionHandler(true)
+        }
+        
+        deleteAction.image = Img.iconsDelete.obj
+        deleteAction.backgroundColor = .white
+        
+        let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeAction.performsFirstActionWithFullSwipe = false
+        return swipeAction
+    }
+}
+
+extension MedicalViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchedMedicals = medicals.filter({ (string) -> Bool in
+            return string.symptoms.lowercased().prefix(searchText.count) == searchText.lowercased() || string.vetOrder.lowercased().prefix(searchText.count) == searchText.lowercased()
+        })
+        searching = true
+        medicalTableView.reloadData()
+    }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searching = false
+        searchBar.text = ""
+        medicalTableView.reloadData()
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
 }

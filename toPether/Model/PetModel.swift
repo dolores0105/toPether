@@ -148,4 +148,35 @@ class PetModel {
             }
         }
     }
+    
+    func addMedicalsListener(petId: String, completion: @escaping (Result<[Medical], Error>) -> Void) {
+        dataBase.collection("pets").document(petId).collection("medicals").addSnapshotListener { querySnapshot, error in
+            
+            if let querySnapshot = querySnapshot {
+                let medicals = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Medical.self)
+                })
+                let sortedmedicals = medicals.sorted { $0.dateOfVisit > $1.dateOfVisit }
+                completion(.success(sortedmedicals))
+                
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+//    func filterMedical(petId: String, keyword: String, completion: @escaping (Result<[Medical], Error>) -> Void) {
+//        dataBase.collection("pets").document(petId).collection("medicals").whereField("symptoms", in: keyword).getDocuments { (querySnapshot, error) in
+//            if let querySnapshot = querySnapshot {
+//                
+//                let medicals = querySnapshot.documents.compactMap({ querySnapshot in
+//                    try? querySnapshot.data(as: Medical.self)
+//                })
+//                completion(Result.success(medicals))
+//                
+//            } else if let error = error {
+//                completion(Result.failure(error))
+//            }
+//        }
+//    }
 }
