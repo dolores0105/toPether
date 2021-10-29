@@ -20,7 +20,7 @@ class MedicalRecordViewController: UIViewController {
     private var symptomsLabel: MediumLabel!
     private var symptomsTextField: BlueBorderTextField!
     private var dateOfVisitLabel: MediumLabel!
-    private var dateOfVisitTextField: BlueBorderTextField!
+    private let dateOfVisitDatePicker = UIDatePicker()
     private var clinicLabel: MediumLabel!
     private var clinicTextField: BlueBorderTextField!
     private var vetOrderLabel: MediumLabel!
@@ -41,7 +41,7 @@ class MedicalRecordViewController: UIViewController {
         configSymptomsLabel()
         configSymptomsTextField()
         configDateOfVisitLabel()
-        configDateOfVisitTextField()
+        configDateOfVisitDatePicker()
         configClinicLabel()
         configClinicTextField()
         configVetOrderLabel()
@@ -79,13 +79,16 @@ class MedicalRecordViewController: UIViewController {
         ])
     }
     
-    private func configDateOfVisitTextField() {
-        dateOfVisitTextField = BlueBorderTextField(text: nil)
-        view.addSubview(dateOfVisitTextField)
+    private func configDateOfVisitDatePicker() {
+        dateOfVisitDatePicker.datePickerMode = .date
+        dateOfVisitDatePicker.preferredDatePickerStyle = .compact
+        dateOfVisitDatePicker.backgroundColor = .white
+        dateOfVisitDatePicker.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(dateOfVisitDatePicker)
         NSLayoutConstraint.activate([
-            dateOfVisitTextField.topAnchor.constraint(equalTo: dateOfVisitLabel.bottomAnchor, constant: 8),
-            dateOfVisitTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            dateOfVisitTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            dateOfVisitDatePicker.topAnchor.constraint(equalTo: dateOfVisitLabel.bottomAnchor, constant: 8),
+            dateOfVisitDatePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            dateOfVisitDatePicker.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
     
@@ -93,7 +96,7 @@ class MedicalRecordViewController: UIViewController {
         clinicLabel = MediumLabel(size: 16, text: "Clinic", textColor: .mainBlue)
         view.addSubview(clinicLabel)
         NSLayoutConstraint.activate([
-            clinicLabel.topAnchor.constraint(equalTo: dateOfVisitTextField.bottomAnchor, constant: 24),
+            clinicLabel.topAnchor.constraint(equalTo: dateOfVisitDatePicker.bottomAnchor, constant: 24),
             clinicLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             clinicLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
