@@ -138,7 +138,8 @@ class MedicalViewController: UIViewController {
     // MARK: Functions
     
     @objc func tapAdd(sender: UIButton) {
-        
+        let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: nil)
+        navigationController?.pushViewController(medicalRecordVC, animated: true)
     }
 }
 
