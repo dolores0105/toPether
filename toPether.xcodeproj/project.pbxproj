@@ -9,14 +9,14 @@
 /* Begin PBXBuildFile section */
 		390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390778DF271D1A2200B4735B /* GoogleService-Info.plist */; };
 		3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39079199271DA7B100B4735B /* PetCollectionViewCell.swift */; };
-		3907919D271DB56900B4735B /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFont.swift */; };
-		3907919F271DB6A600B4735B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColor.swift */; };
+		3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFontExtension.swift */; };
+		3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColorExtension.swift */; };
 		390791A3271E66E500B4735B /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A2271E66E400B4735B /* BorderButton.swift */; };
 		390791A6271E78F800B4735B /* PetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A5271E78F800B4735B /* PetModel.swift */; };
 		390791A8271E8C9900B4735B /* DataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A7271E8C9900B4735B /* DataStructure.swift */; };
 		390791AA271ECECA00B4735B /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A9271ECEC900B4735B /* CircleButton.swift */; };
 		390791AC271ECF1E00B4735B /* IconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AB271ECF1E00B4735B /* IconButton.swift */; };
-		390791AE271F008B00B4735B /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AD271F008B00B4735B /* UIImage.swift */; };
+		390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AD271F008B00B4735B /* UIImageExtension.swift */; };
 		390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AF271FFB8900B4735B /* ProfileViewController.swift */; };
 		390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */; };
 		390791B62720138200B4735B /* NoBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791B52720138200B4735B /* NoBorderTextField.swift */; };
@@ -24,7 +24,7 @@
 		3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */; };
 		3917613127298C28007FC7C1 /* BorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917613027298C28007FC7C1 /* BorderView.swift */; };
 		394A77192721D65700978254 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashVC.swift */; };
-		394A771B2722990B00978254 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* Array.swift */; };
+		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
 		394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771E272305B000978254 /* BlueBorderTextField.swift */; };
 		394A77212723067300978254 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77202723067300978254 /* RoundButton.swift */; };
@@ -36,7 +36,8 @@
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
 		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
 		395FD01027215D18005911AA /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberModel.swift */; };
-		39C6669E27267F4F00400C84 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextField.swift */; };
+		3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */; };
+		39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */; };
 		39C666A02726B30100400C84 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669F2726B30100400C84 /* InviteViewController.swift */; };
 		39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD19F271D126800B4DAFA /* AppDelegate.swift */; };
 		39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */; };
@@ -50,14 +51,14 @@
 /* Begin PBXFileReference section */
 		390778DF271D1A2200B4735B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		39079199271DA7B100B4735B /* PetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetCollectionViewCell.swift; sourceTree = "<group>"; };
-		3907919C271DB56900B4735B /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
-		3907919E271DB6A600B4735B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		3907919C271DB56900B4735B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
+		3907919E271DB6A600B4735B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		390791A2271E66E400B4735B /* BorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
 		390791A5271E78F800B4735B /* PetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetModel.swift; sourceTree = "<group>"; };
 		390791A7271E8C9900B4735B /* DataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructure.swift; sourceTree = "<group>"; };
 		390791A9271ECEC900B4735B /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		390791AB271ECF1E00B4735B /* IconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconButton.swift; sourceTree = "<group>"; };
-		390791AD271F008B00B4735B /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		390791AD271F008B00B4735B /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		390791AF271FFB8900B4735B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBackgroundView.swift; sourceTree = "<group>"; };
 		390791B52720138200B4735B /* NoBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBorderTextField.swift; sourceTree = "<group>"; };
@@ -65,7 +66,7 @@
 		3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalTableViewCell.swift; sourceTree = "<group>"; };
 		3917613027298C28007FC7C1 /* BorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderView.swift; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
-		394A771A2722990B00978254 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
 		394A771E272305B000978254 /* BlueBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBorderTextField.swift; sourceTree = "<group>"; };
 		394A77202723067300978254 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
@@ -77,7 +78,8 @@
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
 		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
 		395FD00F27215D18005911AA /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
-		39C6669D27267F4F00400C84 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
+		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		39EDD19C271D126800B4DAFA /* toPether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toPether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EDD19F271D126800B4DAFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,7 +88,7 @@
 		39EDD1A6271D126800B4DAFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		39EDD1A8271D126E00B4DAFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39EDD1AB271D126E00B4DAFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		3E83461B41D9606803364ABF /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
 		FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
@@ -110,6 +112,11 @@
 				39558C9E2728498A00523D43 /* LottieDone.json */,
 				390778DF271D1A2200B4735B /* GoogleService-Info.plist */,
 				39EDD1A8271D126E00B4DAFA /* Assets.xcassets */,
+				39EDD19F271D126800B4DAFA /* AppDelegate.swift */,
+				39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */,
+				39EDD1A5271D126800B4DAFA /* Main.storyboard */,
+				39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */,
+				39EDD1AD271D126E00B4DAFA /* Info.plist */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -117,13 +124,9 @@
 		39079194271D715700B4735B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				3988E26B272BDA1A00AACFD6 /* Home */,
+				3988E26C272BDA2C00AACFD6 /* Profile */,
 				394A77182721D65700978254 /* SplashVC.swift */,
-				39EDD1A3271D126800B4DAFA /* HomeViewController.swift */,
-				3917612C27292E90007FC7C1 /* MedicalViewController.swift */,
-				39C6669F2726B30100400C84 /* InviteViewController.swift */,
-				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
-				394A771C2722FE6C00978254 /* AddPetViewController.swift */,
-				39558C9C2727CED900523D43 /* GetInvitationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -160,11 +163,11 @@
 		3907919B271DB54800B4735B /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				3907919C271DB56900B4735B /* UIFont.swift */,
-				3907919E271DB6A600B4735B /* UIColor.swift */,
-				390791AD271F008B00B4735B /* UIImage.swift */,
-				394A771A2722990B00978254 /* Array.swift */,
-				39C6669D27267F4F00400C84 /* UITextField.swift */,
+				3907919C271DB56900B4735B /* UIFontExtension.swift */,
+				3907919E271DB6A600B4735B /* UIColorExtension.swift */,
+				390791AD271F008B00B4735B /* UIImageExtension.swift */,
+				394A771A2722990B00978254 /* ArrayExtension.swift */,
+				39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -177,6 +180,27 @@
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3988E26B272BDA1A00AACFD6 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				39EDD1A3271D126800B4DAFA /* HomeViewController.swift */,
+				3917612C27292E90007FC7C1 /* MedicalViewController.swift */,
+				3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */,
+				39C6669F2726B30100400C84 /* InviteViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		3988E26C272BDA2C00AACFD6 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				39558C9C2727CED900523D43 /* GetInvitationViewController.swift */,
+				394A771C2722FE6C00978254 /* AddPetViewController.swift */,
+				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		39EDD193271D126800B4DAFA = {
@@ -206,11 +230,6 @@
 				39079194271D715700B4735B /* Controller */,
 				39079195271D7D2100B4735B /* UIObjects */,
 				390778E2271D70B700B4735B /* Resource */,
-				39EDD19F271D126800B4DAFA /* AppDelegate.swift */,
-				39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */,
-				39EDD1A5271D126800B4DAFA /* Main.storyboard */,
-				39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */,
-				39EDD1AD271D126E00B4DAFA /* Info.plist */,
 			);
 			path = toPether;
 			sourceTree = "<group>";
@@ -377,11 +396,11 @@
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
 				395FD00A272052D8005911AA /* MediumLabel.swift in Sources */,
-				3907919F271DB6A600B4735B /* UIColor.swift in Sources */,
-				39C6669E27267F4F00400C84 /* UITextField.swift in Sources */,
+				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
+				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
-				394A771B2722990B00978254 /* Array.swift in Sources */,
+				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
@@ -389,16 +408,17 @@
 				394A77192721D65700978254 /* SplashVC.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
 				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
-				3907919D271DB56900B4735B /* UIFont.swift in Sources */,
+				3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */,
 				395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */,
 				39C666A02726B30100400C84 /* InviteViewController.swift in Sources */,
 				390791A8271E8C9900B4735B /* DataStructure.swift in Sources */,
 				39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */,
+				3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */,
 				390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */,
 				394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */,
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,
-				390791AE271F008B00B4735B /* UIImage.swift in Sources */,
+				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -476,7 +496,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -531,7 +551,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
