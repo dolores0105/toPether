@@ -37,18 +37,23 @@ class SplashVC: UIViewController {
     }
     
     private func gotoTabbarVC() {
-        //HomePage
+        // HomePage
         let homeViewController = HomeViewController()
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
-        homeNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsHomeNormal.obj, selectedImage: Img.iconsHomeSelected.obj)
+        homeNavigationController.tabBarItem = UITabBarItem(title: "Home", image: Img.iconsHomeNormal.obj, selectedImage: Img.iconsHomeSelected.obj)
         
-        //ProfilePage
+        // ToDoPage
+        let toDoViewController = ToDoViewController()
+        let toDoNavigationController = UINavigationController(rootViewController: toDoViewController)
+        toDoNavigationController.tabBarItem = UITabBarItem(title: "To-Do", image: Img.iconsTodoNormal.obj, selectedImage: Img.iconsTodoSelected.obj)
+        
+        // ProfilePage
         let profileViewController = ProfileViewController()
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-        profileNavigationController.tabBarItem = UITabBarItem(title: nil, image: Img.iconsProfileNormal.obj, selectedImage: Img.iconsProfileSelected.obj)
-        
+        profileNavigationController.tabBarItem = UITabBarItem(title: "Profile", image: Img.iconsProfileNormal.obj, selectedImage: Img.iconsProfileSelected.obj)
+
         let tabBarViewController = UITabBarController()
-        tabBarViewController.setViewControllers([homeNavigationController, profileNavigationController], animated: false)
+        tabBarViewController.setViewControllers([homeNavigationController, toDoNavigationController, profileNavigationController], animated: false)
         
         UIApplication.shared.keyWindow?.rootViewController = tabBarViewController
     }

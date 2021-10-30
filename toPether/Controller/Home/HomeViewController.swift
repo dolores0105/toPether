@@ -88,7 +88,7 @@ class HomeViewController: UIViewController {
         view.addSubview(buttonStackView)
         let buttons = [
             IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsFoodRecords),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsFood),
             IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]

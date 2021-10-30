@@ -36,6 +36,8 @@
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
 		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
 		395FD01027215D18005911AA /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberModel.swift */; };
+		39816073272D403B0033930D /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816072272D403B0033930D /* ToDoViewController.swift */; };
+		39816076272D7AB40033930D /* layingCat.json in Resources */ = {isa = PBXBuildFile; fileRef = 39816075272D7AB40033930D /* layingCat.json */; };
 		3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */; };
 		39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */; };
 		39C666A02726B30100400C84 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669F2726B30100400C84 /* InviteViewController.swift */; };
@@ -78,6 +80,8 @@
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
 		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
 		395FD00F27215D18005911AA /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
+		39816072272D403B0033930D /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
+		39816075272D7AB40033930D /* layingCat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = layingCat.json; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				39816075272D7AB40033930D /* layingCat.json */,
 				39558C9E2728498A00523D43 /* LottieDone.json */,
 				390778DF271D1A2200B4735B /* GoogleService-Info.plist */,
 				39EDD1A8271D126E00B4DAFA /* Assets.xcassets */,
@@ -126,6 +131,7 @@
 			children = (
 				3988E26B272BDA1A00AACFD6 /* Home */,
 				3988E26C272BDA2C00AACFD6 /* Profile */,
+				39816074272D40400033930D /* ToDo */,
 				394A77182721D65700978254 /* SplashVC.swift */,
 			);
 			path = Controller;
@@ -180,6 +186,14 @@
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		39816074272D40400033930D /* ToDo */ = {
+			isa = PBXGroup;
+			children = (
+				39816072272D403B0033930D /* ToDoViewController.swift */,
+			);
+			path = ToDo;
 			sourceTree = "<group>";
 		};
 		3988E26B272BDA1A00AACFD6 /* Home */ = {
@@ -316,6 +330,7 @@
 				39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */,
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
 				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
+				39816076272D7AB40033930D /* layingCat.json in Resources */,
 				390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +434,7 @@
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,
 				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
+				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,7 @@ import UIKit
 
 enum Img: String {
     case iconsMessage
-    case iconsFoodRecords
+    case iconsFood
     case iconsMedicalRecords
     case iconsGallery
     case iconsGenderFemale
@@ -25,6 +25,8 @@ enum Img: String {
     case iconsAddWhite
     case iconsLocate
     case iconsClock
+    case iconsTodoNormal
+    case iconsTodoSelected
     
     var obj: UIImage {
         return UIImage(named: rawValue)!
