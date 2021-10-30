@@ -246,7 +246,7 @@ extension AddPetViewController: UINavigationControllerDelegate {
 extension AddPetViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if petImageView.image != nil && nameTextField.text != nil && genderTextField.text != nil && ageTextField.text != nil {
+        if petImageView.image != nil && nameTextField.hasText && genderTextField.hasText && ageTextField.hasText {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow

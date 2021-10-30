@@ -47,6 +47,8 @@ class MedicalRecordViewController: UIViewController {
         configVetOrderLabel()
         configVetOrderTextField()
         configOkButton()
+        
+        renderExistingData(medical: medical)
     }
     
     // MARK: layout
@@ -153,15 +155,45 @@ class MedicalRecordViewController: UIViewController {
         ])
     }
     
+    func renderExistingData(medical: Medical?) {
+        guard let medical = medical else { return }
+        
+        symptomsTextField.text = medical.symptoms
+        clinicTextField.text = medical.clinic
+        vetOrderTextField.text = medical.vetOrder
+        dateOfVisitDatePicker.date = medical.dateOfVisit
+    }
+    
     @objc func tapOK() {
-
+        if medical == nil {
+            PetModel.shared.setMedical(
+                petId: selectedPet.id,
+                symptoms: symptomsTextField.text ?? "no symptoms",
+                dateOfVisit: dateOfVisitDatePicker.date,
+                clinic: clinicTextField.text ?? "no clinic",
+                vetOrder: vetOrderTextField.text ?? "no orders") { [weak self] result in
+                    guard let self = self else { return }
+                    
+                    switch result {
+                    case .success(_):
+                        self.navigationController?.popViewController(animated: true)
+                        
+                    case .failure(let error):
+                        print("set medical record error:", error)
+                    }
+                }
+        } else {
+            guard let medical = medical else { return }
+            PetModel.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
 extension MedicalRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if symptomsTextField.text != nil && clinicTextField.text != nil && vetOrderTextField.text != nil {
+        if symptomsTextField.hasText && clinicTextField.hasText && vetOrderTextField.hasText {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
