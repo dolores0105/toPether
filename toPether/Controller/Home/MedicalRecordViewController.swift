@@ -193,7 +193,7 @@ class MedicalRecordViewController: UIViewController {
 extension MedicalRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if symptomsTextField.text != nil && clinicTextField.text != nil && vetOrderTextField.text != nil {
+        if symptomsTextField.hasText && clinicTextField.hasText && vetOrderTextField.hasText {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
