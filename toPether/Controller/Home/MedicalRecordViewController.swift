@@ -183,7 +183,9 @@ class MedicalRecordViewController: UIViewController {
                     }
                 }
         } else {
-            print("update")
+            guard let medical = medical else { return }
+            PetModel.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical)
+            self.navigationController?.popViewController(animated: true)
         }
     }
 }
