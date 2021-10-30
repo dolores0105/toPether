@@ -3,9 +3,10 @@
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/19.
-//
+// swiftlint:disable function_parameter_count
 
 import Firebase
+import Foundation
 
 class PetModel {
     
@@ -161,6 +162,69 @@ class PetModel {
                 
             } else if let error = error {
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    /* ---------------------Food---------------------------- */
+    // MARK: Food
+    func setFood(petId: String, name: String, weight: String, unit: String, price: String, market: String, dateOfPurchase: Date, note: String, completion: @escaping (Result<Food, Error>) -> Void) {
+        
+        let foods = Firestore.firestore().collection("pets").document(petId).collection("foods")
+        let document = foods.document()
+        
+        let foodRecord = Food()
+        foodRecord.id = document.documentID
+        foodRecord.name = name
+        foodRecord.weight = weight
+        foodRecord.unit = unit
+        foodRecord.price = price
+        foodRecord.market = market
+        foodRecord.dateOfPurchase = dateOfPurchase
+        foodRecord.note = note
+        
+        do {
+            try document.setData(from: foodRecord)
+            completion(Result.success(foodRecord))
+        } catch let error {
+            print("set foodRecord error:", error)
+            completion(Result.failure(error))
+        }
+    }
+    
+    func queryFoods(petId: String, completion: @escaping (Result<[Food], Error>) -> Void) {
+        
+        dataBase.collection("pets").document(petId).collection("foods").order(by: "dateOfPurchase", descending: true).getDocuments { (querySnapshot, error) in
+            
+            if let querySnapshot = querySnapshot {
+                
+                let foods = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Food.self)
+                })
+                completion(Result.success(foods))
+                
+            } else if let error = error {
+                completion(Result.failure(error))
+            }
+        }
+    }
+    
+    func updateFood(petId: String, recordId: String, food: Food) {
+        do {
+            try dataBase.collection("pets").document(petId).collection("foods").document(recordId).setData(from: food)
+            print("update food:", food.id)
+        } catch {
+            print("update food error", error)
+        }
+    }
+    
+    func deleteFood(petId: String, recordId: String) {
+        dataBase.collection("pets").document(petId).collection("foods").document(recordId).delete() {
+            error in
+            if let error = error {
+                print("Error removing food document: \(error)")
+            } else {
+                print("removed food", recordId)
             }
         }
     }

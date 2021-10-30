@@ -93,24 +93,6 @@ class MedicalViewController: UIViewController {
         ])
         
         // MARK: data
-        /* Create
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        dateComponents.year = 2020
-        dateComponents.month = 10
-        dateComponents.day = 28
-        let mockdate = dateComponents.date
-        
-        PetModel.shared.setMedical(petId: selectedPet.id, symptoms: "Mock symptoms", dateOfVisit: mockdate!, clinic: "Clinic", vetOrder: "Brush") { result in
-            switch result {
-            case .success(let medical):
-                print("medical mock", medical.dateOfVisit)
-            case .failure(let error):
-                print("medical mock error", error)
-            }
-        }
-        */
-        // Read
         PetModel.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {

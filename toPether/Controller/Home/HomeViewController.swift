@@ -88,7 +88,7 @@ class HomeViewController: UIViewController {
         view.addSubview(buttonStackView)
         let buttons = [
             IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsFood),
+            IconButton(self, action: #selector(tapFoodButton), img: .iconsFood),
             IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]
@@ -108,6 +108,11 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: functions
+    @objc private func tapFoodButton(_: BorderButton) {
+        let foodVC = FoodViewController(selectedPet: self.pets[petIndex])
+        navigationController?.pushViewController(foodVC, animated: true)
+    }
+    
     @objc private func tapMedicalButton(_: BorderButton) {
         let medicalVC = MedicalViewController(selectedPet: self.pets[petIndex])
         navigationController?.pushViewController(medicalVC, animated: true)
