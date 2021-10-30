@@ -39,6 +39,8 @@
 		39816073272D403B0033930D /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816072272D403B0033930D /* ToDoViewController.swift */; };
 		39816076272D7AB40033930D /* layingCat.json in Resources */ = {isa = PBXBuildFile; fileRef = 39816075272D7AB40033930D /* layingCat.json */; };
 		39816078272D8BCE0033930D /* FoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816077272D8BCE0033930D /* FoodViewController.swift */; };
+		3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816079272D97C60033930D /* BorderSearchBar.swift */; };
+		3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607B272D9ACB0033930D /* FoodTableViewCell.swift */; };
 		3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */; };
 		39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */; };
 		39C666A02726B30100400C84 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669F2726B30100400C84 /* InviteViewController.swift */; };
@@ -84,6 +86,8 @@
 		39816072272D403B0033930D /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		39816075272D7AB40033930D /* layingCat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = layingCat.json; sourceTree = "<group>"; };
 		39816077272D8BCE0033930D /* FoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewController.swift; sourceTree = "<group>"; };
+		39816079272D97C60033930D /* BorderSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderSearchBar.swift; sourceTree = "<group>"; };
+		3981607B272D9ACB0033930D /* FoodTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTableViewCell.swift; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 				390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */,
 				3917613027298C28007FC7C1 /* BorderView.swift */,
 				39558C9A2727B46400523D43 /* BlurView.swift */,
+				39816079272D97C60033930D /* BorderSearchBar.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				39079199271DA7B100B4735B /* PetCollectionViewCell.swift */,
 				395FD0072720517A005911AA /* PetTableViewCell.swift */,
 				3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */,
+				3981607B272D9ACB0033930D /* FoodTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -410,6 +416,7 @@
 				3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */,
 				3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */,
 				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
+				3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */,
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
 				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
@@ -438,6 +445,7 @@
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,
 				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
+				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
 			);

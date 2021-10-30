@@ -21,7 +21,7 @@ class MedicalViewController: UIViewController {
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var petNameLabel: RegularLabel!
-    private var searchBar: UISearchBar!
+    private var searchBar: BorderSearchBar!
     private var medicalTableView: UITableView!
 
     private var searching = false
@@ -57,21 +57,13 @@ class MedicalViewController: UIViewController {
             petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         
-        searchBar = UISearchBar()
-        searchBar.backgroundImage = UIImage()
-        searchBar.placeholder = "Search symptoms or vet's orders"
+        searchBar = BorderSearchBar(placeholder: "Search for symptoms or vet's orders")
         searchBar.delegate = self
-        searchBar.searchTextField.backgroundColor = .white
-        searchBar.layer.borderWidth = 1
-        searchBar.layer.borderColor = UIColor.mainBlue.cgColor
-        searchBar.layer.cornerRadius = 10
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            searchBar.heightAnchor.constraint(equalToConstant: 40)
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
         
         medicalTableView = UITableView()
