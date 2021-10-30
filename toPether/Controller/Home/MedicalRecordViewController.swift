@@ -47,6 +47,8 @@ class MedicalRecordViewController: UIViewController {
         configVetOrderLabel()
         configVetOrderTextField()
         configOkButton()
+        
+        renderExistingData(medical: medical)
     }
     
     // MARK: layout
@@ -151,6 +153,15 @@ class MedicalRecordViewController: UIViewController {
             okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             okButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32)
         ])
+    }
+    
+    func renderExistingData(medical: Medical?) {
+        guard let medical = medical else { return }
+        
+        symptomsTextField.text = medical.symptoms
+        clinicTextField.text = medical.clinic
+        vetOrderTextField.text = medical.vetOrder
+        dateOfVisitDatePicker.date = medical.dateOfVisit
     }
     
     @objc func tapOK() {
