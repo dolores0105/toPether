@@ -119,7 +119,17 @@ class FoodViewController: UIViewController {
                 print("query foods error", error)
             }
         }
-         
+        
+        PetModel.shared.addFoodsListener(petId: selectedPet.id) { result in
+            switch result {
+            case .success(let records):
+                self.foods = records
+                self.foodTableView.reloadData()
+                
+            case .failure(let error):
+                print("listen foods error", error)
+            }
+        }
     }
     
     @objc func tapAdd(_: UIButton) {
