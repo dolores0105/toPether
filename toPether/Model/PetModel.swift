@@ -228,4 +228,21 @@ class PetModel {
             }
         }
     }
+    
+    func addFoodsListener(petId: String, completion: @escaping (Result<[Food], Error>) -> Void) {
+        dataBase.collection("pets").document(petId).collection("foods").addSnapshotListener { querySnapshot, error in
+            
+            if let querySnapshot = querySnapshot {
+                let foods = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Food.self)
+                })
+                
+                let sortedfoods = foods.sorted { $0.dateOfPurchase > $1.dateOfPurchase }
+                completion(.success(sortedfoods))
+                
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
 }

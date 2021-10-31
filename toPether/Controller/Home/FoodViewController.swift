@@ -21,6 +21,10 @@ class FoodViewController: UIViewController {
     private var searchBar: UISearchBar!
     private var foodTableView: UITableView!
     
+    private var searching = false
+    private var keyword: String?
+    private var searchedFoods = [Food]()
+    
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Food"
@@ -119,7 +123,17 @@ class FoodViewController: UIViewController {
                 print("query foods error", error)
             }
         }
-         
+        
+        PetModel.shared.addFoodsListener(petId: selectedPet.id) { result in
+            switch result {
+            case .success(let records):
+                self.foods = records
+                self.foodTableView.reloadData()
+                
+            case .failure(let error):
+                print("listen foods error", error)
+            }
+        }
     }
     
     @objc func tapAdd(_: UIButton) {
@@ -127,43 +141,81 @@ class FoodViewController: UIViewController {
     }
 }
 
-extension FoodViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        searchedMedicals = medicals.filter({ (string) -> Bool in
-//            return string.symptoms.lowercased().prefix(searchText.count) == searchText.lowercased() || string.vetOrder.lowercased().prefix(searchText.count) == searchText.lowercased()
-//        })
-//        searching = true
-//        medicalTableView.reloadData()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        searching = false
-//        searchBar.text = ""
-//        medicalTableView.reloadData()
-        searchBar.endEditing(true)
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.endEditing(true)
-    }
-}
-
 extension FoodViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return foods.count
+        if searching {
+            return searchedFoods.count
+        } else {
+            return foods.count
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
         guard let cell = cell as? FoodTableViewCell else { return cell }
-
         cell.selectionStyle = .none
-        cell.reload(food: foods[indexPath.row])
+        
+        if searching {
+            cell.reload(food: searchedFoods[indexPath.row])
+        } else {
+            cell.reload(food: foods[indexPath.row])
+        }
         
         return cell
     }
 }
 
 extension FoodViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") {
+            [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+            
+            PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
+            
+            completionHandler(true)
+        }
+        
+        deleteAction.image = Img.iconsDelete.obj
+        deleteAction.backgroundColor = .white
+        
+        let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeAction.performsFirstActionWithFullSwipe = false
+        return swipeAction
+    }
+}
+
+extension FoodViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        keyword = searchBar.text
+        searching = true
+        search(keyword: keyword)
+        foodTableView.reloadData()
+    }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        keyword = searchBar.text
+        search(keyword: keyword)
+        searching = true
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searching = false
+        searchBar.text = ""
+        foodTableView.reloadData()
+        searchBar.endEditing(true)
+    }
+    
+    private func search(keyword: String?) {
+        guard let keyword = self.keyword else { return }
+        if keyword != "" {
+            searchedFoods = foods.filter({ $0.name.lowercased().contains(keyword.lowercased()) || $0.note.lowercased().contains(keyword.lowercased()) })
+        } else {
+            searchedFoods = foods
+            searching = false
+            searchBar.endEditing(true)
+        }
+    }
 }

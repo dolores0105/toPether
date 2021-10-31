@@ -25,6 +25,7 @@ class MedicalViewController: UIViewController {
     private var medicalTableView: UITableView!
 
     private var searching = false
+    private var keyword: String?
     private var searchedMedicals = [Medical]()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -170,11 +171,17 @@ extension MedicalViewController: UITableViewDelegate {
 
 extension MedicalViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedMedicals = medicals.filter({ (string) -> Bool in
-            return string.symptoms.lowercased().prefix(searchText.count) == searchText.lowercased() || string.vetOrder.lowercased().prefix(searchText.count) == searchText.lowercased()
-        })
+        keyword = searchBar.text
+        search(keyword: searchText)
         searching = true
         medicalTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        keyword = searchBar.text
+        search(keyword: keyword)
+        searching = true
+        searchBar.endEditing(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -184,7 +191,14 @@ extension MedicalViewController: UISearchBarDelegate {
         searchBar.endEditing(true)
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.endEditing(true)
+    private func search(keyword: String?) {
+        guard let keyword = self.keyword else { return }
+        if keyword != "" {
+            searchedMedicals = medicals.filter({ $0.symptoms.lowercased().contains(keyword.lowercased()) || $0.vetOrder.lowercased().contains(keyword.lowercased()) })
+        } else {
+            searchedMedicals = medicals
+            searching = false
+            searchBar.endEditing(true)
+        }
     }
 }
