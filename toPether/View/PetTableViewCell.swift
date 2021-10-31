@@ -102,12 +102,7 @@ class PetTableViewCell: UITableViewCell {
     func updateCell(pet: Pet) {
         petImageView.image = pet.photoImage
         nameLabel.text = pet.name
-        
-        var year: Int?
-        var month: Int?
-        (year, month) = getYearMonth(from: pet.birthday)
-        guard let year = year, let month = month else { return }
-        ageLabel.text = "\(year)y  \(month)m"
+        ageLabel.text = pet.ageInfo
         
         if pet.gender == "male" {
             genderImageView.image = Img.iconsGenderMale.obj
@@ -132,12 +127,5 @@ class PetTableViewCell: UITableViewCell {
                 }
                 
             })
-    }
-    
-    private func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示
-        let calendar = Calendar.current
-        let today = Date()
-        let components = calendar.dateComponents([.year, .month], from: birthday, to: today)
-        return (components.year, components.month)
     }
 }

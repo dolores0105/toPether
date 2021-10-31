@@ -54,6 +54,7 @@
 		39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A8271D126E00B4DAFA /* Assets.xcassets */; };
 		39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */; };
 		AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E83461B41D9606803364ABF /* Pods_toPether.framework */; };
+		CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +108,7 @@
 		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		3E83461B41D9606803364ABF /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
+		CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
 		FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -200,6 +202,7 @@
 				390791A5271E78F800B4735B /* PetModel.swift */,
 				395FD00F27215D18005911AA /* MemberModel.swift */,
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
+				CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
+				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,

@@ -149,8 +149,8 @@ extension HomeViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let petCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
-        guard let petCell = petCell as? PetCollectionViewCell else { return petCell }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
+        guard let petCell = cell as? PetCollectionViewCell else { return cell }
 
         petCell.reload(pet: self.pets[indexPath.item])
 

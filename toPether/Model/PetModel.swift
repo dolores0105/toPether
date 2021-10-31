@@ -59,6 +59,11 @@ class PetModel {
     // MARK: Query pets
     // Use petIds array of a members data to query pets data that is owned by that member
     func queryPets(ids: [String], completion: @escaping (Result<[Pet], Error>) -> Void) {
+
+        guard !ids.isEmpty else { // if ids is an empty array
+            completion(Result.failure(CommonError.emptyArrayInFilter))
+            return
+        }
         dataBase.collection("pets").whereField(FieldPath.documentID(), in: ids).order(by: FieldPath.documentID()).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 

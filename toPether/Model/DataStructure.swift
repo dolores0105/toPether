@@ -25,6 +25,11 @@ class Pet: BaseObject, Codable {
     var photoImage: UIImage {
         UIImage(data: Data(base64Encoded: photo) ?? .init()) ?? .init()
     }
+    
+    var ageInfo: String? {
+        guard case let (year?, month?) = PetModel.shared.getYearMonth(from: birthday) else { return nil }
+        return String(year) + "y  " + String(month) + "m"
+    }
 }
 
 class Member: BaseObject, Codable {
