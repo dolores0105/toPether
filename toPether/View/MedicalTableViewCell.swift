@@ -9,11 +9,11 @@ import UIKit
 
 class MedicalTableViewCell: UITableViewCell {
     
-    private var dotView: UIView!
-    private var lineView: UIView!
+    private var dotView: DotView!
+    private var lineView: LineView!
+    private var dateLabel: MediumLabel!
     private var borderView: BorderView!
     private var symptomLabel: MediumLabel!
-    private var dateLabel: MediumLabel!
     private var locateImageView: RoundCornerImageView!
     private var clinicLabel: RegularLabel!
     private var vetOrderLabel: RegularLabel!
@@ -23,27 +23,17 @@ class MedicalTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = .white
         
-        dotView = UIView()
-        dotView.backgroundColor = .white
-        dotView.layer.borderWidth = 4
-        dotView.layer.borderColor = UIColor.mainYellow.cgColor
-        dotView.layer.cornerRadius = 10
+        dotView = DotView(bordercolor: .mainYellow, size: 20)
         contentView.addSubview(dotView)
-        dotView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             dotView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            dotView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            dotView.heightAnchor.constraint(equalToConstant: 20),
-            dotView.widthAnchor.constraint(equalTo: dotView.heightAnchor)
+            dotView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12)
         ])
         
-        lineView = UIView()
-        lineView.backgroundColor = .lightBlueGrey
+        lineView = LineView(color: .lightBlueGrey, width: 2)
         contentView.addSubview(lineView)
-        lineView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             lineView.centerXAnchor.constraint(equalTo: dotView.centerXAnchor),
-            lineView.widthAnchor.constraint(equalToConstant: 2),
             lineView.topAnchor.constraint(equalTo: dotView.centerYAnchor),
             lineView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])

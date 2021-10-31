@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -41,6 +41,8 @@
 		39816078272D8BCE0033930D /* FoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816077272D8BCE0033930D /* FoodViewController.swift */; };
 		3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816079272D97C60033930D /* BorderSearchBar.swift */; };
 		3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607B272D9ACB0033930D /* FoodTableViewCell.swift */; };
+		3981607E272D9C920033930D /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607D272D9C920033930D /* DotView.swift */; };
+		39816080272D9DA30033930D /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607F272D9DA30033930D /* LineView.swift */; };
 		3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */; };
 		39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */; };
 		39C666A02726B30100400C84 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669F2726B30100400C84 /* InviteViewController.swift */; };
@@ -88,6 +90,8 @@
 		39816077272D8BCE0033930D /* FoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewController.swift; sourceTree = "<group>"; };
 		39816079272D97C60033930D /* BorderSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderSearchBar.swift; sourceTree = "<group>"; };
 		3981607B272D9ACB0033930D /* FoodTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTableViewCell.swift; sourceTree = "<group>"; };
+		3981607D272D9C920033930D /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
+		3981607F272D9DA30033930D /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -159,6 +163,8 @@
 				3917613027298C28007FC7C1 /* BorderView.swift */,
 				39558C9A2727B46400523D43 /* BlurView.swift */,
 				39816079272D97C60033930D /* BorderSearchBar.swift */,
+				3981607D272D9C920033930D /* DotView.swift */,
+				3981607F272D9DA30033930D /* LineView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -313,7 +319,7 @@
 				};
 			};
 			buildConfigurationList = 39EDD197271D126800B4DAFA /* Build configuration list for PBXProject "toPether" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -427,6 +433,8 @@
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
+				3981607E272D9C920033930D /* DotView.swift in Sources */,
+				39816080272D9DA30033930D /* LineView.swift in Sources */,
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
