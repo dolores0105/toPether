@@ -62,7 +62,7 @@ class FoodViewController: UIViewController {
         
         foodTableView = UITableView()
         foodTableView.register(FoodTableViewCell.self, forCellReuseIdentifier: "FoodTableViewCell")
-//        foodTableView.separatorColor = .clear
+        foodTableView.separatorColor = .clear
         foodTableView.backgroundColor = .white
         foodTableView.estimatedRowHeight = 100
         foodTableView.rowHeight = UITableView.automaticDimension
@@ -102,21 +102,24 @@ class FoodViewController: UIViewController {
                 print("food mock error", error)
             }
         }
-        
-        PetModel.shared.queryFoods(petId: selectedPet.id) { result in
+         */
+        PetModel.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let foods):
                 for index in foods {
                     print(index.dateOfPurchase)
                 }
-                food[0].dateOfPurchase = mockdate!
-                PetModel.shared.updateFood(petId: self.selectedPet.id, recordId: food[0].id, food: food[0])
-                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: foods[1].id)
+                self.foods = foods
+                self.foodTableView.reloadData()
+//                food[0].dateOfPurchase = mockdate!
+//                PetModel.shared.updateFood(petId: self.selectedPet.id, recordId: food[0].id, food: food[0])
+//                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: foods[1].id)
             case .failure(let error):
                 print("query foods error", error)
             }
         }
-         */
+         
     }
     
     @objc func tapAdd(_: UIButton) {
@@ -147,7 +150,7 @@ extension FoodViewController: UISearchBarDelegate {
 
 extension FoodViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return foods.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -155,6 +158,7 @@ extension FoodViewController: UITableViewDataSource {
         guard let cell = cell as? FoodTableViewCell else { return cell }
 
         cell.selectionStyle = .none
+        cell.reload(food: foods[indexPath.row])
         
         return cell
     }
