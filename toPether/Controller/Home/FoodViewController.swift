@@ -137,7 +137,8 @@ class FoodViewController: UIViewController {
     }
     
     @objc func tapAdd(_: UIButton) {
-        
+        let foodRecordVC = FoodRecordViewController(selectedPet: selectedPet, food: nil)
+        navigationController?.pushViewController(foodRecordVC, animated: true)
     }
 }
 
