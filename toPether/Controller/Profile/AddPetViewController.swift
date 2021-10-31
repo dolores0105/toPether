@@ -48,6 +48,8 @@ class AddPetViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
         
         // MARK: UI objects
+        view.backgroundColor = .white
+        
         petImageView = RoundCornerImageView(img: nil)
         petImageView.backgroundColor = .mainBlue
         view.addSubview(petImageView)
