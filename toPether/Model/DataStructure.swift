@@ -41,3 +41,14 @@ class Medical: BaseObject, Codable {
     var clinic: String = ""
     var vetOrder: String = ""
 }
+
+class Food: BaseObject, Codable {
+    var id: String = ""
+    var name: String = ""
+    var weight: String = ""
+    var unit: String = ""
+    var price: String = ""
+    var market: String = ""
+    var dateOfPurchase: Date = .init(timeIntervalSince1970: 0)
+    var note: String = ""
+}

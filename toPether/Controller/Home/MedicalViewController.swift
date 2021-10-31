@@ -21,7 +21,7 @@ class MedicalViewController: UIViewController {
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var petNameLabel: RegularLabel!
-    private var searchBar: UISearchBar!
+    private var searchBar: BorderSearchBar!
     private var medicalTableView: UITableView!
 
     private var searching = false
@@ -57,21 +57,13 @@ class MedicalViewController: UIViewController {
             petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         
-        searchBar = UISearchBar()
-        searchBar.backgroundImage = UIImage()
-        searchBar.placeholder = "Search symptoms or vet's orders"
+        searchBar = BorderSearchBar(placeholder: "Search for symptoms or vet's orders")
         searchBar.delegate = self
-        searchBar.searchTextField.backgroundColor = .white
-        searchBar.layer.borderWidth = 1
-        searchBar.layer.borderColor = UIColor.mainBlue.cgColor
-        searchBar.layer.cornerRadius = 10
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            searchBar.heightAnchor.constraint(equalToConstant: 40)
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
         
         medicalTableView = UITableView()
@@ -93,24 +85,6 @@ class MedicalViewController: UIViewController {
         ])
         
         // MARK: data
-        /* Create
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        dateComponents.year = 2020
-        dateComponents.month = 10
-        dateComponents.day = 28
-        let mockdate = dateComponents.date
-        
-        PetModel.shared.setMedical(petId: selectedPet.id, symptoms: "Mock symptoms", dateOfVisit: mockdate!, clinic: "Clinic", vetOrder: "Brush") { result in
-            switch result {
-            case .success(let medical):
-                print("medical mock", medical.dateOfVisit)
-            case .failure(let error):
-                print("medical mock error", error)
-            }
-        }
-        */
-        // Read
         PetModel.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {

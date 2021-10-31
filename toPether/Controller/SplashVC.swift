@@ -54,6 +54,8 @@ class SplashVC: UIViewController {
 
         let tabBarViewController = UITabBarController()
         tabBarViewController.setViewControllers([homeNavigationController, toDoNavigationController, profileNavigationController], animated: false)
+        tabBarViewController.tabBar.tintColor = .mainBlue
+        tabBarViewController.tabBar.unselectedItemTintColor = .deepBlueGrey
         
         UIApplication.shared.keyWindow?.rootViewController = tabBarViewController
     }
