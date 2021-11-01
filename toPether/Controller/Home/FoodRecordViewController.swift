@@ -65,6 +65,8 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         configNoteLabel()
         configNoteTextField()
         configOkButton()
+        
+        renderExistingData(food: food)
     }
     
     private func configScrollView() {
@@ -227,6 +229,18 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
             noteTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             noteTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
         ])
+    }
+    
+    func renderExistingData(food: Food?) {
+        guard let food = food else { return }
+        
+        nameTextField.text = food.name
+        weightTextField.text = food.weight
+        unitTextField.text = food.unit
+        priceTextField.text = food.price
+        marketTextField.text = food.market
+        dateOfPurchaseDatePicker.date = food.dateOfPurchase
+        noteTextField.text = food.note
     }
     
     private func configOkButton() {

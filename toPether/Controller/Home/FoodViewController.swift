@@ -165,6 +165,12 @@ extension FoodViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedFood = foods[indexPath.row]
+        let foodRecordVC = FoodRecordViewController(selectedPetId: selectedPet.id, food: selectedFood)
+        navigationController?.pushViewController(foodRecordVC, animated: true)
+    }
 }
 
 extension FoodViewController: UITableViewDelegate {
