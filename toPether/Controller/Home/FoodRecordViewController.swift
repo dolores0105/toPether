@@ -35,7 +35,6 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     private var okButton: RoundButton!
     
     private let units = ["kg", "g", "lb"]
-    private var selectedUnit: String?
     
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
@@ -290,6 +289,8 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             return
         }
+        PetModel.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -304,7 +305,7 @@ extension FoodRecordViewController: UITextFieldDelegate {
             guard let food = food,
                     let name = nameTextField.text,
                     let weight = weightTextField.text,
-                    let unit = selectedUnit,
+                    let unit = unitTextField.text,
                     let price = priceTextField.text,
                     let market = marketTextField.text,
                     let note = noteTextField.text else { return }
@@ -329,7 +330,6 @@ extension FoodRecordViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         unitTextField.text = units[row]
-        selectedUnit = units[row]
     }
 }
 
