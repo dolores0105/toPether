@@ -84,7 +84,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func configNameLabel() {
-        nameLabel = MediumLabel(size: 16, text: "Food name", textColor: .mainBlue)
+        nameLabel = MediumLabel(size: 16, text: "Name", textColor: .mainBlue)
         scrollView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 20),
@@ -126,8 +126,6 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
-    
-    
     private func configUnitTextField() {
         unitTextField = BlueBorderTextField(text: nil)
         unitPickerView = UIPickerView()
@@ -167,7 +165,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func configMarketLabel() {
-        marketLabel = MediumLabel(size: 16, text: "Market", textColor: .mainBlue)
+        marketLabel = MediumLabel(size: 16, text: "Purchase from", textColor: .mainBlue)
         scrollView.addSubview(marketLabel)
         NSLayoutConstraint.activate([
             marketLabel.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 24),
@@ -211,7 +209,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func configNoteLabel() {
-        noteLabel = MediumLabel(size: 16, text: "Feeding notes", textColor: .mainBlue)
+        noteLabel = MediumLabel(size: 16, text: "Notes", textColor: .mainBlue)
         scrollView.addSubview(noteLabel)
         NSLayoutConstraint.activate([
             noteLabel.topAnchor.constraint(equalTo: dateOfPurchaseDatePicker.bottomAnchor, constant: 24),
@@ -257,12 +255,12 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
 extension FoodRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-//        if symptomsTextField.hasText && clinicTextField.hasText && vetOrderTextField.hasText {
+//        if symptomsTextField.hasText && vetTextField.hasText && doctorNotesTextField.hasText {
 //
 //            okButton.isEnabled = true
 //            okButton.backgroundColor = .mainYellow
 //
-//            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = clinicTextField.text, let vetOrder = vetOrderTextField.text else { return }
+//            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextField.text else { return }
 //            medical.symptoms = symptoms
 //            medical.dateOfVisit = dateOfVisitDatePicker.date
 //            medical.clinic = clinic
