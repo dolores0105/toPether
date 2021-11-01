@@ -34,6 +34,9 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     private var noteTextField: BlueBorderTextField!
     private var okButton: RoundButton!
     
+    private let units = ["kg", "g", "lb"]
+    private var selectedUnit: String?
+    
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Food record"
@@ -123,10 +126,15 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
+    
+    
     private func configUnitTextField() {
         unitTextField = BlueBorderTextField(text: nil)
+        unitPickerView = UIPickerView()
+        unitPickerView.delegate = self
+        unitPickerView.dataSource = self
+        unitTextField.inputView = unitPickerView
         unitTextField.placeholder = "Unit"
-//        unitTextField.inputView = unitPickerView
         unitTextField.delegate = self
         scrollView.addSubview(unitTextField)
         NSLayoutConstraint.activate([
@@ -264,5 +272,25 @@ extension FoodRecordViewController: UITextFieldDelegate {
 //            okButton.isEnabled = false
 //            okButton.backgroundColor = .lightBlueGrey
 //        }
+    }
+}
+
+extension FoodRecordViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return units[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        unitTextField.text = units[row]
+    }
+}
+
+extension FoodRecordViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        units.count
     }
 }
