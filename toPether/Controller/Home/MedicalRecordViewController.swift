@@ -21,10 +21,10 @@ class MedicalRecordViewController: UIViewController {
     private var symptomsTextField: BlueBorderTextField!
     private var dateOfVisitLabel: MediumLabel!
     private let dateOfVisitDatePicker = UIDatePicker()
-    private var clinicLabel: MediumLabel!
-    private var clinicTextField: BlueBorderTextField!
-    private var vetOrderLabel: MediumLabel!
-    private var vetOrderTextField: BlueBorderTextField!
+    private var vetLabel: MediumLabel!
+    private var vetTextField: BlueBorderTextField!
+    private var doctorNotesLabel: MediumLabel!
+    private var doctorNotesTextField: BlueBorderTextField!
     private var okButton: RoundButton!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,10 +43,10 @@ class MedicalRecordViewController: UIViewController {
         configSymptomsTextField()
         configDateOfVisitLabel()
         configDateOfVisitDatePicker()
-        configClinicLabel()
-        configClinicTextField()
-        configVetOrderLabel()
-        configVetOrderTextField()
+        configVetLabel()
+        configVetTextField()
+        configDoctorNotesLabel()
+        configDoctorNotesTextField()
         configOkButton()
         
         renderExistingData(medical: medical)
@@ -96,45 +96,45 @@ class MedicalRecordViewController: UIViewController {
         ])
     }
     
-    private func configClinicLabel() {
-        clinicLabel = MediumLabel(size: 16, text: "Clinic", textColor: .mainBlue)
-        view.addSubview(clinicLabel)
+    private func configVetLabel() {
+        vetLabel = MediumLabel(size: 16, text: "Name of Vet", textColor: .mainBlue)
+        view.addSubview(vetLabel)
         NSLayoutConstraint.activate([
-            clinicLabel.topAnchor.constraint(equalTo: dateOfVisitDatePicker.bottomAnchor, constant: 24),
-            clinicLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            clinicLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            vetLabel.topAnchor.constraint(equalTo: dateOfVisitDatePicker.bottomAnchor, constant: 24),
+            vetLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            vetLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    private func configClinicTextField() {
-        clinicTextField = BlueBorderTextField(text: nil)
-        clinicTextField.delegate = self
-        view.addSubview(clinicTextField)
+    private func configVetTextField() {
+        vetTextField = BlueBorderTextField(text: nil)
+        vetTextField.delegate = self
+        view.addSubview(vetTextField)
         NSLayoutConstraint.activate([
-            clinicTextField.topAnchor.constraint(equalTo: clinicLabel.bottomAnchor, constant: 8),
-            clinicTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            clinicTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            vetTextField.topAnchor.constraint(equalTo: vetLabel.bottomAnchor, constant: 8),
+            vetTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            vetTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    private func configVetOrderLabel() {
-        vetOrderLabel = MediumLabel(size: 16, text: "Vet's order", textColor: .mainBlue)
-        view.addSubview(vetOrderLabel)
+    private func configDoctorNotesLabel() {
+        doctorNotesLabel = MediumLabel(size: 16, text: "Doctor's notes", textColor: .mainBlue)
+        view.addSubview(doctorNotesLabel)
         NSLayoutConstraint.activate([
-            vetOrderLabel.topAnchor.constraint(equalTo: clinicTextField.bottomAnchor, constant: 24),
-            vetOrderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            vetOrderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            doctorNotesLabel.topAnchor.constraint(equalTo: vetTextField.bottomAnchor, constant: 24),
+            doctorNotesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            doctorNotesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    private func configVetOrderTextField() {
-        vetOrderTextField = BlueBorderTextField(text: nil)
-        vetOrderTextField.delegate = self
-        view.addSubview(vetOrderTextField)
+    private func configDoctorNotesTextField() {
+        doctorNotesTextField = BlueBorderTextField(text: nil)
+        doctorNotesTextField.delegate = self
+        view.addSubview(doctorNotesTextField)
         NSLayoutConstraint.activate([
-            vetOrderTextField.topAnchor.constraint(equalTo: vetOrderLabel.bottomAnchor, constant: 8),
-            vetOrderTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            vetOrderTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            doctorNotesTextField.topAnchor.constraint(equalTo: doctorNotesLabel.bottomAnchor, constant: 8),
+            doctorNotesTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            doctorNotesTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
@@ -160,8 +160,8 @@ class MedicalRecordViewController: UIViewController {
         guard let medical = medical else { return }
         
         symptomsTextField.text = medical.symptoms
-        clinicTextField.text = medical.clinic
-        vetOrderTextField.text = medical.vetOrder
+        vetTextField.text = medical.clinic
+        doctorNotesTextField.text = medical.vetOrder
         dateOfVisitDatePicker.date = medical.dateOfVisit
     }
     
@@ -171,8 +171,8 @@ class MedicalRecordViewController: UIViewController {
                 petId: selectedPet.id,
                 symptoms: symptomsTextField.text ?? "no symptoms",
                 dateOfVisit: dateOfVisitDatePicker.date,
-                clinic: clinicTextField.text ?? "no clinic",
-                vetOrder: vetOrderTextField.text ?? "no orders") { [weak self] result in
+                clinic: vetTextField.text ?? "no clinic",
+                vetOrder: doctorNotesTextField.text ?? "no orders") { [weak self] result in
                     guard let self = self else { return }
                     
                     switch result {
@@ -194,12 +194,12 @@ class MedicalRecordViewController: UIViewController {
 extension MedicalRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if symptomsTextField.hasText && clinicTextField.hasText && vetOrderTextField.hasText {
+        if symptomsTextField.hasText && vetTextField.hasText && doctorNotesTextField.hasText {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
             
-            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = clinicTextField.text, let vetOrder = vetOrderTextField.text else { return }
+            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextField.text else { return }
             medical.symptoms = symptoms
             medical.dateOfVisit = dateOfVisitDatePicker.date
             medical.clinic = clinic

@@ -43,6 +43,7 @@
 		3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607B272D9ACB0033930D /* FoodTableViewCell.swift */; };
 		3981607E272D9C920033930D /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607D272D9C920033930D /* DotView.swift */; };
 		39816080272D9DA30033930D /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607F272D9DA30033930D /* LineView.swift */; };
+		39840D2F272E9A19004BA4A2 /* FoodRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */; };
 		3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */; };
 		39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */; };
 		39C666A02726B30100400C84 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669F2726B30100400C84 /* InviteViewController.swift */; };
@@ -53,6 +54,7 @@
 		39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A8271D126E00B4DAFA /* Assets.xcassets */; };
 		39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */; };
 		AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E83461B41D9606803364ABF /* Pods_toPether.framework */; };
+		CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +94,7 @@
 		3981607B272D9ACB0033930D /* FoodTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTableViewCell.swift; sourceTree = "<group>"; };
 		3981607D272D9C920033930D /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		3981607F272D9DA30033930D /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
+		39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRecordViewController.swift; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		3E83461B41D9606803364ABF /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
+		CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
 		FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,6 +202,7 @@
 				390791A5271E78F800B4735B /* PetModel.swift */,
 				395FD00F27215D18005911AA /* MemberModel.swift */,
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
+				CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 				3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */,
 				39C6669F2726B30100400C84 /* InviteViewController.swift */,
 				39816077272D8BCE0033930D /* FoodViewController.swift */,
+				39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
+				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,
@@ -456,6 +463,7 @@
 				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
+				39840D2F272E9A19004BA4A2 /* FoodRecordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

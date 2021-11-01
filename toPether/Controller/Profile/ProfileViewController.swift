@@ -185,10 +185,10 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
-        guard let cell = cell as? PetTableViewCell else { return cell }
-        cell.selectionStyle = .none
-        cell.reload(pet: pets[indexPath.row])
-        return cell
+        guard let petCell = cell as? PetTableViewCell else { return cell }
+        petCell.selectionStyle = .none
+        petCell.reload(pet: pets[indexPath.row])
+        return petCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -204,17 +204,16 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
+            // get the deleting pet
+            let pet = self.pets[indexPath.row]
+            
             // update deleted petIds
-            MemberModel.shared.current?.petIds.remove(at: indexPath.row)
+            MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
             MemberModel.shared.updateCurrentUser()
             
             // update that pet's memberIds
-            guard let indexOfMemberId = self.pets[indexPath.row].memberIds.firstIndex(of: self.currentUser.id) else {
-                print("can't find indexOfMemberId")
-                return
-            }
-            self.pets[indexPath.row].memberIds.remove(at: indexOfMemberId)
-            PetModel.shared.updatePet(id: self.pets[indexPath.row].id, pet: self.pets[indexPath.row])
+            pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
+            PetModel.shared.updatePet(id: pet.id, pet: pet)
             
             completionHandler(true)
         }
