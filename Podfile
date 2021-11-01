@@ -14,4 +14,8 @@ target 'toPether' do
 
   pod 'SwiftLint'
 
+  pod 'IQKeyboardManagerSwift'
+
+  pod 'lottie-ios'
+
 end
