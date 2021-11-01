@@ -124,14 +124,18 @@ class HomeViewController: UIViewController {
     
     func queryData(currentUser: Member) {
         PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let pets):
-                guard let self = self else { return }
                 self.pets = pets
                 self.petCollectionView.reloadData()
                 print("fetch pets at profile:", self.pets)
+                self.buttonStackView.isHidden = false
+                
             case .failure(let error):
                 print(error)
+                self.buttonStackView.isHidden = true
             }
         }
     }

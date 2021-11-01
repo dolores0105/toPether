@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FoodRecordViewController: UIViewController {
+class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
 
     convenience init(selectedPetId: String, food: Food?) {
         self.init()
@@ -47,6 +47,7 @@ class FoodRecordViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        configScrollView()
         configNameLabel()
         configNameTextField()
         configWeightLabel()
@@ -58,41 +59,55 @@ class FoodRecordViewController: UIViewController {
         configMarketTextField()
         configDateOfPurchaseLabel()
         configDateOfPurchaseDatePicker()
+        configNoteLabel()
+        configNoteTextField()
+        configOkButton()
     }
     
     private func configScrollView() {
         scrollView = UIScrollView()
-        
+        let fullsize = UIScreen.main.bounds.size
+        scrollView.delegate = self
+        scrollView.contentSize = CGSize(width: fullsize.width, height: 750)
+        scrollView.isScrollEnabled = true
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     private func configNameLabel() {
         nameLabel = MediumLabel(size: 16, text: "Food name", textColor: .mainBlue)
-        view.addSubview(nameLabel)
+        scrollView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            nameLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 20),
+            nameLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            nameLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
  
     private func configNameTextField() {
         nameTextField = BlueBorderTextField(text: nil)
         nameTextField.delegate = self
-        view.addSubview(nameTextField)
+        scrollView.addSubview(nameTextField)
         NSLayoutConstraint.activate([
             nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            nameTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            nameTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
         ])
     }
     
     private func configWeightLabel() {
         weightLabel = MediumLabel(size: 16, text: "Weight", textColor: .mainBlue)
-        view.addSubview(weightLabel)
+        scrollView.addSubview(weightLabel)
         NSLayoutConstraint.activate([
             weightLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 24),
-            weightLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            weightLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            weightLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            weightLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
     
@@ -100,11 +115,11 @@ class FoodRecordViewController: UIViewController {
         weightTextField = BlueBorderTextField(text: nil)
         weightTextField.keyboardType = .numberPad
         weightTextField.delegate = self
-        view.addSubview(weightTextField)
+        scrollView.addSubview(weightTextField)
         NSLayoutConstraint.activate([
             weightTextField.topAnchor.constraint(equalTo: weightLabel.bottomAnchor, constant: 8),
-            weightTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            weightTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3, constant: -40)
+            weightTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            weightTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier: 2 / 3, constant: -40)
         ])
     }
     
@@ -113,21 +128,21 @@ class FoodRecordViewController: UIViewController {
         unitTextField.placeholder = "Unit"
 //        unitTextField.inputView = unitPickerView
         unitTextField.delegate = self
-        view.addSubview(unitTextField)
+        scrollView.addSubview(unitTextField)
         NSLayoutConstraint.activate([
             unitTextField.topAnchor.constraint(equalTo: weightTextField.topAnchor),
-            unitTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            unitTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 3, constant: -40)
+            unitTextField.leadingAnchor.constraint(equalTo: weightTextField.trailingAnchor, constant: 16),
+            unitTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier: 1 / 3, constant: -40)
         ])
     }
     
     private func configPriceLabel() {
         priceLabel = MediumLabel(size: 16, text: "Price", textColor: .mainBlue)
-        view.addSubview(priceLabel)
+        scrollView.addSubview(priceLabel)
         NSLayoutConstraint.activate([
             priceLabel.topAnchor.constraint(equalTo: weightTextField.bottomAnchor, constant: 24),
-            priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            priceLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            priceLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            priceLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
     
@@ -135,42 +150,42 @@ class FoodRecordViewController: UIViewController {
         priceTextField = BlueBorderTextField(text: nil)
         priceTextField.keyboardType = .numberPad
         priceTextField.delegate = self
-        view.addSubview(priceTextField)
+        scrollView.addSubview(priceTextField)
         NSLayoutConstraint.activate([
             priceTextField.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
-            priceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            priceTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            priceTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            priceTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
         ])
     }
     
     private func configMarketLabel() {
         marketLabel = MediumLabel(size: 16, text: "Market", textColor: .mainBlue)
-        view.addSubview(marketLabel)
+        scrollView.addSubview(marketLabel)
         NSLayoutConstraint.activate([
             marketLabel.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 24),
-            marketLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            marketLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            marketLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            marketLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
     
     private func configMarketTextField() {
         marketTextField = BlueBorderTextField(text: nil)
         marketTextField.delegate = self
-        view.addSubview(marketTextField)
+        scrollView.addSubview(marketTextField)
         NSLayoutConstraint.activate([
             marketTextField.topAnchor.constraint(equalTo: marketLabel.bottomAnchor, constant: 8),
-            marketTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            marketTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            marketTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            marketTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
         ])
     }
     
     private func configDateOfPurchaseLabel() {
         dateOfPurchaseLabel = MediumLabel(size: 16, text: "Date of Purchase", textColor: .mainBlue)
-        view.addSubview(dateOfPurchaseLabel)
+        scrollView.addSubview(dateOfPurchaseLabel)
         NSLayoutConstraint.activate([
             dateOfPurchaseLabel.topAnchor.constraint(equalTo: marketTextField.bottomAnchor, constant: 24),
-            dateOfPurchaseLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            dateOfPurchaseLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            dateOfPurchaseLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            dateOfPurchaseLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
     
@@ -179,12 +194,55 @@ class FoodRecordViewController: UIViewController {
         dateOfPurchaseDatePicker.preferredDatePickerStyle = .compact
         dateOfPurchaseDatePicker.backgroundColor = .white
         dateOfPurchaseDatePicker.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(dateOfPurchaseDatePicker)
+        scrollView.addSubview(dateOfPurchaseDatePicker)
         NSLayoutConstraint.activate([
             dateOfPurchaseDatePicker.topAnchor.constraint(equalTo: dateOfPurchaseLabel.bottomAnchor, constant: 8),
-            dateOfPurchaseDatePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            dateOfPurchaseDatePicker.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             dateOfPurchaseDatePicker.heightAnchor.constraint(equalToConstant: 48)
         ])
+    }
+    
+    private func configNoteLabel() {
+        noteLabel = MediumLabel(size: 16, text: "Feeding notes", textColor: .mainBlue)
+        scrollView.addSubview(noteLabel)
+        NSLayoutConstraint.activate([
+            noteLabel.topAnchor.constraint(equalTo: dateOfPurchaseDatePicker.bottomAnchor, constant: 24),
+            noteLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            noteLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configNoteTextField() {
+        noteTextField = BlueBorderTextField(text: nil)
+        noteTextField.delegate = self
+        scrollView.addSubview(noteTextField)
+        NSLayoutConstraint.activate([
+            noteTextField.topAnchor.constraint(equalTo: noteLabel.bottomAnchor, constant: 8),
+            noteTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            noteTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
+        ])
+    }
+    
+    private func configOkButton() {
+        okButton = RoundButton(text: "OK", size: 18)
+        if food != nil {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
+        okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
+        scrollView.addSubview(okButton)
+        NSLayoutConstraint.activate([
+            okButton.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            okButton.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64),
+            okButton.topAnchor.constraint(equalTo: noteTextField.bottomAnchor, constant: 40)
+        ])
+    }
+    
+    @objc func tapOK(_: RoundButton) {
+        
     }
 }
 

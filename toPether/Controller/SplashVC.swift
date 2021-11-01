@@ -13,7 +13,7 @@ class SplashVC: UIViewController {
         super.viewDidLoad()
         
         // mock member as current user
-        UserDefaults.standard.set("4tJxLO3iYGsemsMtsVV6", forKey: "userId")
+        UserDefaults.standard.set("XlppR0WMxxoHuUQboJMs", forKey: "userId")
         
         guard let id = UserDefaults.standard.string(forKey: "userId") else {
             // Goto Register
