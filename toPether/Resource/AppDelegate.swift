@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 import IQKeyboardManagerSwift
 
 @main
@@ -16,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+//        if let user = Auth.auth().currentUser {
+//            print("You're now signed in as \(user.uid), email: \(user.email ?? "unknown")")
+//        }
+        
         IQKeyboardManager.shared.enable = true
         return true
     }

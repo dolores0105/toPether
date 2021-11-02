@@ -13,7 +13,6 @@ import FirebaseAuth
 class SplashVC: UIViewController {
     
     private let userIdKey = "toPetherKey"
-    private let appleIDProvider = ASAuthorizationAppleIDProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,24 +24,23 @@ class SplashVC: UIViewController {
         }
         
         // loading animation on
-        appleIDProvider.getCredentialState(forUserID: id) { [self] (credentialState, error) in
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        appleIDProvider.getCredentialState(forUserID: id) { [weak self] (credentialState, error) in
+            guard let self = self else { return }
+            
             switch credentialState {
                 
             case .authorized: // The Apple ID credential is valid.
-                MemberModel.shared.queryCurrentUser(id: id, completion: loginHandler)
-                break
+                MemberModel.shared.queryCurrentUser(id: id, completion: self.loginHandler)
                 
             case .revoked: // The Apple is unvalid, maybe user signed out
-                tapLoginButton()
-                break
+                self.tapLoginButton()
                 
             case .notFound: // No credential was found.
-                tapLoginButton()
-                break
+                self.tapLoginButton()
                 
             default:
-                tapLoginButton()
-                break
+                self.tapLoginButton()
             }
         }
         
@@ -58,15 +56,15 @@ class SplashVC: UIViewController {
     }
     
     @objc private func tapLoginButton() {
-
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.email, .fullName]
-        let controller = ASAuthorizationController(authorizationRequests: [request])
         
         let nonce = randomNonceString()
         request.nonce = sha256(nonce)
         currentNonce = nonce
         
+        let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.presentationContextProvider = self
         
@@ -79,6 +77,7 @@ class SplashVC: UIViewController {
             MemberModel.shared.current = member
             gotoTabbarVC()
         case .failure(let error):
+            print("loginHandler", error)
             // Response the error to USER
             break
         }
@@ -132,6 +131,7 @@ extension SplashVC: ASAuthorizationControllerDelegate {
                     print("Nice! You're now signed in as \(user.uid), email: \(user.email ?? "unknown")") // User is signed in to Firebase with Apple
                     UserDefaults.standard.set(user.uid, forKey: self.userIdKey)
                     MemberModel.shared.setMember(UID: user.uid, completion: self.loginHandler)
+                    
                 } else if let error = error {
                     print("sign in error:", error.localizedDescription)
                 }

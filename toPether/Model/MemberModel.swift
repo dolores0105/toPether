@@ -34,9 +34,9 @@ class MemberModel {
 
         do {
             try document.setData(from: member)
-            current?.id = UID
-        } catch {
-            print("set pet data error:", error)
+            completion(.success(member))
+        } catch let error {
+            completion(.failure(error))
         }
     }
     
