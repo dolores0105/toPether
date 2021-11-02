@@ -264,7 +264,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         guard let food = food else {
             guard let name = nameTextField.text,
                     let weight = weightTextField.text,
-                    let unit = selectedUnit,
+                    let unit = unitTextField.text,
                     let price = priceTextField.text,
                     let market = marketTextField.text,
                     let note = noteTextField.text  else { return }

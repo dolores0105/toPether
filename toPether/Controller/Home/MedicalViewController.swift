@@ -58,7 +58,7 @@ class MedicalViewController: UIViewController {
             petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         
-        searchBar = BorderSearchBar(placeholder: "Search for symptoms or vet's orders")
+        searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
         searchBar.delegate = self
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
