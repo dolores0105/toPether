@@ -95,6 +95,7 @@
 		3981607D272D9C920033930D /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		3981607F272D9DA30033930D /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRecordViewController.swift; sourceTree = "<group>"; };
+		39840D3027311A3C004BA4A2 /* toPether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = toPether.entitlements; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -259,6 +260,7 @@
 		39EDD19E271D126800B4DAFA /* toPether */ = {
 			isa = PBXGroup;
 			children = (
+				39840D3027311A3C004BA4A2 /* toPether.entitlements */,
 				3907919B271DB54800B4735B /* Extension */,
 				390791A4271E78C400B4735B /* Model */,
 				39079198271DA78000B4735B /* View */,
@@ -611,6 +613,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = toPether/toPether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H9XHH8AA7H;
@@ -645,6 +648,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = toPether/toPether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H9XHH8AA7H;
