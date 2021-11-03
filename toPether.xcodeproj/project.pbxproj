@@ -39,6 +39,7 @@
 		39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE127325F28001B29F3 /* UIViewExtension.swift */; };
 		39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE327326682001B29F3 /* TabBarViewController.swift */; };
 		39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE527328340001B29F3 /* EmptyUserViewController.swift */; };
+		39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */; };
 		39816073272D403B0033930D /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816072272D403B0033930D /* ToDoViewController.swift */; };
 		39816076272D7AB40033930D /* layingCat.json in Resources */ = {isa = PBXBuildFile; fileRef = 39816075272D7AB40033930D /* layingCat.json */; };
 		39816078272D8BCE0033930D /* FoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816077272D8BCE0033930D /* FoodViewController.swift */; };
@@ -93,6 +94,7 @@
 		39709FE127325F28001B29F3 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		39709FE327326682001B29F3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		39709FE527328340001B29F3 /* EmptyUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUserViewController.swift; sourceTree = "<group>"; };
+		39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPetViewController.swift; sourceTree = "<group>"; };
 		39816072272D403B0033930D /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		39816075272D7AB40033930D /* layingCat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = layingCat.json; sourceTree = "<group>"; };
 		39816077272D8BCE0033930D /* FoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				394A77182721D65700978254 /* SplashViewController.swift */,
 				39709FE327326682001B29F3 /* TabBarViewController.swift */,
 				39709FE527328340001B29F3 /* EmptyUserViewController.swift */,
+				39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
+				39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */,
 				39840D2F272E9A19004BA4A2 /* FoodRecordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
