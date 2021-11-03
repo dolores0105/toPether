@@ -22,15 +22,15 @@ class MemberModel {
     var current: Member? // set value at splash page
     
     // MARK: SetData
-    func setMember(UID: String, completion: @escaping (Result<Member, Error>) -> Void) {
+    func setMember(uid: String, completion: @escaping (Result<Member, Error>) -> Void) {
         let members = Firestore.firestore().collection("members")
-        let document = members.document(UID)
+        let document = members.document(uid)
         
         let member = Member()
-        member.id = UID
+        member.id = uid
         member.name = ""
         member.petIds = []
-        member.qrCode = UID
+        member.qrCode = uid
 
         do {
             try document.setData(from: member)

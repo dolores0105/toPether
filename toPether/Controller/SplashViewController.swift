@@ -12,59 +12,48 @@ import FirebaseAuth
 
 class SplashViewController: UIViewController {
     
-    private let firebaseUidKey = "firebaseUidKey"
-    private let appleUserKey = "appleUserKey"
-    
     private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "AppIcon"))
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if Auth.auth().currentUser != nil {
+            guard let current = Auth.auth().currentUser else { return }
+            MemberModel.shared.queryCurrentUser(id: current.uid) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let current):
+                    MemberModel.shared.current = current
+                    self.gotoTabbarVC()
+                    
+                case .failure(let error):
+                    print(error)
+                    MemberModel.shared.setMember(uid: current.uid, completion: self.loginHandler)
+                }
+            }
+            
+        } else {
+            view.backgroundColor = .white
+            configLogoView()
+            setupSignInButton()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        guard let appleUserKey = UserDefaults.standard.string(forKey: appleUserKey), let firebaseUid = UserDefaults.standard.string(forKey: firebaseUidKey) else {
-            // No user id was found, Show SignInWithApple
-            tapLoginButton()
-            return
-        }
-        
-        // loading animation on
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: firebaseUid) { [weak self] (credentialState, error) in
-            guard let self = self else { return }
-            
-            switch credentialState {
-                
-            case .authorized: // The Apple ID credential is valid.
-                MemberModel.shared.queryCurrentUser(id: firebaseUid, completion: self.loginHandler)
-                
-            case .revoked: // The Apple is unvalid, maybe user signed out
-                self.tapLoginButton()
-                
-            case .notFound: // No credential was found.
-                self.tapLoginButton()
-                
-            default:
-                self.tapLoginButton()
-            }
-        }
-        
-        view.backgroundColor = .white
-        configLogoView()
-        setupSignInButton()
     }
     
     @objc private func tapLoginButton() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.email, .fullName]
-        
+
         let nonce = randomNonceString()
         request.nonce = sha256(nonce)
         currentNonce = nonce
-        
+
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.presentationContextProvider = self
-        
+
         controller.performRequests()
     }
     
@@ -80,35 +69,16 @@ class SplashViewController: UIViewController {
     }
     
     private func gotoTabbarVC() {
-        // HomePage
-        let homeViewController = HomeViewController()
-        let homeNavigationController = UINavigationController(rootViewController: homeViewController)
-        homeNavigationController.tabBarItem = UITabBarItem(title: "Home", image: Img.iconsHomeNormal.obj, selectedImage: Img.iconsHomeSelected.obj)
-        
-        // ToDoPage
-        let toDoViewController = ToDoViewController()
-        let toDoNavigationController = UINavigationController(rootViewController: toDoViewController)
-        toDoNavigationController.tabBarItem = UITabBarItem(title: "To-Do", image: Img.iconsTodoNormal.obj, selectedImage: Img.iconsTodoSelected.obj)
-        
-        // ProfilePage
-        let profileViewController = ProfileViewController()
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-        profileNavigationController.tabBarItem = UITabBarItem(title: "Profile", image: Img.iconsProfileNormal.obj, selectedImage: Img.iconsProfileSelected.obj)
 
-        let tabBarViewController = UITabBarController()
-        tabBarViewController.setViewControllers([homeNavigationController, toDoNavigationController, profileNavigationController], animated: false)
-        tabBarViewController.tabBar.tintColor = .mainBlue
-        tabBarViewController.tabBar.unselectedItemTintColor = .deepBlueGrey
-        
-        UIApplication.shared.keyWindow?.rootViewController = tabBarViewController
+        let tabBarViewController = TabBarViewController()
+        tabBarViewController.modalPresentationStyle = .fullScreen
+        self.present(tabBarViewController, animated: true, completion: nil)
     }
 }
 
 extension SplashViewController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            
-            UserDefaults.standard.set(appleIDCredential.user, forKey: self.appleUserKey)
             
             // Retrieve the secure nonce generated during Apple sign in
             guard let nonce = currentNonce else {
@@ -133,7 +103,7 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 guard let self = self else { return }
                 if let user = authDataResult?.user {
                     print("Nice! You're now signed in as \(user.uid), email: \(user.email ?? "unknown")") // User is signed in to Firebase with Apple
-                    UserDefaults.standard.set(user.uid, forKey: self.firebaseUidKey)
+
                     MemberModel.shared.setMember(uid: user.uid, completion: self.loginHandler)
 
                 } else if let error = error {
@@ -144,7 +114,7 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        switch (error) {
+        switch error {
         case ASAuthorizationError.canceled:
             break
         case ASAuthorizationError.failed:
