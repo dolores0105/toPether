@@ -65,6 +65,9 @@ extension EmptyPetViewController {
     }
     
     @objc func tapGetInvitation(_: RoundButton) {
-        print("tapGetInvitation")
+        guard let currenUser = MemberModel.shared.current else { return }
+        let getInvitationVC = GetInvitationViewController(currentUser: currenUser, isFirstSignIn: true)
+//        getInvitationVC.modalPresentationStyle = .fullScreen
+        self.present(getInvitationVC, animated: true, completion: nil)
     }
 }

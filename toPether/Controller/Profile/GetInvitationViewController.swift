@@ -10,11 +10,13 @@ import Lottie
 
 class GetInvitationViewController: UIViewController {
     
-    convenience init(currentUser: Member) {
+    convenience init(currentUser: Member, isFirstSignIn: Bool) {
         self.init()
         self.currentUser = currentUser
+        self.isFirstSignIn = isFirstSignIn
     }
     private var currentUser: Member!
+    private var isFirstSignIn: Bool!
     
     private var invitationTitleLabel: MediumLabel!
     private var currentUserIdLabel: MediumLabel!
@@ -60,10 +62,20 @@ class GetInvitationViewController: UIViewController {
             case .success(.added(members: _ )):
                 break
             case .success(.modified(members: _ )):
-                self.animationView?.play(completion: { (finished) in
-                    self.dismiss(animated: true) {
-                        print("addUserListener at getInvitaionVC")
+                self.animationView?.play(completion: { _ in
+                    
+                    if self.isFirstSignIn {
+                        let tabBarViewController = TabBarViewController()
+                        tabBarViewController.modalPresentationStyle = .fullScreen
+                        self.present(tabBarViewController, animated: true, completion: nil)
+                        
+                    } else {
+                        self.dismiss(animated: true) {
+                            print("addUserListener at getInvitaionVC")
+                        }
                     }
+                    
+                    
                 })
                 
             case .success(.removed(members: _ )):

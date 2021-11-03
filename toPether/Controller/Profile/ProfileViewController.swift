@@ -41,6 +41,8 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
@@ -156,7 +158,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapQrcode(sender: UIBarButtonItem) {
-        let getInvitationVC = GetInvitationViewController(currentUser: currentUser)
+        let getInvitationVC = GetInvitationViewController(currentUser: currentUser, isFirstSignIn: false)
         present(getInvitationVC, animated: true, completion: nil)
     }
     

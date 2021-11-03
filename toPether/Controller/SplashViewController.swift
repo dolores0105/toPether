@@ -61,7 +61,6 @@ class SplashViewController: UIViewController {
         switch result {
         case .success(let member):
             MemberModel.shared.current = member
-//            gotoTabbarVC() // should go to empty setting pages
             gotoEmptySetting()
         case .failure(let error):
             print("loginHandler", error)
