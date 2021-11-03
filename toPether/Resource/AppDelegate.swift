@@ -17,11 +17,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-//        if let user = Auth.auth().currentUser {
-//            print("You're now signed in as \(user.uid), email: \(user.email ?? "unknown")")
-//        }
-        
         IQKeyboardManager.shared.enable = true
+        
+        let userDefaults = UserDefaults.standard
+        
+        if !userDefaults.bool(forKey: "Installberfore") {
+            print("First time install, setting userdefault")
+            
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print("Fail to sign out previous user.")
+            }
+            
+            userDefaults.set(true, forKey: "Installberfore")
+            userDefaults.synchronize() // force the app to update userdefaults
+        } else {
+            print("User installed before, loading userDefaults")
+        }
         return true
     }
 
