@@ -1,5 +1,5 @@
 //
-//  SplashVC.swift
+//  SplashViewController.swift
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/22.
@@ -10,14 +10,17 @@ import AuthenticationServices
 import CryptoKit
 import FirebaseAuth
 
-class SplashVC: UIViewController {
+class SplashViewController: UIViewController {
     
-    private let userIdKey = "toPetherKey"
+    private let firebaseUidKey = "firebaseUidKey"
+    private let appleUserKey = "appleUserKey"
+    
+    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "AppIcon"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let id = UserDefaults.standard.string(forKey: userIdKey) else {
+        guard let appleUserKey = UserDefaults.standard.string(forKey: appleUserKey), let firebaseUid = UserDefaults.standard.string(forKey: firebaseUidKey) else {
             // No user id was found, Show SignInWithApple
             tapLoginButton()
             return
@@ -25,13 +28,13 @@ class SplashVC: UIViewController {
         
         // loading animation on
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: id) { [weak self] (credentialState, error) in
+        appleIDProvider.getCredentialState(forUserID: firebaseUid) { [weak self] (credentialState, error) in
             guard let self = self else { return }
             
             switch credentialState {
                 
             case .authorized: // The Apple ID credential is valid.
-                MemberModel.shared.queryCurrentUser(id: id, completion: self.loginHandler)
+                MemberModel.shared.queryCurrentUser(id: firebaseUid, completion: self.loginHandler)
                 
             case .revoked: // The Apple is unvalid, maybe user signed out
                 self.tapLoginButton()
@@ -44,15 +47,9 @@ class SplashVC: UIViewController {
             }
         }
         
+        view.backgroundColor = .white
+        configLogoView()
         setupSignInButton()
-
-    }
-    
-    func setupSignInButton() {
-        let button = ASAuthorizationAppleIDButton(type: .default, style: .black)
-        button.center = view.center
-        button.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
-        view.addSubview(button)
     }
     
     @objc private func tapLoginButton() {
@@ -79,7 +76,6 @@ class SplashVC: UIViewController {
         case .failure(let error):
             print("loginHandler", error)
             // Response the error to USER
-            break
         }
     }
     
@@ -108,30 +104,38 @@ class SplashVC: UIViewController {
     }
 }
 
-extension SplashVC: ASAuthorizationControllerDelegate {
+extension SplashViewController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            
+            UserDefaults.standard.set(appleIDCredential.user, forKey: self.appleUserKey)
+            
+            // Retrieve the secure nonce generated during Apple sign in
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
             }
+            
+            // Retrieve Apple identity token
             guard let appleIDToken = appleIDCredential.identityToken else {
                 print("Unable to fetch identity token")
                 return
             }
+            
+            // Convert Apple identity token to string
             guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
                 print("Unable to serialize token string from data: \(appleIDToken).")
                 return
             }
 
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
-            
+
             Auth.auth().signIn(with: credential) { [weak self] (authDataResult, error) in
                 guard let self = self else { return }
                 if let user = authDataResult?.user {
                     print("Nice! You're now signed in as \(user.uid), email: \(user.email ?? "unknown")") // User is signed in to Firebase with Apple
-                    UserDefaults.standard.set(user.uid, forKey: self.userIdKey)
-                    MemberModel.shared.setMember(UID: user.uid, completion: self.loginHandler)
-                    
+                    UserDefaults.standard.set(user.uid, forKey: self.firebaseUidKey)
+                    MemberModel.shared.setMember(uid: user.uid, completion: self.loginHandler)
+
                 } else if let error = error {
                     print("sign in error:", error.localizedDescription)
                 }
@@ -159,7 +163,7 @@ extension SplashVC: ASAuthorizationControllerDelegate {
     }
 }
 
-extension SplashVC: ASAuthorizationControllerPresentationContextProviding {
+extension SplashViewController: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window!
     }
@@ -212,4 +216,33 @@ private func sha256(_ input: String) -> String {
   }.joined()
 
   return hashString
+}
+
+extension SplashViewController {
+    
+    func configLogoView() {
+
+        view.addSubview(logoImageView)
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            logoImageView.heightAnchor.constraint(equalToConstant: 100),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            logoImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor)
+            
+        ])
+    }
+    
+    func setupSignInButton() {
+        let button = ASAuthorizationAppleIDButton(type: .default, style: .whiteOutline)
+        button.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 80),
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            button.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            button.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
 }
