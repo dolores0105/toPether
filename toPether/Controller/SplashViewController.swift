@@ -61,7 +61,8 @@ class SplashViewController: UIViewController {
         switch result {
         case .success(let member):
             MemberModel.shared.current = member
-            gotoTabbarVC()
+//            gotoTabbarVC() // should go to empty setting pages
+            gotoEmptySetting()
         case .failure(let error):
             print("loginHandler", error)
             // Response the error to USER
@@ -73,6 +74,12 @@ class SplashViewController: UIViewController {
         let tabBarViewController = TabBarViewController()
         tabBarViewController.modalPresentationStyle = .fullScreen
         self.present(tabBarViewController, animated: true, completion: nil)
+    }
+    
+    private func gotoEmptySetting() {
+        let emptyUserViewController = EmptyUserViewController()
+        emptyUserViewController.modalPresentationStyle = .fullScreen
+        self.present(emptyUserViewController, animated: true, completion: nil)
     }
 }
 
