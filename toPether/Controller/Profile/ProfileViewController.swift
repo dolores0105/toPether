@@ -173,7 +173,7 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func tapAddPet(sender: UIButton) {
-        let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil)
+        let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
@@ -193,7 +193,7 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPet = pets[indexPath.row]
-        let editPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: selectedPet)
+        let editPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: selectedPet, isFirstSignIn: false)
         self.navigationController?.pushViewController(editPetViewController, animated: true)
     }
 }

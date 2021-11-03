@@ -58,7 +58,10 @@ extension EmptyPetViewController {
     }
     
     @objc func tapCreate(_: RoundButton) {
-        print("Create")
+        guard let currenUser = MemberModel.shared.current else { return }
+        let addPetViewController = AddPetViewController(currentUser: currenUser, selectedPet: nil, isFirstSignIn: true)
+        addPetViewController.modalPresentationStyle = .fullScreen
+        self.present(addPetViewController, animated: true, completion: nil)
     }
     
     @objc func tapGetInvitation(_: RoundButton) {

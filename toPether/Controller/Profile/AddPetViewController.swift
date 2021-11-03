@@ -8,13 +8,15 @@
 import UIKit
 
 class AddPetViewController: UIViewController {
-    convenience init(currentUser: Member, selectedPet: Pet?) {
+    convenience init(currentUser: Member, selectedPet: Pet?, isFirstSignIn: Bool) {
         self.init()
         self.currentUser = currentUser
         self.selectedPet = selectedPet
+        self.isFirstSignIn = isFirstSignIn
     }
     private var currentUser: Member!
     private var selectedPet: Pet?
+    private var isFirstSignIn: Bool!
     
     private var petImageView: RoundCornerImageView!
     private var uploadImageView: UIImageView!
@@ -197,11 +199,23 @@ class AddPetViewController: UIViewController {
                 month: selectedMonth ?? 0,
                 photo: petImageView.image ?? Img.iconsEdit.obj,
                 memberIds: memberIds
-            ) { result in
+            ) { [weak self] result in
+                guard let self = self else { return }
+                
                 switch result {
                 case .success(let petId):
                     MemberModel.shared.current?.petIds.append(petId)
                     MemberModel.shared.updateCurrentUser()
+                    
+                    if self.isFirstSignIn {
+                        let tabBarViewController = TabBarViewController()
+                        tabBarViewController.modalPresentationStyle = .fullScreen
+                        self.present(tabBarViewController, animated: true, completion: nil)
+                        
+                    } else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    
                 case .failure(let error):
                     print("update petId to currentUser error:", error)
                 }
@@ -209,9 +223,10 @@ class AddPetViewController: UIViewController {
         } else { // Update pet
             guard let selectedPet = selectedPet else { return }
             PetModel.shared.updatePet(id: selectedPet.id, pet: selectedPet)
+            navigationController?.popViewController(animated: true)
         }
         
-        navigationController?.popViewController(animated: true)
+//        navigationController?.popViewController(animated: true)
     }
 }
 
