@@ -37,6 +37,7 @@
 		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
 		395FD01027215D18005911AA /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberModel.swift */; };
 		39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE127325F28001B29F3 /* UIViewExtension.swift */; };
+		39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE327326682001B29F3 /* TabBarViewController.swift */; };
 		39816073272D403B0033930D /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816072272D403B0033930D /* ToDoViewController.swift */; };
 		39816076272D7AB40033930D /* layingCat.json in Resources */ = {isa = PBXBuildFile; fileRef = 39816075272D7AB40033930D /* layingCat.json */; };
 		39816078272D8BCE0033930D /* FoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816077272D8BCE0033930D /* FoodViewController.swift */; };
@@ -89,6 +90,7 @@
 		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
 		395FD00F27215D18005911AA /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
 		39709FE127325F28001B29F3 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		39709FE327326682001B29F3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		39816072272D403B0033930D /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		39816075272D7AB40033930D /* layingCat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = layingCat.json; sourceTree = "<group>"; };
 		39816077272D8BCE0033930D /* FoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewController.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				3988E26C272BDA2C00AACFD6 /* Profile */,
 				39816074272D40400033930D /* ToDo */,
 				394A77182721D65700978254 /* SplashViewController.swift */,
+				39709FE327326682001B29F3 /* TabBarViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				39816078272D8BCE0033930D /* FoodViewController.swift in Sources */,
 				3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */,
 				3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */,
+				39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */,
 				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
 				3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */,
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
