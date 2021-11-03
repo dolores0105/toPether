@@ -58,6 +58,8 @@ class HomeViewController: UIViewController {
         }
         
         // MARK: UI objects layout
+        view.backgroundColor = .white
+        
         let petsLayout = UICollectionViewFlowLayout()
         petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         petsLayout.minimumLineSpacing = 0
