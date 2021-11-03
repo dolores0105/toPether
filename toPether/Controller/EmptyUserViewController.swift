@@ -78,6 +78,8 @@ extension EmptyUserViewController {
     }
     
     @objc func tapNext(_: RoundButton) {
-        print("PUUUUUUSHHHHHHHHH")
+        let emptyPetViewController = EmptyPetViewController()
+        emptyPetViewController.modalPresentationStyle = .fullScreen
+        self.present(emptyPetViewController, animated: true, completion: nil)
     }
 }
