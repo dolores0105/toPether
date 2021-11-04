@@ -18,14 +18,6 @@ class InviteViewController: UIViewController {
     private var pet: Pet!
     private var invitedMemberId: String!
     
-    private var cameraContainerView: UIView!
-    private var successView: UIView!
-    private var successTitleLabel: MediumLabel!
-    private var guideLabel: RegularLabel!
-    private var inviteButton: RoundButton!
-    private var cancelButton: BorderButton!
-    private var animationView: AnimationView!
-    
     private let captureSession = AVCaptureSession()
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var qrCodeBounds: UIView?
@@ -80,17 +72,17 @@ class InviteViewController: UIViewController {
             print(error)
         }
         
-        animationView = .init(name: "LottieDone")
-        animationView.contentMode = .scaleAspectFit
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        animationView.isHidden = true
-        view.addSubview(animationView)
-        NSLayoutConstraint.activate([
-            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
-        ])
+//        animationView = .init(name: "LottieDone")
+//        animationView.contentMode = .scaleAspectFit
+//        animationView.translatesAutoresizingMaskIntoConstraints = false
+//        animationView.isHidden = true
+//        view.addSubview(animationView)
+//        NSLayoutConstraint.activate([
+//            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+//            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
+//        ])
     }
     
     // MARK: functions
@@ -167,7 +159,7 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
     
     func showScannedResult(member: Member) {
 
-        let scanResultViewController = ScanResultViewController(scannedMemberId: invitedMemberId)
+        let scanResultViewController = ScanResultViewController(pet: pet, scannedMemberId: invitedMemberId)
         scanResultViewController.modalTransitionStyle = .crossDissolve
         scanResultViewController.modalTransitionStyle = .coverVertical
         scanResultViewController.delegate = self

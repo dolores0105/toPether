@@ -13,10 +13,12 @@ protocol ScanResultViewControllerDelegate: AnyObject {
 
 class ScanResultViewController: UIViewController {
     
-    convenience init(scannedMemberId: String) {
+    convenience init(pet: Pet, scannedMemberId: String) {
         self.init()
+        self.pet = pet
         self.scannedMemberId = scannedMemberId
     }
+    private var pet: Pet!
     private var scannedMemberId: String!
     
     private var animator: UIViewPropertyAnimator!
@@ -26,6 +28,12 @@ class ScanResultViewController: UIViewController {
             floatingView.layer.masksToBounds = true
         }
     }
+    
+    private var titleLabel: MediumLabel!
+    private var contentLabel: RegularLabel!
+    private var confirmButton: RoundButton!
+    private var cancelButton: BorderButton!
+//    private var animationView: AnimationView!
     
     weak var delegate: ScanResultViewControllerDelegate?
     
@@ -57,11 +65,48 @@ class ScanResultViewController: UIViewController {
         
         floatingView.transform = CGAffineTransform(translationX: 0, y: floatingView.bounds.height)
         
+        configTitleLabel()
+        configContentLabel()
+        configConfirmButton()
+        configCancelButton()
+        
         let pan = UIPanGestureRecognizer(
             target: self,
             action: #selector(panOnFloatingView(_:)))
         floatingView.isUserInteractionEnabled = true
         floatingView.addGestureRecognizer(pan)
+        
+        queryMember(memberId: scannedMemberId)
+    }
+    
+    func queryMember(memberId: String) {
+        // check the invitedMemberId that user inputs is existing
+        MemberModel.shared.queryMember(id: memberId) { [weak self] member in
+            guard let self = self else { return }
+            if let member = member { // the member is existing
+                if !member.petIds.contains(self.pet.id) { // the member hasn't join the pet group
+                    self.contentLabel.text = "Do you want to invite \(member.name)?"
+                    /* confirm button action =
+                     1. member.petIds.append(self.pet.id)
+                        MemberModel.shared.updateMember(member: member)
+                     2. self.pet.memberIds.append(member.id)
+                        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+                     3. self.animationView.isHidden = false
+                        self.animationView?.play(completion: { _ in
+                        self.navigationController?.popViewController(animated: true)
+                        })
+                     */
+                }
+                
+                if self.pet.memberIds.contains(member.id) {
+                    self.contentLabel.text = "\(member.name) is already in the group"
+                    // confirm button action = dismiss scanResultVC
+                }
+                
+            } else {
+                self.contentLabel.text = "The member does not exist"
+            }
+        }
     }
     
     @objc private func panOnFloatingView(_ recognizer: UIPanGestureRecognizer) {
@@ -95,5 +140,55 @@ class ScanResultViewController: UIViewController {
         default:
             break
         }
+    }
+}
+
+extension ScanResultViewController {
+    
+    func configTitleLabel() {
+        titleLabel = MediumLabel(size: 24, text: "Scan success", textColor: .mainBlue)
+        titleLabel.textAlignment = .center
+        floatingView.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: floatingView.topAnchor, constant: 32),
+            titleLabel.centerXAnchor.constraint(equalTo: floatingView.centerXAnchor)
+        ])
+    }
+    
+    func configContentLabel() {
+        contentLabel = RegularLabel(size: 18, text: nil, textColor: .mainBlue)
+        contentLabel.numberOfLines = 0
+        contentLabel.textAlignment = .center
+        floatingView.addSubview(contentLabel)
+        NSLayoutConstraint.activate([
+            contentLabel.centerYAnchor.constraint(equalTo: floatingView.centerYAnchor, constant: -12),
+            contentLabel.leadingAnchor.constraint(equalTo: floatingView.leadingAnchor, constant: 16),
+            contentLabel.trailingAnchor.constraint(equalTo: floatingView.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    func configConfirmButton() {
+        confirmButton = RoundButton(text: "OK", size: 18)
+        floatingView.addSubview(confirmButton)
+        NSLayoutConstraint.activate([
+            confirmButton.bottomAnchor.constraint(equalTo: floatingView.bottomAnchor, constant: -20),
+            confirmButton.trailingAnchor.constraint(equalTo: floatingView.trailingAnchor, constant: -20),
+            confirmButton.widthAnchor.constraint(equalTo: floatingView.widthAnchor, multiplier: 0.5, constant: -20)
+        ])
+    }
+    
+    func configCancelButton() {
+        cancelButton = BorderButton()
+        cancelButton.layer.borderWidth = 0
+        cancelButton.setTitle("cancel", for: .normal)
+        cancelButton.setTitleColor(.deepBlueGrey, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.medium(size: 18)
+        floatingView.addSubview(cancelButton)
+        NSLayoutConstraint.activate([
+            cancelButton.bottomAnchor.constraint(equalTo: floatingView.bottomAnchor, constant: -20),
+            cancelButton.leadingAnchor.constraint(equalTo: floatingView.leadingAnchor, constant: 16),
+            cancelButton.widthAnchor.constraint(equalTo: floatingView.widthAnchor, multiplier: 0.5, constant: -28),
+            cancelButton.heightAnchor.constraint(equalToConstant: 48)
+        ])
     }
 }
