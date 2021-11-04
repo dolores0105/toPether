@@ -15,8 +15,8 @@ class SplashViewController: UIViewController {
     private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "AppIcon"))
     
     override func viewDidAppear(_ animated: Bool) {
-        if Auth.auth().currentUser != nil {
-            guard let current = Auth.auth().currentUser else { return }
+        if let current = Auth.auth().currentUser {
+
             MemberModel.shared.queryCurrentUser(id: current.uid) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -26,12 +26,11 @@ class SplashViewController: UIViewController {
                     
                 case .failure(let error):
                     print(error)
-                    MemberModel.shared.setMember(uid: current.uid, completion: self.loginHandler)
+                    MemberModel.shared.setMember(uid: current.uid, name: current.displayName, completion: self.loginHandler)
                 }
             }
             
         } else {
-            view.backgroundColor = .white
             configLogoView()
             setupSignInButton()
         }
@@ -39,6 +38,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
     }
     
     @objc private func tapLoginButton() {
@@ -57,11 +57,18 @@ class SplashViewController: UIViewController {
         controller.performRequests()
     }
     
-    private func loginHandler(_ result: Result<Member, Error>) {
+    private func loginHandler(_ result: Result<(Member, Bool), Error>) {
         switch result {
-        case .success(let member):
-            MemberModel.shared.current = member
-            gotoEmptySetting()
+        case .success((let member, let isExist)):
+            if isExist {
+                MemberModel.shared.current = member
+                gotoTabbarVC()
+                
+            } else {
+                MemberModel.shared.current = member
+                gotoEmptySetting()
+            }
+            
         case .failure(let error):
             print("loginHandler", error)
             // Response the error to USER
