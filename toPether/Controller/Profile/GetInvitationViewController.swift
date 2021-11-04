@@ -105,7 +105,16 @@ extension GetInvitationViewController {
     
     func configQrCodeImageView() {
         qrCodeImageView = UIImageView()
-        qrCodeImageView.backgroundColor = .lightBlueGrey
+        
+        guard let qrcode = createQrcode(id: currentUser.id) else { return }
+        let qrWidth = UIScreen.main.bounds.width / 3 * 2 - 64
+        let qrheight = qrWidth
+        let scaleX = qrWidth / qrcode.extent.width
+        let scaleY = qrheight / qrcode.extent.height
+        let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
+
+        qrCodeImageView.image = UIImage(ciImage: qrcode.transformed(by: transform))
+        
         qrCodeImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(qrCodeImageView)
         NSLayoutConstraint.activate([
@@ -116,6 +125,17 @@ extension GetInvitationViewController {
         ])
     }
 
+    func createQrcode(id: String) -> CIImage? {
+        
+        let data = id.data(using: .isoLatin1)
+        let qrFilter = CIFilter(name: "CIQRCodeGenerator")
+        
+        qrFilter?.setValue(data, forKey: "inputMessage")
+        qrFilter?.setValue("Q", forKey: "inputCorrectionLevel")
+            
+        return qrFilter?.outputImage
+    }
+    
     func configAnimationView() {
         animationView = .init(name: "LottieDone")
         animationView.contentMode = .scaleAspectFit
@@ -128,5 +148,4 @@ extension GetInvitationViewController {
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
     }
-
 }
