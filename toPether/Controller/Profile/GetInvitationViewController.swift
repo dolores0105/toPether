@@ -18,42 +18,21 @@ class GetInvitationViewController: UIViewController {
     private var currentUser: Member!
     private var isFirstSignIn: Bool!
     
-    private var invitationTitleLabel: MediumLabel!
-    private var currentUserIdLabel: MediumLabel!
+    private var titleLabel: MediumLabel!
+    private var guideLabel: RegularLabel!
+    private var qrCodeImageView: UIImageView!
+    private var qrCodeView: UIView!
     private var animationView: AnimationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        invitationTitleLabel = MediumLabel(size: 24, text: "Get invitation", textColor: .mainBlue)
-        view.addSubview(invitationTitleLabel)
-        NSLayoutConstraint.activate([
-            invitationTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            invitationTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-        currentUserIdLabel = MediumLabel(size: 18, text: currentUser.id, textColor: .mainBlue)
-        view.addSubview(currentUserIdLabel)
-        NSLayoutConstraint.activate([
-            currentUserIdLabel.topAnchor.constraint(equalTo: invitationTitleLabel.bottomAnchor, constant: 64),
-            currentUserIdLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-        currentUserIdLabel.isUserInteractionEnabled = true
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        currentUserIdLabel.addGestureRecognizer(gestureRecognizer)
-        
-        animationView = .init(name: "LottieDone")
-        animationView.contentMode = .scaleAspectFit
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(animationView)
-        NSLayoutConstraint.activate([
-            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
-        ])
+        configTitleLabel()
+        configGuideLabel()
+        configQrCodeView()
+        configQrCodeImageView()
+        configAnimationView()
         
         // MARK: data
         MemberModel.shared.addUserListener { [weak self] result in
@@ -75,7 +54,6 @@ class GetInvitationViewController: UIViewController {
                         }
                     }
                     
-                    
                 })
                 
             case .success(.removed(members: _ )):
@@ -85,24 +63,70 @@ class GetInvitationViewController: UIViewController {
             }
         }
     }
+}
+
+// MARK: UI layouts
+
+extension GetInvitationViewController {
     
-    @objc func handleLongPress(recognizer: UIGestureRecognizer) {
-        if let view = recognizer.view, let superview = recognizer.view?.superview {
-            view.becomeFirstResponder()
-            
-            let menu = UIMenuController.shared
-            
-            let copyItem = UIMenuItem(title: "Copy", action: #selector(copyAction))
-            menu.menuItems = [copyItem]
-            
-            menu.showMenu(from: superview, rect: view.frame)
-        }
+    func configTitleLabel() {
+        titleLabel = MediumLabel(size: 24, text: "Get invitation", textColor: .mainBlue)
+        view.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 48),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
-    @objc func copyAction(sender: UILabel) {
-        UIPasteboard.general.setValue(self.currentUserIdLabel.text ?? "", forPasteboardType: "public.utf8-plain-text")
+    func configGuideLabel() {
+        guideLabel = RegularLabel(size: 18, text: "Show your code to join the pet group", textColor: .mainBlue)
+        view.addSubview(guideLabel)
+        NSLayoutConstraint.activate([
+            guideLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 72),
+            guideLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    func configQrCodeView() {
+        qrCodeView = UIView()
+        qrCodeView.backgroundColor = .white
+        qrCodeView.layer.cornerRadius = 10
+        qrCodeView.setShadow(color: .mainBlue, offset: CGSize(width: 5.0, height: 5.0), opacity: 0.1, radius: 10)
+        qrCodeView.translatesAutoresizingMaskIntoConstraints = false
         
-        let menu = UIMenuController.shared
-        menu.hideMenu()
+        view.addSubview(qrCodeView)
+        NSLayoutConstraint.activate([
+            qrCodeView.topAnchor.constraint(equalTo: guideLabel.bottomAnchor, constant: 56),
+            qrCodeView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            qrCodeView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3),
+            qrCodeView.heightAnchor.constraint(equalTo: qrCodeView.widthAnchor)
+        ])
     }
+    
+    func configQrCodeImageView() {
+        qrCodeImageView = UIImageView()
+        qrCodeImageView.backgroundColor = .lightBlueGrey
+        qrCodeImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(qrCodeImageView)
+        NSLayoutConstraint.activate([
+            qrCodeImageView.topAnchor.constraint(equalTo: qrCodeView.topAnchor, constant: 32),
+            qrCodeImageView.bottomAnchor.constraint(equalTo: qrCodeView.bottomAnchor, constant: -32),
+            qrCodeImageView.leadingAnchor.constraint(equalTo: qrCodeView.leadingAnchor, constant: 32),
+            qrCodeImageView.trailingAnchor.constraint(equalTo: qrCodeView.trailingAnchor, constant: -32)
+        ])
+    }
+
+    func configAnimationView() {
+        animationView = .init(name: "LottieDone")
+        animationView.contentMode = .scaleAspectFit
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
+        ])
+    }
+
 }
