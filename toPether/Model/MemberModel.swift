@@ -22,21 +22,43 @@ class MemberModel {
     var current: Member? // set value at splash page
     
     // MARK: SetData
-    func setMember(uid: String, completion: @escaping (Result<Member, Error>) -> Void) {
+    func setMember(uid: String, name: String?, completion: @escaping (Result<(Member, Bool), Error>) -> Void) {
         let members = Firestore.firestore().collection("members")
         let document = members.document(uid)
         
         let member = Member()
         member.id = uid
-        member.name = ""
+        member.name = name ?? ""
         member.petIds = []
         member.qrCode = uid
 
-        do {
-            try document.setData(from: member)
-            completion(.success(member))
-        } catch let error {
-            completion(.failure(error))
+        checkUserExists(uid: uid) { isExist in
+            if !isExist {
+                do {
+                    try document.setData(from: member)
+                    completion(.success((member, false))) // user not exist
+                } catch let error {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.success((member, true))) // user exists in firebase auth
+            }
+        }
+    }
+    
+    func checkUserExists(uid: String, isExist: @escaping (Bool) -> Void) {
+        let members = Firestore.firestore().collection("members")
+        
+        members.document(uid).getDocument { document, _ in
+            if let document = document {
+                if document.exists {
+                    isExist(true)
+                } else {
+                    isExist(false)
+                }
+            } else {
+                isExist(false)
+            }
         }
     }
     
