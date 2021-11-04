@@ -196,6 +196,6 @@ class PetCollectionViewCell: UICollectionViewCell {
     @objc func tapStackView(sender: AnyObject) {
         guard let pet = pet else { return }
         delegate?.pushToInviteVC(pet: pet)
-        print("pass pet", pet.name)
+//        print("pass pet", pet.name)
     }
 }
