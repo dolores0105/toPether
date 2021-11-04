@@ -127,10 +127,12 @@ class ProfileViewController: UIViewController {
             case .success(.added(members: let members)):
                 self.queryData(currentUser: members.first ?? self.currentUser)
                 MemberModel.shared.current = members.first
+                self.textField.text = members.first?.name
                 
             case .success(.modified(members: let members)):
                 self.queryData(currentUser: members.first ?? self.currentUser)
                 MemberModel.shared.current = members.first
+                self.textField.text = members.first?.name
                 
             case .success(.removed(members: let members)):
                 self.queryData(currentUser: members.first ?? self.currentUser)

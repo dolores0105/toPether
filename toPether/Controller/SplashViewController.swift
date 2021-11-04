@@ -109,15 +109,20 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 print("Unable to serialize token string from data: \(appleIDToken).")
                 return
             }
-
+            
+            guard let givenName = appleIDCredential.fullName?.givenName else {
+                print("Unable to get user's given name.")
+                return
+            }
+            
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
 
             Auth.auth().signIn(with: credential) { [weak self] (authDataResult, error) in
                 guard let self = self else { return }
                 if let user = authDataResult?.user {
                     print("Nice! You're now signed in as \(user.uid), email: \(user.email ?? "unknown")") // User is signed in to Firebase with Apple
-
-                    MemberModel.shared.setMember(uid: user.uid, completion: self.loginHandler)
+                    
+                    MemberModel.shared.setMember(uid: user.uid, name: givenName, completion: self.loginHandler)
 
                 } else if let error = error {
                     print("sign in error:", error.localizedDescription)

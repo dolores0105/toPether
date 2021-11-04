@@ -26,18 +26,19 @@ class EmptyUserViewController: UIViewController {
 extension EmptyUserViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if nameTextField.hasText {
-            
-            nextButton.isEnabled = true
-            nextButton.backgroundColor = .mainYellow
-            
-            MemberModel.shared.current?.name = nameTextField.text ?? ""
-            MemberModel.shared.updateCurrentUser()
-            
-        } else {
-            nextButton.isEnabled = false
-            nextButton.backgroundColor = .lightBlueGrey
-        }
+//        if nameTextField.hasText {
+//
+//            nextButton.isEnabled = true
+//            nextButton.backgroundColor = .mainYellow
+//
+//            MemberModel.shared.current?.name = nameTextField.text ?? ""
+//            MemberModel.shared.updateCurrentUser()
+//
+//        } else {
+//            nextButton.isEnabled = false
+//            nextButton.backgroundColor = .lightBlueGrey
+//        }
+        buttonIsEnabled()
     }
 }
 
@@ -55,6 +56,7 @@ extension EmptyUserViewController {
     
     func configNameTextField() {
         nameTextField = BlueBorderTextField(text: nil)
+        nameTextField.text = MemberModel.shared.current?.name
         nameTextField.delegate = self
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
@@ -66,8 +68,9 @@ extension EmptyUserViewController {
     
     func configButton() {
         nextButton = RoundButton(text: "Next", size: 18)
-        nextButton.isEnabled = false
-        nextButton.backgroundColor = .lightBlueGrey
+//        nextButton.isEnabled = false
+//        nextButton.backgroundColor = .lightBlueGrey
+        buttonIsEnabled()
         nextButton.addTarget(self, action: #selector(tapNext), for: .touchUpInside)
         view.addSubview(nextButton)
         NSLayoutConstraint.activate([
@@ -75,6 +78,21 @@ extension EmptyUserViewController {
             nextButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
+    }
+    
+    func buttonIsEnabled() {
+        if nameTextField.hasText {
+            
+            nextButton.isEnabled = true
+            nextButton.backgroundColor = .mainYellow
+            
+            MemberModel.shared.current?.name = nameTextField.text ?? ""
+            MemberModel.shared.updateCurrentUser()
+            
+        } else {
+            nextButton.isEnabled = false
+            nextButton.backgroundColor = .lightBlueGrey
+        }
     }
     
     @objc func tapNext(_: RoundButton) {
