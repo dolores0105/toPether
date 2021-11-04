@@ -96,44 +96,44 @@ class InviteViewController: UIViewController {
     // MARK: functions
     @objc func tapOK(sender: UIButton) {
         // check the invitedMemberId that user inputs is existing
-        MemberModel.shared.queryMember(id: invitedMemberId) { [weak self] member in
-            guard let self = self else { return }
-            if let member = member {
-                print("the member is existing", member.id)
+//        MemberModel.shared.queryMember(id: invitedMemberId) { [weak self] member in
+//            guard let self = self else { return }
+//            if let member = member {
+//                print("the member is existing", member.id)
                 // add petId to member's petIds
-                if !member.petIds.contains(self.pet.id) {
-                    member.petIds.append(self.pet.id)
-                    MemberModel.shared.updateMember(member: member)
-                }
+//                if !member.petIds.contains(self.pet.id) {
+//                    member.petIds.append(self.pet.id)
+//                    MemberModel.shared.updateMember(member: member)
+//                }
                 
                 // add invitedMemberId to pet's memberIds
-                if !self.pet.memberIds.contains(member.id) {
-                    self.pet.memberIds.append(member.id)
-                    PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+//                if !self.pet.memberIds.contains(member.id) {
+//                    self.pet.memberIds.append(member.id)
+//                    PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+//
+//                    self.animationView.isHidden = false
+//                    self.animationView?.play(completion: { _ in
+//                        self.navigationController?.popViewController(animated: true)
+//                    })
                     
-                    self.animationView.isHidden = false
-                    self.animationView?.play(completion: { _ in
-                        self.navigationController?.popViewController(animated: true)
-                    })
-                    
-                } else {
-                    self.idTextField.text = ""
-                    self.idTextField.becomeFirstResponder()
-                    self.wrongInputLabel.isHidden = false
-                    self.wrongInputLabel.text = "You've toPether \(self.pet.name)."
-                    self.okButton.isEnabled = false
-                    self.okButton.backgroundColor = .lightBlueGrey
-                }
+//                } else {
+//                    self.idTextField.text = ""
+//                    self.idTextField.becomeFirstResponder()
+//                    self.wrongInputLabel.isHidden = false
+//                    self.wrongInputLabel.text = "You've toPether \(self.pet.name)."
+//                    self.okButton.isEnabled = false
+//                    self.okButton.backgroundColor = .lightBlueGrey
+//                }
 
-            } else {
-                print("NOT existing")
-                self.idTextField.text = ""
-                self.idTextField.becomeFirstResponder()
-                self.wrongInputLabel.isHidden = false
-                self.okButton.isEnabled = false
-                self.okButton.backgroundColor = .lightBlueGrey
-            }
-        }
+//            } else {
+//                print("NOT existing")
+//                self.idTextField.text = ""
+//                self.idTextField.becomeFirstResponder()
+//                self.wrongInputLabel.isHidden = false
+//                self.okButton.isEnabled = false
+//                self.okButton.backgroundColor = .lightBlueGrey
+//            }
+//        }
     }
 }
 
@@ -166,9 +166,21 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
     
     func showScannedResult(member: Member) {
-        print("scan success")
+
+        let scanResultViewController = ScanResultViewController(scannedMemberId: invitedMemberId)
+        scanResultViewController.modalTransitionStyle = .crossDissolve
+        scanResultViewController.modalTransitionStyle = .coverVertical
+        scanResultViewController.delegate = self
+        present(scanResultViewController, animated: true, completion: nil)
         
         captureSession.stopRunning()
     }
     
+}
+
+extension InviteViewController: ScanResultViewControllerDelegate {
+    func dismissScanResult() {
+        self.captureSession.startRunning()
+        qrCodeBounds?.frame = CGRect.zero
+    }
 }

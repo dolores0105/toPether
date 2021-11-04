@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3902C38227340BFB0088D04B /* ScanResultViewController.swift */; };
 		390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390778DF271D1A2200B4735B /* GoogleService-Info.plist */; };
 		3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39079199271DA7B100B4735B /* PetCollectionViewCell.swift */; };
 		3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFontExtension.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3902C38227340BFB0088D04B /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
 		390778DF271D1A2200B4735B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		39079199271DA7B100B4735B /* PetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetCollectionViewCell.swift; sourceTree = "<group>"; };
 		3907919C271DB56900B4735B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				39C6669F2726B30100400C84 /* InviteViewController.swift */,
 				39816077272D8BCE0033930D /* FoodViewController.swift */,
 				39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */,
+				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
+				3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */,
 				394A77212723067300978254 /* RoundButton.swift in Sources */,
 				39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */,
 				394A77192721D65700978254 /* SplashViewController.swift in Sources */,
