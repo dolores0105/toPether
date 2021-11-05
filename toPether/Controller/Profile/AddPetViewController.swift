@@ -209,8 +209,11 @@ class AddPetViewController: UIViewController {
                     
                     if self.isFirstSignIn {
                         let tabBarViewController = TabBarViewController()
-                        tabBarViewController.modalPresentationStyle = .fullScreen
-                        self.present(tabBarViewController, animated: true, completion: nil)
+                        
+                        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                        sceneDelegate?.changeRootViewController(tabBarViewController)
+//                        tabBarViewController.modalPresentationStyle = .fullScreen
+//                        self.present(tabBarViewController, animated: true, completion: nil)
                         
                     } else {
                         self.navigationController?.popViewController(animated: true)

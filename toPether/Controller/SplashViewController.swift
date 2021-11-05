@@ -78,8 +78,11 @@ class SplashViewController: UIViewController {
     private func gotoTabbarVC() {
 
         let tabBarViewController = TabBarViewController()
-        tabBarViewController.modalPresentationStyle = .fullScreen
-        self.present(tabBarViewController, animated: true, completion: nil)
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.changeRootViewController(tabBarViewController)
+        
+//        tabBarViewController.modalPresentationStyle = .fullScreen
+//        self.present(tabBarViewController, animated: true, completion: nil)
     }
     
     private func gotoEmptySetting() {

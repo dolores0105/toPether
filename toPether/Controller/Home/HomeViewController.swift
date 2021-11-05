@@ -29,7 +29,7 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24), NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
         
         self.tabBarController?.tabBar.isHidden = false
     }
