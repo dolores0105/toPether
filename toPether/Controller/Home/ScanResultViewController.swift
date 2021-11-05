@@ -21,6 +21,7 @@ class ScanResultViewController: UIViewController {
     }
     private var pet: Pet!
     private var scannedMemberId: String!
+    private var scannedMember: Member?
     
     private var animator: UIViewPropertyAnimator!
     private var floatingView: UIView! {
@@ -85,6 +86,9 @@ class ScanResultViewController: UIViewController {
         MemberModel.shared.queryMember(id: memberId) { [weak self] member in
             guard let self = self else { return }
             if let member = member { // the member is existing
+                
+                self.scannedMember = member
+                
                 if !member.petIds.contains(self.pet.id) { // the member hasn't join the pet group
                     self.contentLabel.text = "We found \(member.name)!"
                     /* confirm button action =
@@ -112,11 +116,26 @@ class ScanResultViewController: UIViewController {
         }
     }
     
-    @objc private func tapConfirm(_ sender: RoundButton) {
-        // animation
-        // back to home
+    @objc private func tapInvite() {
+        guard let scannedMember = scannedMember else { return }
+        scannedMember.petIds.append(self.pet.id)
+        MemberModel.shared.updateMember(member: scannedMember)
+        
+        self.pet.memberIds.append(scannedMember.id)
+        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
+        
         self.dismiss(animated: true, completion: nil)
         delegate?.backToHomeVC()
+    }
+    
+    @objc private func tapConfirm() {
+        self.dismiss(animated: true, completion: nil)
+        delegate?.backToHomeVC()
+    }
+    
+    @objc private func tapCancel() {
+        self.dismiss(animated: true, completion: nil)
+        self.delegate?.dismissScanResult()
     }
     
     @objc private func panOnFloatingView(_ recognizer: UIPanGestureRecognizer) {
@@ -179,7 +198,7 @@ extension ScanResultViewController {
     
     private func configInviteButton() {
         confirmButton = RoundButton(text: "Invite", size: 18)
-        confirmButton.addTarget(self, action: #selector(tapConfirm), for: .touchUpInside)
+        confirmButton.addTarget(self, action: #selector(tapInvite), for: .touchUpInside)
         floatingView.addSubview(confirmButton)
         NSLayoutConstraint.activate([
             confirmButton.bottomAnchor.constraint(equalTo: floatingView.bottomAnchor, constant: -20),
@@ -205,6 +224,7 @@ extension ScanResultViewController {
         cancelButton.setTitle("cancel", for: .normal)
         cancelButton.setTitleColor(.deepBlueGrey, for: .normal)
         cancelButton.titleLabel?.font = UIFont.medium(size: 18)
+        cancelButton.addTarget(self, action: #selector(tapCancel), for: .touchUpInside)
         floatingView.addSubview(cancelButton)
         NSLayoutConstraint.activate([
             cancelButton.bottomAnchor.constraint(equalTo: floatingView.bottomAnchor, constant: -20),
