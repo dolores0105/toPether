@@ -75,6 +75,11 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: functions
+    @objc private func tapMessageButton(_: BorderButton) {
+        let messageVC = MessageViewController(selectedPet: self.pets[petIndex])
+        navigationController?.pushViewController(messageVC, animated: true)
+    }
+    
     @objc private func tapFoodButton(_: BorderButton) {
         let foodVC = FoodViewController(selectedPet: self.pets[petIndex])
         navigationController?.pushViewController(foodVC, animated: true)
@@ -239,7 +244,7 @@ extension HomeViewController {
     private func configButtonStackView() {
         view.addSubview(buttonStackView)
         let buttons = [
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
+            IconButton(self, action: #selector(tapMessageButton), img: .iconsMessage),
             IconButton(self, action: #selector(tapFoodButton), img: .iconsFood),
             IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
             IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)

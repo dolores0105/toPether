@@ -31,6 +31,8 @@
 		394A77212723067300978254 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77202723067300978254 /* RoundButton.swift */; };
 		395570FE27350188003AF098 /* lottieSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = 395570FD27350188003AF098 /* lottieSuccess.json */; };
 		39557100273514CD003AF098 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395570FF273514CD003AF098 /* CardView.swift */; };
+		3955710227352BAB003AF098 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710127352BAB003AF098 /* MessageViewController.swift */; };
+		3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710327353562003AF098 /* MessageTableViewCell.swift */; };
 		39558C9B2727B46400523D43 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9A2727B46400523D43 /* BlurView.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
@@ -89,6 +91,8 @@
 		394A77202723067300978254 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		395570FD27350188003AF098 /* lottieSuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieSuccess.json; sourceTree = "<group>"; };
 		395570FF273514CD003AF098 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		3955710127352BAB003AF098 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		3955710327353562003AF098 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		39558C9A2727B46400523D43 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 				395FD0072720517A005911AA /* PetTableViewCell.swift */,
 				3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */,
 				3981607B272D9ACB0033930D /* FoodTableViewCell.swift */,
+				3955710327353562003AF098 /* MessageTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 				39816077272D8BCE0033930D /* FoodViewController.swift */,
 				39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */,
 				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
+				3955710127352BAB003AF098 /* MessageViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -457,6 +463,7 @@
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
 				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
+				3955710227352BAB003AF098 /* MessageViewController.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
 				395FD00A272052D8005911AA /* MediumLabel.swift in Sources */,
 				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
@@ -474,6 +481,7 @@
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
 				3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */,
 				394A77212723067300978254 /* RoundButton.swift in Sources */,
+				3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */,
 				39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */,
 				394A77192721D65700978254 /* SplashViewController.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
