@@ -45,8 +45,9 @@ class GetInvitationViewController: UIViewController {
                     
                     if self.isFirstSignIn {
                         let tabBarViewController = TabBarViewController()
-                        tabBarViewController.modalPresentationStyle = .fullScreen
-                        self.present(tabBarViewController, animated: true, completion: nil)
+                        
+                        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                        sceneDelegate?.changeRootViewController(tabBarViewController)
                         
                     } else {
                         self.dismiss(animated: true) {
@@ -137,14 +138,14 @@ extension GetInvitationViewController {
     }
     
     func configAnimationView() {
-        animationView = .init(name: "LottieDone")
+        animationView = .init(name: "lottieSuccess")
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(animationView)
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
     }

@@ -6,6 +6,7 @@
 //
 // swiftlint:disable function_body_length
 import UIKit
+import Photos
 
 class HomeViewController: UIViewController {
     
@@ -28,7 +29,7 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "toPether"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24), NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
         
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -141,6 +142,52 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    func authorizeCamera() -> Bool {
+        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        switch cameraStatus {
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        _ = self.authorizeCamera()
+                    }
+                }
+            }
+        case .restricted, .denied:
+            presentGoSettingAlert()
+            
+        case .authorized:
+            return true
+            
+        @unknown default:
+            presentGoSettingAlert()
+        }
+        
+        return false
+    }
+    
+    func presentGoSettingAlert() {
+        
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: "toPether would like to access the Camera", message: "Please turn on the setting for scanning members' QRCode", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let settingAction = UIAlertAction(title: "Setting", style: .default) { settingAction in
+                guard let settingUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(settingUrl, options: [:], completionHandler: { (success) in
+                        print("跳至設定")
+                    })
+                } else {
+                    UIApplication.shared.openURL(settingUrl)
+                }
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(settingAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: Extension
@@ -176,7 +223,9 @@ extension HomeViewController: UICollectionViewDelegate {
 
 extension HomeViewController: PetCollectionViewCellDelegate {
     func pushToInviteVC(pet: Pet) {
-        let inviteVC = InviteViewController(pet: pet)
-        self.navigationController?.pushViewController(inviteVC, animated: true)
+        if authorizeCamera() {
+            let inviteVC = InviteViewController(pet: pet)
+            self.navigationController?.pushViewController(inviteVC, animated: true)
+        }
     }
 }
