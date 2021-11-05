@@ -7,7 +7,6 @@
 
 import UIKit
 import AVFoundation
-import Lottie
 
 class InviteViewController: UIViewController {
     
@@ -71,18 +70,6 @@ class InviteViewController: UIViewController {
         } catch {
             print(error)
         }
-        
-//        animationView = .init(name: "LottieDone")
-//        animationView.contentMode = .scaleAspectFit
-//        animationView.translatesAutoresizingMaskIntoConstraints = false
-//        animationView.isHidden = true
-//        view.addSubview(animationView)
-//        NSLayoutConstraint.activate([
-//            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-//            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
-//        ])
     }
     
     // MARK: functions

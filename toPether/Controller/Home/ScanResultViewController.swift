@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 protocol ScanResultViewControllerDelegate: AnyObject {
     func dismissScanResult()
@@ -35,7 +36,7 @@ class ScanResultViewController: UIViewController {
     private var contentLabel: RegularLabel!
     private var confirmButton: RoundButton!
     private var cancelButton: BorderButton!
-//    private var animationView: AnimationView!
+    private var animationView: AnimationView!
     
     weak var delegate: ScanResultViewControllerDelegate?
     
@@ -124,8 +125,11 @@ class ScanResultViewController: UIViewController {
         self.pet.memberIds.append(scannedMember.id)
         PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
         
-        self.dismiss(animated: true, completion: nil)
-        delegate?.backToHomeVC()
+        self.animationView.isHidden = false
+        self.animationView?.play(completion: { _ in
+            self.dismiss(animated: true, completion: nil)
+            self.delegate?.backToHomeVC()
+        })
     }
     
     @objc private func tapConfirm() {
@@ -205,6 +209,8 @@ extension ScanResultViewController {
             confirmButton.trailingAnchor.constraint(equalTo: floatingView.trailingAnchor, constant: -20),
             confirmButton.widthAnchor.constraint(equalTo: floatingView.widthAnchor, multiplier: 0.5, constant: -20)
         ])
+        
+        configLottieAnimation()
     }
     
     private func configOkButton() {
@@ -231,6 +237,20 @@ extension ScanResultViewController {
             cancelButton.leadingAnchor.constraint(equalTo: floatingView.leadingAnchor, constant: 16),
             cancelButton.widthAnchor.constraint(equalTo: floatingView.widthAnchor, multiplier: 0.5, constant: -28),
             cancelButton.heightAnchor.constraint(equalToConstant: 48)
+        ])
+    }
+    
+    private func configLottieAnimation() {
+        animationView = .init(name: "LottieDone")
+        animationView.contentMode = .scaleAspectFit
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        animationView.isHidden = true
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
     }
 }

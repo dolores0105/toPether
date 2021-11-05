@@ -212,8 +212,6 @@ class AddPetViewController: UIViewController {
                         
                         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                         sceneDelegate?.changeRootViewController(tabBarViewController)
-//                        tabBarViewController.modalPresentationStyle = .fullScreen
-//                        self.present(tabBarViewController, animated: true, completion: nil)
                         
                     } else {
                         self.navigationController?.popViewController(animated: true)
