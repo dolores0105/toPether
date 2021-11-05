@@ -50,17 +50,17 @@ class PetCollectionViewCell: UICollectionViewCell {
             petImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             petImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             petImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 2, constant: 50)
+            petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 2, constant: 20)
         ])
         
         petInfoButton = BorderButton()
         petInfoButton.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
         contentView.addSubview(petInfoButton)
         NSLayoutConstraint.activate([
-            petInfoButton.topAnchor.constraint(equalTo: petImageView.bottomAnchor, constant: 20),
+            petInfoButton.topAnchor.constraint(equalTo: petImageView.bottomAnchor, constant: 16),
             petInfoButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             petInfoButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
-            petInfoButton.heightAnchor.constraint(equalToConstant: 84)
+            petInfoButton.heightAnchor.constraint(equalToConstant: 80)
         ])
         
         petName = UILabel()
@@ -69,7 +69,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         petName.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(petName)
         NSLayoutConstraint.activate([
-            petName.topAnchor.constraint(equalTo: petInfoButton.topAnchor, constant: 16),
+            petName.topAnchor.constraint(equalTo: petInfoButton.topAnchor, constant: 12),
             petName.leadingAnchor.constraint(equalTo: petInfoButton.leadingAnchor, constant: 16),
             petName.trailingAnchor.constraint(equalTo: petInfoButton.trailingAnchor, constant: -16),
             petName.heightAnchor.constraint(equalToConstant: 28)

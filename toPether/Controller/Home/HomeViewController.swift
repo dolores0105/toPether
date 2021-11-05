@@ -256,7 +256,7 @@ extension HomeViewController {
         
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            buttonStackView.topAnchor.constraint(equalTo: petCollectionView.bottomAnchor, constant: 20),
+            buttonStackView.topAnchor.constraint(equalTo: petCollectionView.bottomAnchor, constant: 8),
             buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
