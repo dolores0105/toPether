@@ -171,6 +171,10 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
 }
 
 extension InviteViewController: ScanResultViewControllerDelegate {
+    func backToHomeVC() {
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
     func dismissScanResult() {
         self.captureSession.startRunning()
         qrCodeBounds?.frame = CGRect.zero
