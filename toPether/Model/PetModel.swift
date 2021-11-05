@@ -250,4 +250,57 @@ class PetModel {
             }
         }
     }
+    
+    /* ---------------------Message---------------------------- */
+    // MARK: Message
+    func setMessage(petId: String, senderId: String, sentTime: Date, content: String, completion: @escaping (Result<Message, Error>) -> Void) {
+        
+        let messages = Firestore.firestore().collection("pets").document(petId).collection("messages")
+        let document = messages.document()
+        
+        let message = Message()
+        message.id = document.documentID
+        message.senderId = senderId
+        message.sentTime = sentTime
+        message.content = content
+        
+        do {
+            try document.setData(from: message)
+            completion(Result.success(message))
+        } catch let error {
+            print("set message error:", error)
+            completion(Result.failure(error))
+        }
+    }
+    
+    func queryMessages(petId: String, completion: @escaping (Result<[Message], Error>) -> Void) {
+        dataBase.collection("pets").document(petId).collection("messages").order(by: "sentTime", descending: true).getDocuments { (querySnapshot, error) in
+            if let querySnapshot = querySnapshot {
+                
+                let messages = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Message.self)
+                })
+                completion(Result.success(messages))
+                
+            } else if let error = error {
+                completion(Result.failure(error))
+            }
+        }
+    }
+    
+    func addMessagesListener(petId: String, completion: @escaping (Result<[Message], Error>) -> Void) {
+        dataBase.collection("pets").document(petId).collection("messages").addSnapshotListener { querySnapshot, error in
+            
+            if let querySnapshot = querySnapshot {
+                let messages = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: Message.self)
+                })
+                let sortedmessages = messages.sorted { $0.sentTime > $1.sentTime }
+                completion(.success(sortedmessages))
+                
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
 }

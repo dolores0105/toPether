@@ -14,6 +14,7 @@ class MessageViewController: UIViewController {
         self.selectedPet = selectedPet
     }
     private var selectedPet: Pet!
+    private var messages = [Message]()
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var backgroundView: UIView!
@@ -42,8 +43,32 @@ class MessageViewController: UIViewController {
         configMessageTableView()
         configInputTextView()
         configSendButton()
-    }
+        
+        // MARK: Data
+        /*
+        guard let currentUser = MemberModel.shared.current else { return }
+        PetModel.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: "Friday night QQQQ") { result in
+            switch result {
+            case .success(let message):
+                print(message.sentTime, message.content)
+            case .failure(let error):
+                print(error)
+            }
+        }
 
+        PetModel.shared.addMessagesListener(petId: selectedPet.id) { result in
+            switch result {
+            case .success(let messages):
+                for index in messages {
+                    print("-->", index.sentTime)
+                }
+                self.messages = messages
+            case .failure(let error):
+                print(error)
+            }
+        }
+         */
+    }
 }
 
 extension MessageViewController: UITableViewDelegate {

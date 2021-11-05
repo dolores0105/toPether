@@ -30,7 +30,7 @@ class MemberModel {
         member.id = uid
         member.name = name ?? ""
         member.petIds = []
-        member.qrCode = uid
+//        member.qrCode = uid
 
         checkUserExists(uid: uid) { isExist in
             if !isExist {
