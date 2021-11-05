@@ -39,8 +39,6 @@ class HomeViewController: UIViewController {
         
         self.navigationItem.title = "toPether"
         
-        let tabbarappearance = UITabBarAppearance()
-        tabbarappearance.backgroundColor = .white
         self.tabBarController?.tabBar.isHidden = false
     }
     
@@ -234,7 +232,7 @@ extension HomeViewController {
             petCollectionView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
             petCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             petCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            petCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 3 / 4)
+            petCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 3 / 4, constant: 32)
         ])
     }
     
@@ -251,6 +249,8 @@ extension HomeViewController {
                 button.heightAnchor.constraint(equalToConstant: 56),
                 button.widthAnchor.constraint(equalToConstant: 56)
             ])
+            button.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
+            
             buttonStackView.addArrangedSubview(button)
         }
         
