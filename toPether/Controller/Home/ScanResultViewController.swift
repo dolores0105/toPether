@@ -241,7 +241,7 @@ extension ScanResultViewController {
     }
     
     private func configLottieAnimation() {
-        animationView = .init(name: "LottieDone")
+        animationView = .init(name: "lottieSuccess")
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.isHidden = true
@@ -249,7 +249,7 @@ extension ScanResultViewController {
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
     }
