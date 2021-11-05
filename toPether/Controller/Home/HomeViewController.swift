@@ -10,6 +10,7 @@ import Photos
 
 class HomeViewController: UIViewController {
     
+    private var cardView: CardView!
     var petCollectionView: UICollectionView!
     let buttonStackView: UIStackView = {
         let stackView = UIStackView()
@@ -28,8 +29,15 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .mainBlue
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24), NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
         self.navigationItem.title = "toPether"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24), NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
         
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -59,55 +67,11 @@ class HomeViewController: UIViewController {
         }
         
         // MARK: UI objects layout
-        view.backgroundColor = .white
+        view.backgroundColor = .mainBlue
+        configCardView()
+        configCollectionView()
+        configButtonStackView()
         
-        let petsLayout = UICollectionViewFlowLayout()
-        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        petsLayout.minimumLineSpacing = 0
-        petsLayout.minimumInteritemSpacing = 0
-        petsLayout.scrollDirection = .horizontal
-        petsLayout.itemSize.width = view.bounds.width
-        petsLayout.itemSize.height = view.bounds.height / 3 * 2
-        
-        petCollectionView = UICollectionView(frame: .zero, collectionViewLayout: petsLayout)
-        petCollectionView.backgroundColor = .clear
-        petCollectionView.showsHorizontalScrollIndicator = false
-        petCollectionView.bounces = false
-        petCollectionView.allowsSelection = false
-        petCollectionView.isPagingEnabled = true
-        petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: "PetCollectionViewCell")
-        petCollectionView.delegate = self
-        petCollectionView.dataSource = self
-        
-        petCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(petCollectionView)
-        NSLayoutConstraint.activate([
-            petCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            petCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            petCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            petCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 3 / 4)
-        ])
-        
-        view.addSubview(buttonStackView)
-        let buttons = [
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
-            IconButton(self, action: #selector(tapFoodButton), img: .iconsFood),
-            IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
-        ]
-        buttons.forEach { button in
-            NSLayoutConstraint.activate([
-                button.heightAnchor.constraint(equalToConstant: 64),
-                button.widthAnchor.constraint(equalToConstant: 64)
-            ])
-            buttonStackView.addArrangedSubview(button)
-        }
-        
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            buttonStackView.topAnchor.constraint(equalTo: petCollectionView.bottomAnchor, constant: 20),
-            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
     }
     
     // MARK: functions
@@ -227,5 +191,73 @@ extension HomeViewController: PetCollectionViewCellDelegate {
             let inviteVC = InviteViewController(pet: pet)
             self.navigationController?.pushViewController(inviteVC, animated: true)
         }
+    }
+}
+
+extension HomeViewController {
+    
+    private func configCardView() {
+        cardView = CardView(color: .white, cornerRadius: 20)
+        view.addSubview(cardView)
+        NSLayoutConstraint.activate([
+            cardView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func configCollectionView() {
+        let petsLayout = UICollectionViewFlowLayout()
+        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        petsLayout.minimumLineSpacing = 0
+        petsLayout.minimumInteritemSpacing = 0
+        petsLayout.scrollDirection = .horizontal
+        petsLayout.itemSize.width = view.bounds.width
+        petsLayout.itemSize.height = view.bounds.height / 3 * 2
+        
+        petCollectionView = UICollectionView(frame: .zero, collectionViewLayout: petsLayout)
+        petCollectionView.backgroundColor = .clear
+        petCollectionView.showsHorizontalScrollIndicator = false
+        petCollectionView.bounces = false
+        petCollectionView.allowsSelection = false
+        petCollectionView.isPagingEnabled = true
+        petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: "PetCollectionViewCell")
+        petCollectionView.delegate = self
+        petCollectionView.dataSource = self
+        
+        petCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(petCollectionView)
+        NSLayoutConstraint.activate([
+            petCollectionView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
+            petCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            petCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            petCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 3 / 4, constant: 32)
+        ])
+    }
+    
+    private func configButtonStackView() {
+        view.addSubview(buttonStackView)
+        let buttons = [
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsMessage),
+            IconButton(self, action: #selector(tapFoodButton), img: .iconsFood),
+            IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
+            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
+        ]
+        buttons.forEach { button in
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: 56),
+                button.widthAnchor.constraint(equalToConstant: 56)
+            ])
+            button.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
+            
+            buttonStackView.addArrangedSubview(button)
+        }
+        
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            buttonStackView.topAnchor.constraint(equalTo: petCollectionView.bottomAnchor, constant: 8),
+            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
 }

@@ -30,6 +30,7 @@
 		394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771E272305B000978254 /* BlueBorderTextField.swift */; };
 		394A77212723067300978254 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77202723067300978254 /* RoundButton.swift */; };
 		395570FE27350188003AF098 /* lottieSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = 395570FD27350188003AF098 /* lottieSuccess.json */; };
+		39557100273514CD003AF098 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395570FF273514CD003AF098 /* CardView.swift */; };
 		39558C9B2727B46400523D43 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9A2727B46400523D43 /* BlurView.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
@@ -87,6 +88,7 @@
 		394A771E272305B000978254 /* BlueBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBorderTextField.swift; sourceTree = "<group>"; };
 		394A77202723067300978254 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		395570FD27350188003AF098 /* lottieSuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieSuccess.json; sourceTree = "<group>"; };
+		395570FF273514CD003AF098 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		39558C9A2727B46400523D43 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				39816079272D97C60033930D /* BorderSearchBar.swift */,
 				3981607D272D9C920033930D /* DotView.swift */,
 				3981607F272D9DA30033930D /* LineView.swift */,
+				395570FF273514CD003AF098 /* CardView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
+				39557100273514CD003AF098 /* CardView.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
 				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,

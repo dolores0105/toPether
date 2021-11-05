@@ -17,9 +17,9 @@ class IconButton: BorderButton {
 
         if #available(iOS 15.0, *) {
             var configuration = UIButton.Configuration.filled()
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         } else {
-            imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         }
         
         setImage(img.obj, for: .normal)

@@ -27,8 +27,10 @@ class TabBarViewController: UITabBarController {
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
         profileNavigationController.tabBarItem = UITabBarItem(title: "Profile", image: Img.iconsProfileNormal.obj, selectedImage: Img.iconsProfileSelected.obj)
 
-        self.setViewControllers([homeNavigationController, toDoNavigationController, profileNavigationController], animated: false)
-        self.tabBar.tintColor = .mainBlue
-        self.tabBar.unselectedItemTintColor = .deepBlueGrey
+        setViewControllers([homeNavigationController, toDoNavigationController, profileNavigationController], animated: false)
+        tabBar.tintColor = .mainBlue
+        tabBar.unselectedItemTintColor = .deepBlueGrey
+
+        tabBar.backgroundColor = .white
     }
 }
