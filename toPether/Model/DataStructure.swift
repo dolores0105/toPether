@@ -36,7 +36,7 @@ class Member: BaseObject, Codable {
     var id: String = ""
     var name: String = ""
     var petIds: [String] = []
-    var qrCode: String = ""
+//    var qrCode: String = ""
 }
 
 class Medical: BaseObject, Codable {
@@ -56,4 +56,11 @@ class Food: BaseObject, Codable {
     var market: String = ""
     var dateOfPurchase: Date = .init(timeIntervalSince1970: 0)
     var note: String = ""
+}
+
+class Message: BaseObject, Codable {
+    var id: String = ""
+    var senderId: String = ""
+    var sentTime: Date = .init(timeIntervalSince1970: 0)
+    var content: String = ""
 }

@@ -45,10 +45,9 @@ class MedicalViewController: UIViewController {
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 150)
         ])
         
         petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
@@ -62,7 +61,7 @@ class MedicalViewController: UIViewController {
         searchBar.delegate = self
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])

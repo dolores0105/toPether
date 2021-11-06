@@ -12,8 +12,11 @@ class NavigationBackgroundView: UIView {
     override required init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .mainBlue
-        layer.cornerRadius = 20
         translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 160)
+        ])
     }
     
     required init?(coder: NSCoder) {
