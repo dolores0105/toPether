@@ -27,7 +27,13 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     func reload(message: Message) {
+        senderNameLabel.text = message.senderId
+        contentLabel.text = message.content
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d HH:mm"
+        dateFormatter.timeZone = TimeZone.current
+        sentTimeLabel.text = dateFormatter.string(from: message.sentTime)
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +47,7 @@ extension MessageTableViewCell {
         senderNameLabel = MediumLabel(size: 14, text: "sender", textColor: .deepBlueGrey)
         contentView.addSubview(senderNameLabel)
         NSLayoutConstraint.activate([
-            senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             senderNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             senderNameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 2 / 3)
         ])
@@ -57,7 +63,7 @@ extension MessageTableViewCell {
         
         contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12).isActive = true
         contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32).isActive = true
-        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
+        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
     }
     
     private func configContentLabelView() {

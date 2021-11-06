@@ -46,29 +46,18 @@ class MessageViewController: UIViewController {
         configSendButton()
         
         // MARK: Data
-        /*
-        guard let currentUser = MemberModel.shared.current else { return }
-        PetModel.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: "Friday night QQQQ") { result in
-            switch result {
-            case .success(let message):
-                print(message.sentTime, message.content)
-            case .failure(let error):
-                print(error)
-            }
-        }
-
-        PetModel.shared.addMessagesListener(petId: selectedPet.id) { result in
+        PetModel.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let messages):
-                for index in messages {
-                    print("-->", index.sentTime)
-                }
                 self.messages = messages
+                print(messages)
+                self.messageTableView.reloadData()
+                
             case .failure(let error):
                 print(error)
             }
         }
-         */
     }
 }
 
@@ -78,12 +67,14 @@ extension MessageViewController: UITableViewDelegate {
 
 extension MessageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 14
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageTableViewCell", for: indexPath)
-        guard let cell = cell as? FoodTableViewCell else { return cell }
+        guard let cell = cell as? MessageTableViewCell else { return cell }
+        
+        cell.reload(message: messages[indexPath.row])
         
         return cell
     }
