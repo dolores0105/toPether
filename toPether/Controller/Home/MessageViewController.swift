@@ -105,10 +105,23 @@ extension MessageViewController: UITableViewDataSource {
             senderName = name
         }
         
+        var isSelf: Bool = false
+        
         if searching {
-            cell.reload(message: searchedMessages[indexPath.row], senderName: senderName)
+            if searchedMessages[indexPath.row].senderId == MemberModel.shared.current?.id {
+                isSelf = true
+                cell.reload(message: searchedMessages[indexPath.row], senderName: senderName, isSelf: isSelf)
+            } else {
+                cell.reload(message: searchedMessages[indexPath.row], senderName: senderName, isSelf: isSelf)
+            }
+            
         } else {
-            cell.reload(message: messages[indexPath.row], senderName: senderName)
+            if message.senderId ==  MemberModel.shared.current?.id {
+                isSelf = true
+                cell.reload(message: message, senderName: senderName, isSelf: isSelf)
+            } else {
+                cell.reload(message: message, senderName: senderName, isSelf: isSelf)
+            }
         }
         
         return cell
@@ -247,6 +260,7 @@ extension MessageViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         if textView.hasText && textView.text != "" {
+            messageContent = textView.text
             sendButton.isHidden = false
         } else {
             sendButton.isHidden = true

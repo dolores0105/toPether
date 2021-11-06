@@ -14,6 +14,11 @@ class MessageTableViewCell: UITableViewCell {
     private var contentLabelView: UIView!
     private var sentTimeLabel: RegularLabel!
     
+    private var contentLabelLeading: NSLayoutConstraint?
+    private var contentLabelTrailing: NSLayoutConstraint?
+    private var sentTimeLabelLeading: NSLayoutConstraint?
+    private var sentTimeLabelTrailing: NSLayoutConstraint?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -26,7 +31,7 @@ class MessageTableViewCell: UITableViewCell {
         
     }
     
-    func reload(message: Message, senderName: String?) {
+    func reload(message: Message, senderName: String?, isSelf: Bool) {
         senderNameLabel.text = senderName
         contentLabel.text = message.content
         
@@ -34,6 +39,30 @@ class MessageTableViewCell: UITableViewCell {
         dateFormatter.dateFormat = "MMM d HH:mm"
         dateFormatter.timeZone = TimeZone.current
         sentTimeLabel.text = dateFormatter.string(from: message.sentTime)
+        
+        contentLabelLeading = contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32)
+        contentLabelTrailing = contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32)
+        sentTimeLabelLeading = sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12)
+        sentTimeLabelTrailing = sentTimeLabel.trailingAnchor.constraint(equalTo: contentLabel.leadingAnchor, constant: -12)
+        
+        if isSelf {
+            senderNameLabel.isHidden = true
+            contentLabelTrailing?.isActive = true
+            contentLabelLeading?.isActive = false
+            sentTimeLabelTrailing?.isActive = true
+            sentTimeLabelLeading?.isActive = false
+            contentLabelView.layer.borderColor = UIColor.mainYellow.cgColor
+            contentLabelView.setShadow(color: .mainYellow, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.15, radius: 5)
+            
+        } else {
+            senderNameLabel.isHidden = false
+            contentLabelLeading?.isActive = true
+            contentLabelTrailing?.isActive = false
+            sentTimeLabelLeading?.isActive = true
+            sentTimeLabelTrailing?.isActive = false
+            contentLabelView.layer.borderColor = UIColor.mainBlue.cgColor
+            contentLabelView.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 5)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -44,10 +73,10 @@ class MessageTableViewCell: UITableViewCell {
 extension MessageTableViewCell {
     
     private func configSenderNameLabel() {
-        senderNameLabel = MediumLabel(size: 14, text: "sender", textColor: .deepBlueGrey)
+        senderNameLabel = MediumLabel(size: 14, text: "anonymous", textColor: .deepBlueGrey)
         contentView.addSubview(senderNameLabel)
         NSLayoutConstraint.activate([
-            senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             senderNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             senderNameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 2 / 3)
         ])
@@ -55,24 +84,21 @@ extension MessageTableViewCell {
     
     private func configContentLabel() {
         contentLabel = MediumLabel(size: 16,
-                                   text: "Hello, I'm dodo",
+                                   text: "",
                                    textColor: .mainBlue)
         contentLabel.numberOfLines = 0
         contentView.addSubview(contentLabel)
         contentLabel.preferredMaxLayoutWidth = contentView.frame.width / 3 * 2
         
         contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12).isActive = true
-        contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32).isActive = true
-        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
+        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
     }
     
     private func configContentLabelView() {
         contentLabelView = UIView()
         contentLabelView.backgroundColor = .white
-        contentLabelView.layer.borderColor = UIColor.mainBlue.cgColor
         contentLabelView.layer.borderWidth = 1
         contentLabelView.layer.cornerRadius = 10
-        contentLabelView.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 5)
         contentLabelView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(contentLabelView)
         
@@ -88,8 +114,8 @@ extension MessageTableViewCell {
         sentTimeLabel = RegularLabel(size: 14, text: "Nov. 22 20:34", textColor: .lightBlueGrey)
         contentView.addSubview(sentTimeLabel)
         NSLayoutConstraint.activate([
-            sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor),
-            sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12)
+            sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor)
+//            sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12)
         ])
     }
 }
