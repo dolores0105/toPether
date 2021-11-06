@@ -14,11 +14,6 @@ class MessageTableViewCell: UITableViewCell {
     private var contentLabelView: UIView!
     private var sentTimeLabel: RegularLabel!
     
-    private var contentLabelLeading: NSLayoutConstraint?
-    private var contentLabelTrailing: NSLayoutConstraint?
-    private var sentTimeLabelLeading: NSLayoutConstraint?
-    private var sentTimeLabelTrailing: NSLayoutConstraint?
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -40,26 +35,40 @@ class MessageTableViewCell: UITableViewCell {
         dateFormatter.timeZone = TimeZone.current
         sentTimeLabel.text = dateFormatter.string(from: message.sentTime)
         
-        contentLabelLeading = contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32)
-        contentLabelTrailing = contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32)
-        sentTimeLabelLeading = sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabelView.trailingAnchor, constant: 12)
-        sentTimeLabelTrailing = sentTimeLabel.trailingAnchor.constraint(equalTo: contentLabelView.leadingAnchor, constant: -12)
-        
         if isSelf {
+            
             senderNameLabel.isHidden = true
-            contentLabelTrailing?.isActive = true
-            contentLabelLeading?.isActive = false
-            sentTimeLabelTrailing?.isActive = true
-            sentTimeLabelLeading?.isActive = false
+            contentLabel.removeConstraints(contentLabel.constraints)
+            NSLayoutConstraint.activate([
+                contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12),
+                contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+                contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32)
+            ])
+
+            sentTimeLabel.removeConstraints(sentTimeLabel.constraints)
+            NSLayoutConstraint.activate([
+                sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor),
+                sentTimeLabel.trailingAnchor.constraint(equalTo: contentLabelView.leadingAnchor, constant: -12)
+            ])
+            
             contentLabelView.layer.borderColor = UIColor.mainYellow.cgColor
             contentLabelView.setShadow(color: .mainYellow, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.15, radius: 5)
             
         } else {
             senderNameLabel.isHidden = false
-            contentLabelLeading?.isActive = true
-            contentLabelTrailing?.isActive = false
-            sentTimeLabelLeading?.isActive = true
-            sentTimeLabelTrailing?.isActive = false
+            contentLabel.removeConstraints(contentLabel.constraints)
+            NSLayoutConstraint.activate([
+                contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12),
+                contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+                contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32)
+            ])
+
+            sentTimeLabel.removeConstraints(sentTimeLabel.constraints)
+            NSLayoutConstraint.activate([
+                sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor),
+                sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabelView.trailingAnchor, constant: 12)
+            ])
+            
             contentLabelView.layer.borderColor = UIColor.mainBlue.cgColor
             contentLabelView.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 5)
         }
@@ -90,9 +99,10 @@ extension MessageTableViewCell {
         contentView.addSubview(contentLabel)
         contentLabel.preferredMaxLayoutWidth = contentView.frame.width / 3 * 2
         
-        contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12).isActive = true
-        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
+//        contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12).isActive = true
+//        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
 //        contentLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 2 / 3).isActive = true
+//        contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32).isActive = true
     }
     
     private func configContentLabelView() {
@@ -114,8 +124,5 @@ extension MessageTableViewCell {
     private func configSentTimeLabel() {
         sentTimeLabel = RegularLabel(size: 14, text: "Nov. 22 20:34", textColor: .lightBlueGrey)
         contentView.addSubview(sentTimeLabel)
-        NSLayoutConstraint.activate([
-            sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor)
-        ])
     }
 }
