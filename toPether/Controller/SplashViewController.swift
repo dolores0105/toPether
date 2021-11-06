@@ -12,7 +12,7 @@ import FirebaseAuth
 
 class SplashViewController: UIViewController {
     
-    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "AppIcon"))
+    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "iconsApp"))
     
     override func viewDidAppear(_ animated: Bool) {
         if let current = Auth.auth().currentUser {
@@ -216,7 +216,7 @@ extension SplashViewController {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            logoImageView.heightAnchor.constraint(equalToConstant: 100),
+            logoImageView.heightAnchor.constraint(equalToConstant: 130),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             logoImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor)
