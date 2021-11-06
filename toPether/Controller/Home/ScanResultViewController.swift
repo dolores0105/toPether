@@ -92,16 +92,6 @@ class ScanResultViewController: UIViewController {
                 
                 if !member.petIds.contains(self.pet.id) { // the member hasn't join the pet group
                     self.contentLabel.text = "We found \(member.name)!"
-                    /* confirm button action =
-                     1. member.petIds.append(self.pet.id)
-                        MemberModel.shared.updateMember(member: member)
-                     2. self.pet.memberIds.append(member.id)
-                        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
-                     3. self.animationView.isHidden = false
-                        self.animationView?.play(completion: { _ in
-                        self.navigationController?.popViewController(animated: true)
-                        })
-                     */
                     self.configInviteButton()
                 }
                 

@@ -26,8 +26,8 @@ class MessageTableViewCell: UITableViewCell {
         
     }
     
-    func reload(message: Message) {
-        senderNameLabel.text = message.senderId
+    func reload(message: Message, senderName: String?) {
+        senderNameLabel.text = senderName
         contentLabel.text = message.content
         
         let dateFormatter = DateFormatter()

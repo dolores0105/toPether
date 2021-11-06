@@ -274,7 +274,7 @@ class PetModel {
     }
     
     func queryMessages(petId: String, completion: @escaping (Result<[Message], Error>) -> Void) {
-        dataBase.collection("pets").document(petId).collection("messages").order(by: "sentTime", descending: true).getDocuments { (querySnapshot, error) in
+        dataBase.collection("pets").document(petId).collection("messages").order(by: "sentTime", descending: false).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
                 let messages = querySnapshot.documents.compactMap({ querySnapshot in
@@ -295,7 +295,7 @@ class PetModel {
                 let messages = querySnapshot.documents.compactMap({ querySnapshot in
                     try? querySnapshot.data(as: Message.self)
                 })
-                let sortedmessages = messages.sorted { $0.sentTime > $1.sentTime }
+                let sortedmessages = messages.sorted { $0.sentTime < $1.sentTime }
                 completion(.success(sortedmessages))
                 
             } else if let error = error {

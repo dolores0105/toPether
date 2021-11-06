@@ -16,6 +16,11 @@ class MessageViewController: UIViewController {
     private var selectedPet: Pet!
     private var messages = [Message]()
     private var messageContent: String?
+    private var senderNameCache = [String: String]() { // senderId -> memberName
+        didSet {
+            messageTableView.reloadData()
+        }
+    }
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var backgroundView: UIView!
@@ -51,8 +56,17 @@ class MessageViewController: UIViewController {
             switch result {
             case .success(let messages):
                 self.messages = messages
-                print(messages)
-                self.messageTableView.reloadData()
+                
+                for message in messages {
+                    MemberModel.shared.queryMember(id: message.senderId) { [weak self] member in
+                        guard let self = self else { return }
+                        guard let member = member else {
+                            self.senderNameCache[message.senderId] = "anonymous"
+                            return
+                        }
+                        self.senderNameCache[message.senderId] = member.name
+                    }
+                }
                 
             case .failure(let error):
                 print(error)
@@ -74,7 +88,15 @@ extension MessageViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageTableViewCell", for: indexPath)
         guard let cell = cell as? MessageTableViewCell else { return cell }
         
-        cell.reload(message: messages[indexPath.row])
+        let message = messages[indexPath.row]
+        let senderId = message.senderId
+        var senderName: String?
+        
+        if let name = senderNameCache[senderId] {
+            senderName = name
+        }
+        
+        cell.reload(message: messages[indexPath.row], senderName: senderName)
         
         return cell
     }
