@@ -115,9 +115,6 @@ class FoodViewController: UIViewController {
                 }
                 self.foods = foods
                 self.foodTableView.reloadData()
-//                food[0].dateOfPurchase = mockdate!
-//                PetModel.shared.updateFood(petId: self.selectedPet.id, recordId: food[0].id, food: food[0])
-//                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: foods[1].id)
             case .failure(let error):
                 print("query foods error", error)
             }

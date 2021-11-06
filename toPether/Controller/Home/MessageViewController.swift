@@ -16,6 +16,11 @@ class MessageViewController: UIViewController {
     private var selectedPet: Pet!
     private var messages = [Message]()
     private var messageContent: String?
+    private var senderNameCache = [String: String]() { // senderId -> memberName
+        didSet {
+            messageTableView.reloadData()
+        }
+    }
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var backgroundView: UIView!
@@ -24,6 +29,10 @@ class MessageViewController: UIViewController {
     private var messageTableView: UITableView!
     private var inputTextView: UITextView!
     private var sendButton: IconButton!
+    
+    private var searching = false
+    private var keyword: String?
+    private var searchedMessages = [Message]()
     
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
@@ -46,29 +55,27 @@ class MessageViewController: UIViewController {
         configSendButton()
         
         // MARK: Data
-        /*
-        guard let currentUser = MemberModel.shared.current else { return }
-        PetModel.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: "Friday night QQQQ") { result in
-            switch result {
-            case .success(let message):
-                print(message.sentTime, message.content)
-            case .failure(let error):
-                print(error)
-            }
-        }
-
-        PetModel.shared.addMessagesListener(petId: selectedPet.id) { result in
+        PetModel.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let messages):
-                for index in messages {
-                    print("-->", index.sentTime)
-                }
                 self.messages = messages
+                
+                for message in messages {
+                    MemberModel.shared.queryMember(id: message.senderId) { [weak self] member in
+                        guard let self = self else { return }
+                        guard let member = member else {
+                            self.senderNameCache[message.senderId] = "anonymous"
+                            return
+                        }
+                        self.senderNameCache[message.senderId] = member.name
+                    }
+                }
+                
             case .failure(let error):
                 print(error)
             }
         }
-         */
     }
 }
 
@@ -78,12 +85,44 @@ extension MessageViewController: UITableViewDelegate {
 
 extension MessageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 14
+        
+        if searching {
+            return searchedMessages.count
+        } else {
+            return messages.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageTableViewCell", for: indexPath)
-        guard let cell = cell as? FoodTableViewCell else { return cell }
+        guard let cell = cell as? MessageTableViewCell else { return cell }
+        
+        let message = messages[indexPath.row]
+        let senderId = message.senderId
+        var senderName: String?
+        
+        if let name = senderNameCache[senderId] {
+            senderName = name
+        }
+        
+        var isSelf: Bool = false
+        
+        if searching {
+            if searchedMessages[indexPath.row].senderId == MemberModel.shared.current?.id {
+                isSelf = true
+                cell.reload(message: searchedMessages[indexPath.row], senderName: senderName, isSelf: isSelf)
+            } else {
+                cell.reload(message: searchedMessages[indexPath.row], senderName: senderName, isSelf: isSelf)
+            }
+            
+        } else {
+            if message.senderId ==  MemberModel.shared.current?.id {
+                isSelf = true
+                cell.reload(message: message, senderName: senderName, isSelf: isSelf)
+            } else {
+                cell.reload(message: message, senderName: senderName, isSelf: isSelf)
+            }
+        }
         
         return cell
     }
@@ -125,7 +164,7 @@ extension MessageViewController {
     
     private func configSearchBar() {
         searchBar = BorderSearchBar(placeholder: "Search for messages")
-//        searchBar.delegate = self
+        searchBar.delegate = self
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
             searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
@@ -221,6 +260,7 @@ extension MessageViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         if textView.hasText && textView.text != "" {
+            messageContent = textView.text
             sendButton.isHidden = false
         } else {
             sendButton.isHidden = true
@@ -233,4 +273,39 @@ extension MessageViewController: UITextViewDelegate {
 //            textView.textColor = UIColor.black
 //        }
 //    }
+}
+
+extension MessageViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        keyword = searchBar.text
+        searching = true
+        search(keyword: keyword)
+        messageTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        keyword = searchBar.text
+        searching = true
+        search(keyword: keyword)
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searching = false
+        searchBar.text = ""
+        messageTableView.reloadData()
+        searchBar.endEditing(true)
+    }
+    
+    private func search(keyword: String?) {
+        guard let keyword = self.keyword else { return }
+        if keyword != "" {
+            searchedMessages = messages.filter({ $0.content.lowercased().contains(keyword.lowercased())
+            })
+        } else {
+            searchedMessages = messages
+            searching = false
+            searchBar.endEditing(true)
+        }
+    }
 }
