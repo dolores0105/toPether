@@ -191,8 +191,21 @@ extension MessageViewController {
         ])
     }
     
-    @objc private func tapSend() {
+    @objc private func tapSend(_ sender: IconButton) {
+        guard let messageContent = messageContent, let currentUser = MemberModel.shared.current else { return }
         
+        PetModel.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: messageContent) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let message):
+                print(message.sentTime, message.content)
+                self.inputTextView.text = ""
+                // reload tableview
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
