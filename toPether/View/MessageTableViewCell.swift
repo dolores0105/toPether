@@ -42,8 +42,8 @@ class MessageTableViewCell: UITableViewCell {
         
         contentLabelLeading = contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32)
         contentLabelTrailing = contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32)
-        sentTimeLabelLeading = sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12)
-        sentTimeLabelTrailing = sentTimeLabel.trailingAnchor.constraint(equalTo: contentLabel.leadingAnchor, constant: -12)
+        sentTimeLabelLeading = sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabelView.trailingAnchor, constant: 12)
+        sentTimeLabelTrailing = sentTimeLabel.trailingAnchor.constraint(equalTo: contentLabelView.leadingAnchor, constant: -12)
         
         if isSelf {
             senderNameLabel.isHidden = true
@@ -92,6 +92,7 @@ extension MessageTableViewCell {
         
         contentLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 12).isActive = true
         contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
+//        contentLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 2 / 3).isActive = true
     }
     
     private func configContentLabelView() {
@@ -115,7 +116,6 @@ extension MessageTableViewCell {
         contentView.addSubview(sentTimeLabel)
         NSLayoutConstraint.activate([
             sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor)
-//            sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12)
         ])
     }
 }
