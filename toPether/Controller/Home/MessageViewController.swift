@@ -30,6 +30,10 @@ class MessageViewController: UIViewController {
     private var inputTextView: UITextView!
     private var sendButton: IconButton!
     
+    private var searching = false
+    private var keyword: String?
+    private var searchedMessages = [Message]()
+    
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Message"
@@ -81,7 +85,12 @@ extension MessageViewController: UITableViewDelegate {
 
 extension MessageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        
+        if searching {
+            return searchedMessages.count
+        } else {
+            return messages.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -96,7 +105,11 @@ extension MessageViewController: UITableViewDataSource {
             senderName = name
         }
         
-        cell.reload(message: messages[indexPath.row], senderName: senderName)
+        if searching {
+            cell.reload(message: searchedMessages[indexPath.row], senderName: senderName)
+        } else {
+            cell.reload(message: messages[indexPath.row], senderName: senderName)
+        }
         
         return cell
     }
@@ -138,7 +151,7 @@ extension MessageViewController {
     
     private func configSearchBar() {
         searchBar = BorderSearchBar(placeholder: "Search for messages")
-//        searchBar.delegate = self
+        searchBar.delegate = self
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
             searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
@@ -246,4 +259,39 @@ extension MessageViewController: UITextViewDelegate {
 //            textView.textColor = UIColor.black
 //        }
 //    }
+}
+
+extension MessageViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        keyword = searchBar.text
+        searching = true
+        search(keyword: keyword)
+        messageTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        keyword = searchBar.text
+        searching = true
+        search(keyword: keyword)
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searching = false
+        searchBar.text = ""
+        messageTableView.reloadData()
+        searchBar.endEditing(true)
+    }
+    
+    private func search(keyword: String?) {
+        guard let keyword = self.keyword else { return }
+        if keyword != "" {
+            searchedMessages = messages.filter({ $0.content.lowercased().contains(keyword.lowercased())
+            })
+        } else {
+            searchedMessages = messages
+            searching = false
+            searchBar.endEditing(true)
+        }
+    }
 }
