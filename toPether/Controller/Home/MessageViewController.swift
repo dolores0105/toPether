@@ -15,6 +15,7 @@ class MessageViewController: UIViewController {
     }
     private var selectedPet: Pet!
     private var messages = [Message]()
+    private var messageContent: String?
     
     private var navigationBackgroundView: NavigationBackgroundView!
     private var backgroundView: UIView!
@@ -136,7 +137,7 @@ extension MessageViewController {
     private func configMessageTableView() {
         messageTableView = UITableView()
         messageTableView.register(MessageTableViewCell.self, forCellReuseIdentifier: "MessageTableViewCell")
-//        messageTableView.separatorColor = .clear
+        messageTableView.separatorColor = .clear
         messageTableView.backgroundColor = .white
         messageTableView.estimatedRowHeight = 60
         messageTableView.rowHeight = UITableView.automaticDimension
@@ -157,14 +158,16 @@ extension MessageViewController {
         inputTextView = UITextView()
         inputTextView.backgroundColor = .white
         inputTextView.textColor = .mainBlue
+        inputTextView.font = UIFont.regular(size: 15)
         inputTextView.textAlignment = .left
         inputTextView.isEditable = true
         inputTextView.isSelectable = true
         inputTextView.isScrollEnabled = true
         inputTextView.layer.cornerRadius = 10
-//        inputTextView.delegate = self
+        inputTextView.delegate = self
         inputTextView.textContainer.maximumNumberOfLines = 5
         inputTextView.textContainer.lineBreakMode = .byWordWrapping
+//        inputTextView.addDoneOnKeyboardWithTarget(self, action: #selector(tapSend))
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(inputTextView)
         NSLayoutConstraint.activate([
@@ -178,6 +181,7 @@ extension MessageViewController {
     private func configSendButton() {
         sendButton = IconButton(self, action: #selector(tapSend), img: Img.iconsSend)
         sendButton.backgroundColor = .mainBlue
+        sendButton.isHidden = true
         view.addSubview(sendButton)
         NSLayoutConstraint.activate([
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
@@ -190,4 +194,30 @@ extension MessageViewController {
     @objc private func tapSend() {
         
     }
+}
+
+extension MessageViewController: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.hasText && textView.text != "" {
+            messageContent = textView.text
+        } else {
+            textView.text = "input content"
+            textView.textColor = .lightBlueGrey
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.hasText && textView.text != "" {
+            sendButton.isHidden = false
+        } else {
+            sendButton.isHidden = true
+        }
+    }
+    
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        if textView.textColor == .lightBlueGrey {
+//            textView.text = nil
+//            textView.textColor = UIColor.black
+//        }
+//    }
 }
