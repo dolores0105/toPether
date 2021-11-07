@@ -5,7 +5,8 @@
 //  Created by 林宜萱 on 2021/10/19.
 // swiftlint:disable function_parameter_count
 
-import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 import Foundation
 
 class PetModel {

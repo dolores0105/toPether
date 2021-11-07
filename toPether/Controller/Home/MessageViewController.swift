@@ -60,8 +60,8 @@ class MessageViewController: UIViewController {
             switch result {
             case .success(let messages):
                 self.messages = messages
-                
-                for message in messages {
+
+                for message in messages where self.senderNameCache[message.senderId] == nil {
                     MemberModel.shared.queryMember(id: message.senderId) { [weak self] member in
                         guard let self = self else { return }
                         guard let member = member else {
@@ -71,6 +71,11 @@ class MessageViewController: UIViewController {
                         self.senderNameCache[message.senderId] = member.name
                     }
                 }
+                
+                self.messageTableView.reloadData()
+                
+                let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
+                self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
                 
             case .failure(let error):
                 print(error)
@@ -94,37 +99,17 @@ extension MessageViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MessageTableViewCell", for: indexPath)
-        guard let cell = cell as? MessageTableViewCell else { return cell }
+        let message = searching ? searchedMessages[indexPath.row] : messages[indexPath.row]
+        let senderName = senderNameCache[message.senderId]
         
-        let message = messages[indexPath.row]
-        let senderId = message.senderId
-        var senderName: String?
-        
-        if let name = senderNameCache[senderId] {
-            senderName = name
-        }
-        
-        var isSelf: Bool = false
-        
-        if searching {
-            if searchedMessages[indexPath.row].senderId == MemberModel.shared.current?.id {
-                isSelf = true
-                cell.reload(message: searchedMessages[indexPath.row], senderName: senderName, isSelf: isSelf)
-            } else {
-                cell.reload(message: searchedMessages[indexPath.row], senderName: senderName, isSelf: isSelf)
-            }
-            
+        var msgCell: MessageTableViewCell?
+        if message.senderId ==  MemberModel.shared.current?.id {
+            msgCell = tableView.dequeueReusableCell(withIdentifier: "RightMessageTableViewCell", for: indexPath) as? RightMessageTableViewCell
         } else {
-            if message.senderId ==  MemberModel.shared.current?.id {
-                isSelf = true
-                cell.reload(message: message, senderName: senderName, isSelf: isSelf)
-            } else {
-                cell.reload(message: message, senderName: senderName, isSelf: isSelf)
-            }
+            msgCell = tableView.dequeueReusableCell(withIdentifier: "LeftMessageTableViewCell", for: indexPath) as? LeftMessageTableViewCell
         }
-        
-        return cell
+        msgCell?.reload(message: message, senderName: senderName)
+        return msgCell ?? .init()
     }
 }
 
@@ -175,7 +160,8 @@ extension MessageViewController {
     
     private func configMessageTableView() {
         messageTableView = UITableView()
-        messageTableView.register(MessageTableViewCell.self, forCellReuseIdentifier: "MessageTableViewCell")
+        messageTableView.register(RightMessageTableViewCell.self, forCellReuseIdentifier: "RightMessageTableViewCell")
+        messageTableView.register(LeftMessageTableViewCell.self, forCellReuseIdentifier: "LeftMessageTableViewCell")
         messageTableView.separatorColor = .clear
         messageTableView.backgroundColor = .white
         messageTableView.estimatedRowHeight = 60
@@ -239,7 +225,7 @@ extension MessageViewController {
             case .success(let message):
                 print(message.sentTime, message.content)
                 self.inputTextView.text = ""
-                // reload tableview
+                self.sendButton.isHidden = true
                 
             case .failure(let error):
                 print(error)
@@ -252,9 +238,6 @@ extension MessageViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.hasText && textView.text != "" {
             messageContent = textView.text
-        } else {
-            textView.text = "input content"
-            textView.textColor = .lightBlueGrey
         }
     }
     
@@ -266,13 +249,6 @@ extension MessageViewController: UITextViewDelegate {
             sendButton.isHidden = true
         }
     }
-    
-//    func textViewDidBeginEditing(_ textView: UITextView) {
-//        if textView.textColor == .lightBlueGrey {
-//            textView.text = nil
-//            textView.textColor = UIColor.black
-//        }
-//    }
 }
 
 extension MessageViewController: UISearchBarDelegate {

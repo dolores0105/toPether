@@ -248,8 +248,8 @@ extension AddPetViewController: UIImagePickerControllerDelegate {
         picker.dismiss(animated: true, completion: nil)
         uploadImageView.isHidden = true
         
-        guard let selectedPet = selectedPet, let pickedImage = pickedImage else { return }
-        guard let jpegData06 = pickedImage.jpegData(compressionQuality: 0.2) else { return }
+        guard let selectedPet = selectedPet,
+              let jpegData06 = pickedImage?.jpegData(compressionQuality: 0.2) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         selectedPet.photo = imageBase64String
         

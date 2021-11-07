@@ -5,9 +5,7 @@
 //  Created by 林宜萱 on 2021/10/19.
 //
 
-import Foundation
-import FirebaseFirestoreSwift
-import Firebase
+import FirebaseFirestore
 import UIKit
 
 protocol BaseObject {
