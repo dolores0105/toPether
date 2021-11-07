@@ -14,13 +14,6 @@ class IconButton: BorderButton {
         imageView?.contentMode = .scaleAspectFill
         clipsToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
-
-        if #available(iOS 15.0, *) {
-            var configuration = UIButton.Configuration.filled()
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
-        } else {
-            imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        }
         
         setImage(img.obj, for: .normal)
         addTarget(target, action: action, for: .touchUpInside)

@@ -11,10 +11,10 @@ import FirebaseFirestore
 
 class PetTableViewCell: UITableViewCell {
     
-    private var borderView: UIView!
+    private var borderView: BorderView!
     private var petImageView: RoundCornerImageView!
     private var nameLabel: MediumLabel!
-    private var genderImageView: RoundCornerImageView!
+    private var genderImageView: UIImageView!
     private var ageLabel: RegularLabel!
     private var memberNumberButton: UIButton!
     
@@ -25,17 +25,15 @@ class PetTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = .white
         
-        borderView = UIView()
-        borderView.layer.borderWidth = 1
-        borderView.layer.borderColor = UIColor.mainBlue.cgColor
-        borderView.layer.cornerRadius = 10
-        borderView.translatesAutoresizingMaskIntoConstraints = false
+        borderView = BorderView()
+        borderView.backgroundColor = .white
+        borderView.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
         contentView.addSubview(borderView)
         NSLayoutConstraint.activate([
             borderView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             borderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             borderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            borderView.heightAnchor.constraint(equalToConstant: 64),
+            borderView.heightAnchor.constraint(equalToConstant: 80),
             borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         
@@ -51,17 +49,18 @@ class PetTableViewCell: UITableViewCell {
         nameLabel = MediumLabel(size: 18, text: nil, textColor: .mainBlue)
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: petImageView.topAnchor, constant: -6),
+            nameLabel.topAnchor.constraint(equalTo: petImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 16),
             nameLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16)
         ])
         
-        genderImageView = RoundCornerImageView(img: Img.iconsGenderFemale.obj)
+        genderImageView = UIImageView()
+        genderImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(genderImageView)
         NSLayoutConstraint.activate([
-            genderImageView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            genderImageView.bottomAnchor.constraint(equalTo: petImageView.bottomAnchor),
             genderImageView.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 16),
-            genderImageView.heightAnchor.constraint(equalToConstant: 16),
+            genderImageView.heightAnchor.constraint(equalToConstant: 20),
             genderImageView.widthAnchor.constraint(equalTo: genderImageView.heightAnchor)
         ])
         

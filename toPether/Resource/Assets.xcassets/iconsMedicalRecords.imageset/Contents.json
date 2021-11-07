@@ -1,16 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iconsMedicalRecord@2x.png",
+      "filename" : "iconsMedicalRecords.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconsMedicalRecord@3x.png",
+      "filename" : "iconsMedicalRecords@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "iconsMedicalRecords@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -18,5 +19,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }

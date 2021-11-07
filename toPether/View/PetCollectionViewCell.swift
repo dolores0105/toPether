@@ -18,7 +18,7 @@ class PetCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: PetCollectionViewCellDelegate?
 
-    private var petImageView: UIImageView!
+    private var petImageView: RoundCornerImageView!
     
     private var petInfoButton: BorderButton!
     private var petName: UILabel!
@@ -44,27 +44,23 @@ class PetCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        petImageView = UIImageView()
-//        petImageView.layer.cornerRadius = 10
-        petImageView.translatesAutoresizingMaskIntoConstraints = false
+        petImageView = RoundCornerImageView(img: nil)
         contentView.addSubview(petImageView)
-        
         NSLayoutConstraint.activate([
-            
-            petImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            petImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            petImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
-            petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 2, constant: 50)
-            
+            petImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            petImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            petImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 2, constant: 20)
         ])
         
         petInfoButton = BorderButton()
+        petInfoButton.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
         contentView.addSubview(petInfoButton)
         NSLayoutConstraint.activate([
-            petInfoButton.topAnchor.constraint(equalTo: petImageView.bottomAnchor, constant: 20),
+            petInfoButton.topAnchor.constraint(equalTo: petImageView.bottomAnchor, constant: 16),
             petInfoButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             petInfoButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
-            petInfoButton.heightAnchor.constraint(equalToConstant: 84)
+            petInfoButton.heightAnchor.constraint(equalToConstant: 80)
         ])
         
         petName = UILabel()
@@ -73,7 +69,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         petName.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(petName)
         NSLayoutConstraint.activate([
-            petName.topAnchor.constraint(equalTo: petInfoButton.topAnchor, constant: 16),
+            petName.topAnchor.constraint(equalTo: petInfoButton.topAnchor, constant: 12),
             petName.leadingAnchor.constraint(equalTo: petInfoButton.leadingAnchor, constant: 16),
             petName.trailingAnchor.constraint(equalTo: petInfoButton.trailingAnchor, constant: -16),
             petName.heightAnchor.constraint(equalToConstant: 28)
@@ -176,18 +172,18 @@ class PetCollectionViewCell: UICollectionViewCell {
     private func updateMembers(_ members: [Member]) {
         members.forEach { member in
             circleButton = CircleButton(name: member.name.first?.description ?? "")
-            circleButton.layer.cornerRadius = 28 / 2
+            circleButton.layer.cornerRadius = 32 / 2
             NSLayoutConstraint.activate([
-                circleButton.heightAnchor.constraint(equalToConstant: 28),
-                circleButton.widthAnchor.constraint(equalToConstant: 28)
+                circleButton.heightAnchor.constraint(equalToConstant: 32),
+                circleButton.widthAnchor.constraint(equalToConstant: 32)
             ])
             memberStackView.addArrangedSubview(circleButton)
             circleButton.isUserInteractionEnabled = false
         }
-        addMemberButton.layer.cornerRadius = 28 / 2
+        addMemberButton.layer.cornerRadius = 32 / 2
         NSLayoutConstraint.activate([
-            addMemberButton.heightAnchor.constraint(equalToConstant: 28),
-            addMemberButton.widthAnchor.constraint(equalToConstant: 28)
+            addMemberButton.heightAnchor.constraint(equalToConstant: 32),
+            addMemberButton.widthAnchor.constraint(equalToConstant: 32)
         ])
         memberStackView.addArrangedSubview(addMemberButton)
         addMemberButton.isUserInteractionEnabled = false
@@ -196,6 +192,5 @@ class PetCollectionViewCell: UICollectionViewCell {
     @objc func tapStackView(sender: AnyObject) {
         guard let pet = pet else { return }
         delegate?.pushToInviteVC(pet: pet)
-        print("pass pet", pet.name)
     }
 }

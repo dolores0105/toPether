@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "iconsGenderMale.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icons_gender_male.png",
+      "filename" : "iconsGenderMale@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "iconsGenderMale@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -17,5 +19,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }
