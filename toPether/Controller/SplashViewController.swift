@@ -113,10 +113,10 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 return
             }
             
-            guard let givenName = appleIDCredential.fullName?.givenName else {
-                print("Unable to get user's given name.")
-                return
-            }
+//            guard let givenName = appleIDCredential.fullName?.givenName else {
+//                print("Unable to get user's given name.")
+//                return
+//            }
             
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
 
@@ -125,7 +125,7 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 if let user = authDataResult?.user {
                     print("Nice! You're now signed in as \(user.uid), email: \(user.email ?? "unknown")") // User is signed in to Firebase with Apple
                     
-                    MemberModel.shared.setMember(uid: user.uid, name: givenName, completion: self.loginHandler)
+                    MemberModel.shared.setMember(uid: user.uid, name: appleIDCredential.fullName?.givenName, completion: self.loginHandler)
 
                 } else if let error = error {
                     print("sign in error:", error.localizedDescription)
