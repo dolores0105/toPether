@@ -74,6 +74,9 @@ class MessageViewController: UIViewController {
                 
                 self.messageTableView.reloadData()
                 
+                let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
+                self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
+                
             case .failure(let error):
                 print(error)
             }
