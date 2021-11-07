@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3902C38227340BFB0088D04B /* ScanResultViewController.swift */; };
-		390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390778DF271D1A2200B4735B /* GoogleService-Info.plist */; };
 		3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39079199271DA7B100B4735B /* PetCollectionViewCell.swift */; };
 		3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFontExtension.swift */; };
 		3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColorExtension.swift */; };
@@ -62,13 +61,16 @@
 		39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A5271D126800B4DAFA /* Main.storyboard */; };
 		39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A8271D126E00B4DAFA /* Assets.xcassets */; };
 		39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */; };
-		AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E83461B41D9606803364ABF /* Pods_toPether.framework */; };
+		550B01D5CC03E1AD2E031DEE /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B99CE01AC999EEC3DFEE91 /* Pods_toPether.framework */; };
 		CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */; };
+		CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */; };
+		CEDC48382736EF3F00E5A95C /* RightMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDC48372736EF3F00E5A95C /* RightMessageTableViewCell.swift */; };
+		CEDC483B2736EF4C00E5A95C /* LeftMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDC483A2736EF4C00E5A95C /* LeftMessageTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		076CC5441B53CD574C0E3B0A /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
 		3902C38227340BFB0088D04B /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
-		390778DF271D1A2200B4735B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		39079199271DA7B100B4735B /* PetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetCollectionViewCell.swift; sourceTree = "<group>"; };
 		3907919C271DB56900B4735B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		3907919E271DB6A600B4735B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
@@ -125,10 +127,12 @@
 		39EDD1A8271D126E00B4DAFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39EDD1AB271D126E00B4DAFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
-		3E83461B41D9606803364ABF /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
+		63B99CE01AC999EEC3DFEE91 /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		86B032B6F1632538B00A3A4C /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
 		CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
-		FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
+		CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CEDC48372736EF3F00E5A95C /* RightMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightMessageTableViewCell.swift; sourceTree = "<group>"; };
+		CEDC483A2736EF4C00E5A95C /* LeftMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftMessageTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,20 +140,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */,
+				550B01D5CC03E1AD2E031DEE /* Pods_toPether.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D1B18A16D4505D204E2B1F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				63B99CE01AC999EEC3DFEE91 /* Pods_toPether.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
 				395570FD27350188003AF098 /* lottieSuccess.json */,
 				39816075272D7AB40033930D /* layingCat.json */,
 				39558C9E2728498A00523D43 /* LottieDone.json */,
-				390778DF271D1A2200B4735B /* GoogleService-Info.plist */,
+				CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */,
 				39EDD1A8271D126E00B4DAFA /* Assets.xcassets */,
 				39EDD19F271D126800B4DAFA /* AppDelegate.swift */,
 				39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */,
@@ -205,6 +217,8 @@
 				3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */,
 				3981607B272D9ACB0033930D /* FoodTableViewCell.swift */,
 				3955710327353562003AF098 /* MessageTableViewCell.swift */,
+				CEDC48372736EF3F00E5A95C /* RightMessageTableViewCell.swift */,
+				CEDC483A2736EF4C00E5A95C /* LeftMessageTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -272,7 +286,7 @@
 				39EDD19E271D126800B4DAFA /* toPether */,
 				39EDD19D271D126800B4DAFA /* Products */,
 				B64BFF78F2BA81C79BA05FB5 /* Pods */,
-				8943DD2F25C9251C2D810A1A /* Frameworks */,
+				0D1B18A16D4505D204E2B1F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -298,19 +312,11 @@
 			path = toPether;
 			sourceTree = "<group>";
 		};
-		8943DD2F25C9251C2D810A1A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				3E83461B41D9606803364ABF /* Pods_toPether.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B64BFF78F2BA81C79BA05FB5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */,
-				5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */,
+				076CC5441B53CD574C0E3B0A /* Pods-toPether.debug.xcconfig */,
+				86B032B6F1632538B00A3A4C /* Pods-toPether.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -322,12 +328,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39EDD1B0271D126E00B4DAFA /* Build configuration list for PBXNativeTarget "toPether" */;
 			buildPhases = (
-				88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */,
+				1C9B41A4578B6B83111E4EC4 /* [CP] Check Pods Manifest.lock */,
 				39EDD198271D126800B4DAFA /* Sources */,
 				39EDD199271D126800B4DAFA /* Frameworks */,
 				39EDD19A271D126800B4DAFA /* Resources */,
-				A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */,
 				390778E1271D1FC300B4735B /* Run Script */,
+				5C13F179D6AAAB652C7590F5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -381,33 +387,15 @@
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
 				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
 				39816076272D7AB40033930D /* layingCat.json in Resources */,
-				390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */,
 				395570FE27350188003AF098 /* lottieSuccess.json in Resources */,
+				CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		390778E1271D1FC300B4735B /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
-		};
-		88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */ = {
+		1C9B41A4578B6B83111E4EC4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -429,7 +417,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */ = {
+		390778E1271D1FC300B4735B /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		5C13F179D6AAAB652C7590F5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -460,6 +466,7 @@
 				39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */,
 				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
 				3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */,
+				CEDC483B2736EF4C00E5A95C /* LeftMessageTableViewCell.swift in Sources */,
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
 				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
@@ -499,6 +506,7 @@
 				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
 				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
+				CEDC48382736EF3F00E5A95C /* RightMessageTableViewCell.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
 				39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */,
 				39840D2F272E9A19004BA4A2 /* FoodRecordViewController.swift in Sources */,
@@ -645,7 +653,7 @@
 		};
 		39EDD1B1271D126E00B4DAFA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */;
+			baseConfigurationReference = 076CC5441B53CD574C0E3B0A /* Pods-toPether.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -682,7 +690,7 @@
 		};
 		39EDD1B2271D126E00B4DAFA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */;
+			baseConfigurationReference = 86B032B6F1632538B00A3A4C /* Pods-toPether.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

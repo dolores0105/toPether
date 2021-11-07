@@ -130,13 +130,13 @@ extension MedicalViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
-        guard let cell = cell as? MedicalTableViewCell else { return cell }
-        cell.selectionStyle = .none
+        guard let medicalCell = cell as? MedicalTableViewCell else { return cell }
+        medicalCell.selectionStyle = .none
         
         if searching {
-            cell.reload(medical: searchedMedicals[indexPath.row])
+            medicalCell.reload(medical: searchedMedicals[indexPath.row])
         } else {
-            cell.reload(medical: medicals[indexPath.row])
+            medicalCell.reload(medical: medicals[indexPath.row])
         }
         
         return cell

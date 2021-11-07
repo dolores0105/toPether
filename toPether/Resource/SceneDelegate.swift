@@ -15,10 +15,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = scene as? UIWindowScene else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.windowScene = windowScene
+        window!.windowScene = windowScene
         window!.backgroundColor = .white
-        window?.rootViewController = SplashViewController()
-        window?.makeKeyAndVisible()
+        window!.rootViewController = SplashViewController()
+        window!.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

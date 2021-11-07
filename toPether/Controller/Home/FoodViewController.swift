@@ -150,16 +150,16 @@ extension FoodViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
-        guard let cell = cell as? FoodTableViewCell else { return cell }
-        cell.selectionStyle = .none
+        guard let foodCell = cell as? FoodTableViewCell else { return cell }
+        foodCell.selectionStyle = .none
         
         if searching {
-            cell.reload(food: searchedFoods[indexPath.row])
+            foodCell.reload(food: searchedFoods[indexPath.row])
         } else {
-            cell.reload(food: foods[indexPath.row])
+            foodCell.reload(food: foods[indexPath.row])
         }
         
-        return cell
+        return foodCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
