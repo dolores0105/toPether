@@ -45,10 +45,9 @@ class MedicalViewController: UIViewController {
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 150)
         ])
         
         petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
@@ -58,11 +57,11 @@ class MedicalViewController: UIViewController {
             petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         
-        searchBar = BorderSearchBar(placeholder: "Search for symptoms or vet's orders")
+        searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
         searchBar.delegate = self
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -131,13 +130,13 @@ extension MedicalViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
-        guard let cell = cell as? MedicalTableViewCell else { return cell }
-        cell.selectionStyle = .none
+        guard let medicalCell = cell as? MedicalTableViewCell else { return cell }
+        medicalCell.selectionStyle = .none
         
         if searching {
-            cell.reload(medical: searchedMedicals[indexPath.row])
+            medicalCell.reload(medical: searchedMedicals[indexPath.row])
         } else {
-            cell.reload(medical: medicals[indexPath.row])
+            medicalCell.reload(medical: medicals[indexPath.row])
         }
         
         return cell

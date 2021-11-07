@@ -42,10 +42,9 @@ class FoodViewController: UIViewController {
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 150)
+            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
@@ -59,7 +58,7 @@ class FoodViewController: UIViewController {
         searchBar.delegate = self
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 20),
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -116,9 +115,6 @@ class FoodViewController: UIViewController {
                 }
                 self.foods = foods
                 self.foodTableView.reloadData()
-//                food[0].dateOfPurchase = mockdate!
-//                PetModel.shared.updateFood(petId: self.selectedPet.id, recordId: food[0].id, food: food[0])
-//                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: foods[1].id)
             case .failure(let error):
                 print("query foods error", error)
             }
@@ -154,16 +150,16 @@ extension FoodViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
-        guard let cell = cell as? FoodTableViewCell else { return cell }
-        cell.selectionStyle = .none
+        guard let foodCell = cell as? FoodTableViewCell else { return cell }
+        foodCell.selectionStyle = .none
         
         if searching {
-            cell.reload(food: searchedFoods[indexPath.row])
+            foodCell.reload(food: searchedFoods[indexPath.row])
         } else {
-            cell.reload(food: foods[indexPath.row])
+            foodCell.reload(food: foods[indexPath.row])
         }
         
-        return cell
+        return foodCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

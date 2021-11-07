@@ -35,7 +35,6 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     private var okButton: RoundButton!
     
     private let units = ["kg", "g", "lb"]
-    private var selectedUnit: String?
     
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
@@ -262,28 +261,65 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func tapOK(_: RoundButton) {
-        
+        guard let food = food else {
+            guard let name = nameTextField.text,
+                    let weight = weightTextField.text,
+                    let unit = unitTextField.text,
+                    let price = priceTextField.text,
+                    let market = marketTextField.text,
+                    let note = noteTextField.text  else { return }
+            PetModel.shared.setFood(
+                petId: selectedPetId,
+                name: name,
+                weight: weight,
+                unit: unit,
+                price: price,
+                market: market,
+                dateOfPurchase: dateOfPurchaseDatePicker.date,
+                note: note) { [weak self] result in
+                    guard let self = self else { return }
+                    
+                    switch result {
+                    case .success(_):
+                        self.navigationController?.popViewController(animated: true)
+                        
+                    case .failure(let error):
+                        print("set food record error:", error)
+                    }
+                }
+            return
+        }
+        PetModel.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
 extension FoodRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-//        if symptomsTextField.hasText && vetTextField.hasText && doctorNotesTextField.hasText {
-//
-//            okButton.isEnabled = true
-//            okButton.backgroundColor = .mainYellow
-//
-//            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextField.text else { return }
-//            medical.symptoms = symptoms
-//            medical.dateOfVisit = dateOfVisitDatePicker.date
-//            medical.clinic = clinic
-//            medical.vetOrder = vetOrder
-//
-//        } else {
-//            okButton.isEnabled = false
-//            okButton.backgroundColor = .lightBlueGrey
-//        }
+        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && noteTextField.hasText {
+
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+
+            guard let food = food,
+                    let name = nameTextField.text,
+                    let weight = weightTextField.text,
+                    let unit = unitTextField.text,
+                    let price = priceTextField.text,
+                    let market = marketTextField.text,
+                    let note = noteTextField.text else { return }
+            food.name = name
+            food.weight = weight
+            food.unit = unit
+            food.price = price
+            food.market = market
+            food.note = note
+
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
     }
 }
 

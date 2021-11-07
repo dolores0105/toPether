@@ -1,16 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iconsQrcode@2x.png",
+      "filename" : "iconsQrcode.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconsQrcode@3x.png",
+      "filename" : "iconsQrcode@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "iconsQrcode@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

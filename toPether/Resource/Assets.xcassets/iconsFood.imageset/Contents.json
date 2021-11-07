@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iconsFood@2x.png",
+      "filename" : "iconsFood.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconsFood@3x.png",
+      "filename" : "iconsFood@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "food (2)@3x.png",
+      "filename" : "iconsFood@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -19,5 +19,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }

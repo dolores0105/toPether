@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390778DF271D1A2200B4735B /* GoogleService-Info.plist */; };
+		3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3902C38227340BFB0088D04B /* ScanResultViewController.swift */; };
 		3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39079199271DA7B100B4735B /* PetCollectionViewCell.swift */; };
 		3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFontExtension.swift */; };
 		3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColorExtension.swift */; };
@@ -23,11 +23,15 @@
 		3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612C27292E90007FC7C1 /* MedicalViewController.swift */; };
 		3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */; };
 		3917613127298C28007FC7C1 /* BorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917613027298C28007FC7C1 /* BorderView.swift */; };
-		394A77192721D65700978254 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashVC.swift */; };
+		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
 		394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771E272305B000978254 /* BlueBorderTextField.swift */; };
 		394A77212723067300978254 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77202723067300978254 /* RoundButton.swift */; };
+		395570FE27350188003AF098 /* lottieSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = 395570FD27350188003AF098 /* lottieSuccess.json */; };
+		39557100273514CD003AF098 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395570FF273514CD003AF098 /* CardView.swift */; };
+		3955710227352BAB003AF098 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710127352BAB003AF098 /* MessageViewController.swift */; };
+		3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710327353562003AF098 /* MessageTableViewCell.swift */; };
 		39558C9B2727B46400523D43 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9A2727B46400523D43 /* BlurView.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
@@ -36,6 +40,10 @@
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
 		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
 		395FD01027215D18005911AA /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberModel.swift */; };
+		39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE127325F28001B29F3 /* UIViewExtension.swift */; };
+		39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE327326682001B29F3 /* TabBarViewController.swift */; };
+		39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE527328340001B29F3 /* EmptyUserViewController.swift */; };
+		39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */; };
 		39816073272D403B0033930D /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816072272D403B0033930D /* ToDoViewController.swift */; };
 		39816076272D7AB40033930D /* layingCat.json in Resources */ = {isa = PBXBuildFile; fileRef = 39816075272D7AB40033930D /* layingCat.json */; };
 		39816078272D8BCE0033930D /* FoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39816077272D8BCE0033930D /* FoodViewController.swift */; };
@@ -53,12 +61,16 @@
 		39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A5271D126800B4DAFA /* Main.storyboard */; };
 		39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1A8271D126E00B4DAFA /* Assets.xcassets */; };
 		39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EDD1AA271D126E00B4DAFA /* LaunchScreen.storyboard */; };
-		AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E83461B41D9606803364ABF /* Pods_toPether.framework */; };
+		550B01D5CC03E1AD2E031DEE /* Pods_toPether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B99CE01AC999EEC3DFEE91 /* Pods_toPether.framework */; };
 		CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */; };
+		CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */; };
+		CEDC48382736EF3F00E5A95C /* RightMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDC48372736EF3F00E5A95C /* RightMessageTableViewCell.swift */; };
+		CEDC483B2736EF4C00E5A95C /* LeftMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDC483A2736EF4C00E5A95C /* LeftMessageTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		390778DF271D1A2200B4735B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		076CC5441B53CD574C0E3B0A /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
+		3902C38227340BFB0088D04B /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
 		39079199271DA7B100B4735B /* PetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetCollectionViewCell.swift; sourceTree = "<group>"; };
 		3907919C271DB56900B4735B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		3907919E271DB6A600B4735B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
@@ -74,11 +86,15 @@
 		3917612C27292E90007FC7C1 /* MedicalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalViewController.swift; sourceTree = "<group>"; };
 		3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalTableViewCell.swift; sourceTree = "<group>"; };
 		3917613027298C28007FC7C1 /* BorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderView.swift; sourceTree = "<group>"; };
-		394A77182721D65700978254 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
+		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
 		394A771E272305B000978254 /* BlueBorderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBorderTextField.swift; sourceTree = "<group>"; };
 		394A77202723067300978254 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		395570FD27350188003AF098 /* lottieSuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieSuccess.json; sourceTree = "<group>"; };
+		395570FF273514CD003AF098 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		3955710127352BAB003AF098 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		3955710327353562003AF098 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		39558C9A2727B46400523D43 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
@@ -87,6 +103,10 @@
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
 		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
 		395FD00F27215D18005911AA /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
+		39709FE127325F28001B29F3 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		39709FE327326682001B29F3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		39709FE527328340001B29F3 /* EmptyUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUserViewController.swift; sourceTree = "<group>"; };
+		39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPetViewController.swift; sourceTree = "<group>"; };
 		39816072272D403B0033930D /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		39816075272D7AB40033930D /* layingCat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = layingCat.json; sourceTree = "<group>"; };
 		39816077272D8BCE0033930D /* FoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +115,7 @@
 		3981607D272D9C920033930D /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		3981607F272D9DA30033930D /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRecordViewController.swift; sourceTree = "<group>"; };
+		39840D3027311A3C004BA4A2 /* toPether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = toPether.entitlements; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -106,10 +127,12 @@
 		39EDD1A8271D126E00B4DAFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39EDD1AB271D126E00B4DAFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39EDD1AD271D126E00B4DAFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
-		3E83461B41D9606803364ABF /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
+		63B99CE01AC999EEC3DFEE91 /* Pods_toPether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_toPether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		86B032B6F1632538B00A3A4C /* Pods-toPether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.release.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.release.xcconfig"; sourceTree = "<group>"; };
 		CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
-		FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toPether.debug.xcconfig"; path = "Target Support Files/Pods-toPether/Pods-toPether.debug.xcconfig"; sourceTree = "<group>"; };
+		CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CEDC48372736EF3F00E5A95C /* RightMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightMessageTableViewCell.swift; sourceTree = "<group>"; };
+		CEDC483A2736EF4C00E5A95C /* LeftMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftMessageTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,19 +140,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE2CDC22A5A4654C89FCBA81 /* Pods_toPether.framework in Frameworks */,
+				550B01D5CC03E1AD2E031DEE /* Pods_toPether.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D1B18A16D4505D204E2B1F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				63B99CE01AC999EEC3DFEE91 /* Pods_toPether.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				395570FD27350188003AF098 /* lottieSuccess.json */,
 				39816075272D7AB40033930D /* layingCat.json */,
 				39558C9E2728498A00523D43 /* LottieDone.json */,
-				390778DF271D1A2200B4735B /* GoogleService-Info.plist */,
+				CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */,
 				39EDD1A8271D126E00B4DAFA /* Assets.xcassets */,
 				39EDD19F271D126800B4DAFA /* AppDelegate.swift */,
 				39EDD1A1271D126800B4DAFA /* SceneDelegate.swift */,
@@ -146,7 +178,10 @@
 				3988E26B272BDA1A00AACFD6 /* Home */,
 				3988E26C272BDA2C00AACFD6 /* Profile */,
 				39816074272D40400033930D /* ToDo */,
-				394A77182721D65700978254 /* SplashVC.swift */,
+				394A77182721D65700978254 /* SplashViewController.swift */,
+				39709FE327326682001B29F3 /* TabBarViewController.swift */,
+				39709FE527328340001B29F3 /* EmptyUserViewController.swift */,
+				39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -169,6 +204,7 @@
 				39816079272D97C60033930D /* BorderSearchBar.swift */,
 				3981607D272D9C920033930D /* DotView.swift */,
 				3981607F272D9DA30033930D /* LineView.swift */,
+				395570FF273514CD003AF098 /* CardView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -180,6 +216,9 @@
 				395FD0072720517A005911AA /* PetTableViewCell.swift */,
 				3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */,
 				3981607B272D9ACB0033930D /* FoodTableViewCell.swift */,
+				3955710327353562003AF098 /* MessageTableViewCell.swift */,
+				CEDC48372736EF3F00E5A95C /* RightMessageTableViewCell.swift */,
+				CEDC483A2736EF4C00E5A95C /* LeftMessageTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -192,6 +231,7 @@
 				390791AD271F008B00B4735B /* UIImageExtension.swift */,
 				394A771A2722990B00978254 /* ArrayExtension.swift */,
 				39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */,
+				39709FE127325F28001B29F3 /* UIViewExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -224,6 +264,8 @@
 				39C6669F2726B30100400C84 /* InviteViewController.swift */,
 				39816077272D8BCE0033930D /* FoodViewController.swift */,
 				39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */,
+				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
+				3955710127352BAB003AF098 /* MessageViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -244,7 +286,7 @@
 				39EDD19E271D126800B4DAFA /* toPether */,
 				39EDD19D271D126800B4DAFA /* Products */,
 				B64BFF78F2BA81C79BA05FB5 /* Pods */,
-				8943DD2F25C9251C2D810A1A /* Frameworks */,
+				0D1B18A16D4505D204E2B1F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -259,6 +301,7 @@
 		39EDD19E271D126800B4DAFA /* toPether */ = {
 			isa = PBXGroup;
 			children = (
+				39840D3027311A3C004BA4A2 /* toPether.entitlements */,
 				3907919B271DB54800B4735B /* Extension */,
 				390791A4271E78C400B4735B /* Model */,
 				39079198271DA78000B4735B /* View */,
@@ -269,19 +312,11 @@
 			path = toPether;
 			sourceTree = "<group>";
 		};
-		8943DD2F25C9251C2D810A1A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				3E83461B41D9606803364ABF /* Pods_toPether.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B64BFF78F2BA81C79BA05FB5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */,
-				5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */,
+				076CC5441B53CD574C0E3B0A /* Pods-toPether.debug.xcconfig */,
+				86B032B6F1632538B00A3A4C /* Pods-toPether.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -293,12 +328,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39EDD1B0271D126E00B4DAFA /* Build configuration list for PBXNativeTarget "toPether" */;
 			buildPhases = (
-				88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */,
+				1C9B41A4578B6B83111E4EC4 /* [CP] Check Pods Manifest.lock */,
 				39EDD198271D126800B4DAFA /* Sources */,
 				39EDD199271D126800B4DAFA /* Frameworks */,
 				39EDD19A271D126800B4DAFA /* Resources */,
-				A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */,
 				390778E1271D1FC300B4735B /* Run Script */,
+				5C13F179D6AAAB652C7590F5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -352,32 +387,15 @@
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
 				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
 				39816076272D7AB40033930D /* layingCat.json in Resources */,
-				390778E0271D1A2200B4735B /* GoogleService-Info.plist in Resources */,
+				395570FE27350188003AF098 /* lottieSuccess.json in Resources */,
+				CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		390778E1271D1FC300B4735B /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
-		};
-		88DCB4813169C616BC2918CD /* [CP] Check Pods Manifest.lock */ = {
+		1C9B41A4578B6B83111E4EC4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -399,7 +417,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A6CC92F738FE4C2262776611 /* [CP] Embed Pods Frameworks */ = {
+		390778E1271D1FC300B4735B /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		5C13F179D6AAAB652C7590F5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -427,26 +463,34 @@
 				39816078272D8BCE0033930D /* FoodViewController.swift in Sources */,
 				3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */,
 				3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */,
+				39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */,
 				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
 				3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */,
+				CEDC483B2736EF4C00E5A95C /* LeftMessageTableViewCell.swift in Sources */,
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
 				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
+				3955710227352BAB003AF098 /* MessageViewController.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
 				395FD00A272052D8005911AA /* MediumLabel.swift in Sources */,
 				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
+				39557100273514CD003AF098 /* CardView.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
 				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
+				39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
+				3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */,
 				394A77212723067300978254 /* RoundButton.swift in Sources */,
-				394A77192721D65700978254 /* SplashVC.swift in Sources */,
+				3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */,
+				39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */,
+				394A77192721D65700978254 /* SplashViewController.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
 				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */,
@@ -462,7 +506,9 @@
 				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
 				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
+				CEDC48382736EF3F00E5A95C /* RightMessageTableViewCell.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
+				39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */,
 				39840D2F272E9A19004BA4A2 /* FoodRecordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -607,10 +653,11 @@
 		};
 		39EDD1B1271D126E00B4DAFA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FCB71E8D721092B05FB20818 /* Pods-toPether.debug.xcconfig */;
+			baseConfigurationReference = 076CC5441B53CD574C0E3B0A /* Pods-toPether.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = toPether/toPether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H9XHH8AA7H;
@@ -621,16 +668,18 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = toPether/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to scan member's QRcode";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dolores.toPether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -641,10 +690,11 @@
 		};
 		39EDD1B2271D126E00B4DAFA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F0556BE176EC2A53BAE8D20 /* Pods-toPether.release.xcconfig */;
+			baseConfigurationReference = 86B032B6F1632538B00A3A4C /* Pods-toPether.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = toPether/toPether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H9XHH8AA7H;
@@ -655,16 +705,18 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = toPether/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to scan member's QRcode";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dolores.toPether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
