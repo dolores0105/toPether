@@ -10,7 +10,7 @@ import IQKeyboardManagerSwift
 
 class ProfileViewController: UIViewController {
     
-    private var navigationBackgroundView: NavigationBackgroundView!
+    private var cardView: CardView!
     private var nameTitleLabel: MediumLabel!
     private var iconImageView: UIImageView!
     private var editNameButton: IconButton!
@@ -32,7 +32,15 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Profile"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .mainBlue
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
         
         self.tabBarController?.tabBar.isHidden = false
@@ -41,16 +49,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
-        
-        navigationBackgroundView = NavigationBackgroundView()
-        view.addSubview(navigationBackgroundView)
-        NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
-            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalToConstant: 250)
-        ])
+        view.backgroundColor = .mainBlue
         
         // MARK: UI objects
         nameTitleLabel = MediumLabel(size: 18, text: "Name", textColor: .white)
@@ -81,10 +80,19 @@ class ProfileViewController: UIViewController {
             textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
         ])
         
+        cardView = CardView(color: .white, cornerRadius: 20)
+        view.addSubview(cardView)
+        NSLayoutConstraint.activate([
+            cardView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
         furkidsTitleLabel = MediumLabel(size: 18, text: "Furkids", textColor: .mainBlue)
         view.addSubview(furkidsTitleLabel)
         NSLayoutConstraint.activate([
-            furkidsTitleLabel.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor, constant: 40),
+            furkidsTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
             furkidsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 66)
         ])
