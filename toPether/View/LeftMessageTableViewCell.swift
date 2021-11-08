@@ -33,7 +33,7 @@ class LeftMessageTableViewCell: MessageTableViewCell {
         NSLayoutConstraint.activate([
             sentTimeLabel.bottomAnchor.constraint(equalTo: contentLabelView.bottomAnchor),
             sentTimeLabel.leadingAnchor.constraint(equalTo: contentLabelView.trailingAnchor, constant: 12),
-            sentTimeLabel.trailingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 24)
+            sentTimeLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -24)
         ])
         
         contentLabelView.layer.borderColor = UIColor.mainBlue.cgColor
