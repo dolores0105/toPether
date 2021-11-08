@@ -79,6 +79,16 @@ class PetModel {
         }
     }
     
+    func queryPet(id: String, completion: @escaping (Pet?) -> Void) {
+        dataBase.collection("pets").document(id).getDocument { (querySnapshot, error) in
+            if let pet = try? querySnapshot?.data(as: Pet.self) {
+                completion(pet)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
     // MARK: update
     func updatePet(id: String, pet: Pet) {
         do {

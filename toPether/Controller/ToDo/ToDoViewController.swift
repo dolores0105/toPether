@@ -15,6 +15,18 @@ class ToDoViewController: UIViewController {
     private var toDoTableView: UITableView!
     private var animationView: AnimationView!
     
+    private var toDos = [ToDo]()
+    private var executorNameCache = [String: String]() {
+        didSet {
+            toDoTableView.reloadData()
+        }
+    }
+    private var petNameCache = [String: String]() {
+        didSet {
+            toDoTableView.reloadData()
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         let appearance = UINavigationBarAppearance()
@@ -50,16 +62,34 @@ class ToDoViewController: UIViewController {
 //            }
 //        }
         
-        ToDoManager.shared.queryToDos(petIds: currentUser.petIds) { result in
+        ToDoManager.shared.addToDosListener(petIds: currentUser.petIds) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let todos):
+                self.toDos = todos
                 
-                for todo in todos {
-                    print(todo.content, todo.dueTime)
+                for todo in todos where self.executorNameCache[todo.executorId] == nil || self.petNameCache[todo.petId] == nil {
+                    
+                    MemberModel.shared.queryMember(id: todo.executorId) { member in
+                        guard let member = member else {
+                            self.executorNameCache[todo.executorId] = "anonymous"
+                            return
+                        }
+                        self.executorNameCache[todo.executorId] = member.name
+                        print(self.executorNameCache[todo.executorId] as Any)
+                    }
+                    
+                    PetModel.shared.queryPet(id: todo.petId) { pet in
+                        guard let pet = pet else { return }
+                        self.petNameCache[todo.petId] = pet.name
+                        print(self.petNameCache[todo.petId] as Any)
+                    }
                 }
                 
+                self.toDoTableView.reloadData()
+                
             case .failure(let error):
-                print("set todo error", error)
+                print("listen todo error", error)
             }
         }
     }

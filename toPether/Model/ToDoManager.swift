@@ -58,4 +58,25 @@ class ToDoManager {
         }
     }
     
+    func addToDosListener(petIds: [String], completion: @escaping (Result<[ToDo], Error>) -> Void) {
+        
+        guard !petIds.isEmpty else { // if petIds is an empty array
+            completion(Result.failure(CommonError.emptyArrayInFilter))
+            return
+        }
+        
+        dataBase.collection("todos").whereField("petId", in: petIds).addSnapshotListener { (querySnapshot, error) in
+            
+            if let querySnapshot = querySnapshot {
+                let todos = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: ToDo.self)
+                })
+                let sortedToDos = todos.sorted { $0.dueTime > $1.dueTime }
+                completion(.success(sortedToDos))
+                
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
 }
