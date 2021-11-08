@@ -101,12 +101,18 @@ class ToDoViewController: UIViewController {
 
 extension ToDoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        return toDos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoTableViewCell", for: indexPath)
         guard let toDoCell = cell as? ToDoTableViewCell else { return cell }
+        
+        let todo = toDos[indexPath.row]
+        let executorName = executorNameCache[todo.executorId]
+        let petName = petNameCache[todo.petId]
+        
+        toDoCell.reload(todo: todo, executorName: executorName, petName: petName)
         
         return toDoCell
     }

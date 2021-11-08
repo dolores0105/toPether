@@ -88,6 +88,18 @@ class ToDoTableViewCell: UITableViewCell {
         ])
         
     }
+    
+    func reload(todo: ToDo, executorName: String?, petName: String?) {
+        todoLabel.text = todo.content
+        executorLabel.text = executorName
+        petLabel.text = petName
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.timeZone = TimeZone.current
+        duetimeLabel.text = dateFormatter.string(from: todo.dueTime)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
