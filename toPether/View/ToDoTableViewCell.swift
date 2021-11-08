@@ -33,7 +33,7 @@ class ToDoTableViewCell: UITableViewCell {
             borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         
-        doneButton = CircleButton(name: "")
+        doneButton = CircleButton(img: Img.iconsCheck.obj, bgColor: .white, borderColor: .deepBlueGrey)
         doneButton.layer.cornerRadius = 16
         contentView.addSubview(doneButton)
         NSLayoutConstraint.activate([
@@ -43,7 +43,7 @@ class ToDoTableViewCell: UITableViewCell {
             doneButton.widthAnchor.constraint(equalTo: doneButton.heightAnchor)
         ])
         
-        todoLabel = MediumLabel(size: 18, text: "Mock todo take food package at 7-11", textColor: .mainBlue)
+        todoLabel = MediumLabel(size: 18, text: nil, textColor: .mainBlue)
         todoLabel.numberOfLines = 0
         contentView.addSubview(todoLabel)
         NSLayoutConstraint.activate([
@@ -59,7 +59,7 @@ class ToDoTableViewCell: UITableViewCell {
 //
 //        ])
         
-        duetimeLabel = RegularLabel(size: 16, text: "14:30", textColor: .deepBlueGrey)
+        duetimeLabel = RegularLabel(size: 16, text: nil, textColor: .deepBlueGrey)
         contentView.addSubview(duetimeLabel)
         NSLayoutConstraint.activate([
             duetimeLabel.topAnchor.constraint(equalTo: todoLabel.bottomAnchor, constant: 4),
@@ -67,7 +67,7 @@ class ToDoTableViewCell: UITableViewCell {
             duetimeLabel.leadingAnchor.constraint(equalTo: todoLabel.leadingAnchor)
         ])
         
-        executorLabel = MediumLabel(size: 16, text: "Mock ppl bbbbbbb", textColor: .mainBlue)
+        executorLabel = MediumLabel(size: 16, text: nil, textColor: .mainBlue)
         contentView.addSubview(executorLabel)
         NSLayoutConstraint.activate([
             executorLabel.topAnchor.constraint(equalTo: duetimeLabel.bottomAnchor, constant: 4),
@@ -76,7 +76,7 @@ class ToDoTableViewCell: UITableViewCell {
             executorLabel.widthAnchor.constraint(equalTo: borderView.widthAnchor, multiplier: 1 / 2, constant: -48)
         ])
         
-        petLabel = MediumLabel(size: 16, text: "Ronaldo", textColor: .mainBlue)
+        petLabel = MediumLabel(size: 16, text: nil, textColor: .mainBlue)
         petLabel.textAlignment = .right
         contentView.addSubview(petLabel)
         NSLayoutConstraint.activate([
@@ -98,6 +98,12 @@ class ToDoTableViewCell: UITableViewCell {
         dateFormatter.dateFormat = "HH:mm"
         dateFormatter.timeZone = TimeZone.current
         duetimeLabel.text = dateFormatter.string(from: todo.dueTime)
+        
+        if todo.doneStatus {
+            doneButton.backgroundColor = .mainYellow
+        } else {
+            doneButton.backgroundColor = .white
+        }
     }
     
     required init?(coder: NSCoder) {
