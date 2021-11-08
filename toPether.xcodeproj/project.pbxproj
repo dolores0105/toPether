@@ -36,6 +36,7 @@
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
 		395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */; };
+		395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AE27391B9D0013AF9A /* ToDoManager.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
@@ -100,6 +101,7 @@
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
 		395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
+		395D04AE27391B9D0013AF9A /* ToDoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoManager.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 			children = (
 				390791A5271E78F800B4735B /* PetModel.swift */,
 				395FD00F27215D18005911AA /* MemberModel.swift */,
+				395D04AE27391B9D0013AF9A /* ToDoManager.swift */,
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
 				CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */,
 			);
@@ -491,6 +494,7 @@
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
 				3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */,
 				394A77212723067300978254 /* RoundButton.swift in Sources */,
+				395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */,
 				3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */,
 				39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */,
 				395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */,

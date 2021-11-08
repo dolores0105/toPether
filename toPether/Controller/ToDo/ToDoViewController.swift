@@ -38,6 +38,30 @@ class ToDoViewController: UIViewController {
         configCardView()
         configCalendar()
         configToDoTableView()
+        
+        // MARK: Data
+        guard let currentUser = MemberModel.shared.current else { return }
+//        ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: "6L4OiWOL0iWVVtM5YaZQqDEANqm1", petId: "BbvvFffk6bqm9q0gJraM", dueTime: Date(), content: "乖乖吃肉肉") { result in
+//            switch result {
+//            case .success(let todo):
+//                print(todo.petId, todo.content, todo.dueTime)
+//            case .failure(let error):
+//                print("set todo error", error)
+//            }
+//        }
+        
+        ToDoManager.shared.queryToDos(petIds: currentUser.petIds) { result in
+            switch result {
+            case .success(let todos):
+                
+                for todo in todos {
+                    print(todo.content, todo.dueTime)
+                }
+                
+            case .failure(let error):
+                print("set todo error", error)
+            }
+        }
     }
     
     @objc private func tapAdd(_ sender: UIBarButtonItem) {
