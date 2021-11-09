@@ -115,7 +115,6 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                         self.memberNamesCache = [:]
                         for member in members where self.memberNamesCache[member.id] == nil {
                             self.memberNamesCache[member.id] = member.name
-                            print(">>>>", self.memberNamesCache[member.id])
                         }
                     case .failure(let error):
                         print("query members' names error", error)
@@ -156,7 +155,15 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
 }
 
 extension ToDoRecordViewController: UITextFieldDelegate {
-    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if petTextField.hasText && contentTextField.hasText && executorTextField.hasText {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
+    }
 }
 
 extension ToDoRecordViewController {
@@ -280,6 +287,9 @@ extension ToDoRecordViewController {
 //            okButton.isEnabled = false
 //            okButton.backgroundColor = .lightBlueGrey
 //        }
+        okButton.isEnabled = false
+        okButton.backgroundColor = .lightBlueGrey
+        
         okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
         scrollView.addSubview(okButton)
         NSLayoutConstraint.activate([
