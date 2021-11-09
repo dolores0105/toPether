@@ -137,7 +137,7 @@ extension ToDoViewController: ToDoTableViewCellDelegate {
             }
             if todo.doneStatus {
                 // lottie animation
-                print("if truned true>>> animation", todo.doneStatus)
+                configAnimation()
             }
             toDoTableView.reloadRows(at: [indexPath], with: .none)
         }
@@ -195,16 +195,16 @@ extension ToDoViewController {
     }
     
     private func configAnimation() {
-        animationView = .init(name: "layingCat")
+        animationView = .init(name: "lottieCongratulation")
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.play(completion: nil)
-        animationView.loopMode = .loop
+        animationView.loopMode = .playOnce
         view.addSubview(animationView)
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
     }

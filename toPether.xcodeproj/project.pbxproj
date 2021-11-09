@@ -23,6 +23,7 @@
 		3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612C27292E90007FC7C1 /* MedicalViewController.swift */; };
 		3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */; };
 		3917613127298C28007FC7C1 /* BorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917613027298C28007FC7C1 /* BorderView.swift */; };
+		392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4745273A2F04001F203B /* lottieCongratulation.json */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -88,6 +89,7 @@
 		3917612C27292E90007FC7C1 /* MedicalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalViewController.swift; sourceTree = "<group>"; };
 		3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalTableViewCell.swift; sourceTree = "<group>"; };
 		3917613027298C28007FC7C1 /* BorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderView.swift; sourceTree = "<group>"; };
+		392B4745273A2F04001F203B /* lottieCongratulation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieCongratulation.json; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				392B4745273A2F04001F203B /* lottieCongratulation.json */,
 				395570FD27350188003AF098 /* lottieSuccess.json */,
 				39816075272D7AB40033930D /* layingCat.json */,
 				39558C9E2728498A00523D43 /* LottieDone.json */,
@@ -392,6 +395,7 @@
 				39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */,
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
 				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
+				392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */,
 				39816076272D7AB40033930D /* layingCat.json in Resources */,
 				395570FE27350188003AF098 /* lottieSuccess.json in Resources */,
 				CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */,
