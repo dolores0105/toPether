@@ -18,12 +18,13 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var timeLabel: MediumLabel!
     private let timeDatePicker = UIDatePicker()
     private var executorsLabel: MediumLabel!
-    private var executorField: BlueBorderTextField!
+    private var executorTextField: BlueBorderTextField!
     private var executorPickerView: UIPickerView!
     private var okButton: RoundButton!
     
     private var pets = [Pet]()
     private var petNamesCache = [String: String]()
+    private var memberNamesCache = [String: String]()
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -87,23 +88,45 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
             return petNames[row]
             
         case executorPickerView:
-            return "lala"
+            let memberNames = Array(memberNamesCache.values)
+            return memberNames[row]
+            
         default:
-            return "rere"
+            return nil
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView {
         case petPickerView:
-            petTextField.text = Array(petNamesCache.values)[row]
+            
+            let selectedPetName = Array(petNamesCache.values)[row]
+            petTextField.text = selectedPetName
+            
+            let selectedPetId = Array(petNamesCache.keys)[row]
+            PetModel.shared.queryPet(id: selectedPetId) { pet in
+                guard let pet = pet else {
+                    return // didn't find pet
+                }
+                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let members):
+                        self.memberNamesCache = [:]
+                        for member in members where self.memberNamesCache[member.id] == nil {
+                            self.memberNamesCache[member.id] = member.name
+                            print(">>>>", self.memberNamesCache[member.id])
+                        }
+                    case .failure(let error):
+                        print("query members' names error", error)
+                    }
+                }
+            }
             
         case executorPickerView:
-            petTextField.text = Array(petNamesCache.values)[row]
-//            return "lala"
+            executorTextField.text = Array(memberNamesCache.values)[row]
         default:
-            petTextField.text = Array(petNamesCache.values)[row]
-//            return "rere"
+            executorTextField.text = Array(memberNamesCache.values)[row]
         }
     }
 }
@@ -125,7 +148,7 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
         case petPickerView:
             return petNamesCache.count
         case executorPickerView:
-            return 1
+            return memberNamesCache.count
         default:
             return 1
         }
@@ -234,17 +257,17 @@ extension ToDoRecordViewController {
     }
     
     private func configExecutorPickerView() {
-        executorField = BlueBorderTextField(text: nil)
+        executorTextField = BlueBorderTextField(text: nil)
         executorPickerView = UIPickerView()
         executorPickerView.delegate = self
         executorPickerView.dataSource = self
-        executorField.inputView = petPickerView
-        executorField.delegate = self
-        scrollView.addSubview(executorField)
+        executorTextField.inputView = executorPickerView
+        executorTextField.delegate = self
+        scrollView.addSubview(executorTextField)
         NSLayoutConstraint.activate([
-            executorField.topAnchor.constraint(equalTo: executorsLabel.bottomAnchor, constant: 8),
-            executorField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
-            executorField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
+            executorTextField.topAnchor.constraint(equalTo: executorsLabel.bottomAnchor, constant: 8),
+            executorTextField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
+            executorTextField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
     }
     
@@ -262,7 +285,7 @@ extension ToDoRecordViewController {
         NSLayoutConstraint.activate([
             okButton.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             okButton.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64),
-            okButton.topAnchor.constraint(equalTo: executorField.bottomAnchor, constant: 40)
+            okButton.topAnchor.constraint(equalTo: executorTextField.bottomAnchor, constant: 40)
         ])
     }
 }
