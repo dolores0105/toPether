@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol ToDoTableViewCellDelegate: AnyObject {
+    func didChangeDoneStatusOnCell(_ cell: ToDoTableViewCell)
+}
+
 class ToDoTableViewCell: UITableViewCell {
 
+    weak var delegate: ToDoTableViewCellDelegate?
+    
     private var borderView: BorderView!
     private var doneButton: CircleButton!
     private var todoLabel: MediumLabel!
@@ -34,6 +40,7 @@ class ToDoTableViewCell: UITableViewCell {
         ])
         
         doneButton = CircleButton(img: Img.iconsCheck.obj, bgColor: .white, borderColor: .deepBlueGrey)
+        doneButton.addTarget(self, action: #selector(tapDone), for: .touchUpInside)
         doneButton.layer.cornerRadius = 16
         contentView.addSubview(doneButton)
         NSLayoutConstraint.activate([
@@ -104,6 +111,10 @@ class ToDoTableViewCell: UITableViewCell {
         } else {
             doneButton.backgroundColor = .white
         }
+    }
+    
+    @objc func tapDone(_ sender: UIButton) {
+        delegate?.didChangeDoneStatusOnCell(self)
     }
     
     required init?(coder: NSCoder) {

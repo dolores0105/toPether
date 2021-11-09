@@ -114,11 +114,34 @@ extension ToDoViewController: UITableViewDataSource {
         
         toDoCell.reload(todo: todo, executorName: executorName, petName: petName)
         
+        toDoCell.delegate = self
+        
         return toDoCell
     }
 }
 
 extension ToDoViewController: UITableViewDelegate {
+    
+}
+
+extension ToDoViewController: ToDoTableViewCellDelegate {
+    func didChangeDoneStatusOnCell(_ cell: ToDoTableViewCell) {
+       
+        guard let indexPath = toDoTableView.indexPath(for: cell) else { return }
+        
+        toDos[indexPath.row].doneStatus.toggle()
+
+        ToDoManager.shared.updateToDo(todo: toDos[indexPath.row]) { todo in
+            guard let todo = todo else {
+                return // find todo failed
+            }
+            if todo.doneStatus {
+                // lottie animation
+                print("if truned true>>> animation", todo.doneStatus)
+            }
+            toDoTableView.reloadRows(at: [indexPath], with: .none)
+        }
+    }
     
 }
 

@@ -79,4 +79,14 @@ class ToDoManager {
             }
         }
     }
+    
+    func updateToDo(todo: ToDo, completion: (ToDo?) -> Void) {
+        do {
+            try dataBase.collection("todos").document(todo.id).setData(from: todo)
+            completion(todo)
+        } catch {
+            print("update todo error", error)
+            completion(nil)
+        }
+    }
 }
