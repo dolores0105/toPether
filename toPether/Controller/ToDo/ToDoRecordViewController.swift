@@ -78,11 +78,21 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     self.petNamesCache[pet.id] = pet.name
                 }
                 
+                if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
+                    
+                    PetModel.shared.queryPet(id: petId) { pet in
+                        guard let pet = pet else {
+                            return
+                        }
+                        self.queryMemberNames(pet: pet)
+                    }
+                }
+                
             case .failure(let error):
                 print("Query currentUser's pets error", error)
             }
         }
-        
+    
         renderExistingData(todo: self.todo, petName: self.petName, executorName: self.executorName)
     }
     
@@ -129,6 +139,21 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         timeDatePicker.date = todo.dueTime
         executorTextField.text = executorName
     }
+    
+    private func queryMemberNames(pet: Pet) {
+        MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let members):
+                self.memberNamesCache = [:]
+                for member in members where self.memberNamesCache[member.id] == nil {
+                    self.memberNamesCache[member.id] = member.name
+                }
+            case .failure(let error):
+                print("query members' names error", error)
+            }
+        }
+    }
 }
 
 extension ToDoRecordViewController: UIPickerViewDelegate {
@@ -159,18 +184,20 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                 guard let pet = pet else {
                     return // didn't find pet
                 }
-                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let members):
-                        self.memberNamesCache = [:]
-                        for member in members where self.memberNamesCache[member.id] == nil {
-                            self.memberNamesCache[member.id] = member.name
-                        }
-                    case .failure(let error):
-                        print("query members' names error", error)
-                    }
-                }
+                
+                self.queryMemberNames(pet: pet)
+//                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+//                    guard let self = self else { return }
+//                    switch result {
+//                    case .success(let members):
+//                        self.memberNamesCache = [:]
+//                        for member in members where self.memberNamesCache[member.id] == nil {
+//                            self.memberNamesCache[member.id] = member.name
+//                        }
+//                    case .failure(let error):
+//                        print("query members' names error", error)
+//                    }
+//                }
             }
             
         case executorPickerView:
