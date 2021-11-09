@@ -136,7 +136,6 @@ extension ToDoViewController: ToDoTableViewCellDelegate {
                 return // find todo failed
             }
             if todo.doneStatus {
-                // lottie animation
                 configAnimation()
             }
             toDoTableView.reloadRows(at: [indexPath], with: .none)
@@ -187,7 +186,7 @@ extension ToDoViewController {
         toDoTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toDoTableView)
         NSLayoutConstraint.activate([
-            toDoTableView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 32),
+            toDoTableView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 16),
             toDoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             toDoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             toDoTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -198,8 +197,6 @@ extension ToDoViewController {
         animationView = .init(name: "lottieCongratulation")
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false
-        animationView.play(completion: nil)
-        animationView.loopMode = .playOnce
         view.addSubview(animationView)
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -207,5 +204,11 @@ extension ToDoViewController {
             animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
+        
+        animationView.loopMode = .playOnce
+        animationView.play { [weak self] _ in
+            guard let self = self else { return }
+            self.animationView.isHidden = true
+        }
     }
 }
