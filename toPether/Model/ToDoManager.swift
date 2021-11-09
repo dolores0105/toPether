@@ -89,4 +89,15 @@ class ToDoManager {
             completion(nil)
         }
     }
+    
+    func deleteToDo(id: String, completion: @escaping(Bool) -> Void) {
+        dataBase.collection("todos").document(id).delete() { error in
+            if let error = error {
+                print("delete todo error", error)
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
 }

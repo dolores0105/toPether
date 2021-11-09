@@ -76,13 +76,11 @@ class ToDoViewController: UIViewController {
                             return
                         }
                         self.executorNameCache[todo.executorId] = member.name
-                        print(self.executorNameCache[todo.executorId] as Any)
                     }
                     
                     PetModel.shared.queryPet(id: todo.petId) { pet in
                         guard let pet = pet else { return }
                         self.petNameCache[todo.petId] = pet.name
-                        print(self.petNameCache[todo.petId] as Any)
                     }
                 }
                 
@@ -121,7 +119,28 @@ extension ToDoViewController: UITableViewDataSource {
 }
 
 extension ToDoViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+            
+            ToDoManager.shared.deleteToDo(id: self.toDos[indexPath.row].id) { deleteDone in
+                if deleteDone {
+                    print("delete \(self.toDos[indexPath.row].content)")
+                } else {
+                    print("delete error")
+                }
+            }
+            
+            completionHandler(true)
+        }
+        
+        deleteAction.image = Img.iconsDelete.obj
+        deleteAction.backgroundColor = .white
+        
+        let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeAction.performsFirstActionWithFullSwipe = false
+        return swipeAction
+    }
 }
 
 extension ToDoViewController: ToDoTableViewCellDelegate {
