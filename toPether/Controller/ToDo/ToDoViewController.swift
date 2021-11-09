@@ -138,8 +138,10 @@ extension ToDoViewController: UITableViewDataSource {
         let petName = petNameCache[todo.petId]
         let executorName = executorNameCache[todo.executorId]
         
-        let todoRecordViewController = ToDoRecordViewController(todo: todo, petName: petName, executorName: executorName)
-        navigationController?.pushViewController(todoRecordViewController, animated: true)
+        if !todo.doneStatus {
+            let todoRecordViewController = ToDoRecordViewController(todo: todo, petName: petName, executorName: executorName)
+            navigationController?.pushViewController(todoRecordViewController, animated: true)
+        }
     }
 }
 
