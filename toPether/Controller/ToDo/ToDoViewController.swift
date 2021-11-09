@@ -100,8 +100,7 @@ class ToDoViewController: UIViewController {
     }
     
     @objc private func tapAdd(_ sender: UIBarButtonItem) {
-        // to CU todo page
-        let toDoRecordViewController = ToDoRecordViewController()
+        let toDoRecordViewController = ToDoRecordViewController(todo: nil, petName: nil, executorName: nil)
         navigationController?.pushViewController(toDoRecordViewController, animated: true)
     }
     
@@ -132,6 +131,15 @@ extension ToDoViewController: UITableViewDataSource {
         toDoCell.delegate = self
         
         return toDoCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let todo = toDos[indexPath.row]
+        let petName = petNameCache[todo.petId]
+        let executorName = executorNameCache[todo.executorId]
+        
+        let todoRecordViewController = ToDoRecordViewController(todo: todo, petName: petName, executorName: executorName)
+        navigationController?.pushViewController(todoRecordViewController, animated: true)
     }
 }
 

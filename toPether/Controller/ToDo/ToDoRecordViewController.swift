@@ -9,6 +9,16 @@ import UIKit
 
 class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     
+    convenience init(todo: ToDo?, petName: String?, executorName: String?) {
+        self.init()
+        self.todo = todo
+        self.petName = petName
+        self.executorName = executorName
+    }
+    private var todo: ToDo?
+    private var petName: String?
+    private var executorName: String?
+    
     private var scrollView: UIScrollView!
     private var petsLabel: MediumLabel!
     private var petTextField: BlueBorderTextField!
@@ -73,10 +83,21 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         
+        renderExistingData(todo: self.todo, petName: self.petName, executorName: self.executorName)
     }
     
     @objc private func tapOK(sender: RoundButton) {
         
+    }
+    
+    private func renderExistingData(todo: ToDo?, petName: String?, executorName: String?) {
+        
+        guard let todo = todo, let petName = petName, let executorName = executorName else { return }
+        
+        petTextField.text = petName
+        contentTextField.text = todo.content
+        timeDatePicker.date = todo.dueTime
+        executorTextField.text = executorName
     }
 }
 
@@ -280,15 +301,13 @@ extension ToDoRecordViewController {
     
     private func configOkButton() {
         okButton = RoundButton(text: "OK", size: 18)
-//        if food != nil {
-//            okButton.isEnabled = true
-//            okButton.backgroundColor = .mainYellow
-//        } else {
-//            okButton.isEnabled = false
-//            okButton.backgroundColor = .lightBlueGrey
-//        }
-        okButton.isEnabled = false
-        okButton.backgroundColor = .lightBlueGrey
+        if todo != nil {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
         
         okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
         scrollView.addSubview(okButton)
