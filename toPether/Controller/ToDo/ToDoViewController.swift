@@ -7,6 +7,7 @@
 
 import UIKit
 import Lottie
+import Firebase
 
 class ToDoViewController: UIViewController {
 
@@ -14,6 +15,7 @@ class ToDoViewController: UIViewController {
     private var calendar: UIDatePicker!
     private var toDoTableView: UITableView!
     private var animationView: AnimationView!
+    private var listener: ListenerRegistration?
     
     private var toDos = [ToDo]()
     private var executorNameCache = [String: String]() {
@@ -52,7 +54,7 @@ class ToDoViewController: UIViewController {
         configToDoTableView()
         
         // MARK: Data
-        guard let currentUser = MemberModel.shared.current else { return }
+//        guard let currentUser = MemberModel.shared.current else { return }
 //        ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: "6L4OiWOL0iWVVtM5YaZQqDEANqm1", petId: "BbvvFffk6bqm9q0gJraM", dueTime: Date(), content: "乖乖吃肉肉") { result in
 //            switch result {
 //            case .success(let todo):
@@ -61,8 +63,13 @@ class ToDoViewController: UIViewController {
 //                print("set todo error", error)
 //            }
 //        }
-        
-        ToDoManager.shared.addToDosListener(petIds: currentUser.petIds) { [weak self] result in
+
+        addToDoListener(date: Date())
+    }
+    
+    private func addToDoListener(date: Date) {
+        guard let currentUser = MemberModel.shared.current else { return }
+        listener = ToDoManager.shared.addToDosListener(petIds: currentUser.petIds, date: date) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let todos):
@@ -99,18 +106,9 @@ class ToDoViewController: UIViewController {
     @objc func tapDate(sender: UIDatePicker) {
         let date = sender.date
         guard let currentUser = MemberModel.shared.current else { return }
+        listener?.remove()
         
-        ToDoManager.shared.queryToDosOnDate(petIds: currentUser.petIds, date: date) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let todos):
-                self.toDos = todos
-                self.toDoTableView.reloadData()
-                
-            case .failure(let error):
-                print("filter date of todos error", error)
-            }
-        }
+        addToDoListener(date: date)
     }
 }
 
