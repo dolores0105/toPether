@@ -87,7 +87,37 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func tapOK(sender: RoundButton) {
-        
+        guard let todo = todo else {
+            
+            guard let petName = petTextField.text,
+            let todoContent = contentTextField.text,
+            let executorName = executorTextField.text, let currentUser = MemberModel.shared.current else { return }
+            
+            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            
+            ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: executorId, petId: petId, dueTime: timeDatePicker.date, content: todoContent) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let todo):
+                    print("Create todo", todo.content)
+                    self.navigationController?.popViewController(animated: true)
+                    
+                case .failure(let error):
+                    print("Create todo error", error)
+                }
+            }
+            return
+        }
+    
+        ToDoManager.shared.updateToDo(todo: todo) { todo in
+            guard todo != nil else {
+                print("Update todo failed")
+                return
+            }
+            navigationController?.popViewController(animated: true)
+        }
+
     }
     
     private func renderExistingData(todo: ToDo?, petName: String?, executorName: String?) {
@@ -145,6 +175,7 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
             
         case executorPickerView:
             executorTextField.text = Array(memberNamesCache.values)[row]
+            
         default:
             executorTextField.text = Array(memberNamesCache.values)[row]
         }
@@ -178,8 +209,21 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
 extension ToDoRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if petTextField.hasText && contentTextField.hasText && executorTextField.hasText {
+            
+            guard let petName = petTextField.text,
+            let todoContent = contentTextField.text,
+            let executorName = executorTextField.text else { return }
+            
+            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            
+            todo?.petId = petId
+            todo?.content = todoContent
+            todo?.dueTime = timeDatePicker.date
+            todo?.executorId = executorId
+            
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
+            
         } else {
             okButton.isEnabled = false
             okButton.backgroundColor = .lightBlueGrey
