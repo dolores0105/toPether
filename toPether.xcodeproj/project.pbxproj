@@ -23,6 +23,8 @@
 		3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612C27292E90007FC7C1 /* MedicalViewController.swift */; };
 		3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */; };
 		3917613127298C28007FC7C1 /* BorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917613027298C28007FC7C1 /* BorderView.swift */; };
+		392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4745273A2F04001F203B /* lottieCongratulation.json */; };
+		392B4748273A4CE8001F203B /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4747273A4CE8001F203B /* DateExtension.swift */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -36,6 +38,7 @@
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
 		395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */; };
+		395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AE27391B9D0013AF9A /* ToDoManager.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
@@ -87,6 +90,8 @@
 		3917612C27292E90007FC7C1 /* MedicalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalViewController.swift; sourceTree = "<group>"; };
 		3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalTableViewCell.swift; sourceTree = "<group>"; };
 		3917613027298C28007FC7C1 /* BorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderView.swift; sourceTree = "<group>"; };
+		392B4745273A2F04001F203B /* lottieCongratulation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieCongratulation.json; sourceTree = "<group>"; };
+		392B4747273A4CE8001F203B /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -100,6 +105,7 @@
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
 		395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
+		395D04AE27391B9D0013AF9A /* ToDoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoManager.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
@@ -160,6 +166,7 @@
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				392B4745273A2F04001F203B /* lottieCongratulation.json */,
 				395570FD27350188003AF098 /* lottieSuccess.json */,
 				39816075272D7AB40033930D /* layingCat.json */,
 				39558C9E2728498A00523D43 /* LottieDone.json */,
@@ -235,6 +242,7 @@
 				394A771A2722990B00978254 /* ArrayExtension.swift */,
 				39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */,
 				39709FE127325F28001B29F3 /* UIViewExtension.swift */,
+				392B4747273A4CE8001F203B /* DateExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -244,6 +252,7 @@
 			children = (
 				390791A5271E78F800B4735B /* PetModel.swift */,
 				395FD00F27215D18005911AA /* MemberModel.swift */,
+				395D04AE27391B9D0013AF9A /* ToDoManager.swift */,
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
 				CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */,
 			);
@@ -389,6 +398,7 @@
 				39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */,
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
 				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
+				392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */,
 				39816076272D7AB40033930D /* layingCat.json in Resources */,
 				395570FE27350188003AF098 /* lottieSuccess.json in Resources */,
 				CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */,
@@ -491,6 +501,7 @@
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
 				3902C38327340BFB0088D04B /* ScanResultViewController.swift in Sources */,
 				394A77212723067300978254 /* RoundButton.swift in Sources */,
+				395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */,
 				3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */,
 				39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */,
 				395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */,
@@ -510,6 +521,7 @@
 				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
 				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
+				392B4748273A4CE8001F203B /* DateExtension.swift in Sources */,
 				CEDC48382736EF3F00E5A95C /* RightMessageTableViewCell.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
 				39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */,

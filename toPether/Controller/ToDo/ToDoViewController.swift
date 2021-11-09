@@ -7,6 +7,7 @@
 
 import UIKit
 import Lottie
+import Firebase
 
 class ToDoViewController: UIViewController {
 
@@ -14,6 +15,19 @@ class ToDoViewController: UIViewController {
     private var calendar: UIDatePicker!
     private var toDoTableView: UITableView!
     private var animationView: AnimationView!
+    private var listener: ListenerRegistration?
+    
+    private var toDos = [ToDo]()
+    private var executorNameCache = [String: String]() {
+        didSet {
+            toDoTableView.reloadData()
+        }
+    }
+    private var petNameCache = [String: String]() {
+        didSet {
+            toDoTableView.reloadData()
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
@@ -38,27 +52,129 @@ class ToDoViewController: UIViewController {
         configCardView()
         configCalendar()
         configToDoTableView()
+        
+        // MARK: Data
+//        guard let currentUser = MemberModel.shared.current else { return }
+//        ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: "6L4OiWOL0iWVVtM5YaZQqDEANqm1", petId: "BbvvFffk6bqm9q0gJraM", dueTime: Date(), content: "乖乖吃肉肉") { result in
+//            switch result {
+//            case .success(let todo):
+//                print(todo.petId, todo.content, todo.dueTime)
+//            case .failure(let error):
+//                print("set todo error", error)
+//            }
+//        }
+
+        addToDoListener(date: Date())
+    }
+    
+    private func addToDoListener(date: Date) {
+        guard let currentUser = MemberModel.shared.current else { return }
+        listener = ToDoManager.shared.addToDosListener(petIds: currentUser.petIds, date: date) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let todos):
+                self.toDos = todos
+                
+                for todo in todos where self.executorNameCache[todo.executorId] == nil || self.petNameCache[todo.petId] == nil {
+                    
+                    MemberModel.shared.queryMember(id: todo.executorId) { member in
+                        guard let member = member else {
+                            self.executorNameCache[todo.executorId] = "anonymous"
+                            return
+                        }
+                        self.executorNameCache[todo.executorId] = member.name
+                    }
+                    
+                    PetModel.shared.queryPet(id: todo.petId) { pet in
+                        guard let pet = pet else { return }
+                        self.petNameCache[todo.petId] = pet.name
+                    }
+                }
+                
+                self.toDoTableView.reloadData()
+                
+            case .failure(let error):
+                print("listen todo error", error)
+            }
+        }
     }
     
     @objc private func tapAdd(_ sender: UIBarButtonItem) {
         // to CU todo page
     }
+    
+    @objc func tapDate(sender: UIDatePicker) {
+        let date = sender.date
+        guard let currentUser = MemberModel.shared.current else { return }
+        listener?.remove()
+        
+        addToDoListener(date: date)
+    }
 }
 
 extension ToDoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        return toDos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoTableViewCell", for: indexPath)
         guard let toDoCell = cell as? ToDoTableViewCell else { return cell }
         
+        let todo = toDos[indexPath.row]
+        let executorName = executorNameCache[todo.executorId]
+        let petName = petNameCache[todo.petId]
+        
+        toDoCell.reload(todo: todo, executorName: executorName, petName: petName)
+        
+        toDoCell.delegate = self
+        
         return toDoCell
     }
 }
 
 extension ToDoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
+            guard let self = self else { return }
+            
+            ToDoManager.shared.deleteToDo(id: self.toDos[indexPath.row].id) { deleteDone in
+                if deleteDone {
+                    print("delete \(self.toDos[indexPath.row].content)")
+                } else {
+                    print("delete error")
+                }
+            }
+            
+            completionHandler(true)
+        }
+        
+        deleteAction.image = Img.iconsDelete.obj
+        deleteAction.backgroundColor = .white
+        
+        let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeAction.performsFirstActionWithFullSwipe = false
+        return swipeAction
+    }
+}
+
+extension ToDoViewController: ToDoTableViewCellDelegate {
+    func didChangeDoneStatusOnCell(_ cell: ToDoTableViewCell) {
+       
+        guard let indexPath = toDoTableView.indexPath(for: cell) else { return }
+        
+        toDos[indexPath.row].doneStatus.toggle()
+
+        ToDoManager.shared.updateToDo(todo: toDos[indexPath.row]) { todo in
+            guard let todo = todo else {
+                return // find todo failed
+            }
+            if todo.doneStatus {
+                configAnimation()
+            }
+            toDoTableView.reloadRows(at: [indexPath], with: .none)
+        }
+    }
     
 }
 
@@ -89,6 +205,8 @@ extension ToDoViewController {
             calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             calendar.heightAnchor.constraint(equalTo: calendar.widthAnchor)
         ])
+        
+        calendar.addTarget(self, action: #selector(tapDate), for: .valueChanged)
     }
     
     private func configToDoTableView() {
@@ -104,7 +222,7 @@ extension ToDoViewController {
         toDoTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toDoTableView)
         NSLayoutConstraint.activate([
-            toDoTableView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 32),
+            toDoTableView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 16),
             toDoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             toDoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             toDoTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -112,17 +230,21 @@ extension ToDoViewController {
     }
     
     private func configAnimation() {
-        animationView = .init(name: "layingCat")
+        animationView = .init(name: "lottieCongratulation")
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false
-        animationView.play(completion: nil)
-        animationView.loopMode = .loop
         view.addSubview(animationView)
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
+        
+        animationView.loopMode = .playOnce
+        animationView.play { [weak self] _ in
+            guard let self = self else { return }
+            self.animationView.isHidden = true
+        }
     }
 }
