@@ -24,6 +24,7 @@
 		3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */; };
 		3917613127298C28007FC7C1 /* BorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917613027298C28007FC7C1 /* BorderView.swift */; };
 		392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4745273A2F04001F203B /* lottieCongratulation.json */; };
+		392B4748273A4CE8001F203B /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4747273A4CE8001F203B /* DateExtension.swift */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -90,6 +91,7 @@
 		3917612E27294F43007FC7C1 /* MedicalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalTableViewCell.swift; sourceTree = "<group>"; };
 		3917613027298C28007FC7C1 /* BorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderView.swift; sourceTree = "<group>"; };
 		392B4745273A2F04001F203B /* lottieCongratulation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieCongratulation.json; sourceTree = "<group>"; };
+		392B4747273A4CE8001F203B /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				394A771A2722990B00978254 /* ArrayExtension.swift */,
 				39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */,
 				39709FE127325F28001B29F3 /* UIViewExtension.swift */,
+				392B4747273A4CE8001F203B /* DateExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				390791AE271F008B00B4735B /* UIImageExtension.swift in Sources */,
 				3981607C272D9ACB0033930D /* FoodTableViewCell.swift in Sources */,
 				39816073272D403B0033930D /* ToDoViewController.swift in Sources */,
+				392B4748273A4CE8001F203B /* DateExtension.swift in Sources */,
 				CEDC48382736EF3F00E5A95C /* RightMessageTableViewCell.swift in Sources */,
 				390791A3271E66E500B4735B /* BorderButton.swift in Sources */,
 				39709FE8273293B0001B29F3 /* EmptyPetViewController.swift in Sources */,

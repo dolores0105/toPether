@@ -95,6 +95,23 @@ class ToDoViewController: UIViewController {
     @objc private func tapAdd(_ sender: UIBarButtonItem) {
         // to CU todo page
     }
+    
+    @objc func tapDate(sender: UIDatePicker) {
+        let date = sender.date
+        guard let currentUser = MemberModel.shared.current else { return }
+        
+        ToDoManager.shared.queryToDosOnDate(petIds: currentUser.petIds, date: date) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let todos):
+                self.toDos = todos
+                self.toDoTableView.reloadData()
+                
+            case .failure(let error):
+                print("filter date of todos error", error)
+            }
+        }
+    }
 }
 
 extension ToDoViewController: UITableViewDataSource {
@@ -190,6 +207,8 @@ extension ToDoViewController {
             calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             calendar.heightAnchor.constraint(equalTo: calendar.widthAnchor)
         ])
+        
+        calendar.addTarget(self, action: #selector(tapDate), for: .valueChanged)
     }
     
     private func configToDoTableView() {

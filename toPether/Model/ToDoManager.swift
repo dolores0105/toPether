@@ -36,6 +36,32 @@ class ToDoManager {
         }
     }
     
+    func queryToDosOnDate(petIds: [String], date: Date, completion: @escaping (Result<[ToDo], Error>) -> Void) {
+        
+        dataBase.collection("todos").whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
+            
+            if let querySnapshot = querySnapshot {
+                let todos = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: ToDo.self)
+                })
+                
+                let todosOnDate = todos.compactMap { todo -> ToDo? in
+                    if todo.dueTime.hasSame(.day, as: date) {
+                        return todo
+                    } else {
+                        return nil
+                    }
+                }
+                
+                let sepcificDateToDos = todosOnDate.sorted { $0.dueTime > $1.dueTime }
+                completion(.success(sepcificDateToDos))
+                
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func queryToDos(petIds: [String], completion: @escaping (Result<[ToDo], Error>) -> Void) {
         
         guard !petIds.isEmpty else { // if petIds is an empty array
