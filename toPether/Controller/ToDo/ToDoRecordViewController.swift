@@ -22,6 +22,9 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var executorPickerView: UIPickerView!
     private var okButton: RoundButton!
     
+    private var pets = [Pet]()
+    private var petNamesCache = [String: String]()
+    
     override func viewWillAppear(_ animated: Bool) {
         
         let appearance = UINavigationBarAppearance()
@@ -51,11 +54,86 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configExecutorsLabel()
         configExecutorPickerView()
         configOkButton()
+        
+        // MARK: Data
+        guard let currentUser = MemberModel.shared.current else { return }
+        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let pets):
+                self.pets = pets
+                
+                for pet in pets where self.petNamesCache[pet.id] == nil {
+                    self.petNamesCache[pet.id] = pet.name
+                }
+                
+            case .failure(let error):
+                print("Query currentUser's pets error", error)
+            }
+        }
+        
     }
     
     @objc private func tapOK(sender: RoundButton) {
         
     }
+}
+
+extension ToDoRecordViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch pickerView {
+        case petPickerView:
+            let petNames = Array(petNamesCache.values)
+            return petNames[row]
+            
+        case executorPickerView:
+            return "lala"
+        default:
+            return "rere"
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch pickerView {
+        case petPickerView:
+            petTextField.text = Array(petNamesCache.values)[row]
+            
+        case executorPickerView:
+            petTextField.text = Array(petNamesCache.values)[row]
+//            return "lala"
+        default:
+            petTextField.text = Array(petNamesCache.values)[row]
+//            return "rere"
+        }
+    }
+}
+
+extension ToDoRecordViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        switch pickerView {
+        case petPickerView:
+            return 1
+        case executorPickerView:
+            return 1
+        default:
+            return 1
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch pickerView {
+        case petPickerView:
+            return petNamesCache.count
+        case executorPickerView:
+            return 1
+        default:
+            return 1
+        }
+    }
+}
+
+extension ToDoRecordViewController: UITextFieldDelegate {
+    
 }
 
 extension ToDoRecordViewController {
@@ -88,10 +166,10 @@ extension ToDoRecordViewController {
     private func configPetPickerView() {
         petTextField = BlueBorderTextField(text: nil)
         petPickerView = UIPickerView()
-//        petPickerView.delegate = self
-//        petPickerView.dataSource = self
+        petPickerView.delegate = self
+        petPickerView.dataSource = self
         petTextField.inputView = petPickerView
-//        petTextField.delegate = self
+        petTextField.delegate = self
         scrollView.addSubview(petTextField)
         NSLayoutConstraint.activate([
             petTextField.topAnchor.constraint(equalTo: petsLabel.bottomAnchor, constant: 8),
@@ -112,7 +190,7 @@ extension ToDoRecordViewController {
     
     private func configContentTextField() {
         contentTextField = BlueBorderTextField(text: nil)
-//        contentTextField.delegate = self
+        contentTextField.delegate = self
         scrollView.addSubview(contentTextField)
         NSLayoutConstraint.activate([
             contentTextField.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
@@ -158,10 +236,10 @@ extension ToDoRecordViewController {
     private func configExecutorPickerView() {
         executorField = BlueBorderTextField(text: nil)
         executorPickerView = UIPickerView()
-//        executorPickerView.delegate = self
-//        executorPickerView.dataSource = self
+        executorPickerView.delegate = self
+        executorPickerView.dataSource = self
         executorField.inputView = petPickerView
-//        executorField.delegate = self
+        executorField.delegate = self
         scrollView.addSubview(executorField)
         NSLayoutConstraint.activate([
             executorField.topAnchor.constraint(equalTo: executorsLabel.bottomAnchor, constant: 8),
