@@ -101,11 +101,13 @@ class ToDoViewController: UIViewController {
     
     @objc private func tapAdd(_ sender: UIBarButtonItem) {
         // to CU todo page
+        let toDoRecordViewController = ToDoRecordViewController()
+        navigationController?.pushViewController(toDoRecordViewController, animated: true)
     }
     
     @objc func tapDate(sender: UIDatePicker) {
         let date = sender.date
-        guard let currentUser = MemberModel.shared.current else { return }
+        
         listener?.remove()
         
         addToDoListener(date: date)
