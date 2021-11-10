@@ -192,19 +192,7 @@ class ProfileViewController: UIViewController {
         let settingViewController = SettingViewController()
         navigationController?.pushViewController(settingViewController, animated: true)
     }
-    
-//    @objc func tapEditName(sender: UIButton) {
-//        textField.isEnabled = true
-//        textField.becomeFirstResponder()
-//    }
-//
-//    @objc private func nameEndEditing(_ textField: UITextField) {
-//        MemberModel.shared.current?.name = textField.text ?? currentUser.name
-//        MemberModel.shared.updateCurrentUser()
-//        textField.isEnabled = !textField.hasText
-//        view.endEditing(true)
-//    }
-    
+
     @objc func tapAddPet(sender: UIButton) {
         let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
         self.navigationController?.pushViewController(addPetViewController, animated: true)

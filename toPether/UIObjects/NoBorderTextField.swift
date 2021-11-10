@@ -14,6 +14,7 @@ class NoBorderTextField: UITextField {
         self.init()
         backgroundColor = bgColor
         layer.borderWidth = 0
+        layer.cornerRadius = 10
         self.textColor = textColor
         translatesAutoresizingMaskIntoConstraints = false
         
