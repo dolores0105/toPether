@@ -148,9 +148,7 @@ class ToDoViewController: UIViewController {
                 }
                 
             case .success(.removed(todos: let todos)):
-            
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
-                
+
                 var badgeStepper: Int = 0
                 
                 for todo in todos {
@@ -158,8 +156,6 @@ class ToDoViewController: UIViewController {
                     if todo.dueTime.hasSame(.day, as: Date()) {
                         badgeStepper += 1
                     }
-                    
-                    self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
             case .failure(let error):
@@ -192,8 +188,7 @@ class ToDoViewController: UIViewController {
         dateComponents.year = year
         dateComponents.month = month
         dateComponents.day = day
-        dateComponents.hour = 15
-        dateComponents.minute = 45
+        dateComponents.hour = 7
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
@@ -245,9 +240,11 @@ extension ToDoViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            ToDoManager.shared.deleteToDo(id: self.toDos[indexPath.row].id) { deleteDone in
+            ToDoManager.shared.deleteToDo(id: deleteId) { deleteDone in
                 if deleteDone {
-                    print("delete \(self.toDos[indexPath.row].content)")
+                    print("deleted \(deleteId), \(deleteContent)")
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
+                    
                 } else {
                     print("delete error")
                 }
