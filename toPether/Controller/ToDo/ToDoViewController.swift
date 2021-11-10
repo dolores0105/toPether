@@ -64,12 +64,14 @@ class ToDoViewController: UIViewController {
 //            }
 //        }
 
-        addToDoListener(date: Date())
+        addToDoListenerOnDate(date: Date())
+        
+        addToDoListenerNotification()
     }
     
-    private func addToDoListener(date: Date) {
+    private func addToDoListenerOnDate(date: Date) {
         guard let currentUser = MemberModel.shared.current else { return }
-        listener = ToDoManager.shared.addToDosListener(petIds: currentUser.petIds, date: date) { [weak self] result in
+        listener = ToDoManager.shared.addToDosListenerOnDate(petIds: currentUser.petIds, date: date) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let todos):
@@ -100,8 +102,7 @@ class ToDoViewController: UIViewController {
     }
     
     @objc private func tapAdd(_ sender: UIBarButtonItem) {
-        // to CU todo page
-        let toDoRecordViewController = ToDoRecordViewController()
+        let toDoRecordViewController = ToDoRecordViewController(todo: nil, petName: nil, executorName: nil)
         navigationController?.pushViewController(toDoRecordViewController, animated: true)
     }
     
@@ -110,7 +111,96 @@ class ToDoViewController: UIViewController {
         
         listener?.remove()
         
-        addToDoListener(date: date)
+        addToDoListenerOnDate(date: date)
+    }
+    
+    private func addToDoListenerNotification() {
+        ToDoManager.shared.todoListener { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(.added(todos: let todos)):
+                
+                var badgeStepper: Int = 0
+                
+                for todo in todos {
+                    
+                    if todo.dueTime.hasSame(.day, as: Date()) {
+                        badgeStepper += 1
+                    }
+                    
+                    self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
+                }
+                
+            case .success(.modified(todos: let todos)):
+                
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
+                
+                var badgeStepper: Int = 0
+                
+                for todo in todos {
+                    
+                    if todo.dueTime.hasSame(.day, as: Date()) {
+                        badgeStepper += 1
+                    }
+                    
+                    self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
+                }
+                
+            case .success(.removed(todos: let todos)):
+            
+                var badgeStepper: Int = 0
+                
+                for todo in todos {
+                    
+                    if todo.dueTime.hasSame(.day, as: Date()) {
+                        badgeStepper += 1
+                    }
+                }
+                
+            case .failure(let error):
+                print("add todoListeners for notifications error", error)
+                
+            }
+        }
+    }
+    
+    private func createNotification(todo: ToDo, badgeStepper: NSNumber?) {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d HH:mm"
+        dateFormatter.timeZone = TimeZone.current
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Todo list"
+        content.subtitle = dateFormatter.string(from: todo.dueTime)
+        content.body = todo.content
+        content.badge = badgeStepper
+        content.sound = .default
+        
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: todo.dueTime)
+        let month = calendar.component(.month, from: todo.dueTime)
+        let day = calendar.component(.day, from: todo.dueTime)
+        
+        var dateComponents = DateComponents()
+        dateComponents.timeZone = .current
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = day
+        dateComponents.hour = 7
+//        dateComponents.minute = 39
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: todo.id, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if error != nil {
+                print("add notification failed")
+            }
+        }
     }
 }
 
@@ -133,6 +223,17 @@ extension ToDoViewController: UITableViewDataSource {
         
         return toDoCell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let todo = toDos[indexPath.row]
+        let petName = petNameCache[todo.petId]
+        let executorName = executorNameCache[todo.executorId]
+        
+        if !todo.doneStatus {
+            let todoRecordViewController = ToDoRecordViewController(todo: todo, petName: petName, executorName: executorName)
+            navigationController?.pushViewController(todoRecordViewController, animated: true)
+        }
+    }
 }
 
 extension ToDoViewController: UITableViewDelegate {
@@ -140,9 +241,14 @@ extension ToDoViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            ToDoManager.shared.deleteToDo(id: self.toDos[indexPath.row].id) { deleteDone in
+            let deleteId = self.toDos[indexPath.row].id
+            let deleteContent = self.toDos[indexPath.row].content
+            
+            ToDoManager.shared.deleteToDo(id: deleteId) { deleteDone in
                 if deleteDone {
-                    print("delete \(self.toDos[indexPath.row].content)")
+                    
+                    print("deleted \(deleteId), \(deleteContent)")
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
                 } else {
                     print("delete error")
                 }

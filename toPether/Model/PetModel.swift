@@ -17,13 +17,13 @@ class PetModel {
     let dataBase = Firestore.firestore()
     
     // MARK: pet
-    func getBirthday(year: Int, month: Int) -> Date? { // 當使用者選完了寵物的年月，用這個去得到生日，記在Pet裡
+    func getBirthday(year: Int, month: Int) -> Date? {
         let calendar = Calendar.current
         let today = Date()
         return calendar.date(byAdding: DateComponents(year: -year, month: -month), to: today)
     }
     
-    func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) { // 當下載了Pet以後，Pet.birthday用這個取得目前的年月，供畫面顯示
+    func getYearMonth(from birthday: Date) -> (year: Int?, month: Int?) {
         let calendar = Calendar.current
         let today = Date()
         let components = calendar.dateComponents([.year, .month], from: birthday, to: today)

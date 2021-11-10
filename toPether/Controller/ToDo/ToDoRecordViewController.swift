@@ -9,6 +9,16 @@ import UIKit
 
 class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     
+    convenience init(todo: ToDo?, petName: String?, executorName: String?) {
+        self.init()
+        self.todo = todo
+        self.petName = petName
+        self.executorName = executorName
+    }
+    private var todo: ToDo?
+    private var petName: String?
+    private var executorName: String?
+    
     private var scrollView: UIScrollView!
     private var petsLabel: MediumLabel!
     private var petTextField: BlueBorderTextField!
@@ -68,15 +78,81 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     self.petNamesCache[pet.id] = pet.name
                 }
                 
+                if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
+                    
+                    PetModel.shared.queryPet(id: petId) { pet in
+                        guard let pet = pet else {
+                            return
+                        }
+                        self.queryMemberNames(pet: pet)
+                    }
+                }
+                
             case .failure(let error):
                 print("Query currentUser's pets error", error)
             }
         }
-        
+    
+        renderExistingData(todo: self.todo, petName: self.petName, executorName: self.executorName)
     }
     
     @objc private func tapOK(sender: RoundButton) {
+        guard let todo = todo else {
+            
+            guard let petName = petTextField.text,
+            let todoContent = contentTextField.text,
+            let executorName = executorTextField.text, let currentUser = MemberModel.shared.current else { return }
+            
+            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            
+            ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: executorId, petId: petId, dueTime: timeDatePicker.date, content: todoContent) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let todo):
+                    print("Create todo", todo.content)
+                    self.navigationController?.popViewController(animated: true)
+                    
+                case .failure(let error):
+                    print("Create todo error", error)
+                }
+            }
+            return
+        }
+    
+        ToDoManager.shared.updateToDo(todo: todo) { todo in
+            guard todo != nil else {
+                print("Update todo failed")
+                return
+            }
+            navigationController?.popViewController(animated: true)
+        }
+
+    }
+    
+    private func renderExistingData(todo: ToDo?, petName: String?, executorName: String?) {
         
+        guard let todo = todo, let petName = petName, let executorName = executorName else { return }
+        
+        petTextField.text = petName
+        contentTextField.text = todo.content
+        timeDatePicker.date = todo.dueTime
+        executorTextField.text = executorName
+    }
+    
+    private func queryMemberNames(pet: Pet) {
+        MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let members):
+                self.memberNamesCache = [:]
+                for member in members where self.memberNamesCache[member.id] == nil {
+                    self.memberNamesCache[member.id] = member.name
+                }
+            case .failure(let error):
+                print("query members' names error", error)
+            }
+        }
     }
 }
 
@@ -108,22 +184,25 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                 guard let pet = pet else {
                     return // didn't find pet
                 }
-                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let members):
-                        self.memberNamesCache = [:]
-                        for member in members where self.memberNamesCache[member.id] == nil {
-                            self.memberNamesCache[member.id] = member.name
-                        }
-                    case .failure(let error):
-                        print("query members' names error", error)
-                    }
-                }
+                
+                self.queryMemberNames(pet: pet)
+//                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+//                    guard let self = self else { return }
+//                    switch result {
+//                    case .success(let members):
+//                        self.memberNamesCache = [:]
+//                        for member in members where self.memberNamesCache[member.id] == nil {
+//                            self.memberNamesCache[member.id] = member.name
+//                        }
+//                    case .failure(let error):
+//                        print("query members' names error", error)
+//                    }
+//                }
             }
             
         case executorPickerView:
             executorTextField.text = Array(memberNamesCache.values)[row]
+            
         default:
             executorTextField.text = Array(memberNamesCache.values)[row]
         }
@@ -157,8 +236,21 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
 extension ToDoRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if petTextField.hasText && contentTextField.hasText && executorTextField.hasText {
+            
+            guard let petName = petTextField.text,
+            let todoContent = contentTextField.text,
+            let executorName = executorTextField.text else { return }
+            
+            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            
+            todo?.petId = petId
+            todo?.content = todoContent
+            todo?.dueTime = timeDatePicker.date
+            todo?.executorId = executorId
+            
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
+            
         } else {
             okButton.isEnabled = false
             okButton.backgroundColor = .lightBlueGrey
@@ -280,15 +372,13 @@ extension ToDoRecordViewController {
     
     private func configOkButton() {
         okButton = RoundButton(text: "OK", size: 18)
-//        if food != nil {
-//            okButton.isEnabled = true
-//            okButton.backgroundColor = .mainYellow
-//        } else {
-//            okButton.isEnabled = false
-//            okButton.backgroundColor = .lightBlueGrey
-//        }
-        okButton.isEnabled = false
-        okButton.backgroundColor = .lightBlueGrey
+        if todo != nil {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
         
         okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
         scrollView.addSubview(okButton)
