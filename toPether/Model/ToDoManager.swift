@@ -8,6 +8,12 @@
 import Firebase
 import Foundation
 
+enum TodoListenerType {
+    case added(todos: [ToDo])
+    case modified(todos: [ToDo])
+    case removed(todos: [ToDo])
+}
+
 class ToDoManager {
     
     private init() {}
@@ -89,7 +95,7 @@ class ToDoManager {
         }
     }
     
-    func addToDosListener(petIds: [String], date: Date, completion: @escaping (Result<[ToDo], Error>) -> Void) -> ListenerRegistration? {
+    func addToDosListenerOnDate(petIds: [String], date: Date, completion: @escaping (Result<[ToDo], Error>) -> Void) -> ListenerRegistration? {
         
         guard !petIds.isEmpty else { // if petIds is an empty array
             completion(Result.failure(CommonError.emptyArrayInFilter))
@@ -139,6 +145,40 @@ class ToDoManager {
                 completion(false)
             } else {
                 completion(true)
+            }
+        }
+    }
+    
+    func todoListener(completion: @escaping (Result<TodoListenerType, Error>) -> Void) {
+        
+        guard let currentUser = MemberModel.shared.current else { return }
+        
+        dataBase.collection("todos").whereField("executorId", isEqualTo: currentUser.id).addSnapshotListener { (querySnapshot, error) in
+            
+            if let querySnapshot = querySnapshot {
+                
+                let todos = querySnapshot.documents.compactMap({ querySnapshot in
+                    try? querySnapshot.data(as: ToDo.self)
+                })
+                
+                querySnapshot.documentChanges.forEach { diff in
+                    switch diff.type {
+                    case .added:
+                        print("added todos")
+                        completion(.success(.added(todos: todos)))
+                        
+                    case .modified:
+                        print("modified todo")
+                        completion(.success(.modified(todos: todos)))
+                        
+                    case .removed:
+                        print("removed todo")
+                        completion(.success(.removed(todos: todos)))
+                    }
+                }
+                
+            } else if let error = error {
+                completion(.failure(error))
             }
         }
     }

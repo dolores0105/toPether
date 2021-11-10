@@ -111,7 +111,6 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 switch result {
                 case .success(let todo):
                     print("Create todo", todo.content)
-                    self.createNotification()
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let error):
@@ -126,7 +125,6 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 print("Update todo failed")
                 return
             }
-            createNotification()
             navigationController?.popViewController(animated: true)
         }
 
@@ -153,33 +151,6 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
-            }
-        }
-    }
-    
-    private func createNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Todo list - Rere"
-        content.subtitle = "MM dd HH:mm"
-        content.body = "Brush the teeth"
-        content.badge = 1
-        content.sound = .default
-        
-        var dateComponents = DateComponents()
-        dateComponents.timeZone = .current
-        dateComponents.year = 2021
-        dateComponents.month = 11
-        dateComponents.day = 10
-        dateComponents.hour = 11
-        dateComponents.minute = 3
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: "notification", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            if error != nil {
-                print("add notification failed")
             }
         }
     }

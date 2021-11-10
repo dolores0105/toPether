@@ -64,12 +64,14 @@ class ToDoViewController: UIViewController {
 //            }
 //        }
 
-        addToDoListener(date: Date())
+        addToDoListenerOnDate(date: Date())
+        
+        addToDoListenerNotification()
     }
     
-    private func addToDoListener(date: Date) {
+    private func addToDoListenerOnDate(date: Date) {
         guard let currentUser = MemberModel.shared.current else { return }
-        listener = ToDoManager.shared.addToDosListener(petIds: currentUser.petIds, date: date) { [weak self] result in
+        listener = ToDoManager.shared.addToDosListenerOnDate(petIds: currentUser.petIds, date: date) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let todos):
@@ -109,7 +111,78 @@ class ToDoViewController: UIViewController {
         
         listener?.remove()
         
-        addToDoListener(date: date)
+        addToDoListenerOnDate(date: date)
+    }
+    
+    private func addToDoListenerNotification() {
+        ToDoManager.shared.todoListener { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(.added(todos: let todos)):
+                
+                for todo in todos {
+                    self.createNotification(todo: todo)
+                }
+                
+            case .success(.modified(todos: let todos)):
+                
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
+                
+                for todo in todos {
+                    self.createNotification(todo: todo)
+                }
+                
+            case .success(.removed(todos: let todos)):
+            
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
+                
+                for todo in todos {
+                    self.createNotification(todo: todo)
+                }
+                
+            case .failure(let error):
+                print("add todoListeners for notifications error", error)
+                
+            }
+        }
+    }
+    
+    private func createNotification(todo: ToDo) {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d HH:mm"
+        dateFormatter.timeZone = TimeZone.current
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Todo list"
+        content.subtitle = dateFormatter.string(from: todo.dueTime)
+        content.body = todo.content
+        content.badge = 1
+        content.sound = .default
+        
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: todo.dueTime)
+        let month = calendar.component(.month, from: todo.dueTime)
+        let day = calendar.component(.day, from: todo.dueTime)
+        
+        var dateComponents = DateComponents()
+        dateComponents.timeZone = .current
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = day
+        dateComponents.hour = 7
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: todo.id, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if error != nil {
+                print("add notification failed")
+            }
+        }
     }
 }
 
