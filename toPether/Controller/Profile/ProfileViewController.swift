@@ -143,29 +143,28 @@ class ProfileViewController: UIViewController {
         ])
         
         // MARK: Query data
-//        textField.text = currentUser.name
         queryData(currentUser: MemberModel.shared.current ?? self.currentUser)
-//        MemberModel.shared.addUserListener { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(.added(members: let members)):
-//                self.queryData(currentUser: members.first ?? self.currentUser)
-//                MemberModel.shared.current = members.first
-////                self.textField.text = members.first?.name
-//
-//            case .success(.modified(members: let members)):
-//                self.queryData(currentUser: members.first ?? self.currentUser)
-//                MemberModel.shared.current = members.first
-////                self.textField.text = members.first?.name
-//
-//            case .success(.removed(members: let members)):
-//                self.queryData(currentUser: members.first ?? self.currentUser)
-//                MemberModel.shared.current = members.first
-//
-//            case .failure(let error):
-//                print("lisener error at profileVC", error)
-//            }
-//        }
+        MemberModel.shared.addUserListener { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(.added(members: let members)):
+                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: currentUser)
+                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
+
+            case .success(.modified(members: let members)):
+                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: currentUser)
+                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
+
+            case .success(.removed(members: let members)):
+                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: currentUser)
+
+            case .failure(let error):
+                print("lisener error at profileVC", error)
+            }
+        }
     }
     
     // MARK: functions
@@ -176,7 +175,7 @@ class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.pets = pets
                 self.petTableView.reloadData()
-                print("fetch pets at profile:", self.pets)
+//                print("fetch pets at profile:", self.pets)
             case .failure(let error):
                 print(error)
             }
