@@ -30,6 +30,7 @@ enum Img: String {
     case iconsSend
     case iconsApp
     case iconsCheck
+    case iconsSetting
     
     var obj: UIImage {
         return UIImage(named: rawValue)!
