@@ -121,24 +121,45 @@ class ToDoViewController: UIViewController {
             switch result {
             case .success(.added(todos: let todos)):
                 
+                var badgeStepper: Int = 0
+                
                 for todo in todos {
-                    self.createNotification(todo: todo)
+                    
+                    if todo.dueTime.hasSame(.day, as: Date()) {
+                        badgeStepper += 1
+                    }
+                    
+                    self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
             case .success(.modified(todos: let todos)):
                 
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
                 
+                var badgeStepper: Int = 0
+                
                 for todo in todos {
-                    self.createNotification(todo: todo)
+                    
+                    if todo.dueTime.hasSame(.day, as: Date()) {
+                        badgeStepper += 1
+                    }
+                    
+                    self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
             case .success(.removed(todos: let todos)):
             
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
                 
+                var badgeStepper: Int = 0
+                
                 for todo in todos {
-                    self.createNotification(todo: todo)
+                    
+                    if todo.dueTime.hasSame(.day, as: Date()) {
+                        badgeStepper += 1
+                    }
+                    
+                    self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
             case .failure(let error):
@@ -148,7 +169,7 @@ class ToDoViewController: UIViewController {
         }
     }
     
-    private func createNotification(todo: ToDo) {
+    private func createNotification(todo: ToDo, badgeStepper: NSNumber?) {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d HH:mm"
@@ -158,7 +179,7 @@ class ToDoViewController: UIViewController {
         content.title = "Todo list"
         content.subtitle = dateFormatter.string(from: todo.dueTime)
         content.body = todo.content
-        content.badge = 1
+        content.badge = badgeStepper
         content.sound = .default
         
         let calendar = Calendar.current
@@ -171,7 +192,8 @@ class ToDoViewController: UIViewController {
         dateComponents.year = year
         dateComponents.month = month
         dateComponents.day = day
-        dateComponents.hour = 7
+        dateComponents.hour = 15
+        dateComponents.minute = 45
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
