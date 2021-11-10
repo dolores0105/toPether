@@ -72,4 +72,17 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.badge, .sound, .banner])
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let window = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window
+        let todoViewController = ToDoViewController()
+        let tabBarController = window?.rootViewController as? TabBarViewController
+        
+        tabBarController?.selectedIndex = 1
+        let navigationController = tabBarController?.viewControllers?.first as? UINavigationController
+        navigationController?.pushViewController(todoViewController, animated: true)
+        
+        completionHandler()
+    }
 }
