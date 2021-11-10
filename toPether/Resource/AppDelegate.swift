@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import IQKeyboardManagerSwift
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,6 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             print("User installed before, loading userDefaults")
         }
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            
+            if granted && error == nil {
+                print("User allowed notification")
+            } else {
+                print("User not allowed notification")
+            }
+        }
+        
         return true
     }
 
