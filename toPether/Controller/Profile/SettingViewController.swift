@@ -41,7 +41,7 @@ class SettingViewController: UIViewController {
         configSignOutButton()
     }
     
-    @objc func tapName(sender: SettingButton) {
+    @objc private func tapName(_ sender: SettingButton) {
         nameTextField.becomeFirstResponder()
     }
     
@@ -51,6 +51,24 @@ class SettingViewController: UIViewController {
         MemberModel.shared.current?.name = textField.text ?? currentUser.name
         MemberModel.shared.updateCurrentUser()
         view.endEditing(true)
+    }
+    
+    @objc private func tapPrivacy(_ sender: SettingButton) {
+        
+    }
+    
+    @objc private func tapDeleteAccount(_ sender: SettingButton) {
+        let alertController = UIAlertController(title: "Delete account",
+                                                message: "It's means all your data would be cleaned. If you wish to do it, please contact yihsuanlin.dolores@gmail.com",
+                                                preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Back", style: .default, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc private func tapSignOut(_ sender: SettingButton) {
+        
     }
 }
 
@@ -89,7 +107,7 @@ extension SettingViewController {
     }
     
     private func configPrivacyButton() {
-        privacyButton = SettingButton(self, action: #selector(tapName), text: "Privacy policy", textfromCenterY: 0, img: Img.iconsPrivacy, imgSize: 88)
+        privacyButton = SettingButton(self, action: #selector(tapPrivacy), text: "Privacy policy", textfromCenterY: 0, img: Img.iconsPrivacy, imgSize: 88)
         let shadow = ShadowView(cornerRadius: 10, color: .mainBlue, offset: CGSize(width: 1.0, height: 3.0), opacity: 0.2, radius: 10)
         
         view.addSubview(shadow)
@@ -108,7 +126,7 @@ extension SettingViewController {
     }
     
     private func configDeleteAccountButton() {
-        deleteAccountButton = SettingButton(self, action: #selector(tapName), text: "Delete account", textfromCenterY: 0, img: Img.iconsCry, imgSize: 88)
+        deleteAccountButton = SettingButton(self, action: #selector(tapDeleteAccount), text: "Delete account", textfromCenterY: 0, img: Img.iconsCry, imgSize: 88)
         let shadow = ShadowView(cornerRadius: 10, color: .mainBlue, offset: CGSize(width: 1.0, height: 3.0), opacity: 0.2, radius: 10)
         
         view.addSubview(shadow)
@@ -127,7 +145,7 @@ extension SettingViewController {
     }
     
     private func configSignOutButton() {
-        signOutButton = SettingButton(self, action: #selector(tapName), text: "Sign out", textfromCenterY: 0, img: Img.iconsSignOut, imgSize: 88)
+        signOutButton = SettingButton(self, action: #selector(tapSignOut), text: "Sign out", textfromCenterY: 0, img: Img.iconsSignOut, imgSize: 88)
         let shadow = ShadowView(cornerRadius: 10, color: .mainBlue, offset: CGSize(width: 1.0, height: 3.0), opacity: 0.2, radius: 10)
         
         view.addSubview(shadow)
