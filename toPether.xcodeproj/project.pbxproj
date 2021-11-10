@@ -27,6 +27,8 @@
 		392B4748273A4CE8001F203B /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4747273A4CE8001F203B /* DateExtension.swift */; };
 		392B474A273A5B9A001F203B /* ToDoRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4749273A5B9A001F203B /* ToDoRecordViewController.swift */; };
 		392B474C273A9FC1001F203B /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B474B273A9FC1001F203B /* DictionaryExtension.swift */; };
+		392B474E273BE067001F203B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B474D273BE067001F203B /* SettingViewController.swift */; };
+		392B4750273BFCF7001F203B /* SettingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B474F273BFCF7001F203B /* SettingButton.swift */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -96,6 +98,8 @@
 		392B4747273A4CE8001F203B /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		392B4749273A5B9A001F203B /* ToDoRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRecordViewController.swift; sourceTree = "<group>"; };
 		392B474B273A9FC1001F203B /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		392B474D273BE067001F203B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		392B474F273BFCF7001F203B /* SettingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButton.swift; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				390791A2271E66E400B4735B /* BorderButton.swift */,
+				392B474F273BFCF7001F203B /* SettingButton.swift */,
 				390791AB271ECF1E00B4735B /* IconButton.swift */,
 				390791A9271ECEC900B4735B /* CircleButton.swift */,
 				394A77202723067300978254 /* RoundButton.swift */,
@@ -294,6 +299,7 @@
 				39558C9C2727CED900523D43 /* GetInvitationViewController.swift */,
 				394A771C2722FE6C00978254 /* AddPetViewController.swift */,
 				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
+				392B474D273BE067001F203B /* SettingViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -480,6 +486,7 @@
 			files = (
 				390791AC271ECF1E00B4735B /* IconButton.swift in Sources */,
 				39816078272D8BCE0033930D /* FoodViewController.swift in Sources */,
+				392B4750273BFCF7001F203B /* SettingButton.swift in Sources */,
 				3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */,
 				3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */,
 				39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */,
@@ -513,6 +520,7 @@
 				395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */,
 				394A77192721D65700978254 /* SplashViewController.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
+				392B474E273BE067001F203B /* SettingViewController.swift in Sources */,
 				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */,
 				395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */,

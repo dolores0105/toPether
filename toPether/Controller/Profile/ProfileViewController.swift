@@ -43,7 +43,7 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsSetting.obj, style: .plain, target: self, action: #selector(tapQrcode))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsSetting.obj, style: .plain, target: self, action: #selector(tapSetting))
         
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -186,6 +186,11 @@ class ProfileViewController: UIViewController {
     @objc func tapQrcode(sender: IconButton) {
         let getInvitationVC = GetInvitationViewController(currentUser: currentUser, isFirstSignIn: false)
         present(getInvitationVC, animated: true, completion: nil)
+    }
+    
+    @objc private func tapSetting(sender: UITabBarItem) {
+        let settingViewController = SettingViewController()
+        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
 //    @objc func tapEditName(sender: UIButton) {
