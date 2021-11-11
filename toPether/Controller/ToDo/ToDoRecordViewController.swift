@@ -119,7 +119,8 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
             }
             return
         }
-    
+        
+        todo.dueTime = timeDatePicker.date // in case only update date
         ToDoManager.shared.updateToDo(todo: todo) { todo in
             guard todo != nil else {
                 print("Update todo failed")
