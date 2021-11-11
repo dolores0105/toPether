@@ -175,7 +175,11 @@ extension FoodViewController: UITableViewDelegate {
             [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
+            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") {
+                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
+            }
+            
+            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }
