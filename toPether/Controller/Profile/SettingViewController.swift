@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SettingViewController: UIViewController {
 
@@ -58,8 +59,9 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func tapDeleteAccount(_ sender: SettingButton) {
+        
         let alertController = UIAlertController(title: "Delete account",
-                                                message: "It's means all your data would be cleaned. If you wish to do it, please contact yihsuanlin.dolores@gmail.com",
+                                                message: "It's means all your datas would be cleaned. If you wish to do it, please contact yihsuanlin.dolores@gmail.com",
                                                 preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Back", style: .default, handler: nil)
         
@@ -68,7 +70,15 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func tapSignOut(_ sender: SettingButton) {
-        
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+            let signInViewController = SplashViewController()
+            navigationController?.pushViewController(signInViewController, animated: true)
+            
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
     }
 }
 
