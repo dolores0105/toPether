@@ -12,7 +12,13 @@ import FirebaseAuth
 
 class SplashViewController: UIViewController {
     
-    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "iconsApp"))
+    private var bgView: UIView!
+    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "toPetherIcon"))
+    private var logoNameImageView: UIImageView!
+    private var faceBgView: UIView!
+    private var faceImageView: UIImageView!
+    private var privacyLabel: RegularLabel!
+    private var privacyButton: UIButton!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -42,14 +48,20 @@ class SplashViewController: UIViewController {
             }
             
         } else {
-            configLogoView()
-            setupSignInButton()
+//            configBgView()
+//            configLogoView()
+            logoImageAnimation()
+//            setupSignInButton()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        configBgView()
+        configLogoView()
+        setupSignInButton()
+//        logoImageAnimation()
     }
     
     @objc private func tapLoginButton() {
@@ -91,12 +103,11 @@ class SplashViewController: UIViewController {
         let tabBarViewController = TabBarViewController()
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
         sceneDelegate?.changeRootViewController(tabBarViewController)
-        
-//        tabBarViewController.modalPresentationStyle = .fullScreen
-//        self.present(tabBarViewController, animated: true, completion: nil)
+
     }
     
     private func gotoEmptySetting() {
+        
         let emptyUserViewController = EmptyUserViewController()
         emptyUserViewController.modalPresentationStyle = .fullScreen
         self.present(emptyUserViewController, animated: true, completion: nil)
@@ -123,12 +134,7 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 print("Unable to serialize token string from data: \(appleIDToken).")
                 return
             }
-            
-//            guard let givenName = appleIDCredential.fullName?.givenName else {
-//                print("Unable to get user's given name.")
-//                return
-//            }
-            
+
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
 
             Auth.auth().signIn(with: credential) { [weak self] (authDataResult, error) in
@@ -222,20 +228,53 @@ private func sha256(_ input: String) -> String {
 
 extension SplashViewController {
     
-    func configLogoView() {
+    private func logoImageAnimation() {
 
+        UIView.animate(
+            withDuration: 2.5,
+            delay: 0.5,
+            usingSpringWithDamping: 2.0,
+            initialSpringVelocity: 1.0,
+            options: .curveEaseIn) { [weak self] in
+                guard let self = self else { return }
+                self.logoImageView.frame.origin.y -= 200
+                self.bgView.alpha = 0
+                
+            } completion: { _ in
+                print("end")
+            }
+
+    }
+}
+
+extension SplashViewController {
+    
+    private func configBgView() {
+        bgView = UIView()
+        bgView.backgroundColor = .mainBlue
+        bgView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bgView)
+        NSLayoutConstraint.activate([
+            bgView.topAnchor.constraint(equalTo: view.topAnchor),
+            bgView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bgView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bgView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func configLogoView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 130),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             logoImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor)
             
         ])
     }
     
-    func setupSignInButton() {
+    private func setupSignInButton() {
         let button = ASAuthorizationAppleIDButton(type: .default, style: .whiteOutline)
         button.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
