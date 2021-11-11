@@ -14,6 +14,17 @@ class SplashViewController: UIViewController {
     
     private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "iconsApp"))
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         if let current = Auth.auth().currentUser {
 

@@ -27,6 +27,11 @@
 		392B4748273A4CE8001F203B /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4747273A4CE8001F203B /* DateExtension.swift */; };
 		392B474A273A5B9A001F203B /* ToDoRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4749273A5B9A001F203B /* ToDoRecordViewController.swift */; };
 		392B474C273A9FC1001F203B /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B474B273A9FC1001F203B /* DictionaryExtension.swift */; };
+		392B474E273BE067001F203B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B474D273BE067001F203B /* SettingViewController.swift */; };
+		392B4750273BFCF7001F203B /* SettingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B474F273BFCF7001F203B /* SettingButton.swift */; };
+		392B4752273C07A2001F203B /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4751273C07A2001F203B /* ShadowView.swift */; };
+		392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */; };
+		392B4756273CC2F8001F203B /* lottieLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4755273CC2F8001F203B /* lottieLoading.json */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -36,7 +41,6 @@
 		39557100273514CD003AF098 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395570FF273514CD003AF098 /* CardView.swift */; };
 		3955710227352BAB003AF098 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710127352BAB003AF098 /* MessageViewController.swift */; };
 		3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710327353562003AF098 /* MessageTableViewCell.swift */; };
-		39558C9B2727B46400523D43 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9A2727B46400523D43 /* BlurView.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
 		395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */; };
@@ -96,6 +100,11 @@
 		392B4747273A4CE8001F203B /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		392B4749273A5B9A001F203B /* ToDoRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRecordViewController.swift; sourceTree = "<group>"; };
 		392B474B273A9FC1001F203B /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		392B474D273BE067001F203B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		392B474F273BFCF7001F203B /* SettingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButton.swift; sourceTree = "<group>"; };
+		392B4751273C07A2001F203B /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		392B4755273CC2F8001F203B /* lottieLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieLoading.json; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -105,7 +114,6 @@
 		395570FF273514CD003AF098 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3955710127352BAB003AF098 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		3955710327353562003AF098 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
-		39558C9A2727B46400523D43 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
 		395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
@@ -170,6 +178,7 @@
 		390778E2271D70B700B4735B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				392B4755273CC2F8001F203B /* lottieLoading.json */,
 				392B4745273A2F04001F203B /* lottieCongratulation.json */,
 				395570FD27350188003AF098 /* lottieSuccess.json */,
 				39816075272D7AB40033930D /* layingCat.json */,
@@ -203,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				390791A2271E66E400B4735B /* BorderButton.swift */,
+				392B474F273BFCF7001F203B /* SettingButton.swift */,
 				390791AB271ECF1E00B4735B /* IconButton.swift */,
 				390791A9271ECEC900B4735B /* CircleButton.swift */,
 				394A77202723067300978254 /* RoundButton.swift */,
@@ -213,11 +223,11 @@
 				395FD00B27213C3B005911AA /* RoundCornerImageView.swift */,
 				390791B1271FFE4900B4735B /* NavigationBackgroundView.swift */,
 				3917613027298C28007FC7C1 /* BorderView.swift */,
-				39558C9A2727B46400523D43 /* BlurView.swift */,
 				39816079272D97C60033930D /* BorderSearchBar.swift */,
 				3981607D272D9C920033930D /* DotView.swift */,
 				3981607F272D9DA30033930D /* LineView.swift */,
 				395570FF273514CD003AF098 /* CardView.swift */,
+				392B4751273C07A2001F203B /* ShadowView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -294,6 +304,8 @@
 				39558C9C2727CED900523D43 /* GetInvitationViewController.swift */,
 				394A771C2722FE6C00978254 /* AddPetViewController.swift */,
 				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
+				392B474D273BE067001F203B /* SettingViewController.swift */,
+				392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -403,6 +415,7 @@
 				39EDD1AC271D126E00B4DAFA /* LaunchScreen.storyboard in Resources */,
 				39EDD1A9271D126E00B4DAFA /* Assets.xcassets in Resources */,
 				39EDD1A7271D126800B4DAFA /* Main.storyboard in Resources */,
+				392B4756273CC2F8001F203B /* lottieLoading.json in Resources */,
 				39558C9F2728498A00523D43 /* LottieDone.json in Resources */,
 				392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */,
 				39816076272D7AB40033930D /* layingCat.json in Resources */,
@@ -480,14 +493,15 @@
 			files = (
 				390791AC271ECF1E00B4735B /* IconButton.swift in Sources */,
 				39816078272D8BCE0033930D /* FoodViewController.swift in Sources */,
+				392B4750273BFCF7001F203B /* SettingButton.swift in Sources */,
 				3917612D27292E90007FC7C1 /* MedicalViewController.swift in Sources */,
+				392B4752273C07A2001F203B /* ShadowView.swift in Sources */,
 				3917612F27294F43007FC7C1 /* MedicalTableViewCell.swift in Sources */,
 				39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */,
 				39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */,
 				3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */,
 				CEDC483B2736EF4C00E5A95C /* LeftMessageTableViewCell.swift in Sources */,
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
-				39558C9B2727B46400523D43 /* BlurView.swift in Sources */,
 				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
 				3955710227352BAB003AF098 /* MessageViewController.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
@@ -513,8 +527,10 @@
 				395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */,
 				394A77192721D65700978254 /* SplashViewController.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
+				392B474E273BE067001F203B /* SettingViewController.swift in Sources */,
 				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */,
+				392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */,
 				395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */,
 				39C666A02726B30100400C84 /* InviteViewController.swift in Sources */,
 				390791A8271E8C9900B4735B /* DataStructure.swift in Sources */,
