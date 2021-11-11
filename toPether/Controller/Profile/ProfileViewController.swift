@@ -224,16 +224,23 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            // get the deleting pet
-            let pet = self.pets[indexPath.row]
+            let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
+                                                message: "You'd need to be invited again, or you could not view previous info of this pet")
+            {
+                // get the deleting pet
+                let pet = self.pets[indexPath.row]
+                
+                // update deleted petIds
+                MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
+                MemberModel.shared.updateCurrentUser()
+                
+                // update that pet's memberIds
+                pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
+                PetModel.shared.updatePet(id: pet.id, pet: pet)
+                
+            }
             
-            // update deleted petIds
-            MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
-            MemberModel.shared.updateCurrentUser()
-            
-            // update that pet's memberIds
-            pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-            PetModel.shared.updatePet(id: pet.id, pet: pet)
+            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

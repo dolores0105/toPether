@@ -154,7 +154,13 @@ extension MedicalViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id)
+            let deleteAlert = Alert.deleteAlert(title: "Delete medical record", message: "Do you want to delete this record?") {
+
+                PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id)
+            }
+            
+            self.present(deleteAlert, animated: true)
+            
             
             completionHandler(true)
         }
