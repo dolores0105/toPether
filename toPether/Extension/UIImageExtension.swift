@@ -38,6 +38,7 @@ enum Img: String {
     case appNameBlue
     case appNameWhite
     case toPetherIcon
+    case iconsFace
     
     var obj: UIImage {
         return UIImage(named: rawValue)!
