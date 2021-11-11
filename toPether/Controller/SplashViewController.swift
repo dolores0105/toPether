@@ -274,12 +274,13 @@ extension SplashViewController {
             options: .curveEaseIn) { [weak self] in
             guard let self = self else { return }
                 let faceWidth = UIScreen.main.bounds.width + 100
-                let yTransform = CGAffineTransform(translationX: 0, y: -(faceWidth / 2 + 24))
+                let yTransform = CGAffineTransform(translationX: 0, y: -(faceWidth / 2 + 32))
                 self.faceBgView.transform = yTransform
                 
         } completion: { _ in
             
             self.setupSignInButton()
+            self.configPrivacy()
             self.signInButtonAnimation()
         }
     }
@@ -294,7 +295,8 @@ extension SplashViewController {
             options: .curveEaseIn) { [weak self] in
             guard let self = self else { return }
                 self.signInWithAppleButton.alpha = 1
-                
+                self.privacyLabel.alpha = 1
+                self.privacyButton.alpha = 1
         } completion: { _ in
 
         }
@@ -362,7 +364,7 @@ extension SplashViewController {
             faceBgView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             faceBgView.widthAnchor.constraint(equalToConstant: faceWidth),
             faceBgView.heightAnchor.constraint(equalToConstant: faceWidth),
-            faceBgView.centerYAnchor.constraint(equalTo: view.bottomAnchor, constant: (faceWidth / 2) + 24),
+            faceBgView.centerYAnchor.constraint(equalTo: view.bottomAnchor, constant: (faceWidth / 2) + 32),
             
             faceImageView.topAnchor.constraint(equalTo: faceBgView.topAnchor, constant: 16),
             faceImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -384,5 +386,39 @@ extension SplashViewController {
             signInWithAppleButton.heightAnchor.constraint(equalToConstant: 40)
         ])
         view.bringSubviewToFront(signInWithAppleButton)
+    }
+    
+    private func configPrivacy() {
+        privacyLabel = RegularLabel(size: 13, text: "By signing in, you agree to our privacy policy", textColor: .deepBlueGrey)
+        privacyLabel.textAlignment = .center
+        privacyLabel.alpha = 0
+        
+        privacyButton = UIButton()
+        privacyButton.setTitle("privacy policy", for: .normal)
+        privacyButton.setTitleColor(.mainBlue, for: .normal)
+        privacyButton.titleLabel?.font = UIFont.medium(size: 14)
+        privacyButton.backgroundColor = .clear
+        privacyButton.alpha = 0
+        privacyButton.addTarget(self, action: #selector(tapPrivacy), for: .touchUpInside)
+        privacyButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(privacyLabel)
+        view.addSubview(privacyButton)
+        NSLayoutConstraint.activate([
+            privacyLabel.topAnchor.constraint(equalTo: signInWithAppleButton.bottomAnchor, constant: 16),
+            privacyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            privacyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            privacyLabel.heightAnchor.constraint(equalToConstant: 16),
+            
+            privacyButton.topAnchor.constraint(equalTo: privacyLabel.bottomAnchor, constant: 2),
+            privacyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            privacyButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 2),
+            privacyButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+    
+    @objc private func tapPrivacy() {
+        let privacyPolicyViewController = PrivacyPolicyViewController()
+        present(privacyPolicyViewController, animated: true, completion: nil)
     }
 }
