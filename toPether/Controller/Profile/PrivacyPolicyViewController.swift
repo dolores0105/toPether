@@ -7,9 +7,12 @@
 
 import UIKit
 import WebKit
+import Lottie
 
 class PrivacyPolicyViewController: UIViewController {
 
+    private let loadingAnimationView = AnimationView.init(name: "lottieLoading")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,10 +46,24 @@ extension PrivacyPolicyViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        print("------Start loading")
+        
+        loadingAnimationView.contentMode = .scaleAspectFit
+        loadingAnimationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
+        ])
+     
+        loadingAnimationView.loopMode = .loop
+        loadingAnimationView.play(completion: nil)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("Finish loading--------")
+        
+        loadingAnimationView.stop()
+        loadingAnimationView.isHidden = true
     }
 }
