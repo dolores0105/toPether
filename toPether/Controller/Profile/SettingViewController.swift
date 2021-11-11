@@ -55,7 +55,8 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func tapPrivacy(_ sender: SettingButton) {
-        
+        let privacyPolicyViewController = PrivacyPolicyViewController()
+        navigationController?.pushViewController(privacyPolicyViewController, animated: true)
     }
     
     @objc private func tapDeleteAccount(_ sender: SettingButton) {
