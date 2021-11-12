@@ -117,10 +117,11 @@ class PetCollectionViewCell: UICollectionViewCell {
             memberStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
         
-        addMemberButton = CircleButton(name: "")
-        addMemberButton.backgroundColor = .mainYellow
-        addMemberButton.layer.borderColor = UIColor.lightBlueGrey.cgColor
-        addMemberButton.setImage(Img.iconsAddWhite.obj, for: .normal)
+        addMemberButton = CircleButton(img: Img.iconsAddWhite.obj, bgColor: .mainYellow, borderColor: .clear)
+//        addMemberButton.backgroundColor = .mainYellow
+//        addMemberButton.layer.borderColor = UIColor.lightBlueGrey.cgColor
+//        addMemberButton.setImage(Img.iconsAddWhite.obj, for: .normal)
+//        addMemberButto
     }
     
     required init?(coder: NSCoder) {
