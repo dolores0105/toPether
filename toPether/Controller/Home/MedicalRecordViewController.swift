@@ -28,9 +28,18 @@ class MedicalRecordViewController: UIViewController {
     private var okButton: RoundButton!
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+ 
         self.navigationItem.title = "Medical record"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.tintColor = .mainBlue
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         self.tabBarController?.tabBar.isHidden = true
     }

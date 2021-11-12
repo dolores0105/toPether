@@ -37,16 +37,20 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var memberNamesCache = [String: String]()
     
     override func viewWillAppear(_ animated: Bool) {
+
+        self.navigationItem.title = "Todo"
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .mainBlue
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        self.navigationItem.title = "Todo"
-        
+
         self.tabBarController?.tabBar.isHidden = true
     }
     

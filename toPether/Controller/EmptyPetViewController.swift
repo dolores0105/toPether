@@ -27,7 +27,7 @@ class EmptyPetViewController: UIViewController {
 
 extension EmptyPetViewController {
     private func configWelcomeLabel() {
-        welcomeLabel = MediumLabel(size: 22, text: "Hello \(MemberModel.shared.current?.name ?? "")", textColor: .mainBlue)
+        welcomeLabel = MediumLabel(size: 19, text: "Hello \(MemberModel.shared.current?.name ?? "")", textColor: .mainBlue)
         welcomeLabel.numberOfLines = 1
         view.addSubview(welcomeLabel)
         NSLayoutConstraint.activate([
@@ -38,7 +38,7 @@ extension EmptyPetViewController {
     }
     
     private func configGuideLabel() {
-        guideLabel = MediumLabel(size: 20, text: "Now, keep a pet", textColor: .mainBlue)
+        guideLabel = MediumLabel(size: 16, text: "Now, keep a pet", textColor: .mainBlue)
         view.addSubview(guideLabel)
         NSLayoutConstraint.activate([
             guideLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 18),

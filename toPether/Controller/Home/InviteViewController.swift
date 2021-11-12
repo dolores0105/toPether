@@ -23,15 +23,21 @@ class InviteViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
         
+        self.navigationItem.title = "Scan QR Code"
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .clear
+        appearance.backgroundColor = .mainBlue
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 20) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
 
+        self.tabBarController?.tabBar.isHidden = true
+        
         captureSession.startRunning()
     }
     
