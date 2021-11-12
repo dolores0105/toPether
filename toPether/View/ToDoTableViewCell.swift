@@ -18,10 +18,7 @@ class ToDoTableViewCell: UITableViewCell {
     private var borderView: BorderView!
     private var doneButton: CircleButton!
     private var todoLabel: MediumLabel!
-//    private var iconsImageView: UIImageView!
-    private var duetimeLabel: RegularLabel!
-    private var executorLabel: MediumLabel!
-    private var petLabel: MediumLabel!
+    private var iconsLabelHorizontalStackView: IconLabelHorizontalStackView?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,59 +55,24 @@ class ToDoTableViewCell: UITableViewCell {
             todoLabel.leadingAnchor.constraint(equalTo: doneButton.trailingAnchor, constant: 20),
             todoLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -24)
         ])
-        
-//        iconsImageView = UIImageView(image: Img.iconsClock.obj)
-//        iconsImageView.translatesAutoresizingMaskIntoConstraints = false
-//        contentView.addSubview(iconsImageView)
-//        NSLayoutConstraint.activate([
-//
-//        ])
-        
-        duetimeLabel = RegularLabel(size: 16, text: nil, textColor: .deepBlueGrey)
-        contentView.addSubview(duetimeLabel)
-        NSLayoutConstraint.activate([
-            duetimeLabel.topAnchor.constraint(equalTo: todoLabel.bottomAnchor, constant: 4),
-            duetimeLabel.heightAnchor.constraint(equalToConstant: 18),
-            duetimeLabel.leadingAnchor.constraint(equalTo: todoLabel.leadingAnchor)
-        ])
-        
-        executorLabel = MediumLabel(size: 16, text: nil, textColor: .mainBlue)
-        contentView.addSubview(executorLabel)
-        NSLayoutConstraint.activate([
-            executorLabel.topAnchor.constraint(equalTo: duetimeLabel.bottomAnchor, constant: 4),
-            executorLabel.leadingAnchor.constraint(equalTo: todoLabel.leadingAnchor),
-            executorLabel.heightAnchor.constraint(equalToConstant: 18),
-            executorLabel.widthAnchor.constraint(equalTo: borderView.widthAnchor, multiplier: 1 / 2, constant: -48)
-        ])
-        
-        petLabel = MediumLabel(size: 16, text: nil, textColor: .mainBlue)
-        petLabel.textAlignment = .right
-        contentView.addSubview(petLabel)
-        NSLayoutConstraint.activate([
-            petLabel.centerYAnchor.constraint(equalTo: executorLabel.centerYAnchor),
-            petLabel.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -24),
-            petLabel.heightAnchor.constraint(equalToConstant: 18),
-            petLabel.widthAnchor.constraint(equalTo: borderView.widthAnchor, multiplier: 1 / 2, constant: -64),
-            petLabel.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -16)
-        ])
-        
+
     }
     
     func reload(todo: ToDo, executorName: String?, petName: String?) {
         todoLabel.text = todo.content
-        executorLabel.text = executorName
-        petLabel.text = petName
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         dateFormatter.timeZone = TimeZone.current
-        duetimeLabel.text = dateFormatter.string(from: todo.dueTime)
         
         if todo.doneStatus {
             doneButton.backgroundColor = .mainYellow
         } else {
             doneButton.backgroundColor = .white
         }
+        
+        iconsLabelHorizontalStackView?.removeFromSuperview()
+        setUpStackView(labelTexts: [dateFormatter.string(from: todo.dueTime), executorName, petName])
     }
     
     @objc func tapDone(_ sender: UIButton) {
@@ -119,5 +81,27 @@ class ToDoTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension ToDoTableViewCell {
+    private func setUpStackView(labelTexts: [String?]?) {
+        
+        iconsLabelHorizontalStackView = IconLabelHorizontalStackView(
+            icons: [Img.iconsClock.obj, Img.iconsPerson.obj, Img.iconsPaw.obj],
+            labelTexts: labelTexts,
+            textColors: [.mainBlue, .mainBlue, .mainBlue],
+            verticalSpacing: 4,
+            horizontalSpacing: 8)
+        
+        guard let iconsLabelHorizontalStackView = iconsLabelHorizontalStackView else { return }
+        contentView.addSubview(iconsLabelHorizontalStackView)
+        NSLayoutConstraint.activate([
+            iconsLabelHorizontalStackView.topAnchor.constraint(equalTo: todoLabel.bottomAnchor, constant: 6),
+            iconsLabelHorizontalStackView.leadingAnchor.constraint(equalTo: todoLabel.leadingAnchor, constant: -8),
+            iconsLabelHorizontalStackView.heightAnchor.constraint(equalToConstant: 60),
+            iconsLabelHorizontalStackView.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -20),
+            iconsLabelHorizontalStackView.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -16)
+        ])
     }
 }

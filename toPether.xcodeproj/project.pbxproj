@@ -64,6 +64,8 @@
 		39816080272D9DA30033930D /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981607F272D9DA30033930D /* LineView.swift */; };
 		39840D2F272E9A19004BA4A2 /* FoodRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */; };
 		39856C52273E59AA0071AE13 /* LottieWraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39856C51273E59AA0071AE13 /* LottieWraper.swift */; };
+		39856C54273E78F80071AE13 /* IconLabelVerticalStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */; };
+		39856C56273E7FC90071AE13 /* IconLabelHorizontalStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */; };
 		3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */; };
 		39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */; };
 		39C666A02726B30100400C84 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6669F2726B30100400C84 /* InviteViewController.swift */; };
@@ -140,6 +142,8 @@
 		39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRecordViewController.swift; sourceTree = "<group>"; };
 		39840D3027311A3C004BA4A2 /* toPether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = toPether.entitlements; sourceTree = "<group>"; };
 		39856C51273E59AA0071AE13 /* LottieWraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieWraper.swift; sourceTree = "<group>"; };
+		39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconLabelVerticalStackView.swift; sourceTree = "<group>"; };
+		39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconLabelHorizontalStackView.swift; sourceTree = "<group>"; };
 		3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordViewController.swift; sourceTree = "<group>"; };
 		39C6669D27267F4F00400C84 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		39C6669F2726B30100400C84 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +237,8 @@
 				395570FF273514CD003AF098 /* CardView.swift */,
 				392B4751273C07A2001F203B /* ShadowView.swift */,
 				392B4757273D5EB7001F203B /* Alert.swift */,
+				39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */,
+				39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -544,6 +550,7 @@
 				394A77192721D65700978254 /* SplashViewController.swift in Sources */,
 				390791B62720138200B4735B /* NoBorderTextField.swift in Sources */,
 				392B474E273BE067001F203B /* SettingViewController.swift in Sources */,
+				39856C56273E7FC90071AE13 /* IconLabelHorizontalStackView.swift in Sources */,
 				395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */,
 				3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */,
 				392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */,
@@ -553,6 +560,7 @@
 				39EDD1A2271D126800B4DAFA /* SceneDelegate.swift in Sources */,
 				3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */,
 				390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */,
+				39856C54273E78F80071AE13 /* IconLabelVerticalStackView.swift in Sources */,
 				394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */,
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,
