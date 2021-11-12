@@ -218,7 +218,8 @@ extension MessageViewController {
     private func configSendButton() {
         sendButton = IconButton(self, action: #selector(tapSend), img: Img.iconsSend)
         sendButton.backgroundColor = .mainBlue
-        sendButton.isHidden = true
+        sendButton.alpha = 0.5
+        sendButton.isEnabled = false
         view.addSubview(sendButton)
         NSLayoutConstraint.activate([
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
@@ -256,9 +257,11 @@ extension MessageViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if textView.hasText && textView.text != "" {
             messageContent = textView.text
-            sendButton.isHidden = false
+            sendButton.isEnabled = true
+            sendButton.alpha = 1
         } else {
-            sendButton.isHidden = true
+            sendButton.isEnabled = false
+            sendButton.alpha = 0.5
         }
     }
 }
