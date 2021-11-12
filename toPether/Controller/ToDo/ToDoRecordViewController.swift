@@ -236,6 +236,13 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
 
 extension ToDoRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if petTextField.hasText {
+            executorTextField.isEnabled = true
+        } else {
+            executorTextField.isEnabled = false
+        }
+        
         if petTextField.hasText && contentTextField.hasText && executorTextField.hasText {
             
             guard let petName = petTextField.text,
@@ -369,6 +376,12 @@ extension ToDoRecordViewController {
             executorTextField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             executorTextField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
+        
+        if petName == nil {
+            executorTextField.isEnabled = false
+        } else {
+            executorTextField.isEnabled = true
+        }
     }
     
     private func configOkButton() {
