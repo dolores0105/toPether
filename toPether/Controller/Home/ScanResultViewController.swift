@@ -201,7 +201,7 @@ extension ScanResultViewController {
         contentLabel.textAlignment = .center
         floatingView.addSubview(contentLabel)
         NSLayoutConstraint.activate([
-            contentLabel.centerYAnchor.constraint(equalTo: floatingView.centerYAnchor, constant: 20),
+            contentLabel.centerYAnchor.constraint(equalTo: floatingView.centerYAnchor, constant: 25),
             contentLabel.leadingAnchor.constraint(equalTo: floatingView.leadingAnchor, constant: 16),
             contentLabel.trailingAnchor.constraint(equalTo: floatingView.trailingAnchor, constant: -16)
         ])

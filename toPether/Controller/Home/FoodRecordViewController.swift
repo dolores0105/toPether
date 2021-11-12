@@ -33,6 +33,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     private var noteLabel: MediumLabel!
     private var noteTextField: BlueBorderTextField!
     private var okButton: RoundButton!
+    private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
     private let units = ["kg", "g", "lb"]
     
@@ -240,6 +241,17 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
+    private func configLoadingAnimation() {
+        
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
+        ])
+    }
+    
     func renderExistingData(food: Food?) {
         guard let food = food else { return }
         
@@ -271,6 +283,9 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func tapOK(_: RoundButton) {
+        
+        configLoadingAnimation()
+        
         guard let food = food else {
             guard let name = nameTextField.text,
                     let weight = weightTextField.text,
@@ -291,6 +306,9 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                     
                     switch result {
                     case .success(_):
+                        
+                        LottieAnimation.shared.stopAnimation(lottieAnimation: self.loadingAnimationView)
+                        
                         self.navigationController?.popViewController(animated: true)
                         
                     case .failure(let error):

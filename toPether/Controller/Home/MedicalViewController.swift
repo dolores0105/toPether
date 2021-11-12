@@ -56,7 +56,7 @@ class MedicalViewController: UIViewController {
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor ),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
