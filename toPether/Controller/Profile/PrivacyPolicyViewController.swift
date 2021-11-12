@@ -64,6 +64,7 @@ extension PrivacyPolicyViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
         loadingAnimationView.stop()
+        loadingAnimationView.alpha = 0
         loadingAnimationView.isHidden = true
     }
 }
