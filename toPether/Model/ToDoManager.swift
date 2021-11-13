@@ -117,7 +117,7 @@ class ToDoManager {
                     }
                 }
                 
-                let sepcificDateToDos = todosOnDate.sorted { $0.dueTime > $1.dueTime }
+                let sepcificDateToDos = todosOnDate.sorted { $0.dueTime < $1.dueTime }
                 completion(.success(sepcificDateToDos))
                 
             } else if let error = error {

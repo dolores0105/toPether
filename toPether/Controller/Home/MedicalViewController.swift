@@ -31,10 +31,21 @@ class MedicalViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // MARK: Navigation controller
         self.navigationItem.title = "Medical"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .mainBlue
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
+
         self.tabBarController?.tabBar.isHidden = true
+        
     }
     
     override func viewDidLoad() {
@@ -45,9 +56,10 @@ class MedicalViewController: UIViewController {
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor ),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
         ])
         
         petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)

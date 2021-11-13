@@ -45,7 +45,7 @@ extension EmptyUserViewController: UITextFieldDelegate {
 extension EmptyUserViewController {
     
     func configLabel() {
-        label = MediumLabel(size: 22, text: "What should we call you?", textColor: .mainBlue)
+        label = MediumLabel(size: 19, text: "What should we call you?", textColor: .mainBlue)
         view.addSubview(label)
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150),

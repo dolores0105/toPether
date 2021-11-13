@@ -14,9 +14,9 @@ class NavigationBackgroundView: UIView {
         backgroundColor = .mainBlue
         translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 160)
-        ])
+//        NSLayoutConstraint.activate([
+//            heightAnchor.constraint(equalToConstant: 160)
+//        ])
     }
     
     required init?(coder: NSCoder) {

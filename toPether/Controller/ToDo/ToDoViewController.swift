@@ -30,15 +30,18 @@ class ToDoViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
+        self.navigationItem.title = "Todos"
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        self.navigationItem.title = "Todos"
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
         
@@ -241,19 +244,6 @@ extension ToDoViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-//            let deleteId = self.toDos[indexPath.row].id
-//            let deleteContent = self.toDos[indexPath.row].content
-//
-//            ToDoManager.shared.deleteToDo(id: deleteId) { deleteDone in
-//                if deleteDone {
-//
-//                    print("deleted \(deleteId), \(deleteContent)")
-//                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
-//                } else {
-//                    print("delete error")
-//                }
-//            }
-//
             let deleteAlert = Alert.deleteAlert(title: "Delete todo", message: "Do you want to delete this todo?") {
                 
                 let deleteId = self.toDos[indexPath.row].id
@@ -328,8 +318,8 @@ extension ToDoViewController {
         view.addSubview(calendar)
         NSLayoutConstraint.activate([
             calendar.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 20),
-            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             calendar.heightAnchor.constraint(equalTo: calendar.widthAnchor)
         ])
         
@@ -349,7 +339,7 @@ extension ToDoViewController {
         toDoTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toDoTableView)
         NSLayoutConstraint.activate([
-            toDoTableView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 16),
+            toDoTableView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 4),
             toDoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             toDoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             toDoTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)

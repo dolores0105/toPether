@@ -20,18 +20,25 @@ class InviteViewController: UIViewController {
     private let captureSession = AVCaptureSession()
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var qrCodeBounds: UIView?
+    private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
         
+        self.navigationItem.title = "Scan QR Code"
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .clear
+        appearance.backgroundColor = .mainBlue
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 20) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
 
+        self.tabBarController?.tabBar.isHidden = true
+        
         captureSession.startRunning()
     }
     
@@ -99,6 +106,8 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
                 if metaDataObject.stringValue != nil, let stringValue = metaDataObject.stringValue {
                     invitedMemberId = stringValue
                     
+                    configLoadingAnimation()
+                    
                     MemberModel.shared.queryMember(id: invitedMemberId) { member in
                         guard let member = member else { return }
                         self.showScannedResult(member: member)
@@ -110,6 +119,8 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
     
     func showScannedResult(member: Member) {
 
+        LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
+        
         let scanResultViewController = ScanResultViewController(pet: pet, scannedMemberId: invitedMemberId)
         scanResultViewController.modalTransitionStyle = .crossDissolve
         scanResultViewController.modalTransitionStyle = .coverVertical
@@ -117,6 +128,17 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
         present(scanResultViewController, animated: true, completion: nil)
         
         captureSession.stopRunning()
+    }
+    
+    private func configLoadingAnimation() {
+
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
+        ])
     }
     
 }

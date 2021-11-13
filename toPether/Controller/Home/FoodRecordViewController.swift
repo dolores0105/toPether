@@ -33,14 +33,25 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     private var noteLabel: MediumLabel!
     private var noteTextField: BlueBorderTextField!
     private var okButton: RoundButton!
+    private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
     private let units = ["kg", "g", "lb"]
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
         self.navigationItem.title = "Food record"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
-        
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.tintColor = .mainBlue
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -230,6 +241,17 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
+    private func configLoadingAnimation() {
+        
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
+        ])
+    }
+    
     func renderExistingData(food: Food?) {
         guard let food = food else { return }
         
@@ -261,6 +283,9 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func tapOK(_: RoundButton) {
+        
+        configLoadingAnimation()
+        
         guard let food = food else {
             guard let name = nameTextField.text,
                     let weight = weightTextField.text,
@@ -281,6 +306,9 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                     
                     switch result {
                     case .success(_):
+                        
+                        LottieAnimation.shared.stopAnimation(lottieAnimation: self.loadingAnimationView)
+                        
                         self.navigationController?.popViewController(animated: true)
                         
                     case .failure(let error):

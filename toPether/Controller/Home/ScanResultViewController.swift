@@ -33,6 +33,7 @@ class ScanResultViewController: UIViewController {
     }
     
     private var titleLabel: MediumLabel!
+    private var petImageView: UIImageView!
     private var contentLabel: RegularLabel!
     private var confirmButton: RoundButton!
     private var cancelButton: BorderButton!
@@ -63,22 +64,22 @@ class ScanResultViewController: UIViewController {
             floatingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             floatingView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             floatingView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3),
-            floatingView.heightAnchor.constraint(equalTo: floatingView.widthAnchor, constant: 32)
+            floatingView.heightAnchor.constraint(equalTo: floatingView.widthAnchor, constant: 72)
         ])
         
         floatingView.transform = CGAffineTransform(translationX: 0, y: floatingView.bounds.height)
         
         configTitleLabel()
+        configPetImageView()
+        configContentLabel()
         configCancelButton()
         queryMember(memberId: scannedMemberId)
-        configContentLabel()
         
         let pan = UIPanGestureRecognizer(
             target: self,
             action: #selector(panOnFloatingView(_:)))
         floatingView.isUserInteractionEnabled = true
         floatingView.addGestureRecognizer(pan)
-        
         
     }
     
@@ -174,7 +175,23 @@ extension ScanResultViewController {
         floatingView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: floatingView.topAnchor, constant: 32),
-            titleLabel.centerXAnchor.constraint(equalTo: floatingView.centerXAnchor)
+            titleLabel.centerXAnchor.constraint(equalTo: floatingView.centerXAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 26)
+        ])
+    }
+    
+    private func configPetImageView() {
+        petImageView = UIImageView(image: pet.photoImage)
+        petImageView.layer.cornerRadius = 10
+        petImageView.clipsToBounds = true
+        petImageView.contentMode = .scaleAspectFill
+        petImageView.translatesAutoresizingMaskIntoConstraints = false
+        floatingView.addSubview(petImageView)
+        NSLayoutConstraint.activate([
+            petImageView.widthAnchor.constraint(equalToConstant: 80),
+            petImageView.heightAnchor.constraint(equalTo: petImageView.widthAnchor),
+            petImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+            petImageView.centerXAnchor.constraint(equalTo: floatingView.centerXAnchor)
         ])
     }
     
@@ -184,7 +201,7 @@ extension ScanResultViewController {
         contentLabel.textAlignment = .center
         floatingView.addSubview(contentLabel)
         NSLayoutConstraint.activate([
-            contentLabel.centerYAnchor.constraint(equalTo: floatingView.centerYAnchor, constant: -12),
+            contentLabel.centerYAnchor.constraint(equalTo: floatingView.centerYAnchor, constant: 25),
             contentLabel.leadingAnchor.constraint(equalTo: floatingView.leadingAnchor, constant: 16),
             contentLabel.trailingAnchor.constraint(equalTo: floatingView.trailingAnchor, constant: -16)
         ])
@@ -217,7 +234,7 @@ extension ScanResultViewController {
     private func configCancelButton() {
         cancelButton = BorderButton()
         cancelButton.layer.borderWidth = 0
-        cancelButton.setTitle("cancel", for: .normal)
+        cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.deepBlueGrey, for: .normal)
         cancelButton.titleLabel?.font = UIFont.medium(size: 18)
         cancelButton.addTarget(self, action: #selector(tapCancel), for: .touchUpInside)

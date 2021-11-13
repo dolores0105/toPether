@@ -20,6 +20,7 @@ class SplashViewController: UIViewController {
     private var privacyLabel: RegularLabel!
     private var privacyButton: UIButton!
     private lazy var signInWithAppleButton = ASAuthorizationAppleIDButton(type: .default, style: .whiteOutline)
+    private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -86,10 +87,12 @@ class SplashViewController: UIViewController {
             if isExist {
                 MemberModel.shared.current = member
                 gotoTabbarVC()
+                LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
                 
             } else {
                 MemberModel.shared.current = member
                 gotoEmptySetting()
+                LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
             }
             
         case .failure(let error):
@@ -134,7 +137,9 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 print("Unable to serialize token string from data: \(appleIDToken).")
                 return
             }
-
+            
+            configLoadingAnimation()
+            
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
 
             Auth.auth().signIn(with: credential) { [weak self] (authDataResult, error) in
@@ -420,5 +425,16 @@ extension SplashViewController {
     @objc private func tapPrivacy() {
         let privacyPolicyViewController = PrivacyPolicyViewController()
         present(privacyPolicyViewController, animated: true, completion: nil)
+    }
+    
+    private func configLoadingAnimation() {
+
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
+        ])
     }
 }

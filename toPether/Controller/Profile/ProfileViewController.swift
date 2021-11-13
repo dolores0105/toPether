@@ -32,12 +32,14 @@ class ProfileViewController: UIViewController {
     private var pets = [Pet]()
 
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
         self.navigationItem.title = "Profile"
-        
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
@@ -105,12 +107,12 @@ class ProfileViewController: UIViewController {
             cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        furkidsTitleLabel = MediumLabel(size: 18, text: "Furkids", textColor: .mainBlue)
+        furkidsTitleLabel = MediumLabel(size: 20, text: "Furkids", textColor: .mainBlue)
         view.addSubview(furkidsTitleLabel)
         NSLayoutConstraint.activate([
             furkidsTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
             furkidsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 66)
+            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 78)
         ])
         
         addPetButton = IconButton(self, action: #selector(tapAddPet), img: Img.iconsAdd)
