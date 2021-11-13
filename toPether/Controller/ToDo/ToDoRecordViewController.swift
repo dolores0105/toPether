@@ -101,6 +101,9 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func tapOK(sender: RoundButton) {
+        
+        askNotification()
+        
         guard let todo = todo else {
             
             guard let petName = petTextField.text,
@@ -156,6 +159,17 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
+            }
+        }
+    }
+    
+    private func askNotification() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            
+            if granted && error == nil {
+                print("User allowed notification")
+            } else {
+                print("User not allowed notification")
             }
         }
     }
