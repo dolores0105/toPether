@@ -24,7 +24,7 @@ class MedicalRecordViewController: UIViewController {
     private var vetLabel: MediumLabel!
     private var vetTextField: BlueBorderTextField!
     private var doctorNotesLabel: MediumLabel!
-    private var doctorNotesTextField: BlueBorderTextField!
+    private var doctorNotesTextView: BlueBorderTextView!
     private var okButton: RoundButton!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +55,7 @@ class MedicalRecordViewController: UIViewController {
         configVetLabel()
         configVetTextField()
         configDoctorNotesLabel()
-        configDoctorNotesTextField()
+        configDoctorNotesTextView()
         configOkButton()
         
         renderExistingData(medical: medical)
@@ -136,14 +136,13 @@ class MedicalRecordViewController: UIViewController {
         ])
     }
     
-    private func configDoctorNotesTextField() {
-        doctorNotesTextField = BlueBorderTextField(text: nil)
-        doctorNotesTextField.delegate = self
-        view.addSubview(doctorNotesTextField)
+    private func configDoctorNotesTextView() {
+        doctorNotesTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+        view.addSubview(doctorNotesTextView)
         NSLayoutConstraint.activate([
-            doctorNotesTextField.topAnchor.constraint(equalTo: doctorNotesLabel.bottomAnchor, constant: 8),
-            doctorNotesTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            doctorNotesTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            doctorNotesTextView.topAnchor.constraint(equalTo: doctorNotesLabel.bottomAnchor, constant: 8),
+            doctorNotesTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            doctorNotesTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64)
         ])
     }
     
@@ -170,7 +169,7 @@ class MedicalRecordViewController: UIViewController {
         
         symptomsTextField.text = medical.symptoms
         vetTextField.text = medical.clinic
-        doctorNotesTextField.text = medical.vetOrder
+        doctorNotesTextView.text = medical.vetOrder
         dateOfVisitDatePicker.date = medical.dateOfVisit
     }
     
@@ -181,7 +180,7 @@ class MedicalRecordViewController: UIViewController {
                 symptoms: symptomsTextField.text ?? "no symptoms",
                 dateOfVisit: dateOfVisitDatePicker.date,
                 clinic: vetTextField.text ?? "no clinic",
-                vetOrder: doctorNotesTextField.text ?? "no orders") { [weak self] result in
+                vetOrder: doctorNotesTextView.text ?? "no orders") { [weak self] result in
                     guard let self = self else { return }
                     
                     switch result {
@@ -200,15 +199,36 @@ class MedicalRecordViewController: UIViewController {
     }
 }
 
-extension MedicalRecordViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if symptomsTextField.hasText && vetTextField.hasText && doctorNotesTextField.hasText {
+extension MedicalRecordViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if symptomsTextField.hasText && vetTextField.hasText && textView.hasText {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
             
-            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextField.text else { return }
+            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextView.text else { return }
+            medical.symptoms = symptoms
+            medical.dateOfVisit = dateOfVisitDatePicker.date
+            medical.clinic = clinic
+            medical.vetOrder = vetOrder
+            
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
+    }
+}
+
+extension MedicalRecordViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if symptomsTextField.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+            
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+            
+            guard let medical = medical, let symptoms = symptomsTextField.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextView.text else { return }
             medical.symptoms = symptoms
             medical.dateOfVisit = dateOfVisitDatePicker.date
             medical.clinic = clinic

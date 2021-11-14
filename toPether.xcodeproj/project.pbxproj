@@ -51,6 +51,7 @@
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
 		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
 		395FD01027215D18005911AA /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberModel.swift */; };
+		3960E6B027414E81003E05FE /* BlueBorderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */; };
 		39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE127325F28001B29F3 /* UIViewExtension.swift */; };
 		39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE327326682001B29F3 /* TabBarViewController.swift */; };
 		39709FE627328340001B29F3 /* EmptyUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE527328340001B29F3 /* EmptyUserViewController.swift */; };
@@ -128,6 +129,7 @@
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
 		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
 		395FD00F27215D18005911AA /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
+		3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBorderTextView.swift; sourceTree = "<group>"; };
 		39709FE127325F28001B29F3 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		39709FE327326682001B29F3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		39709FE527328340001B29F3 /* EmptyUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUserViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				392B4757273D5EB7001F203B /* Alert.swift */,
 				39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */,
 				39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */,
+				3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */,
 			);
 			path = UIObjects;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
 				39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */,
+				3960E6B027414E81003E05FE /* BlueBorderTextView.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
