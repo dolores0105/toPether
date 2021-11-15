@@ -62,3 +62,13 @@ class Message: BaseObject, Codable {
     var sentTime: Date = .init(timeIntervalSince1970: 0)
     var content: String = ""
 }
+
+class ToDo: BaseObject, Codable {
+    var id: String = ""
+    var creatorId: String = ""
+    var executorId: String = ""
+    var petId: String = ""
+    var dueTime: Date = .init(timeIntervalSince1970: 0)
+    var content: String = ""
+    var doneStatus: Bool = false
+}

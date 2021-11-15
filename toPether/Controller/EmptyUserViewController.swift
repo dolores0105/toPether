@@ -45,7 +45,7 @@ extension EmptyUserViewController: UITextFieldDelegate {
 extension EmptyUserViewController {
     
     func configLabel() {
-        label = MediumLabel(size: 18, text: "What should we call you?", textColor: .mainBlue)
+        label = MediumLabel(size: 19, text: "What should we call you?", textColor: .mainBlue)
         view.addSubview(label)
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150),
@@ -56,11 +56,12 @@ extension EmptyUserViewController {
     
     func configNameTextField() {
         nameTextField = BlueBorderTextField(text: nil)
+        nameTextField.becomeFirstResponder()
         nameTextField.text = MemberModel.shared.current?.name
         nameTextField.delegate = self
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
-            nameTextField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            nameTextField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
             nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -68,8 +69,6 @@ extension EmptyUserViewController {
     
     func configButton() {
         nextButton = RoundButton(text: "Next", size: 18)
-//        nextButton.isEnabled = false
-//        nextButton.backgroundColor = .lightBlueGrey
         buttonIsEnabled()
         nextButton.addTarget(self, action: #selector(tapNext), for: .touchUpInside)
         view.addSubview(nextButton)

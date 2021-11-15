@@ -20,7 +20,7 @@ class TabBarViewController: UITabBarController {
         // ToDoPage
         let toDoViewController = ToDoViewController()
         let toDoNavigationController = UINavigationController(rootViewController: toDoViewController)
-        toDoNavigationController.tabBarItem = UITabBarItem(title: "To-Do", image: Img.iconsTodoNormal.obj, selectedImage: Img.iconsTodoSelected.obj)
+        toDoNavigationController.tabBarItem = UITabBarItem(title: "Todo", image: Img.iconsTodoNormal.obj, selectedImage: Img.iconsTodoSelected.obj)
         
         // ProfilePage
         let profileViewController = ProfileViewController()

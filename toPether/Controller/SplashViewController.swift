@@ -12,7 +12,26 @@ import FirebaseAuth
 
 class SplashViewController: UIViewController {
     
-    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "iconsApp"))
+    private var bgView: UIView!
+    private lazy var logoImageView = RoundCornerImageView(img: UIImage(named: "toPetherIcon"))
+    private var logoNameImageView: UIImageView!
+    private var faceBgView: UIView!
+    private var faceImageView: UIImageView!
+    private var privacyLabel: RegularLabel!
+    private var privacyButton: UIButton!
+    private lazy var signInWithAppleButton = ASAuthorizationAppleIDButton(type: .default, style: .whiteOutline)
+    private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         if let current = Auth.auth().currentUser {
@@ -31,14 +50,19 @@ class SplashViewController: UIViewController {
             }
             
         } else {
-            configLogoView()
-            setupSignInButton()
+//            configBgView()
+//            configLogoView()
+            logoImageAnimation()
+//            setupSignInButton()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        configBgView()
+        configLogoView()
+
     }
     
     @objc private func tapLoginButton() {
@@ -63,10 +87,12 @@ class SplashViewController: UIViewController {
             if isExist {
                 MemberModel.shared.current = member
                 gotoTabbarVC()
+                LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
                 
             } else {
                 MemberModel.shared.current = member
                 gotoEmptySetting()
+                LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
             }
             
         case .failure(let error):
@@ -80,12 +106,11 @@ class SplashViewController: UIViewController {
         let tabBarViewController = TabBarViewController()
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
         sceneDelegate?.changeRootViewController(tabBarViewController)
-        
-//        tabBarViewController.modalPresentationStyle = .fullScreen
-//        self.present(tabBarViewController, animated: true, completion: nil)
+
     }
     
     private func gotoEmptySetting() {
+        
         let emptyUserViewController = EmptyUserViewController()
         emptyUserViewController.modalPresentationStyle = .fullScreen
         self.present(emptyUserViewController, animated: true, completion: nil)
@@ -113,10 +138,7 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 return
             }
             
-//            guard let givenName = appleIDCredential.fullName?.givenName else {
-//                print("Unable to get user's given name.")
-//                return
-//            }
+            configLoadingAnimation()
             
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
 
@@ -200,40 +222,219 @@ private var currentNonce: String?
 
 @available(iOS 13, *)
 private func sha256(_ input: String) -> String {
-  let inputData = Data(input.utf8)
-  let hashedData = SHA256.hash(data: inputData)
-  let hashString = hashedData.compactMap {
-    String(format: "%02x", $0)
-  }.joined()
-
-  return hashString
+    let inputData = Data(input.utf8)
+    let hashedData = SHA256.hash(data: inputData)
+    let hashString = hashedData.compactMap {
+        String(format: "%02x", $0)
+    }.joined()
+    
+    return hashString
 }
 
 extension SplashViewController {
     
-    func configLogoView() {
+    private func logoImageAnimation() {
 
+        UIView.animate(
+            withDuration: 1.8,
+            delay: 0.3,
+            usingSpringWithDamping: 2.0,
+            initialSpringVelocity: 1.0,
+            options: .curveEaseIn) { [weak self] in
+                guard let self = self else { return }
+                let yTransform = CGAffineTransform(translationX: 0, y: -200)
+                self.logoImageView.transform = yTransform
+                self.bgView.alpha = 0
+                
+            } completion: { _ in
+                self.configLogoNameImageView()
+                self.nameAnimation()
+            }
+    }
+    
+    private func nameAnimation() {
+        
+        UIView.animate(
+            withDuration: 0.9,
+            delay: 0.0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 1.0,
+            options: .curveEaseIn) { [weak self] in
+            guard let self = self else { return }
+                self.logoNameImageView.alpha = 1
+                
+        } completion: { _ in
+            self.configYellow()
+            self.yellowAnimation()
+        }
+    }
+    
+    private func yellowAnimation() {
+        
+        UIView.animate(
+            withDuration: 1.4,
+            delay: 0.0,
+            usingSpringWithDamping: 4.0,
+            initialSpringVelocity: 1.0,
+            options: .curveEaseIn) { [weak self] in
+            guard let self = self else { return }
+                let faceWidth = UIScreen.main.bounds.width + 100
+                let yTransform = CGAffineTransform(translationX: 0, y: -(faceWidth / 2 + 32))
+                self.faceBgView.transform = yTransform
+                
+        } completion: { _ in
+            
+            self.setupSignInButton()
+            self.configPrivacy()
+            self.signInButtonAnimation()
+        }
+    }
+    
+    private func signInButtonAnimation() {
+        
+        UIView.animate(
+            withDuration: 0.6,
+            delay: 0.0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 1.0,
+            options: .curveEaseIn) { [weak self] in
+            guard let self = self else { return }
+                self.signInWithAppleButton.alpha = 1
+                self.privacyLabel.alpha = 1
+                self.privacyButton.alpha = 1
+        } completion: { _ in
+
+        }
+    }
+}
+
+extension SplashViewController {
+    
+    private func configBgView() {
+        bgView = UIView()
+        bgView.backgroundColor = .mainBlue
+        bgView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bgView)
+        NSLayoutConstraint.activate([
+            bgView.topAnchor.constraint(equalTo: view.topAnchor),
+            bgView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bgView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bgView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func configLogoView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 130),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             logoImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor)
             
         ])
     }
     
-    func setupSignInButton() {
-        let button = ASAuthorizationAppleIDButton(type: .default, style: .whiteOutline)
-        button.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
+    private func configLogoNameImageView() {
+        logoNameImageView = UIImageView(image: Img.appNameBlue.obj)
+        logoNameImageView.alpha = 0
+        logoNameImageView.clipsToBounds = true
+        logoNameImageView.contentMode = .scaleAspectFit
+        logoNameImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoNameImageView)
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 80),
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            button.heightAnchor.constraint(equalToConstant: 40)
+            logoNameImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -80),
+            logoNameImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoNameImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            logoNameImageView.heightAnchor.constraint(equalTo: logoNameImageView.widthAnchor, multiplier: 3.44)
+        ])
+    }
+    
+    private func configYellow() {
+        let faceWidth = UIScreen.main.bounds.width + 100
+        
+        faceBgView = UIView()
+        faceBgView.backgroundColor = .mainYellow
+        faceBgView.layer.cornerRadius = faceWidth / 2
+        faceBgView.translatesAutoresizingMaskIntoConstraints = false
+        
+        faceImageView = UIImageView(image: Img.iconsFace.obj)
+        faceImageView.clipsToBounds = true
+        faceImageView.contentMode = .scaleAspectFit
+        faceImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(faceBgView)
+        faceBgView.addSubview(faceImageView)
+        NSLayoutConstraint.activate([
+            faceBgView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            faceBgView.widthAnchor.constraint(equalToConstant: faceWidth),
+            faceBgView.heightAnchor.constraint(equalToConstant: faceWidth),
+            faceBgView.centerYAnchor.constraint(equalTo: view.bottomAnchor, constant: (faceWidth / 2) + 32),
+            
+            faceImageView.topAnchor.constraint(equalTo: faceBgView.topAnchor, constant: 16),
+            faceImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            faceImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 4),
+            faceImageView.heightAnchor.constraint(equalTo: faceImageView.widthAnchor, multiplier: 0.55)
+        ])
+    }
+    
+    private func setupSignInButton() {
+
+        signInWithAppleButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
+        signInWithAppleButton.alpha = 0
+        signInWithAppleButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(signInWithAppleButton)
+        NSLayoutConstraint.activate([
+            signInWithAppleButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+            signInWithAppleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signInWithAppleButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            signInWithAppleButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        view.bringSubviewToFront(signInWithAppleButton)
+    }
+    
+    private func configPrivacy() {
+        privacyLabel = RegularLabel(size: 13, text: "By signing in, you agree to our privacy policy", textColor: .deepBlueGrey)
+        privacyLabel.textAlignment = .center
+        privacyLabel.alpha = 0
+        
+        privacyButton = UIButton()
+        privacyButton.setTitle("privacy policy", for: .normal)
+        privacyButton.setTitleColor(.mainBlue, for: .normal)
+        privacyButton.titleLabel?.font = UIFont.medium(size: 14)
+        privacyButton.backgroundColor = .clear
+        privacyButton.alpha = 0
+        privacyButton.addTarget(self, action: #selector(tapPrivacy), for: .touchUpInside)
+        privacyButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(privacyLabel)
+        view.addSubview(privacyButton)
+        NSLayoutConstraint.activate([
+            privacyLabel.topAnchor.constraint(equalTo: signInWithAppleButton.bottomAnchor, constant: 16),
+            privacyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            privacyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            privacyLabel.heightAnchor.constraint(equalToConstant: 16),
+            
+            privacyButton.topAnchor.constraint(equalTo: privacyLabel.bottomAnchor, constant: 2),
+            privacyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            privacyButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 2),
+            privacyButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+    
+    @objc private func tapPrivacy() {
+        let privacyPolicyViewController = PrivacyPolicyViewController()
+        present(privacyPolicyViewController, animated: true, completion: nil)
+    }
+    
+    private func configLoadingAnimation() {
+
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
         ])
     }
 }

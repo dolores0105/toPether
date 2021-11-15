@@ -9,7 +9,8 @@ import UIKit
 
 class EmptyPetViewController: UIViewController {
     
-    private var label: MediumLabel!
+    private var welcomeLabel: MediumLabel!
+    private var guideLabel: MediumLabel!
     private var createButton: RoundButton!
     private var getInvitationButton: RoundButton!
     
@@ -17,21 +18,32 @@ class EmptyPetViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-        configlabel()
+        configWelcomeLabel()
+        configGuideLabel()
         configCreateButton()
         configGetInvitationButton()
     }
 }
 
 extension EmptyPetViewController {
-    func configlabel() {
-        label = MediumLabel(size: 20, text: "Hello \(MemberModel.shared.current?.name ?? "")! \nNow, keep a pet", textColor: .mainBlue)
-        label.numberOfLines = 2
-        view.addSubview(label)
+    private func configWelcomeLabel() {
+        welcomeLabel = MediumLabel(size: 19, text: "Hello \(MemberModel.shared.current?.name ?? "")", textColor: .mainBlue)
+        welcomeLabel.numberOfLines = 1
+        view.addSubview(welcomeLabel)
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
+            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configGuideLabel() {
+        guideLabel = MediumLabel(size: 16, text: "Now, keep a pet", textColor: .mainBlue)
+        view.addSubview(guideLabel)
+        NSLayoutConstraint.activate([
+            guideLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 18),
+            guideLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            guideLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
@@ -40,7 +52,7 @@ extension EmptyPetViewController {
         createButton.addTarget(self, action: #selector(tapCreate), for: .touchUpInside)
         view.addSubview(createButton)
         NSLayoutConstraint.activate([
-            createButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 32),
+            createButton.topAnchor.constraint(equalTo: guideLabel.bottomAnchor, constant: 40),
             createButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -51,7 +63,7 @@ extension EmptyPetViewController {
         getInvitationButton.addTarget(self, action: #selector(tapGetInvitation), for: .touchUpInside)
         view.addSubview(getInvitationButton)
         NSLayoutConstraint.activate([
-            getInvitationButton.topAnchor.constraint(equalTo: createButton.bottomAnchor, constant: 20),
+            getInvitationButton.topAnchor.constraint(equalTo: createButton.bottomAnchor, constant: 32),
             getInvitationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             getInvitationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])

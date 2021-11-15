@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 20
+        stackView.spacing = 28
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -31,7 +31,10 @@ class HomeViewController: UIViewController {
         // MARK: Navigation controller
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24), NSAttributedString.Key.foregroundColor: UIColor.white]
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
@@ -246,13 +249,14 @@ extension HomeViewController {
         let buttons = [
             IconButton(self, action: #selector(tapMessageButton), img: .iconsMessage),
             IconButton(self, action: #selector(tapFoodButton), img: .iconsFood),
-            IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords),
-            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
+            IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords)
+//            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]
         buttons.forEach { button in
+            let fullWidth = UIScreen.main.bounds.width
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalToConstant: 56),
-                button.widthAnchor.constraint(equalToConstant: 56)
+                button.widthAnchor.constraint(equalToConstant: 72)
             ])
             button.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
             

@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import IQKeyboardManagerSwift
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,6 +36,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             print("User installed before, loading userDefaults")
         }
+        
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+//
+//            if granted && error == nil {
+//                print("User allowed notification")
+//            } else {
+//                print("User not allowed notification")
+//            }
+//        }
+
+        UNUserNotificationCenter.current().delegate = self
+        
         return true
     }
 
@@ -50,5 +63,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.badge, .sound, .banner])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let window = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window
+        let todoViewController = ToDoViewController()
+        let tabBarController = window?.rootViewController as? TabBarViewController
+        
+        tabBarController?.selectedIndex = 1
+        let navigationController = tabBarController?.viewControllers?.first as? UINavigationController
+        navigationController?.pushViewController(todoViewController, animated: true)
+        
+        completionHandler()
     }
 }

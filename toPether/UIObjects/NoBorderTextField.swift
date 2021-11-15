@@ -10,11 +10,12 @@ import IQKeyboardManagerSwift
 
 class NoBorderTextField: UITextField {
 
-    convenience init(name: String?) {
+    convenience init(bgColor: UIColor, textColor: UIColor) {
         self.init()
-        backgroundColor = .clear
+        backgroundColor = bgColor
         layer.borderWidth = 0
-        textColor = .white
+        layer.cornerRadius = 10
+        self.textColor = textColor
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

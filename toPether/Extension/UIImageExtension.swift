@@ -24,11 +24,24 @@ enum Img: String {
     case iconsDelete
     case iconsAddWhite
     case iconsLocate
-    case iconsClock
     case iconsTodoNormal
     case iconsTodoSelected
     case iconsSend
     case iconsApp
+    case iconsCheck
+    case iconsSetting
+    case iconsPrivacy
+    case iconsCry
+    case iconsSignOut
+    case appLogoNameWhite
+    case appNameBlue
+    case appNameWhite
+    case toPetherIcon
+    case iconsFace
+    case iconsClock
+    case iconsPerson
+    case iconsPaw
+    case iconsProfile
     
     var obj: UIImage {
         return UIImage(named: rawValue)!

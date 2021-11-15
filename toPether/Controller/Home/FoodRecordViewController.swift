@@ -31,16 +31,27 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
     private var dateOfPurchaseLabel: MediumLabel!
     private var dateOfPurchaseDatePicker = UIDatePicker()
     private var noteLabel: MediumLabel!
-    private var noteTextField: BlueBorderTextField!
+    private var noteTextView: BlueBorderTextView!
     private var okButton: RoundButton!
+    private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
     private let units = ["kg", "g", "lb"]
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
         self.navigationItem.title = "Food record"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
-        
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.tintColor = .mainBlue
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -62,7 +73,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         configDateOfPurchaseLabel()
         configDateOfPurchaseDatePicker()
         configNoteLabel()
-        configNoteTextField()
+        configNoteTextView()
         configOkButton()
         
         renderExistingData(food: food)
@@ -219,14 +230,24 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
-    private func configNoteTextField() {
-        noteTextField = BlueBorderTextField(text: nil)
-        noteTextField.delegate = self
-        scrollView.addSubview(noteTextField)
+    private func configNoteTextView() {
+        noteTextView = BlueBorderTextView(self, textSize: 16, height: 72)
+        scrollView.addSubview(noteTextView)
         NSLayoutConstraint.activate([
-            noteTextField.topAnchor.constraint(equalTo: noteLabel.bottomAnchor, constant: 8),
-            noteTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            noteTextField.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
+            noteTextView.topAnchor.constraint(equalTo: noteLabel.bottomAnchor, constant: 8),
+            noteTextView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            noteTextView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
+        ])
+    }
+    
+    private func configLoadingAnimation() {
+        
+        view.addSubview(loadingAnimationView)
+        NSLayoutConstraint.activate([
+            loadingAnimationView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingAnimationView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            loadingAnimationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            loadingAnimationView.heightAnchor.constraint(equalTo: loadingAnimationView.widthAnchor)
         ])
     }
     
@@ -239,7 +260,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         priceTextField.text = food.price
         marketTextField.text = food.market
         dateOfPurchaseDatePicker.date = food.dateOfPurchase
-        noteTextField.text = food.note
+        noteTextView.text = food.note
     }
     
     private func configOkButton() {
@@ -256,18 +277,21 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         NSLayoutConstraint.activate([
             okButton.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             okButton.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64),
-            okButton.topAnchor.constraint(equalTo: noteTextField.bottomAnchor, constant: 40)
+            okButton.topAnchor.constraint(equalTo: noteTextView.bottomAnchor, constant: 40)
         ])
     }
     
     @objc func tapOK(_: RoundButton) {
+        
+        configLoadingAnimation()
+        
         guard let food = food else {
             guard let name = nameTextField.text,
                     let weight = weightTextField.text,
                     let unit = unitTextField.text,
                     let price = priceTextField.text,
                     let market = marketTextField.text,
-                    let note = noteTextField.text  else { return }
+                    let note = noteTextView.text  else { return }
             PetModel.shared.setFood(
                 petId: selectedPetId,
                 name: name,
@@ -281,6 +305,9 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                     
                     switch result {
                     case .success(_):
+                        
+                        LottieAnimation.shared.stopAnimation(lottieAnimation: self.loadingAnimationView)
+                        
                         self.navigationController?.popViewController(animated: true)
                         
                     case .failure(let error):
@@ -289,15 +316,53 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             return
         }
+        
+        food.dateOfPurchase = dateOfPurchaseDatePicker.date // in case only update date
         PetModel.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
         self.navigationController?.popViewController(animated: true)
+    }
+}
+
+extension FoodRecordViewController: UITextViewDelegate {
+    
+//    func textViewDidEndEditing(_ textView: UITextView) {
+//        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && textView.hasText {
+//            messageContent = textView.text
+//        }
+//    }
+//
+    func textViewDidChange(_ textView: UITextView) {
+        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && textView.hasText {
+            
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+
+            guard let food = food,
+                    let name = nameTextField.text,
+                    let weight = weightTextField.text,
+                    let unit = unitTextField.text,
+                    let price = priceTextField.text,
+                    let market = marketTextField.text,
+                    let note = noteTextView.text else { return }
+            food.name = name
+            food.weight = weight
+            food.unit = unit
+            food.price = price
+            food.market = market
+            food.note = note
+
+        } else {
+            
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
     }
 }
 
 extension FoodRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && noteTextField.hasText {
+        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && noteTextView.hasText {
 
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
@@ -308,7 +373,7 @@ extension FoodRecordViewController: UITextFieldDelegate {
                     let unit = unitTextField.text,
                     let price = priceTextField.text,
                     let market = marketTextField.text,
-                    let note = noteTextField.text else { return }
+                    let note = noteTextView.text else { return }
             food.name = name
             food.weight = weight
             food.unit = unit

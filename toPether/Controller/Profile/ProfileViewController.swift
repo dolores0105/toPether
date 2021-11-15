@@ -11,7 +11,7 @@ import IQKeyboardManagerSwift
 class ProfileViewController: UIViewController {
     
     private var cardView: CardView!
-    private var nameTitleLabel: MediumLabel!
+    private var qrcodeTitleLabel: MediumLabel!
     private var iconImageView: UIImageView!
     private var editNameButton: IconButton!
     private var textField: NoBorderTextField!
@@ -22,26 +22,30 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    
+    private var qrCodeButton: IconButton!
     private var furkidsTitleLabel: MediumLabel!
     private var addPetButton: IconButton!
     private var petTableView: UITableView!
     
-    private var currentUser: Member! = MemberModel.shared.current // 只有一開始跟membermodel.current一樣，後續需要再持續更新
+    private var currentUser: Member! = MemberModel.shared.current // update needed
     private var pets = [Pet]()
 
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
         self.navigationItem.title = "Profile"
-        
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsSetting.obj, style: .plain, target: self, action: #selector(tapSetting))
         
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -52,49 +56,63 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .mainBlue
         
         // MARK: UI objects
-        nameTitleLabel = MediumLabel(size: 18, text: "Name", textColor: .white)
-        view.addSubview(nameTitleLabel)
+        guard let currentUser = MemberModel.shared.current else { return }
+        qrcodeTitleLabel = MediumLabel(size: 18, text: "\(currentUser.name)'s QR Code", textColor: .white)
+        view.addSubview(qrcodeTitleLabel)
         NSLayoutConstraint.activate([
-            nameTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            nameTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            nameTitleLabel.widthAnchor.constraint(equalToConstant: 60)
+            qrcodeTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            qrcodeTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            qrcodeTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
         
-        editNameButton = IconButton(self, action: #selector(tapEditName), img: Img.iconsEdit)
-        editNameButton.backgroundColor = .mainBlue
-        view.addSubview(editNameButton)
-        NSLayoutConstraint.activate([
-            editNameButton.centerYAnchor.constraint(equalTo: nameTitleLabel.centerYAnchor),
-            editNameButton.leadingAnchor.constraint(equalTo: nameTitleLabel.trailingAnchor, constant: 20),
-            editNameButton.widthAnchor.constraint(equalToConstant: 60),
-            editNameButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
+//        editNameButton = IconButton(self, action: #selector(tapEditName), img: Img.iconsEdit)
+//        editNameButton.backgroundColor = .mainBlue
+//        view.addSubview(editNameButton)
+//        NSLayoutConstraint.activate([
+//            editNameButton.centerYAnchor.constraint(equalTo: qrcodeTitleLabel.centerYAnchor),
+//            editNameButton.leadingAnchor.constraint(equalTo: qrcodeTitleLabel.trailingAnchor, constant: 20),
+//            editNameButton.widthAnchor.constraint(equalToConstant: 60),
+//            editNameButton.heightAnchor.constraint(equalToConstant: 60)
+//        ])
         
-        textField = NoBorderTextField(name: currentUser.name)
-        textField.isEnabled = false
-        textField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
-        view.addSubview(textField)
+//        textField = NoBorderTextField(name: currentUser.name)
+//        textField.font = UIFont.regular(size: 20)
+//        textField.isUserInteractionEnabled = true
+//        textField.addTarget(self, action: #selector(tapEditName), for: .touchUpInside)
+//        textField.isEnabled = false
+//        textField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
+//        view.addSubview(textField)
+//        NSLayoutConstraint.activate([
+//            textField.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 8),
+//            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+//            textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
+//        ])
+        
+        qrCodeButton = IconButton(self, action: #selector(tapQrcode), img: Img.iconsQrcode)
+        qrCodeButton.backgroundColor = .mainBlue
+        view.addSubview(qrCodeButton)
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: nameTitleLabel.bottomAnchor, constant: 8),
-            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
+            qrCodeButton.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 4),
+            qrCodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            qrCodeButton.widthAnchor.constraint(equalToConstant: 60),
+            qrCodeButton.heightAnchor.constraint(equalTo: qrCodeButton.widthAnchor)
         ])
         
         cardView = CardView(color: .white, cornerRadius: 20)
         view.addSubview(cardView)
         NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            cardView.topAnchor.constraint(equalTo: qrCodeButton.bottomAnchor, constant: 4),
             cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        furkidsTitleLabel = MediumLabel(size: 18, text: "Furkids", textColor: .mainBlue)
+        furkidsTitleLabel = MediumLabel(size: 20, text: "Furkids", textColor: .mainBlue)
         view.addSubview(furkidsTitleLabel)
         NSLayoutConstraint.activate([
             furkidsTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
             furkidsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 66)
+            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 78)
         ])
         
         addPetButton = IconButton(self, action: #selector(tapAddPet), img: Img.iconsAdd)
@@ -102,7 +120,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(addPetButton)
         NSLayoutConstraint.activate([
             addPetButton.centerYAnchor.constraint(equalTo: furkidsTitleLabel.centerYAnchor),
-            addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -22),
             addPetButton.widthAnchor.constraint(equalToConstant: 50),
             addPetButton.heightAnchor.constraint(equalToConstant: 50)
         ])
@@ -127,25 +145,24 @@ class ProfileViewController: UIViewController {
         ])
         
         // MARK: Query data
-        textField.text = currentUser.name
         queryData(currentUser: MemberModel.shared.current ?? self.currentUser)
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(.added(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                self.textField.text = members.first?.name
-                
+                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: currentUser)
+                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
+
             case .success(.modified(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                self.textField.text = members.first?.name
-                
+                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: currentUser)
+                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
+
             case .success(.removed(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                
+                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: currentUser)
+
             case .failure(let error):
                 print("lisener error at profileVC", error)
             }
@@ -160,30 +177,23 @@ class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.pets = pets
                 self.petTableView.reloadData()
-                print("fetch pets at profile:", self.pets)
+//                print("fetch pets at profile:", self.pets)
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    @objc func tapQrcode(sender: UIBarButtonItem) {
+    @objc func tapQrcode(sender: IconButton) {
         let getInvitationVC = GetInvitationViewController(currentUser: currentUser, isFirstSignIn: false)
         present(getInvitationVC, animated: true, completion: nil)
     }
     
-    @objc func tapEditName(sender: UIButton) {
-        textField.isEnabled = true
-        textField.becomeFirstResponder()
+    @objc private func tapSetting(sender: UITabBarItem) {
+        let settingViewController = SettingViewController()
+        navigationController?.pushViewController(settingViewController, animated: true)
     }
-    
-    @objc private func nameEndEditing(_ textField: UITextField) {
-        MemberModel.shared.current?.name = textField.text ?? currentUser.name
-        MemberModel.shared.updateCurrentUser()
-        textField.isEnabled = !textField.hasText
-        view.endEditing(true)
-    }
-    
+
     @objc func tapAddPet(sender: UIButton) {
         let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
@@ -216,16 +226,23 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            // get the deleting pet
-            let pet = self.pets[indexPath.row]
+            let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
+                                                message: "You'd need to be invited again, or you could not view previous info of this pet")
+            {
+                // get the deleting pet
+                let pet = self.pets[indexPath.row]
+                
+                // update deleted petIds
+                MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
+                MemberModel.shared.updateCurrentUser()
+                
+                // update that pet's memberIds
+                pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
+                PetModel.shared.updatePet(id: pet.id, pet: pet)
+                
+            }
             
-            // update deleted petIds
-            MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
-            MemberModel.shared.updateCurrentUser()
-            
-            // update that pet's memberIds
-            pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-            PetModel.shared.updatePet(id: pet.id, pet: pet)
+            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

@@ -18,4 +18,17 @@ class CircleButton: UIButton {
         layer.borderColor = UIColor.deepBlueGrey.cgColor
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    convenience init(img: UIImage?, bgColor: UIColor, borderColor: UIColor) {
+        self.init()
+        setImage(img, for: .normal)
+        imageView?.contentMode = .scaleAspectFill
+        clipsToBounds = true
+        backgroundColor = bgColor
+        layer.borderWidth = 1
+        layer.borderColor = borderColor.cgColor
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+    }
 }

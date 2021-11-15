@@ -7,44 +7,34 @@
 
 import UIKit
 
-private enum STFontName: String {
+enum FontName: String {
 
-    case regular = "NotoSansChakma-Regular"
-    case medium = "NotoSansChakma-Medium"
-    case semiBold = "NotoSansChakma-SemiBold"
+    case regular = "PingFangTC-Regular"
+
+    case medium = "PingFangTC-Medium"
+
+    case semiBold = "PingFangTC-Semibold"
+
 }
 
 extension UIFont {
 
-    static func medium(size: CGFloat) -> UIFont? {
-
-        var descriptor = UIFontDescriptor(name: STFontName.medium.rawValue, size: size)
-
-        descriptor = descriptor.addingAttributes(
-            [UIFontDescriptor.AttributeName.traits: [UIFontDescriptor.TraitKey.weight: UIFont.Weight.medium]]
-        )
-
-        let font = UIFont(descriptor: descriptor, size: size)
-
-        return font
-    }
-
     static func regular(size: CGFloat) -> UIFont? {
 
-        return STFont(.regular, size: size)
+        return UIFont(name: FontName.regular.rawValue, size: size)
     }
 
-//    static func medium(size: CGFloat) -> UIFont? {
-//
-//        return STFont(.medium, size: size)
-//    }
+    static func medium(size: CGFloat) -> UIFont? {
+
+        return UIFont(name: FontName.medium.rawValue, size: size)
+    }
 
     static func semiBold(size: CGFloat) -> UIFont? {
 
-        return STFont(.semiBold, size: size)
+        return UIFont(name: FontName.semiBold.rawValue, size: size)
     }
-    
-    private static func STFont(_ font: STFontName, size: CGFloat) -> UIFont? {
+
+    private static func font(_ font: FontName, size: CGFloat) -> UIFont? {
 
         return UIFont(name: font.rawValue, size: size)
     }

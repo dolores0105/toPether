@@ -35,10 +35,19 @@ class MessageViewController: UIViewController {
     private var searchedMessages = [Message]()
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
         self.navigationItem.title = "Message"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 24) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .mainBlue
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -74,8 +83,10 @@ class MessageViewController: UIViewController {
                 
                 self.messageTableView.reloadData()
                 
-                let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
-                self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
+                if messages.count > 0 {
+                    let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
+                    self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
+                }
                 
             case .failure(let error):
                 print(error)
@@ -119,9 +130,10 @@ extension MessageViewController {
         navigationBackgroundView = NavigationBackgroundView()
         view.addSubview(navigationBackgroundView)
         NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
         ])
     }
     
@@ -206,7 +218,8 @@ extension MessageViewController {
     private func configSendButton() {
         sendButton = IconButton(self, action: #selector(tapSend), img: Img.iconsSend)
         sendButton.backgroundColor = .mainBlue
-        sendButton.isHidden = true
+        sendButton.alpha = 0.5
+        sendButton.isEnabled = false
         view.addSubview(sendButton)
         NSLayoutConstraint.activate([
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
@@ -225,7 +238,8 @@ extension MessageViewController {
             case .success(let message):
                 print(message.sentTime, message.content)
                 self.inputTextView.text = ""
-                self.sendButton.isHidden = true
+                self.sendButton.alpha = 0.5
+                self.sendButton.isEnabled = false
                 
             case .failure(let error):
                 print(error)
@@ -244,9 +258,11 @@ extension MessageViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if textView.hasText && textView.text != "" {
             messageContent = textView.text
-            sendButton.isHidden = false
+            sendButton.isEnabled = true
+            sendButton.alpha = 1
         } else {
-            sendButton.isHidden = true
+            sendButton.isEnabled = false
+            sendButton.alpha = 0.5
         }
     }
 }
