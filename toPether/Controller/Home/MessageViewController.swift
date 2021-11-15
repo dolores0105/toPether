@@ -238,7 +238,8 @@ extension MessageViewController {
             case .success(let message):
                 print(message.sentTime, message.content)
                 self.inputTextView.text = ""
-                self.sendButton.isHidden = true
+                self.sendButton.alpha = 0.5
+                self.sendButton.isEnabled = false
                 
             case .failure(let error):
                 print(error)

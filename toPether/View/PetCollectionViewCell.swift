@@ -47,7 +47,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         petImageView = RoundCornerImageView(img: nil)
         contentView.addSubview(petImageView)
         NSLayoutConstraint.activate([
-            petImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            petImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             petImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             petImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             petImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 2, constant: 20)
@@ -69,7 +69,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             petInfoButton.topAnchor.constraint(equalTo: petImageView.bottomAnchor, constant: 16),
             petInfoButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            petInfoButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -64),
+            petInfoButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -52),
             petInfoButton.heightAnchor.constraint(equalToConstant: 80)
         ])
         
@@ -113,7 +113,7 @@ class PetCollectionViewCell: UICollectionViewCell {
         memberStackView.addGestureRecognizer(tap)
         contentView.addSubview(memberStackView)
         NSLayoutConstraint.activate([
-            memberStackView.topAnchor.constraint(equalTo: petInfoButton.bottomAnchor, constant: 16),
+            memberStackView.topAnchor.constraint(equalTo: petInfoButton.bottomAnchor, constant: 12),
             memberStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
         

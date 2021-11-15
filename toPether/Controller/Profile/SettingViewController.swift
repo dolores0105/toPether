@@ -89,7 +89,7 @@ class SettingViewController: UIViewController {
 extension SettingViewController {
     
     private func configNameButton() {
-        nameButton = SettingButton(self, action: #selector(tapName), text: "Name", textfromCenterY: -18, img: Img.iconsProfileSelected, imgSize: 96)
+        nameButton = SettingButton(self, action: #selector(tapName), text: "Name", textfromCenterY: -18, img: Img.iconsProfile, imgSize: 96)
         let shadow = ShadowView(cornerRadius: 10, color: .mainBlue, offset: CGSize(width: 1.0, height: 3.0), opacity: 0.2, radius: 10)
         
         guard let currentUser = MemberModel.shared.current else { return }

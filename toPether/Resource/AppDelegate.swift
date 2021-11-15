@@ -37,15 +37,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("User installed before, loading userDefaults")
         }
         
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-            
-            if granted && error == nil {
-                print("User allowed notification")
-            } else {
-                print("User not allowed notification")
-            }
-        }
-        
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+//
+//            if granted && error == nil {
+//                print("User allowed notification")
+//            } else {
+//                print("User not allowed notification")
+//            }
+//        }
+
         UNUserNotificationCenter.current().delegate = self
         
         return true

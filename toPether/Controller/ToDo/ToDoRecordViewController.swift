@@ -25,6 +25,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var petPickerView: UIPickerView!
     private var contentLabel: MediumLabel!
     private var contentTextField: BlueBorderTextField!
+    private var contentTextView: BlueBorderTextView!
     private var timeLabel: MediumLabel!
     private let timeDatePicker = UIDatePicker()
     private var executorsLabel: MediumLabel!
@@ -63,7 +64,8 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configPetsLabel()
         configPetPickerView()
         configContentLabel()
-        configContentTextField()
+//        configContentTextField()
+        configContentTextView()
         configTimeLabel()
         configTimeDatePicker()
         configExecutorsLabel()
@@ -101,10 +103,13 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func tapOK(sender: RoundButton) {
+        
+        askNotification()
+        
         guard let todo = todo else {
             
             guard let petName = petTextField.text,
-            let todoContent = contentTextField.text,
+            let todoContent = contentTextView.text,
             let executorName = executorTextField.text, let currentUser = MemberModel.shared.current else { return }
             
             guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
@@ -140,7 +145,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         guard let todo = todo, let petName = petName, let executorName = executorName else { return }
         
         petTextField.text = petName
-        contentTextField.text = todo.content
+        contentTextView.text = todo.content
         timeDatePicker.date = todo.dueTime
         executorTextField.text = executorName
     }
@@ -156,6 +161,17 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
+            }
+        }
+    }
+    
+    private func askNotification() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            
+            if granted && error == nil {
+                print("User allowed notification")
+            } else {
+                print("User not allowed notification")
             }
         }
     }
@@ -238,6 +254,32 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
     }
 }
 
+extension ToDoRecordViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if petTextField.hasText && textView.hasText && executorTextField.hasText {
+            
+            guard let petName = petTextField.text,
+            let todoContent = contentTextView.text,
+            let executorName = executorTextField.text else { return }
+            
+            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            
+            todo?.petId = petId
+            todo?.content = todoContent
+            todo?.dueTime = timeDatePicker.date
+            todo?.executorId = executorId
+            
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+            
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
+    }
+}
+
 extension ToDoRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
@@ -247,10 +289,10 @@ extension ToDoRecordViewController: UITextFieldDelegate {
             executorTextField.isEnabled = false
         }
         
-        if petTextField.hasText && contentTextField.hasText && executorTextField.hasText {
+        if petTextField.hasText && contentTextView.hasText && executorTextField.hasText {
             
             guard let petName = petTextField.text,
-            let todoContent = contentTextField.text,
+            let todoContent = contentTextView.text,
             let executorName = executorTextField.text else { return }
             
             guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
@@ -333,11 +375,21 @@ extension ToDoRecordViewController {
         ])
     }
     
+    private func configContentTextView() {
+        contentTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+        scrollView.addSubview(contentTextView)
+        NSLayoutConstraint.activate([
+            contentTextView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
+            contentTextView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            contentTextView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
+        ])
+    }
+    
     private func configTimeLabel() {
         timeLabel = MediumLabel(size: 16, text: "Time", textColor: .mainBlue)
         scrollView.addSubview(timeLabel)
         NSLayoutConstraint.activate([
-            timeLabel.topAnchor.constraint(equalTo: contentTextField.bottomAnchor, constant: 24),
+            timeLabel.topAnchor.constraint(equalTo: contentTextView.bottomAnchor, constant: 24),
             timeLabel.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
