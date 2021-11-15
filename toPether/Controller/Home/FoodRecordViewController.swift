@@ -316,6 +316,8 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             return
         }
+        
+        food.dateOfPurchase = dateOfPurchaseDatePicker.date // in case only update date
         PetModel.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
         self.navigationController?.popViewController(animated: true)
     }

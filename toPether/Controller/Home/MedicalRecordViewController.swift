@@ -193,6 +193,9 @@ class MedicalRecordViewController: UIViewController {
                 }
         } else {
             guard let medical = medical else { return }
+            
+            medical.dateOfVisit = dateOfVisitDatePicker.date // in case only update date
+            
             PetModel.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical)
             self.navigationController?.popViewController(animated: true)
         }
