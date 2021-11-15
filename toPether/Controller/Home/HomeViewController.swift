@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 24
+        stackView.spacing = 28
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -256,7 +256,7 @@ extension HomeViewController {
             let fullWidth = UIScreen.main.bounds.width
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalToConstant: 56),
-                button.widthAnchor.constraint(equalToConstant: 64)
+                button.widthAnchor.constraint(equalToConstant: 72)
             ])
             button.setShadow(color: .mainBlue, offset: CGSize(width: 3.0, height: 3.0), opacity: 0.1, radius: 6)
             
