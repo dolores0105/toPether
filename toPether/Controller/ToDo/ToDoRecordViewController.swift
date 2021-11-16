@@ -18,19 +18,19 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var todo: ToDo?
     private var petName: String?
     private var executorName: String?
-    
+
     private var scrollView: UIScrollView!
     private var petsLabel: MediumLabel!
     private var petTextField: BlueBorderTextField!
     private var petPickerView: UIPickerView!
     private var contentLabel: MediumLabel!
-    private var contentTextField: BlueBorderTextField!
     private var contentTextView: BlueBorderTextView!
     private var timeLabel: MediumLabel!
     private let timeDatePicker = UIDatePicker()
     private var executorsLabel: MediumLabel!
     private var executorTextField: BlueBorderTextField!
     private var executorPickerView: UIPickerView!
+    private var notificationGuideLabel: RegularLabel!
     private var okButton: RoundButton!
     
     private var pets = [Pet]()
@@ -64,12 +64,12 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configPetsLabel()
         configPetPickerView()
         configContentLabel()
-//        configContentTextField()
         configContentTextView()
         configTimeLabel()
         configTimeDatePicker()
         configExecutorsLabel()
         configExecutorPickerView()
+        configNotificationGuideLabel()
         configOkButton()
         
         // MARK: Data
@@ -363,18 +363,7 @@ extension ToDoRecordViewController {
             contentLabel.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
     }
-    
-    private func configContentTextField() {
-        contentTextField = BlueBorderTextField(text: nil)
-        contentTextField.delegate = self
-        scrollView.addSubview(contentTextField)
-        NSLayoutConstraint.activate([
-            contentTextField.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
-            contentTextField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
-            contentTextField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
-        ])
-    }
-    
+
     private func configContentTextView() {
         contentTextView = BlueBorderTextView(self, textSize: 16, height: 64)
         scrollView.addSubview(contentTextView)
@@ -438,6 +427,18 @@ extension ToDoRecordViewController {
         } else {
             executorTextField.isEnabled = true
         }
+
+    }
+    
+    private func configNotificationGuideLabel() {
+        notificationGuideLabel = RegularLabel(size: 14, text: "Push notification to him/she at 7 am", textColor: .deepBlueGrey)
+        notificationGuideLabel.numberOfLines = 0
+        scrollView.addSubview(notificationGuideLabel)
+        NSLayoutConstraint.activate([
+            notificationGuideLabel.topAnchor.constraint(equalTo: executorTextField.bottomAnchor, constant: 12),
+            notificationGuideLabel.leadingAnchor.constraint(equalTo: executorTextField.leadingAnchor),
+            notificationGuideLabel.trailingAnchor.constraint(equalTo: executorTextField.trailingAnchor)
+        ])
     }
     
     private func configOkButton() {
@@ -455,7 +456,7 @@ extension ToDoRecordViewController {
         NSLayoutConstraint.activate([
             okButton.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             okButton.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64),
-            okButton.topAnchor.constraint(equalTo: executorTextField.bottomAnchor, constant: 40)
+            okButton.topAnchor.constraint(equalTo: notificationGuideLabel.bottomAnchor, constant: 40)
         ])
     }
 }
