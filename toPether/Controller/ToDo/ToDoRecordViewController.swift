@@ -35,7 +35,26 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     
     private var pets = [Pet]()
     private var petNamesCache = [String: String]()
-    private var memberNamesCache = [String: String]()
+    private var selectedPetName: String? {
+        didSet {
+            guard let selectedPetName = selectedPetName else { return }
+            guard let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
+            PetModel.shared.queryPet(id: petId) { pet in
+                guard let pet = pet else {
+                    return
+                }
+                self.queryMemberNames(pet: pet)
+            }
+        }
+    }
+    private var memberNamesCache = [String: String]() {
+        didSet {
+            guard executorName != nil else {
+                executorTextField.text = memberNamesCache.first?.value
+                return
+            }
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
 
@@ -92,6 +111,9 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                         }
                         self.queryMemberNames(pet: pet)
                     }
+                } else {
+                    self.petTextField.text = self.petNamesCache.first?.value
+                    self.selectedPetName = self.petTextField.text
                 }
                 
             case .failure(let error):
@@ -207,18 +229,6 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                 }
                 
                 self.queryMemberNames(pet: pet)
-//                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
-//                    guard let self = self else { return }
-//                    switch result {
-//                    case .success(let members):
-//                        self.memberNamesCache = [:]
-//                        for member in members where self.memberNamesCache[member.id] == nil {
-//                            self.memberNamesCache[member.id] = member.name
-//                        }
-//                    case .failure(let error):
-//                        print("query members' names error", error)
-//                    }
-//                }
             }
             
         case executorPickerView:
@@ -421,12 +431,6 @@ extension ToDoRecordViewController {
             executorTextField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             executorTextField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
-        
-        if petName == nil {
-            executorTextField.isEnabled = false
-        } else {
-            executorTextField.isEnabled = true
-        }
 
     }
     
