@@ -122,6 +122,8 @@ class HomeViewController: UIViewController {
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
                     DispatchQueue.main.async {
+                        let inviteVC = InviteViewController(pet: self.pets[self.petIndex])
+                        self.navigationController?.pushViewController(inviteVC, animated: true)
                         _ = self.authorizeCamera()
                     }
                 }
