@@ -36,21 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             print("User installed before, loading userDefaults")
         }
-        
-//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-//
-//            if granted && error == nil {
-//                print("User allowed notification")
-//            } else {
-//                print("User not allowed notification")
-//            }
-//        }
 
         UNUserNotificationCenter.current().delegate = self
         
         return true
     }
 
+//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//        return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.portrait.rawValue)
+//    }
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

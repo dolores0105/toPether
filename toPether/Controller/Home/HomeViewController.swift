@@ -229,7 +229,7 @@ extension HomeViewController {
         petCollectionView = UICollectionView(frame: .zero, collectionViewLayout: petsLayout)
         petCollectionView.backgroundColor = .clear
         petCollectionView.showsHorizontalScrollIndicator = false
-        petCollectionView.bounces = false
+        petCollectionView.bounces = true
         petCollectionView.allowsSelection = false
         petCollectionView.isPagingEnabled = true
         petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: "PetCollectionViewCell")
