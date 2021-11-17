@@ -387,6 +387,7 @@
 				39EDD19A271D126800B4DAFA /* Resources */,
 				390778E1271D1FC300B4735B /* Run Script */,
 				5C13F179D6AAAB652C7590F5 /* [CP] Embed Pods Frameworks */,
+				392CDBF6274500D80000A514 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -489,6 +490,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		392CDBF6274500D80000A514 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		5C13F179D6AAAB652C7590F5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -728,6 +748,7 @@
 				CODE_SIGN_ENTITLEMENTS = toPether/toPether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = H9XHH8AA7H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
