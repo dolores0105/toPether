@@ -20,6 +20,7 @@ enum Img: String {
     case iconsProfileSelected
     case iconsQrcode
     case iconsEdit
+    case iconsEditWhite
     case iconsAdd
     case iconsDelete
     case iconsAddWhite
