@@ -67,7 +67,7 @@ class AddPetViewController: UIViewController {
         NSLayoutConstraint.activate([
             petImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             petImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            petImageView.heightAnchor.constraint(equalToConstant: 80),
+            petImageView.heightAnchor.constraint(equalToConstant: 140),
             petImageView.widthAnchor.constraint(equalTo: petImageView.heightAnchor)
         ])
         
@@ -90,7 +90,7 @@ class AddPetViewController: UIViewController {
         NSLayoutConstraint.activate([
             selectImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             selectImageButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            selectImageButton.heightAnchor.constraint(equalToConstant: 80),
+            selectImageButton.heightAnchor.constraint(equalToConstant: 140),
             selectImageButton.widthAnchor.constraint(equalTo: selectImageButton.heightAnchor)
         ])
         
@@ -235,8 +235,6 @@ class AddPetViewController: UIViewController {
             PetModel.shared.updatePet(id: selectedPet.id, pet: selectedPet)
             navigationController?.popViewController(animated: true)
         }
-        
-//        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -256,6 +254,10 @@ extension AddPetViewController: UIImagePickerControllerDelegate {
         petImageView.image = pickedImage
         picker.dismiss(animated: true, completion: nil)
         uploadImageView.isHidden = true
+        if nameTextField.hasText && genderTextField.hasText && ageTextField.hasText {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        }
         
         guard let selectedPet = selectedPet,
               let jpegData06 = pickedImage?.jpegData(compressionQuality: 0.2) else { return }
