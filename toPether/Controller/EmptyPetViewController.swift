@@ -10,8 +10,9 @@ import UIKit
 class EmptyPetViewController: UIViewController {
     
     private var welcomeLabel: MediumLabel!
-    private var guideLabel: MediumLabel!
+    private var keepPetGuideLabel: MediumLabel!
     private var createButton: RoundButton!
+    private var getInvitationGuideLabel: MediumLabel!
     private var getInvitationButton: RoundButton!
     
     override func viewDidLoad() {
@@ -19,8 +20,9 @@ class EmptyPetViewController: UIViewController {
 
         view.backgroundColor = .white
         configWelcomeLabel()
-        configGuideLabel()
+        configKeepPetGuideLabel()
         configCreateButton()
+        configGetInvitationGuideLabel()
         configGetInvitationButton()
     }
 }
@@ -37,33 +39,43 @@ extension EmptyPetViewController {
         ])
     }
     
-    private func configGuideLabel() {
-        guideLabel = MediumLabel(size: 16, text: "Now, keep a pet", textColor: .mainBlue)
-        view.addSubview(guideLabel)
+    private func configKeepPetGuideLabel() {
+        keepPetGuideLabel = MediumLabel(size: 18, text: "Now, keep a pet", textColor: .mainBlue)
+        view.addSubview(keepPetGuideLabel)
         NSLayoutConstraint.activate([
-            guideLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 18),
-            guideLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            guideLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            keepPetGuideLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 32),
+            keepPetGuideLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            keepPetGuideLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    func configCreateButton() {
+    private func configCreateButton() {
         createButton = RoundButton(text: "Create one", size: 18)
         createButton.addTarget(self, action: #selector(tapCreate), for: .touchUpInside)
         view.addSubview(createButton)
         NSLayoutConstraint.activate([
-            createButton.topAnchor.constraint(equalTo: guideLabel.bottomAnchor, constant: 40),
+            createButton.topAnchor.constraint(equalTo: keepPetGuideLabel.bottomAnchor, constant: 20),
             createButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    func configGetInvitationButton() {
+    private func configGetInvitationGuideLabel() {
+        getInvitationGuideLabel = MediumLabel(size: 18, text: "Or, join a existing pet group", textColor: .mainBlue)
+        view.addSubview(getInvitationGuideLabel)
+        NSLayoutConstraint.activate([
+            getInvitationGuideLabel.topAnchor.constraint(equalTo: createButton.bottomAnchor, constant: 32),
+            getInvitationGuideLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            getInvitationGuideLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configGetInvitationButton() {
         getInvitationButton = RoundButton(text: "Get invitation", size: 18)
         getInvitationButton.addTarget(self, action: #selector(tapGetInvitation), for: .touchUpInside)
         view.addSubview(getInvitationButton)
         NSLayoutConstraint.activate([
-            getInvitationButton.topAnchor.constraint(equalTo: createButton.bottomAnchor, constant: 32),
+            getInvitationButton.topAnchor.constraint(equalTo: getInvitationGuideLabel.bottomAnchor, constant: 20),
             getInvitationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             getInvitationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
@@ -72,7 +84,7 @@ extension EmptyPetViewController {
     @objc func tapCreate(_: RoundButton) {
         guard let currenUser = MemberModel.shared.current else { return }
         let addPetViewController = AddPetViewController(currentUser: currenUser, selectedPet: nil, isFirstSignIn: true)
-        addPetViewController.modalPresentationStyle = .fullScreen
+//        addPetViewController.modalPresentationStyle = .fullScreen
         self.present(addPetViewController, animated: true, completion: nil)
     }
     

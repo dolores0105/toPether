@@ -27,6 +27,10 @@ class ProfileViewController: UIViewController {
     private var furkidsTitleLabel: MediumLabel!
     private var addPetButton: IconButton!
     private var petTableView: UITableView!
+    private var firstImageView = UIImageView(image: Img.iconsPang.obj)
+    private var guideCreateLabel = RegularLabel(size: 16, text: "Tap Plus button to create a pet group", textColor: .deepBlueGrey)
+    private var secondImageView = UIImageView(image: Img.iconsPang.obj)
+    private var guideGetInvitationLabel = RegularLabel(size: 16, text: "Tap QR Code button to be invited", textColor: .deepBlueGrey)
     
     private var currentUser: Member! = MemberModel.shared.current // update needed
     private var pets = [Pet]()
@@ -57,13 +61,8 @@ class ProfileViewController: UIViewController {
         
         // MARK: UI objects
         guard let currentUser = MemberModel.shared.current else { return }
-        qrcodeTitleLabel = MediumLabel(size: 18, text: "\(currentUser.name)'s QR Code", textColor: .white)
-        view.addSubview(qrcodeTitleLabel)
-        NSLayoutConstraint.activate([
-            qrcodeTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            qrcodeTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            qrcodeTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
-        ])
+        configQrcodeTitleLabel()
+        configQrCodeButton()
         
 //        editNameButton = IconButton(self, action: #selector(tapEditName), img: Img.iconsEdit)
 //        editNameButton.backgroundColor = .mainBlue
@@ -87,62 +86,10 @@ class ProfileViewController: UIViewController {
 //            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
 //            textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
 //        ])
-        
-        qrCodeButton = IconButton(self, action: #selector(tapQrcode), img: Img.iconsQrcode)
-        qrCodeButton.backgroundColor = .mainBlue
-        view.addSubview(qrCodeButton)
-        NSLayoutConstraint.activate([
-            qrCodeButton.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 4),
-            qrCodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            qrCodeButton.widthAnchor.constraint(equalToConstant: 60),
-            qrCodeButton.heightAnchor.constraint(equalTo: qrCodeButton.widthAnchor)
-        ])
-        
-        cardView = CardView(color: .white, cornerRadius: 20)
-        view.addSubview(cardView)
-        NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: qrCodeButton.bottomAnchor, constant: 4),
-            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        furkidsTitleLabel = MediumLabel(size: 20, text: "Furkids", textColor: .mainBlue)
-        view.addSubview(furkidsTitleLabel)
-        NSLayoutConstraint.activate([
-            furkidsTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
-            furkidsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 78)
-        ])
-        
-        addPetButton = IconButton(self, action: #selector(tapAddPet), img: Img.iconsAdd)
-        addPetButton.layer.borderWidth = 0
-        view.addSubview(addPetButton)
-        NSLayoutConstraint.activate([
-            addPetButton.centerYAnchor.constraint(equalTo: furkidsTitleLabel.centerYAnchor),
-            addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -22),
-            addPetButton.widthAnchor.constraint(equalToConstant: 50),
-            addPetButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        petTableView = UITableView()
-        petTableView.register(PetTableViewCell.self, forCellReuseIdentifier: "PetTableViewCell")
-        petTableView.separatorColor = .clear
-        petTableView.backgroundColor = .white
-        petTableView.estimatedRowHeight = 100
-        petTableView.rowHeight = UITableView.automaticDimension
-        petTableView.allowsSelection = true
-        petTableView.delegate = self
-        petTableView.dataSource = self
-        petTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(petTableView)
-        NSLayoutConstraint.activate([
-            petTableView.topAnchor.constraint(equalTo: furkidsTitleLabel.bottomAnchor, constant: 30),
-            petTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            petTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            petTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            
-        ])
+        configCarView()
+        configFurKidLabel()
+        configAddPetButton()
+        configPetTableView()
         
         // MARK: Query data
         queryData(currentUser: MemberModel.shared.current ?? self.currentUser)
@@ -172,14 +119,24 @@ class ProfileViewController: UIViewController {
     // MARK: functions
     func queryData(currentUser: Member) {
         PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let pets):
-                guard let self = self else { return }
                 self.pets = pets
                 self.petTableView.reloadData()
-//                print("fetch pets at profile:", self.pets)
+
+                self.firstImageView.removeFromSuperview()
+                self.guideCreateLabel.removeFromSuperview()
+                self.secondImageView.removeFromSuperview()
+                self.guideGetInvitationLabel.removeFromSuperview()
+                
             case .failure(let error):
                 print(error)
+                self.configFirstImageView()
+                self.configGuideCreateLabel()
+                self.configSecondImageView()
+                self.configGuideInvitationLabel()
             }
         }
     }
@@ -255,4 +212,134 @@ extension ProfileViewController: UITableViewDelegate {
         return configuration
     }
 
+}
+
+extension ProfileViewController {
+    
+    private func configQrcodeTitleLabel() {
+        qrcodeTitleLabel = MediumLabel(size: 18, text: "\(currentUser.name)'s QR Code", textColor: .white)
+        view.addSubview(qrcodeTitleLabel)
+        NSLayoutConstraint.activate([
+            qrcodeTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            qrcodeTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            qrcodeTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configQrCodeButton() {
+        qrCodeButton = IconButton(self, action: #selector(tapQrcode), img: Img.iconsQrcode)
+        qrCodeButton.backgroundColor = .mainBlue
+        view.addSubview(qrCodeButton)
+        NSLayoutConstraint.activate([
+            qrCodeButton.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 4),
+            qrCodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            qrCodeButton.widthAnchor.constraint(equalToConstant: 60),
+            qrCodeButton.heightAnchor.constraint(equalTo: qrCodeButton.widthAnchor)
+        ])
+    }
+    
+    private func configCarView() {
+        cardView = CardView(color: .white, cornerRadius: 20)
+        view.addSubview(cardView)
+        NSLayoutConstraint.activate([
+            cardView.topAnchor.constraint(equalTo: qrCodeButton.bottomAnchor, constant: 4),
+            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func configFurKidLabel() {
+        furkidsTitleLabel = MediumLabel(size: 20, text: "Furkids", textColor: .mainBlue)
+        view.addSubview(furkidsTitleLabel)
+        NSLayoutConstraint.activate([
+            furkidsTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
+            furkidsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            furkidsTitleLabel.widthAnchor.constraint(equalToConstant: 78)
+        ])
+    }
+    
+    private func configAddPetButton() {
+        addPetButton = IconButton(self, action: #selector(tapAddPet), img: Img.iconsAdd)
+        addPetButton.layer.borderWidth = 0
+        view.addSubview(addPetButton)
+        NSLayoutConstraint.activate([
+            addPetButton.centerYAnchor.constraint(equalTo: furkidsTitleLabel.centerYAnchor),
+            addPetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -22),
+            addPetButton.widthAnchor.constraint(equalToConstant: 50),
+            addPetButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    private func configPetTableView() {
+        petTableView = UITableView()
+        petTableView.register(PetTableViewCell.self, forCellReuseIdentifier: "PetTableViewCell")
+        petTableView.separatorColor = .clear
+        petTableView.backgroundColor = .white
+        petTableView.estimatedRowHeight = 100
+        petTableView.rowHeight = UITableView.automaticDimension
+        petTableView.allowsSelection = true
+        petTableView.delegate = self
+        petTableView.dataSource = self
+        petTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(petTableView)
+        NSLayoutConstraint.activate([
+            petTableView.topAnchor.constraint(equalTo: furkidsTitleLabel.bottomAnchor, constant: 30),
+            petTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            petTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            petTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            
+        ])
+    }
+    
+    private func configFirstImageView() {
+//        firstImageView = UIImageView(image: Img.iconsPang.obj)
+//        guard let firstImageView = firstImageView else { return }
+        firstImageView.translatesAutoresizingMaskIntoConstraints = false
+        firstImageView.alpha = 0.2
+        view.addSubview(firstImageView)
+        NSLayoutConstraint.activate([
+            firstImageView.topAnchor.constraint(equalTo: furkidsTitleLabel.bottomAnchor, constant: 48),
+            firstImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            firstImageView.widthAnchor.constraint(equalToConstant: 25),
+            firstImageView.heightAnchor.constraint(equalTo: firstImageView.widthAnchor)
+        ])
+    }
+    
+    private func configGuideCreateLabel() {
+//        guideCreateLabel = RegularLabel(size: 16, text: "Tap Plus button to create a pet group", textColor: .deepBlueGrey)
+//        guard let guideCreateLabel = guideCreateLabel, let firstImageView = firstImageView else { return }
+        guideCreateLabel.numberOfLines = 0
+        view.addSubview(guideCreateLabel)
+        NSLayoutConstraint.activate([
+            guideCreateLabel.topAnchor.constraint(equalTo: firstImageView.topAnchor),
+            guideCreateLabel.leadingAnchor.constraint(equalTo: firstImageView.trailingAnchor, constant: 20),
+            guideCreateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configSecondImageView() {
+//        secondImageView = UIImageView(image: Img.iconsPang.obj)
+//        guard let secondImageView = secondImageView, let guideCreateLabel = guideCreateLabel else { return }
+        secondImageView.translatesAutoresizingMaskIntoConstraints = false
+        secondImageView.alpha = 0.2
+        view.addSubview(secondImageView)
+        NSLayoutConstraint.activate([
+            secondImageView.topAnchor.constraint(equalTo: guideCreateLabel.bottomAnchor, constant: 24),
+            secondImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            secondImageView.widthAnchor.constraint(equalToConstant: 25),
+            secondImageView.heightAnchor.constraint(equalTo: secondImageView.widthAnchor)
+        ])
+    }
+
+    private func configGuideInvitationLabel() {
+        guideGetInvitationLabel.numberOfLines = 0
+        view.addSubview(guideGetInvitationLabel)
+        NSLayoutConstraint.activate([
+            guideGetInvitationLabel.topAnchor.constraint(equalTo: secondImageView.topAnchor),
+            guideGetInvitationLabel.leadingAnchor.constraint(equalTo: secondImageView.trailingAnchor, constant: 20),
+            guideGetInvitationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
 }
