@@ -33,6 +33,7 @@
 		392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */; };
 		392B4756273CC2F8001F203B /* lottieLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4755273CC2F8001F203B /* lottieLoading.json */; };
 		392B4758273D5EB8001F203B /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4757273D5EB7001F203B /* Alert.swift */; };
+		392CDBF8274633E20000A514 /* lottieDogSitting.json in Resources */ = {isa = PBXBuildFile; fileRef = 392CDBF7274633E20000A514 /* lottieDogSitting.json */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -111,6 +112,7 @@
 		392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		392B4755273CC2F8001F203B /* lottieLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieLoading.json; sourceTree = "<group>"; };
 		392B4757273D5EB7001F203B /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		392CDBF7274633E20000A514 /* lottieDogSitting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieDogSitting.json; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				392B4755273CC2F8001F203B /* lottieLoading.json */,
 				392B4745273A2F04001F203B /* lottieCongratulation.json */,
 				395570FD27350188003AF098 /* lottieSuccess.json */,
+				392CDBF7274633E20000A514 /* lottieDogSitting.json */,
 				39816075272D7AB40033930D /* layingCat.json */,
 				39558C9E2728498A00523D43 /* LottieDone.json */,
 				CEDC483227359CBA00E5A95C /* GoogleService-Info.plist */,
@@ -444,6 +447,7 @@
 				392B4746273A2F04001F203B /* lottieCongratulation.json in Resources */,
 				39816076272D7AB40033930D /* layingCat.json in Resources */,
 				395570FE27350188003AF098 /* lottieSuccess.json in Resources */,
+				392CDBF8274633E20000A514 /* lottieDogSitting.json in Resources */,
 				CEDC483327359CBA00E5A95C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -21,6 +21,9 @@ class HomeViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    private var emptyTitleLabel: MediumLabel?
+    private var emptyContentLabel: RegularLabel?
+    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 
     var pets = [Pet]()
     var currentUser: Member! = MemberModel.shared.current
@@ -48,6 +51,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // MARK: UI objects layout
+        view.backgroundColor = .mainBlue
+        configCardView()
+        configCollectionView()
+        configButtonStackView()
+        
         queryData(currentUser: currentUser)
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
@@ -68,13 +77,6 @@ class HomeViewController: UIViewController {
                 print("lisener error at profileVC", error)
             }
         }
-        
-        // MARK: UI objects layout
-        view.backgroundColor = .mainBlue
-        configCardView()
-        configCollectionView()
-        configButtonStackView()
-        
     }
     
     // MARK: functions
@@ -107,10 +109,16 @@ class HomeViewController: UIViewController {
                 self.petCollectionView.reloadData()
                 print("fetch pets at profile:", self.pets)
                 self.buttonStackView.isHidden = false
+                self.emptyTitleLabel?.removeFromSuperview()
+                self.emptyContentLabel?.removeFromSuperview()
+                self.emptyAnimationView.removeFromSuperview()
                 
             case .failure(let error):
                 print(error)
                 self.buttonStackView.isHidden = true
+                self.configEmptyTitleLabel()
+                self.configEmptyContentLabel()
+                self.configEmptyAnimation()
             }
         }
     }
@@ -271,4 +279,43 @@ extension HomeViewController {
             buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
+    
+    private func configEmptyTitleLabel() {
+        emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou haven’t in a pet group", textColor: .deepBlueGrey)
+        guard let emptyTitleLabel = emptyTitleLabel else { return }
+        emptyTitleLabel.textAlignment = .center
+        emptyTitleLabel.numberOfLines = 0
+        view.addSubview(emptyTitleLabel)
+        NSLayoutConstraint.activate([
+            emptyTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 120),
+            emptyTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            emptyTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configEmptyContentLabel() {
+        emptyContentLabel = RegularLabel(size: 18, text: "Go profile page \nfor creating one or getting invited", textColor: .deepBlueGrey)
+        
+        guard let emptyContentLabel = emptyContentLabel, let emptyTitleLabel = emptyTitleLabel else { return }
+        emptyContentLabel.textAlignment = .center
+        emptyContentLabel.numberOfLines = 0
+        view.addSubview(emptyContentLabel)
+        NSLayoutConstraint.activate([
+            emptyContentLabel.topAnchor.constraint(equalTo: emptyTitleLabel.bottomAnchor, constant: 16),
+            emptyContentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            emptyContentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configEmptyAnimation() {
+        guard let emptyContentLabel = emptyContentLabel else { return }
+        view.addSubview(emptyAnimationView)
+        NSLayoutConstraint.activate([
+            emptyAnimationView.topAnchor.constraint(equalTo: emptyContentLabel.bottomAnchor, constant: 24),
+            emptyAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyAnimationView.widthAnchor.constraint(equalToConstant: 120),
+            emptyAnimationView.heightAnchor.constraint(equalTo: emptyAnimationView.widthAnchor)
+        ])
+    }
+    
 }
