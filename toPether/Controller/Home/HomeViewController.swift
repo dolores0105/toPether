@@ -21,8 +21,8 @@ class HomeViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    private var emptyTitleLabel: MediumLabel?
-    private var emptyContentLabel: RegularLabel?
+    private var emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou haven’t in a pet group", textColor: .deepBlueGrey)
+    private var emptyContentLabel = RegularLabel(size: 18, text: "Go profile page \nfor creating one or getting invited", textColor: .deepBlueGrey)
     private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 
     var pets = [Pet]()
@@ -109,8 +109,8 @@ class HomeViewController: UIViewController {
                 self.petCollectionView.reloadData()
                 print("fetch pets at profile:", self.pets)
                 self.buttonStackView.isHidden = false
-                self.emptyTitleLabel?.removeFromSuperview()
-                self.emptyContentLabel?.removeFromSuperview()
+                self.emptyTitleLabel.removeFromSuperview()
+                self.emptyContentLabel.removeFromSuperview()
                 self.emptyAnimationView.removeFromSuperview()
                 
             case .failure(let error):
@@ -281,8 +281,6 @@ extension HomeViewController {
     }
     
     private func configEmptyTitleLabel() {
-        emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou haven’t in a pet group", textColor: .deepBlueGrey)
-        guard let emptyTitleLabel = emptyTitleLabel else { return }
         emptyTitleLabel.textAlignment = .center
         emptyTitleLabel.numberOfLines = 0
         view.addSubview(emptyTitleLabel)
@@ -294,9 +292,6 @@ extension HomeViewController {
     }
     
     private func configEmptyContentLabel() {
-        emptyContentLabel = RegularLabel(size: 18, text: "Go profile page \nfor creating one or getting invited", textColor: .deepBlueGrey)
-        
-        guard let emptyContentLabel = emptyContentLabel, let emptyTitleLabel = emptyTitleLabel else { return }
         emptyContentLabel.textAlignment = .center
         emptyContentLabel.numberOfLines = 0
         view.addSubview(emptyContentLabel)
@@ -308,7 +303,6 @@ extension HomeViewController {
     }
     
     private func configEmptyAnimation() {
-        guard let emptyContentLabel = emptyContentLabel else { return }
         view.addSubview(emptyAnimationView)
         NSLayoutConstraint.activate([
             emptyAnimationView.topAnchor.constraint(equalTo: emptyContentLabel.bottomAnchor, constant: 24),
