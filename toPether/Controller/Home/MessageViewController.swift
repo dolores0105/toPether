@@ -29,6 +29,8 @@ class MessageViewController: UIViewController {
     private var messageTableView: UITableView!
     private var inputTextView: UITextView!
     private var sendButton: IconButton!
+    private var emptyContentLabel = RegularLabel(size: 18, text: "No one chatted \nSend something to start", textColor: .deepBlueGrey)
+    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
     
     private var searching = false
     private var keyword: String?
@@ -86,6 +88,14 @@ class MessageViewController: UIViewController {
                 if messages.count > 0 {
                     let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
                     self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
+                }
+                
+                if self.messages.isEmpty {
+                    self.configEmptyContentLabel()
+                    self.configEmptyAnimation()
+                } else {
+                    self.emptyContentLabel.removeFromSuperview()
+                    self.emptyAnimationView.removeFromSuperview()
                 }
                 
             case .failure(let error):
@@ -299,5 +309,26 @@ extension MessageViewController: UISearchBarDelegate {
             searching = false
             searchBar.endEditing(true)
         }
+    }
+    
+    private func configEmptyContentLabel() {
+        emptyContentLabel.textAlignment = .center
+        emptyContentLabel.numberOfLines = 0
+        view.addSubview(emptyContentLabel)
+        NSLayoutConstraint.activate([
+            emptyContentLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyContentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            emptyContentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configEmptyAnimation() {
+        view.addSubview(emptyAnimationView)
+        NSLayoutConstraint.activate([
+            emptyAnimationView.topAnchor.constraint(equalTo: emptyContentLabel.bottomAnchor, constant: 24),
+            emptyAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyAnimationView.widthAnchor.constraint(equalToConstant: 120),
+            emptyAnimationView.heightAnchor.constraint(equalTo: emptyAnimationView.widthAnchor)
+        ])
     }
 }
