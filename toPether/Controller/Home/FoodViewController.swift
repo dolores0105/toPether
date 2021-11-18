@@ -20,6 +20,8 @@ class FoodViewController: UIViewController {
     private var petNameLabel: RegularLabel!
     private var searchBar: UISearchBar!
     private var foodTableView: UITableView!
+    private var emptyContentLabel = RegularLabel(size: 18, text: "Empty records \nTap Plus to create one", textColor: .deepBlueGrey)
+    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
     
     private var searching = false
     private var keyword: String?
@@ -131,11 +133,20 @@ class FoodViewController: UIViewController {
             }
         }
         
-        PetModel.shared.addFoodsListener(petId: selectedPet.id) { result in
+        PetModel.shared.addFoodsListener(petId: selectedPet.id) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let records):
                 self.foods = records
                 self.foodTableView.reloadData()
+                if self.foods.isEmpty {
+                    self.configEmptyContentLabel()
+                    self.configEmptyAnimation()
+                } else {
+                    self.emptyContentLabel.removeFromSuperview()
+                    self.emptyAnimationView.removeFromSuperview()
+                }
                 
             case .failure(let error):
                 print("listen foods error", error)
@@ -235,5 +246,29 @@ extension FoodViewController: UISearchBarDelegate {
             searching = false
             searchBar.endEditing(true)
         }
+    }
+}
+
+extension FoodViewController {
+    
+    private func configEmptyContentLabel() {
+        emptyContentLabel.textAlignment = .center
+        emptyContentLabel.numberOfLines = 0
+        view.addSubview(emptyContentLabel)
+        NSLayoutConstraint.activate([
+            emptyContentLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyContentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            emptyContentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configEmptyAnimation() {
+        view.addSubview(emptyAnimationView)
+        NSLayoutConstraint.activate([
+            emptyAnimationView.topAnchor.constraint(equalTo: emptyContentLabel.bottomAnchor, constant: 24),
+            emptyAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyAnimationView.widthAnchor.constraint(equalToConstant: 120),
+            emptyAnimationView.heightAnchor.constraint(equalTo: emptyAnimationView.widthAnchor)
+        ])
     }
 }
