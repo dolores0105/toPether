@@ -86,20 +86,12 @@ class MessageViewController: UIViewController {
                     }
                 }
                 
-                if self.blackList.count > 0 {
-                    for blockedId in self.blackList {
-                        self.filterMessage(blockedId: blockedId) {
-                            self.messageTableView.reloadData()
-                        }
-                    }
-                } else {
-                    self.unblockedmessages = self.messages
+                self.filterMessages {
+                    self.messageTableView.reloadData()
                 }
                 
-                self.messageTableView.reloadData()
-                
-                if messages.count > 0 {
-                    let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
+                if self.unblockedmessages.count > 9 {
+                    let pathToLastRow = NSIndexPath(row: self.unblockedmessages.count - 1, section: 0)
                     self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
                 }
                 
@@ -118,9 +110,9 @@ class MessageViewController: UIViewController {
         }
     }
     
-    private func filterMessage(blockedId: String, completion: () -> Void) {
-        unblockedmessages = messages.filter {
-            $0.senderId != blockedId
+    private func filterMessages(completion: () -> Void) {
+        self.unblockedmessages = self.messages.filter { message in
+            self.selectedPet.memberIds.contains(message.senderId)
         }
         completion()
     }
@@ -133,15 +125,8 @@ extension MessageViewController: UITableViewDelegate {
             let block = UIAction(title: "Block", image: Img.iconsDelete.obj) { _ in
                 self.presentBlockAlert(title: "Block", message: "封鎖這個人，會踢出群組且過濾訊息") { [weak self] in
                     guard let self = self else { return }
-                    /* block steps
-                     0. 檢查不能是自己 v
-                     1. pet下的memberIds移除這個人的Id v
-                     2. 這個人底下的petIds移除 petId v
-                     3. 重新執行一次query message data
-                     4. tableview reload
-                     */
-                    let blockedMemberId = self.messages[indexPath.row].senderId
-                    self.blackList.append(blockedMemberId)
+
+                    let blockedMemberId = self.unblockedmessages[indexPath.row].senderId
                     
                     MemberModel.shared.queryMember(id: blockedMemberId) { member in
 
@@ -156,20 +141,10 @@ extension MessageViewController: UITableViewDelegate {
                             PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet)
                             
                             // filter messages
-//                            self.unblockedmessages = self.messages.filter({
-//                                $0.senderId != blockedMemberId
-//                            })
-                            self.filterMessage(blockedId: blockedMemberId) {
+                            self.filterMessages {
                                 self.messageTableView.reloadData()
                             }
-                            
-                            for message in self.messages {
-                                print(message.senderId)
-                            }
-                            for unblockedmessage in self.unblockedmessages {
-                                print("======= \(unblockedmessage.senderId) ====")
-                            }
-                            
+
                         } else {
                             self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
                         }
