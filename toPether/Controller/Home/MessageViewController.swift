@@ -36,6 +36,9 @@ class MessageViewController: UIViewController {
     private var keyword: String?
     private var searchedMessages = [Message]()
     
+    private var unblockedmessages = [Message]()
+    private var blackList = [String]()
+    
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Message"
@@ -83,6 +86,16 @@ class MessageViewController: UIViewController {
                     }
                 }
                 
+                if self.blackList.count > 0 {
+                    for blockedId in self.blackList {
+                        self.filterMessage(blockedId: blockedId) {
+                            self.messageTableView.reloadData()
+                        }
+                    }
+                } else {
+                    self.unblockedmessages = self.messages
+                }
+                
                 self.messageTableView.reloadData()
                 
                 if messages.count > 0 {
@@ -104,6 +117,13 @@ class MessageViewController: UIViewController {
             }
         }
     }
+    
+    private func filterMessage(blockedId: String, completion: () -> Void) {
+        unblockedmessages = messages.filter {
+            $0.senderId != blockedId
+        }
+        completion()
+    }
 }
 
 extension MessageViewController: UITableViewDelegate {
@@ -121,6 +141,7 @@ extension MessageViewController: UITableViewDelegate {
                      4. tableview reload
                      */
                     let blockedMemberId = self.messages[indexPath.row].senderId
+                    self.blackList.append(blockedMemberId)
                     
                     MemberModel.shared.queryMember(id: blockedMemberId) { member in
 
@@ -133,6 +154,21 @@ extension MessageViewController: UITableViewDelegate {
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
                             PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet)
+                            
+                            // filter messages
+//                            self.unblockedmessages = self.messages.filter({
+//                                $0.senderId != blockedMemberId
+//                            })
+                            self.filterMessage(blockedId: blockedMemberId) {
+                                self.messageTableView.reloadData()
+                            }
+                            
+                            for message in self.messages {
+                                print(message.senderId)
+                            }
+                            for unblockedmessage in self.unblockedmessages {
+                                print("======= \(unblockedmessage.senderId) ====")
+                            }
                             
                         } else {
                             self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
@@ -158,12 +194,12 @@ extension MessageViewController: UITableViewDataSource {
         if searching {
             return searchedMessages.count
         } else {
-            return messages.count
+            return unblockedmessages.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = searching ? searchedMessages[indexPath.row] : messages[indexPath.row]
+        let message = searching ? searchedMessages[indexPath.row] : unblockedmessages[indexPath.row]
         let senderName = senderNameCache[message.senderId]
         
         var msgCell: MessageTableViewCell?
@@ -346,10 +382,10 @@ extension MessageViewController: UISearchBarDelegate {
     private func search(keyword: String?) {
         guard let keyword = self.keyword else { return }
         if keyword != "" {
-            searchedMessages = messages.filter({ $0.content.lowercased().contains(keyword.lowercased())
+            searchedMessages = unblockedmessages.filter({ $0.content.lowercased().contains(keyword.lowercased())
             })
         } else {
-            searchedMessages = messages
+            searchedMessages = unblockedmessages
             searching = false
             searchBar.endEditing(true)
         }
