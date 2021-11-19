@@ -130,6 +130,7 @@ class FoodViewController: UIViewController {
                 self.foodTableView.reloadData()
             case .failure(let error):
                 print("query foods error", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
         
@@ -150,6 +151,7 @@ class FoodViewController: UIViewController {
                 
             case .failure(let error):
                 print("listen foods error", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }

@@ -75,6 +75,7 @@ class HomeViewController: UIViewController {
                 
             case .failure(let error):
                 print("lisener error at profileVC", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }

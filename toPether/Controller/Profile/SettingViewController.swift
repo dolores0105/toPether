@@ -81,7 +81,8 @@ class SettingViewController: UIViewController {
             navigationController?.pushViewController(signInViewController, animated: true)
             
         } catch let signOutError as NSError {
-          print("Error signing out: %@", signOutError)
+            print("Error signing out: %@", signOutError)
+            self.presentErrorAlert(title: "Something went wrong", message: signOutError.localizedDescription + " Please try again")
         }
     }
 }

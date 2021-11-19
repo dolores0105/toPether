@@ -97,7 +97,7 @@ class SplashViewController: UIViewController {
             
         case .failure(let error):
             print("loginHandler", error)
-            // Response the error to USER
+            presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
         }
     }
     

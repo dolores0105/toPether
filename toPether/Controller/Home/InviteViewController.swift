@@ -83,6 +83,7 @@ class InviteViewController: UIViewController {
             
         } catch {
             print(error)
+            presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
         }
     }
 }
