@@ -123,7 +123,8 @@ extension MessageViewController: UITableViewDelegate {
         
         if messages[indexPath.row].senderId != MemberModel.shared.current?.id {
             let block = UIAction(title: "Block", image: Img.iconsDelete.obj) { _ in
-                self.presentBlockAlert(title: "Block this member", message: "Make him/she leave the group, and couln't see the pet info no longer. \n The members in the group also couldn't see his/her messages") { [weak self] in
+                self.presentBlockAlert(title: "Block this member",
+                                       message: "Make him/she leave the group, and couln't see the pet info no longer. \n The members in the group also couldn't see his/her messages") { [weak self] in
                     guard let self = self else { return }
 
                     let blockedMemberId = self.unblockedmessages[indexPath.row].senderId
