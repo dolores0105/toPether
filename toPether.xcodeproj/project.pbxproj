@@ -35,6 +35,7 @@
 		392B4758273D5EB8001F203B /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4757273D5EB7001F203B /* Alert.swift */; };
 		392CDBF8274633E20000A514 /* lottieDogSitting.json in Resources */ = {isa = PBXBuildFile; fileRef = 392CDBF7274633E20000A514 /* lottieDogSitting.json */; };
 		392CDBFA2746602D0000A514 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */; };
+		392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBFB2747B6630000A514 /* EULAViewController.swift */; };
 		394A77192721D65700978254 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A77182721D65700978254 /* SplashViewController.swift */; };
 		394A771B2722990B00978254 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771A2722990B00978254 /* ArrayExtension.swift */; };
 		394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394A771C2722FE6C00978254 /* AddPetViewController.swift */; };
@@ -115,6 +116,7 @@
 		392B4757273D5EB7001F203B /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		392CDBF7274633E20000A514 /* lottieDogSitting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieDogSitting.json; sourceTree = "<group>"; };
 		392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		392CDBFB2747B6630000A514 /* EULAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAViewController.swift; sourceTree = "<group>"; };
 		394A77182721D65700978254 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		394A771A2722990B00978254 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		394A771C2722FE6C00978254 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				390791AF271FFB8900B4735B /* ProfileViewController.swift */,
 				392B474D273BE067001F203B /* SettingViewController.swift */,
 				392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */,
+				392CDBFB2747B6630000A514 /* EULAViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -568,6 +571,7 @@
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
 				39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */,
 				3960E6B027414E81003E05FE /* BlueBorderTextView.swift in Sources */,
+				392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,
 				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
