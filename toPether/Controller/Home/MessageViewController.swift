@@ -111,15 +111,33 @@ extension MessageViewController: UITableViewDelegate {
         
         if messages[indexPath.row].senderId != MemberModel.shared.current?.id {
             let block = UIAction(title: "Block", image: Img.iconsDelete.obj) { _ in
-                self.presentBlockAlert(title: "Block", message: "封鎖這個人，會踢出群組且過濾訊息") {
+                self.presentBlockAlert(title: "Block", message: "封鎖這個人，會踢出群組且過濾訊息") { [weak self] in
+                    guard let self = self else { return }
                     /* block steps
                      0. 檢查不能是自己 v
-                     1. pet下的memberIds移除這個人的Id
-                     2. 這個人底下的petIds移除 petId
+                     1. pet下的memberIds移除這個人的Id v
+                     2. 這個人底下的petIds移除 petId v
                      3. 重新執行一次query message data
                      4. tableview reload
                      */
+                    let blockedMemberId = self.messages[indexPath.row].senderId
                     
+                    MemberModel.shared.queryMember(id: blockedMemberId) { member in
+
+                        if let member = member { // the member is existing
+                            
+                            // delete petIds of that member
+                            member.petIds.removeAll { $0 == self.selectedPet.id }
+                            MemberModel.shared.updateMember(member: member)
+                            
+                            // delete memberId of the pet
+                            self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
+                            PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet)
+                            
+                        } else {
+                            self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
+                        }
+                    }
                 }
             }
 

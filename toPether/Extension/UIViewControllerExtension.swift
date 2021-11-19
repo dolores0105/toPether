@@ -19,7 +19,7 @@ extension UIViewController {
 
         alert.addAction(okAction)
         
-        present(alert, animated: true, completion: completion)
+        present(alert, animated: true, completion: nil)
     }
     
     func presentBlockAlert(title: String?, message: String?, completion: (() -> Void)? = nil) {
@@ -34,6 +34,6 @@ extension UIViewController {
         alert.addAction(blockAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true, completion: completion)
+        present(alert, animated: true, completion: nil)
     }
 }
