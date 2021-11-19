@@ -19,6 +19,7 @@ class SplashViewController: UIViewController {
     private var faceImageView: UIImageView!
     private var privacyLabel: RegularLabel!
     private var privacyButton: UIButton!
+    private var EULAButton: UIButton!
     private lazy var signInWithAppleButton = ASAuthorizationAppleIDButton(type: .default, style: .whiteOutline)
     private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
@@ -302,6 +303,7 @@ extension SplashViewController {
                 self.signInWithAppleButton.alpha = 1
                 self.privacyLabel.alpha = 1
                 self.privacyButton.alpha = 1
+                self.EULAButton.alpha = 1
         } completion: { _ in
 
         }
@@ -394,7 +396,8 @@ extension SplashViewController {
     }
     
     private func configPrivacy() {
-        privacyLabel = RegularLabel(size: 13, text: "By signing in, you agree to our privacy policy", textColor: .deepBlueGrey)
+        privacyLabel = RegularLabel(size: 13, text: "By signing in, you agree to our privacy policy and EULA", textColor: .deepBlueGrey)
+        privacyLabel.numberOfLines = 2
         privacyLabel.textAlignment = .center
         privacyLabel.alpha = 0
         
@@ -407,24 +410,43 @@ extension SplashViewController {
         privacyButton.addTarget(self, action: #selector(tapPrivacy), for: .touchUpInside)
         privacyButton.translatesAutoresizingMaskIntoConstraints = false
         
+        EULAButton = UIButton()
+        EULAButton.setTitle("EULA", for: .normal)
+        EULAButton.setTitleColor(.mainBlue, for: .normal)
+        EULAButton.titleLabel?.font = UIFont.medium(size: 14)
+        EULAButton.backgroundColor = .clear
+        EULAButton.alpha = 0
+        EULAButton.addTarget(self, action: #selector(tapEULA), for: .touchUpInside)
+        EULAButton.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(privacyLabel)
         view.addSubview(privacyButton)
+        view.addSubview(EULAButton)
         NSLayoutConstraint.activate([
             privacyLabel.topAnchor.constraint(equalTo: signInWithAppleButton.bottomAnchor, constant: 16),
-            privacyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            privacyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            privacyLabel.heightAnchor.constraint(equalToConstant: 16),
+            privacyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 48),
+            privacyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
             
             privacyButton.topAnchor.constraint(equalTo: privacyLabel.bottomAnchor, constant: 2),
-            privacyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            privacyButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 2),
-            privacyButton.heightAnchor.constraint(equalToConstant: 24)
+            privacyButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
+            privacyButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 3),
+            privacyButton.heightAnchor.constraint(equalToConstant: 24),
+            
+            EULAButton.topAnchor.constraint(equalTo: privacyLabel.bottomAnchor, constant: 2),
+            EULAButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
+            EULAButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 4),
+            EULAButton.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
     
     @objc private func tapPrivacy() {
         let privacyPolicyViewController = PrivacyPolicyViewController()
         present(privacyPolicyViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func tapEULA() {
+        let eulaViewController = EULAViewController()
+        present(eulaViewController, animated: true, completion: nil)
     }
     
     private func configLoadingAnimation() {
