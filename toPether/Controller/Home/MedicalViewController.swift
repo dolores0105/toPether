@@ -128,6 +128,7 @@ class MedicalViewController: UIViewController {
                 
             case .failure(let error):
                 print("query medical error", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }

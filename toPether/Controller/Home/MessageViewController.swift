@@ -100,6 +100,7 @@ class MessageViewController: UIViewController {
                 
             case .failure(let error):
                 print(error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -253,6 +254,7 @@ extension MessageViewController {
                 
             case .failure(let error):
                 print(error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }
