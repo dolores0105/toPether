@@ -21,4 +21,19 @@ extension UIViewController {
         
         present(alert, animated: true, completion: completion)
     }
+    
+    func presentBlockAlert(title: String?, message: String?, completion: (() -> Void)? = nil) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let blockAction = UIAlertAction(title: "Block", style: .destructive) { _ in
+            guard let completion = completion else { return }
+            completion()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        alert.addAction(blockAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: completion)
+    }
 }

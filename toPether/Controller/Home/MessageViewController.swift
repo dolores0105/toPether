@@ -107,7 +107,25 @@ class MessageViewController: UIViewController {
 }
 
 extension MessageViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let block = UIAction(title: "Block", image: Img.iconsDelete.obj) { actions in
+            self.presentBlockAlert(title: "Block", message: "封鎖這個人，會踢出群組且過濾訊息") {
+                /* block steps
+                 0. 檢查不能是自己
+                 1. pet下的memberIds移除這個人的Id
+                 2. 這個人底下的petIds移除 petId
+                 3. 重新執行一次query message data
+                 4. tableview reload
+                 */
+                
+            }
+        }
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "", children: [block])
+        }
+    }
 }
 
 extension MessageViewController: UITableViewDataSource {
