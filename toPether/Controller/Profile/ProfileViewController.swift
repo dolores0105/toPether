@@ -50,6 +50,7 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsSetting.obj, style: .plain, target: self, action: #selector(tapSetting))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
         
         self.tabBarController?.tabBar.isHidden = false
     }
