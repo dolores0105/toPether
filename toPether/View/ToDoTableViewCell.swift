@@ -92,15 +92,15 @@ extension ToDoTableViewCell {
             labelTexts: labelTexts,
             textColors: [.mainBlue, .mainBlue, .mainBlue],
             verticalSpacing: 4,
-            horizontalSpacing: 8)
+            horizontalSpacing: 4)
         
         guard let iconsLabelHorizontalStackView = iconsLabelHorizontalStackView else { return }
         contentView.addSubview(iconsLabelHorizontalStackView)
         NSLayoutConstraint.activate([
             iconsLabelHorizontalStackView.topAnchor.constraint(equalTo: todoLabel.bottomAnchor, constant: 6),
-            iconsLabelHorizontalStackView.leadingAnchor.constraint(equalTo: todoLabel.leadingAnchor, constant: -8),
+            iconsLabelHorizontalStackView.leadingAnchor.constraint(equalTo: todoLabel.leadingAnchor, constant: -20),
             iconsLabelHorizontalStackView.heightAnchor.constraint(equalToConstant: 60),
-            iconsLabelHorizontalStackView.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -20),
+            iconsLabelHorizontalStackView.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16),
             iconsLabelHorizontalStackView.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -16)
         ])
     }
