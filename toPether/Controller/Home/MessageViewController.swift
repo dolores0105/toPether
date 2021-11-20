@@ -122,7 +122,7 @@ extension MessageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         
         if messages[indexPath.row].senderId != MemberModel.shared.current?.id {
-            let block = UIAction(title: "Block", image: Img.iconsDelete.obj) { _ in
+            let block = UIAction(title: "Block member", image: Img.iconsBlock.obj) { _ in
                 self.presentBlockAlert(title: "Block this member",
                                        message: "Make him/she leave the group, and couln't see the pet info no longer. \n The members in the group also couldn't see his/her messages") { [weak self] in
                     guard let self = self else { return }
