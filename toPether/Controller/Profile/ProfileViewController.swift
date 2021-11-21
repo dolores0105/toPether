@@ -11,20 +11,7 @@ import IQKeyboardManagerSwift
 class ProfileViewController: UIViewController {
     
     private var cardView: CardView!
-    private var qrcodeTitleLabel: MediumLabel!
-//    private var iconImageView: UIImageView!
-    private var editNameButton: IconButton!
-    private var textField: NoBorderTextField!
-    private var memberName: String? {
-        didSet {
-            if memberName != nil && memberName == "" {
-                textField.isEnabled = false
-            }
-        }
-    }
-    
-    private var qrCodeButton: IconButton!
-    private var greetingLabel: MediumLabel!
+    private var greetingLabel: RegularLabel!
     private var nameTextField: NoBorderTextField!
     private var furkidsTitleLabel: MediumLabel!
     private var addPetButton: IconButton!
@@ -63,33 +50,8 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .mainBlue
         
         // MARK: UI objects
-//        guard let currentUser = MemberModel.shared.current else { return }
-//        configQrcodeTitleLabel()
-//        configQrCodeButton()
         configGreetingLabel()
         configNameTextField()
-//        editNameButton = IconButton(self, action: #selector(tapEditName), img: Img.iconsEdit)
-//        editNameButton.backgroundColor = .mainBlue
-//        view.addSubview(editNameButton)
-//        NSLayoutConstraint.activate([
-//            editNameButton.centerYAnchor.constraint(equalTo: qrcodeTitleLabel.centerYAnchor),
-//            editNameButton.leadingAnchor.constraint(equalTo: qrcodeTitleLabel.trailingAnchor, constant: 20),
-//            editNameButton.widthAnchor.constraint(equalToConstant: 60),
-//            editNameButton.heightAnchor.constraint(equalToConstant: 60)
-//        ])
-        
-//        textField = NoBorderTextField(name: currentUser.name)
-//        textField.font = UIFont.regular(size: 20)
-//        textField.isUserInteractionEnabled = true
-//        textField.addTarget(self, action: #selector(tapEditName), for: .touchUpInside)
-//        textField.isEnabled = false
-//        textField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
-//        view.addSubview(textField)
-//        NSLayoutConstraint.activate([
-//            textField.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 8),
-//            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-//            textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
-//        ])
         configCardView()
         configFurKidLabel()
         configAddPetButton()
@@ -104,13 +66,11 @@ class ProfileViewController: UIViewController {
                 guard let currentUser = members.first else { return }
                 self.queryData(currentUser: currentUser)
                 self.nameTextField.text = currentUser.name
-//                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
 
             case .success(.modified(members: let members)):
                 guard let currentUser = members.first else { return }
                 self.queryData(currentUser: currentUser)
                 self.nameTextField.text = currentUser.name
-//                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
 
             case .success(.removed(members: let members)):
                 guard let currentUser = members.first else { return }
@@ -235,7 +195,7 @@ extension ProfileViewController: UITableViewDelegate {
 extension ProfileViewController {
     
     private func configGreetingLabel() {
-        greetingLabel = MediumLabel(size: 18, text: "How's it going?", textColor: .white)
+        greetingLabel = RegularLabel(size: 18, text: "How's it going?", textColor: .white)
         greetingLabel.textAlignment = .center
         view.addSubview(greetingLabel)
         NSLayoutConstraint.activate([
@@ -249,7 +209,6 @@ extension ProfileViewController {
         nameTextField = NoBorderTextField(bgColor: .clear, textColor: .white)
         nameTextField.font = UIFont.medium(size: 18)
         nameTextField.textAlignment = .center
-//        nameTextField.setLeftPaddingPoints(amount: 10)
         nameTextField.text = currentUser.name
         nameTextField.isUserInteractionEnabled = true
         nameTextField.addTarget(self, action: #selector(tapNameTextField), for: .touchUpInside)
@@ -262,28 +221,6 @@ extension ProfileViewController {
             nameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 2)
         ])
     }
-    
-//    private func configQrcodeTitleLabel() {
-//        qrcodeTitleLabel = MediumLabel(size: 18, text: "\(currentUser.name)'s QR Code", textColor: .white)
-//        view.addSubview(qrcodeTitleLabel)
-//        NSLayoutConstraint.activate([
-//            qrcodeTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-//            qrcodeTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-//            qrcodeTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
-//        ])
-//    }
-//
-//    private func configQrCodeButton() {
-//        qrCodeButton = IconButton(self, action: #selector(tapQrcode), img: Img.iconsQrcode)
-//        qrCodeButton.backgroundColor = .mainBlue
-//        view.addSubview(qrCodeButton)
-//        NSLayoutConstraint.activate([
-//            qrCodeButton.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 4),
-//            qrCodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            qrCodeButton.widthAnchor.constraint(equalToConstant: 60),
-//            qrCodeButton.heightAnchor.constraint(equalTo: qrCodeButton.widthAnchor)
-//        ])
-//    }
     
     private func configCardView() {
         cardView = CardView(color: .white, cornerRadius: 20)
@@ -340,8 +277,6 @@ extension ProfileViewController {
     }
     
     private func configFirstImageView() {
-//        firstImageView = UIImageView(image: Img.iconsPang.obj)
-//        guard let firstImageView = firstImageView else { return }
         firstImageView.translatesAutoresizingMaskIntoConstraints = false
         firstImageView.alpha = 0.2
         view.addSubview(firstImageView)
@@ -354,8 +289,6 @@ extension ProfileViewController {
     }
     
     private func configGuideCreateLabel() {
-//        guideCreateLabel = RegularLabel(size: 16, text: "Tap Plus button to create a pet group", textColor: .deepBlueGrey)
-//        guard let guideCreateLabel = guideCreateLabel, let firstImageView = firstImageView else { return }
         guideCreateLabel.numberOfLines = 0
         view.addSubview(guideCreateLabel)
         NSLayoutConstraint.activate([
@@ -366,8 +299,6 @@ extension ProfileViewController {
     }
     
     private func configSecondImageView() {
-//        secondImageView = UIImageView(image: Img.iconsPang.obj)
-//        guard let secondImageView = secondImageView, let guideCreateLabel = guideCreateLabel else { return }
         secondImageView.translatesAutoresizingMaskIntoConstraints = false
         secondImageView.alpha = 0.2
         view.addSubview(secondImageView)
