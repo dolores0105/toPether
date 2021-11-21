@@ -12,7 +12,7 @@ class ProfileViewController: UIViewController {
     
     private var cardView: CardView!
     private var qrcodeTitleLabel: MediumLabel!
-    private var iconImageView: UIImageView!
+//    private var iconImageView: UIImageView!
     private var editNameButton: IconButton!
     private var textField: NoBorderTextField!
     private var memberName: String? {
@@ -24,6 +24,8 @@ class ProfileViewController: UIViewController {
     }
     
     private var qrCodeButton: IconButton!
+    private var greetingLabel: MediumLabel!
+    private var nameTextField: NoBorderTextField!
     private var furkidsTitleLabel: MediumLabel!
     private var addPetButton: IconButton!
     private var petTableView: UITableView!
@@ -61,10 +63,11 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .mainBlue
         
         // MARK: UI objects
-        guard let currentUser = MemberModel.shared.current else { return }
-        configQrcodeTitleLabel()
-        configQrCodeButton()
-        
+//        guard let currentUser = MemberModel.shared.current else { return }
+//        configQrcodeTitleLabel()
+//        configQrCodeButton()
+        configGreetingLabel()
+        configNameTextField()
 //        editNameButton = IconButton(self, action: #selector(tapEditName), img: Img.iconsEdit)
 //        editNameButton.backgroundColor = .mainBlue
 //        view.addSubview(editNameButton)
@@ -87,7 +90,7 @@ class ProfileViewController: UIViewController {
 //            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
 //            textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3)
 //        ])
-        configCarView()
+        configCardView()
         configFurKidLabel()
         configAddPetButton()
         configPetTableView()
@@ -100,12 +103,14 @@ class ProfileViewController: UIViewController {
             case .success(.added(members: let members)):
                 guard let currentUser = members.first else { return }
                 self.queryData(currentUser: currentUser)
-                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
+                self.nameTextField.text = currentUser.name
+//                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
 
             case .success(.modified(members: let members)):
                 guard let currentUser = members.first else { return }
                 self.queryData(currentUser: currentUser)
-                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
+                self.nameTextField.text = currentUser.name
+//                self.qrcodeTitleLabel.text = "\(currentUser.name)'s QR Code"
 
             case .success(.removed(members: let members)):
                 guard let currentUser = members.first else { return }
@@ -146,6 +151,17 @@ class ProfileViewController: UIViewController {
     @objc func tapQrcode(sender: IconButton) {
         let getInvitationVC = GetInvitationViewController(currentUser: currentUser, isFirstSignIn: false)
         present(getInvitationVC, animated: true, completion: nil)
+    }
+    
+    @objc private func tapNameTextField(_ sender: SettingButton) {
+        nameTextField.becomeFirstResponder()
+    }
+    
+    @objc private func nameEndEditing(_ textField: UITextField) {
+        guard let currentUser = MemberModel.shared.current else { return }
+        MemberModel.shared.current?.name = nameTextField.text ?? currentUser.name
+        MemberModel.shared.updateCurrentUser()
+        view.endEditing(true)
     }
     
     @objc private func tapSetting(sender: UITabBarItem) {
@@ -218,33 +234,62 @@ extension ProfileViewController: UITableViewDelegate {
 
 extension ProfileViewController {
     
-    private func configQrcodeTitleLabel() {
-        qrcodeTitleLabel = MediumLabel(size: 18, text: "\(currentUser.name)'s QR Code", textColor: .white)
-        view.addSubview(qrcodeTitleLabel)
+    private func configGreetingLabel() {
+        greetingLabel = MediumLabel(size: 18, text: "How's it going?", textColor: .white)
+        greetingLabel.textAlignment = .center
+        view.addSubview(greetingLabel)
         NSLayoutConstraint.activate([
-            qrcodeTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            qrcodeTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            qrcodeTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            greetingLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            greetingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            greetingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    private func configQrCodeButton() {
-        qrCodeButton = IconButton(self, action: #selector(tapQrcode), img: Img.iconsQrcode)
-        qrCodeButton.backgroundColor = .mainBlue
-        view.addSubview(qrCodeButton)
+    private func configNameTextField() {
+        nameTextField = NoBorderTextField(bgColor: .clear, textColor: .white)
+        nameTextField.font = UIFont.medium(size: 18)
+        nameTextField.textAlignment = .center
+//        nameTextField.setLeftPaddingPoints(amount: 10)
+        nameTextField.text = currentUser.name
+        nameTextField.isUserInteractionEnabled = true
+        nameTextField.addTarget(self, action: #selector(tapNameTextField), for: .touchUpInside)
+        nameTextField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
+        view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
-            qrCodeButton.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 4),
-            qrCodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            qrCodeButton.widthAnchor.constraint(equalToConstant: 60),
-            qrCodeButton.heightAnchor.constraint(equalTo: qrCodeButton.widthAnchor)
+            nameTextField.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 4),
+            nameTextField.heightAnchor.constraint(equalToConstant: 32),
+            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 2)
         ])
     }
     
-    private func configCarView() {
+//    private func configQrcodeTitleLabel() {
+//        qrcodeTitleLabel = MediumLabel(size: 18, text: "\(currentUser.name)'s QR Code", textColor: .white)
+//        view.addSubview(qrcodeTitleLabel)
+//        NSLayoutConstraint.activate([
+//            qrcodeTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+//            qrcodeTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+//            qrcodeTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+//        ])
+//    }
+//
+//    private func configQrCodeButton() {
+//        qrCodeButton = IconButton(self, action: #selector(tapQrcode), img: Img.iconsQrcode)
+//        qrCodeButton.backgroundColor = .mainBlue
+//        view.addSubview(qrCodeButton)
+//        NSLayoutConstraint.activate([
+//            qrCodeButton.topAnchor.constraint(equalTo: qrcodeTitleLabel.bottomAnchor, constant: 4),
+//            qrCodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+//            qrCodeButton.widthAnchor.constraint(equalToConstant: 60),
+//            qrCodeButton.heightAnchor.constraint(equalTo: qrCodeButton.widthAnchor)
+//        ])
+//    }
+    
+    private func configCardView() {
         cardView = CardView(color: .white, cornerRadius: 20)
         view.addSubview(cardView)
         NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: qrCodeButton.bottomAnchor, constant: 4),
+            cardView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 12),
             cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
