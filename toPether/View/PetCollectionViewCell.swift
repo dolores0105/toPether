@@ -118,10 +118,6 @@ class PetCollectionViewCell: UICollectionViewCell {
         ])
         
         addMemberButton = CircleButton(img: Img.iconsAddWhite.obj, bgColor: .mainYellow, borderColor: .clear)
-//        addMemberButton.backgroundColor = .mainYellow
-//        addMemberButton.layer.borderColor = UIColor.lightBlueGrey.cgColor
-//        addMemberButton.setImage(Img.iconsAddWhite.obj, for: .normal)
-//        addMemberButto
     }
     
     required init?(coder: NSCoder) {
@@ -191,13 +187,16 @@ class PetCollectionViewCell: UICollectionViewCell {
             memberStackView.addArrangedSubview(circleButton)
             circleButton.isUserInteractionEnabled = false
         }
-        addMemberButton.layer.cornerRadius = 32 / 2
-        NSLayoutConstraint.activate([
-            addMemberButton.heightAnchor.constraint(equalToConstant: 32),
-            addMemberButton.widthAnchor.constraint(equalToConstant: 32)
-        ])
-        memberStackView.addArrangedSubview(addMemberButton)
-        addMemberButton.isUserInteractionEnabled = false
+        
+        if members.count < 7 {
+            addMemberButton.layer.cornerRadius = 32 / 2
+            NSLayoutConstraint.activate([
+                addMemberButton.heightAnchor.constraint(equalToConstant: 32),
+                addMemberButton.widthAnchor.constraint(equalToConstant: 32)
+            ])
+            memberStackView.addArrangedSubview(addMemberButton)
+            addMemberButton.isUserInteractionEnabled = false
+        }
     }
     
     @objc func tapStackView(sender: AnyObject) {

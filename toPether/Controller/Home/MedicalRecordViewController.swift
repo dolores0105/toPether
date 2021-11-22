@@ -207,6 +207,7 @@ class MedicalRecordViewController: UIViewController {
                         
                     case .failure(let error):
                         print("set medical record error:", error)
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                     }
                 }
         } else {

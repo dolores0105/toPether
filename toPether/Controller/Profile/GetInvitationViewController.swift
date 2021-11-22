@@ -61,6 +61,7 @@ class GetInvitationViewController: UIViewController {
                 break
             case .failure(let error):
                 print("lisener error at getInvitationVC", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }

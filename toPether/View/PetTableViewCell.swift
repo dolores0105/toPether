@@ -17,6 +17,7 @@ class PetTableViewCell: UITableViewCell {
     private var genderImageView: UIImageView!
     private var ageLabel: RegularLabel!
     private var memberNumberButton: UIButton!
+    private var editImageView: UIImageView!
     
     private var listener: ListenerRegistration?
     
@@ -72,19 +73,30 @@ class PetTableViewCell: UITableViewCell {
             ageLabel.widthAnchor.constraint(equalToConstant: 80)
         ])
         
-        memberNumberButton = UIButton()
-        memberNumberButton.translatesAutoresizingMaskIntoConstraints = false
-        memberNumberButton.titleLabel?.font = UIFont.regular(size: 14)
-        memberNumberButton.setTitleColor(.deepBlueGrey, for: .normal)
-        memberNumberButton.backgroundColor = .lightBlueGrey
-        memberNumberButton.layer.cornerRadius = 10
-        contentView.addSubview(memberNumberButton)
+        editImageView = UIImageView(image: Img.iconsEdit.obj)
+        editImageView.alpha = 0.1
+        editImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(editImageView)
         NSLayoutConstraint.activate([
-            memberNumberButton.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),
-            memberNumberButton.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16),
-            memberNumberButton.widthAnchor.constraint(equalToConstant: 50),
-            memberNumberButton.heightAnchor.constraint(equalToConstant: 20)
+            editImageView.centerYAnchor.constraint(equalTo: borderView.centerYAnchor),
+            editImageView.heightAnchor.constraint(equalToConstant: 32),
+            editImageView.widthAnchor.constraint(equalTo: editImageView.heightAnchor),
+            editImageView.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16)
         ])
+        
+//        memberNumberButton = UIButton()
+//        memberNumberButton.translatesAutoresizingMaskIntoConstraints = false
+//        memberNumberButton.titleLabel?.font = UIFont.regular(size: 14)
+//        memberNumberButton.setTitleColor(.deepBlueGrey, for: .normal)
+//        memberNumberButton.backgroundColor = .lightBlueGrey
+//        memberNumberButton.layer.cornerRadius = 10
+//        contentView.addSubview(memberNumberButton)
+//        NSLayoutConstraint.activate([
+//            memberNumberButton.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),
+//            memberNumberButton.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16),
+//            memberNumberButton.widthAnchor.constraint(equalToConstant: 50),
+//            memberNumberButton.heightAnchor.constraint(equalToConstant: 20)
+//        ])
         
     }
     
@@ -109,7 +121,7 @@ class PetTableViewCell: UITableViewCell {
             genderImageView.image = Img.iconsGenderFemale.obj
         }
         
-        memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
+//        memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
     }
     
     func addListener(pet: Pet) {

@@ -29,10 +29,15 @@ class MessageViewController: UIViewController {
     private var messageTableView: UITableView!
     private var inputTextView: UITextView!
     private var sendButton: IconButton!
+    private var emptyContentLabel = RegularLabel(size: 18, text: "No one chatted \nSend something to start", textColor: .deepBlueGrey)
+    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
     
     private var searching = false
     private var keyword: String?
     private var searchedMessages = [Message]()
+    
+    private var unblockedmessages = [Message]()
+    private var blackList = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
 
@@ -81,22 +86,82 @@ class MessageViewController: UIViewController {
                     }
                 }
                 
-                self.messageTableView.reloadData()
+                self.filterMessages {
+                    self.messageTableView.reloadData()
+                }
                 
-                if messages.count > 0 {
-                    let pathToLastRow = NSIndexPath(row: messages.count - 1, section: 0)
+                if self.unblockedmessages.count > 9 {
+                    let pathToLastRow = NSIndexPath(row: self.unblockedmessages.count - 1, section: 0)
                     self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
+                }
+                
+                if self.messages.isEmpty {
+                    self.configEmptyContentLabel()
+                    self.configEmptyAnimation()
+                } else {
+                    self.emptyContentLabel.removeFromSuperview()
+                    self.emptyAnimationView.removeFromSuperview()
                 }
                 
             case .failure(let error):
                 print(error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
+    }
+    
+    private func filterMessages(completion: () -> Void) {
+        self.unblockedmessages = self.messages.filter { message in
+            self.selectedPet.memberIds.contains(message.senderId)
+        }
+        completion()
     }
 }
 
 extension MessageViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        if messages[indexPath.row].senderId != MemberModel.shared.current?.id {
+            let block = UIAction(title: "Block member", image: Img.iconsBlock.obj) { _ in
+                self.presentBlockAlert(title: "Block this member",
+                                       message: "Make him/she leave the group, and couln't see the pet info no longer. \n The members in the group also couldn't see his/her messages") { [weak self] in
+                    guard let self = self else { return }
+
+                    let blockedMemberId = self.unblockedmessages[indexPath.row].senderId
+                    
+                    MemberModel.shared.queryMember(id: blockedMemberId) { member in
+
+                        if let member = member { // the member is existing
+                            
+                            // delete petIds of that member
+                            member.petIds.removeAll { $0 == self.selectedPet.id }
+                            MemberModel.shared.updateMember(member: member)
+                            
+                            // delete memberId of the pet
+                            self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
+                            PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet)
+                            
+                            // filter messages
+                            self.filterMessages {
+                                self.messageTableView.reloadData()
+                            }
+
+                        } else {
+                            self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
+                        }
+                    }
+                }
+            }
+
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(title: "", children: [block])
+            }
+        } else {
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(title: "", children: [])
+            }
+        }
+    }
 }
 
 extension MessageViewController: UITableViewDataSource {
@@ -105,12 +170,12 @@ extension MessageViewController: UITableViewDataSource {
         if searching {
             return searchedMessages.count
         } else {
-            return messages.count
+            return unblockedmessages.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = searching ? searchedMessages[indexPath.row] : messages[indexPath.row]
+        let message = searching ? searchedMessages[indexPath.row] : unblockedmessages[indexPath.row]
         let senderName = senderNameCache[message.senderId]
         
         var msgCell: MessageTableViewCell?
@@ -243,6 +308,7 @@ extension MessageViewController {
                 
             case .failure(let error):
                 print(error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -292,12 +358,33 @@ extension MessageViewController: UISearchBarDelegate {
     private func search(keyword: String?) {
         guard let keyword = self.keyword else { return }
         if keyword != "" {
-            searchedMessages = messages.filter({ $0.content.lowercased().contains(keyword.lowercased())
+            searchedMessages = unblockedmessages.filter({ $0.content.lowercased().contains(keyword.lowercased())
             })
         } else {
-            searchedMessages = messages
+            searchedMessages = unblockedmessages
             searching = false
             searchBar.endEditing(true)
         }
+    }
+    
+    private func configEmptyContentLabel() {
+        emptyContentLabel.textAlignment = .center
+        emptyContentLabel.numberOfLines = 0
+        view.addSubview(emptyContentLabel)
+        NSLayoutConstraint.activate([
+            emptyContentLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyContentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            emptyContentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configEmptyAnimation() {
+        view.addSubview(emptyAnimationView)
+        NSLayoutConstraint.activate([
+            emptyAnimationView.topAnchor.constraint(equalTo: emptyContentLabel.bottomAnchor, constant: 24),
+            emptyAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyAnimationView.widthAnchor.constraint(equalToConstant: 120),
+            emptyAnimationView.heightAnchor.constraint(equalTo: emptyAnimationView.widthAnchor)
+        ])
     }
 }

@@ -18,24 +18,43 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var todo: ToDo?
     private var petName: String?
     private var executorName: String?
-    
+
     private var scrollView: UIScrollView!
     private var petsLabel: MediumLabel!
     private var petTextField: BlueBorderTextField!
     private var petPickerView: UIPickerView!
     private var contentLabel: MediumLabel!
-    private var contentTextField: BlueBorderTextField!
     private var contentTextView: BlueBorderTextView!
     private var timeLabel: MediumLabel!
     private let timeDatePicker = UIDatePicker()
     private var executorsLabel: MediumLabel!
     private var executorTextField: BlueBorderTextField!
     private var executorPickerView: UIPickerView!
+    private var notificationGuideLabel: RegularLabel!
     private var okButton: RoundButton!
     
     private var pets = [Pet]()
     private var petNamesCache = [String: String]()
-    private var memberNamesCache = [String: String]()
+    private var selectedPetName: String? {
+        didSet {
+            guard let selectedPetName = selectedPetName else { return }
+            guard let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
+            PetModel.shared.queryPet(id: petId) { pet in
+                guard let pet = pet else {
+                    return
+                }
+                self.queryMemberNames(pet: pet)
+            }
+        }
+    }
+    private var memberNamesCache = [String: String]() {
+        didSet {
+            guard executorName != nil else {
+                executorTextField.text = memberNamesCache.first?.value
+                return
+            }
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
 
@@ -64,12 +83,12 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configPetsLabel()
         configPetPickerView()
         configContentLabel()
-//        configContentTextField()
         configContentTextView()
         configTimeLabel()
         configTimeDatePicker()
         configExecutorsLabel()
         configExecutorPickerView()
+        configNotificationGuideLabel()
         configOkButton()
         
         // MARK: Data
@@ -92,10 +111,14 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                         }
                         self.queryMemberNames(pet: pet)
                     }
+                } else {
+                    self.petTextField.text = self.petNamesCache.first?.value
+                    self.selectedPetName = self.petTextField.text
                 }
                 
             case .failure(let error):
                 print("Query currentUser's pets error", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     
@@ -124,6 +147,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     
                 case .failure(let error):
                     print("Create todo error", error)
+                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                 }
             }
             return
@@ -161,6 +185,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Query members' names error, please try again")
             }
         }
     }
@@ -207,18 +232,6 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                 }
                 
                 self.queryMemberNames(pet: pet)
-//                MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
-//                    guard let self = self else { return }
-//                    switch result {
-//                    case .success(let members):
-//                        self.memberNamesCache = [:]
-//                        for member in members where self.memberNamesCache[member.id] == nil {
-//                            self.memberNamesCache[member.id] = member.name
-//                        }
-//                    case .failure(let error):
-//                        print("query members' names error", error)
-//                    }
-//                }
             }
             
         case executorPickerView:
@@ -363,18 +376,7 @@ extension ToDoRecordViewController {
             contentLabel.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
     }
-    
-    private func configContentTextField() {
-        contentTextField = BlueBorderTextField(text: nil)
-        contentTextField.delegate = self
-        scrollView.addSubview(contentTextField)
-        NSLayoutConstraint.activate([
-            contentTextField.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
-            contentTextField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
-            contentTextField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
-        ])
-    }
-    
+
     private func configContentTextView() {
         contentTextView = BlueBorderTextView(self, textSize: 16, height: 64)
         scrollView.addSubview(contentTextView)
@@ -432,12 +434,18 @@ extension ToDoRecordViewController {
             executorTextField.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             executorTextField.trailingAnchor.constraint(equalTo: petsLabel.trailingAnchor)
         ])
-        
-        if petName == nil {
-            executorTextField.isEnabled = false
-        } else {
-            executorTextField.isEnabled = true
-        }
+
+    }
+    
+    private func configNotificationGuideLabel() {
+        notificationGuideLabel = RegularLabel(size: 14, text: "Push notification to him/she at 7 am", textColor: .deepBlueGrey)
+        notificationGuideLabel.numberOfLines = 0
+        scrollView.addSubview(notificationGuideLabel)
+        NSLayoutConstraint.activate([
+            notificationGuideLabel.topAnchor.constraint(equalTo: executorTextField.bottomAnchor, constant: 12),
+            notificationGuideLabel.leadingAnchor.constraint(equalTo: executorTextField.leadingAnchor),
+            notificationGuideLabel.trailingAnchor.constraint(equalTo: executorTextField.trailingAnchor)
+        ])
     }
     
     private func configOkButton() {
@@ -455,7 +463,7 @@ extension ToDoRecordViewController {
         NSLayoutConstraint.activate([
             okButton.leadingAnchor.constraint(equalTo: petsLabel.leadingAnchor),
             okButton.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64),
-            okButton.topAnchor.constraint(equalTo: executorTextField.bottomAnchor, constant: 40)
+            okButton.topAnchor.constraint(equalTo: notificationGuideLabel.bottomAnchor, constant: 40)
         ])
     }
 }

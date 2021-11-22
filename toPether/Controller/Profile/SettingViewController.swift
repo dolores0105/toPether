@@ -10,8 +10,6 @@ import FirebaseAuth
 
 class SettingViewController: UIViewController {
 
-    private var nameButton: SettingButton!
-    private var nameTextField: NoBorderTextField!
     private var privacyButton: SettingButton!
     private var deleteAccountButton: SettingButton!
     private var signOutButton: SettingButton!
@@ -39,22 +37,9 @@ class SettingViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        configNameButton()
         configPrivacyButton()
         configDeleteAccountButton()
         configSignOutButton()
-    }
-    
-    @objc private func tapName(_ sender: SettingButton) {
-        nameTextField.becomeFirstResponder()
-    }
-    
-    @objc private func nameEndEditing(_ textField: UITextField) {
-        
-        guard let currentUser = MemberModel.shared.current else { return }
-        MemberModel.shared.current?.name = textField.text ?? currentUser.name
-        MemberModel.shared.updateCurrentUser()
-        view.endEditing(true)
     }
     
     @objc private func tapPrivacy(_ sender: SettingButton) {
@@ -81,44 +66,13 @@ class SettingViewController: UIViewController {
             navigationController?.pushViewController(signInViewController, animated: true)
             
         } catch let signOutError as NSError {
-          print("Error signing out: %@", signOutError)
+            print("Error signing out: %@", signOutError)
+            self.presentErrorAlert(title: "Something went wrong", message: signOutError.localizedDescription + " Please try again")
         }
     }
 }
 
 extension SettingViewController {
-    
-    private func configNameButton() {
-        nameButton = SettingButton(self, action: #selector(tapName), text: "Name", textfromCenterY: -18, img: Img.iconsProfile, imgSize: 96)
-        let shadow = ShadowView(cornerRadius: 10, color: .mainBlue, offset: CGSize(width: 1.0, height: 3.0), opacity: 0.2, radius: 10)
-        
-        guard let currentUser = MemberModel.shared.current else { return }
-        nameTextField = NoBorderTextField(bgColor: .lightBlueGrey, textColor: .mainBlue)
-        nameTextField.font = UIFont.regular(size: 18)
-        nameTextField.setLeftPaddingPoints(amount: 10)
-        nameTextField.text = currentUser.name
-        nameTextField.addTarget(self, action: #selector(nameEndEditing), for: .editingDidEnd)
-        
-        view.addSubview(shadow)
-        view.addSubview(nameButton)
-        view.addSubview(nameTextField)
-        NSLayoutConstraint.activate([
-            nameButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            nameButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            nameButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            nameButton.heightAnchor.constraint(equalToConstant: 100),
-            
-            shadow.topAnchor.constraint(equalTo: nameButton.topAnchor),
-            shadow.bottomAnchor.constraint(equalTo: nameButton.bottomAnchor),
-            shadow.leadingAnchor.constraint(equalTo: nameButton.leadingAnchor),
-            shadow.trailingAnchor.constraint(equalTo: nameButton.trailingAnchor),
-            
-            nameTextField.bottomAnchor.constraint(equalTo: nameButton.bottomAnchor, constant: -18),
-            nameTextField.heightAnchor.constraint(equalToConstant: 32),
-            nameTextField.leadingAnchor.constraint(equalTo: nameButton.leadingAnchor, constant: 22),
-            nameTextField.widthAnchor.constraint(equalTo: nameButton.widthAnchor, multiplier: 1 / 2)
-        ])
-    }
     
     private func configPrivacyButton() {
         privacyButton = SettingButton(self, action: #selector(tapPrivacy), text: "Privacy policy", textfromCenterY: 0, img: Img.iconsPrivacy, imgSize: 88)
@@ -127,9 +81,9 @@ extension SettingViewController {
         view.addSubview(shadow)
         view.addSubview(privacyButton)
         NSLayoutConstraint.activate([
-            privacyButton.topAnchor.constraint(equalTo: nameButton.bottomAnchor, constant: 24),
-            privacyButton.leadingAnchor.constraint(equalTo: nameButton.leadingAnchor),
-            privacyButton.trailingAnchor.constraint(equalTo: nameButton.trailingAnchor),
+            privacyButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            privacyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            privacyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             privacyButton.heightAnchor.constraint(equalToConstant: 88),
             
             shadow.topAnchor.constraint(equalTo: privacyButton.topAnchor),
@@ -147,8 +101,8 @@ extension SettingViewController {
         view.addSubview(deleteAccountButton)
         NSLayoutConstraint.activate([
             deleteAccountButton.topAnchor.constraint(equalTo: privacyButton.bottomAnchor, constant: 24),
-            deleteAccountButton.leadingAnchor.constraint(equalTo: nameButton.leadingAnchor),
-            deleteAccountButton.trailingAnchor.constraint(equalTo: nameButton.trailingAnchor),
+            deleteAccountButton.leadingAnchor.constraint(equalTo: privacyButton.leadingAnchor),
+            deleteAccountButton.trailingAnchor.constraint(equalTo: privacyButton.trailingAnchor),
             deleteAccountButton.heightAnchor.constraint(equalToConstant: 88),
             
             shadow.topAnchor.constraint(equalTo: deleteAccountButton.topAnchor),

@@ -100,6 +100,7 @@ class ToDoViewController: UIViewController {
                 
             case .failure(let error):
                 print("listen todo error", error)
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -163,7 +164,7 @@ class ToDoViewController: UIViewController {
                 
             case .failure(let error):
                 print("add todoListeners for notifications error", error)
-                
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -202,6 +203,7 @@ class ToDoViewController: UIViewController {
         UNUserNotificationCenter.current().add(request) { error in
             if error != nil {
                 print("add notification failed")
+                self.presentErrorAlert(title: "Something went wrong", message: error?.localizedDescription ?? "" + " Please try again")
             }
         }
     }
@@ -256,6 +258,7 @@ extension ToDoViewController: UITableViewDelegate {
                         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
                     } else {
                         print("delete error")
+                        self.presentErrorAlert(title: "Something went wrong", message: "Please try again")
                     }
                 }
                 

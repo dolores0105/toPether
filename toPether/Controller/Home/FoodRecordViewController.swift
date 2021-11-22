@@ -312,6 +312,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                         
                     case .failure(let error):
                         print("set food record error:", error)
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                     }
                 }
             return

@@ -12,6 +12,8 @@ target 'toPether' do
   pod 'FirebaseCore'
   pod 'FirebaseFirestoreSwift'
   pod 'Firebase/Auth'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
 
   pod 'SwiftLint'
 
