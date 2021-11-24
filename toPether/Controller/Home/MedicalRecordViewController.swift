@@ -192,17 +192,23 @@ class MedicalRecordViewController: UIViewController {
     }
     
     @objc func tapOK() {
-        if medical == nil {
+        guard let medical = medical else {
+            
+            // create medical
+            let medical = Medical()
+            medical.symptoms = symptomsTextView.text ?? "no symptoms"
+            medical.dateOfVisit = dateOfVisitDatePicker.date
+            medical.clinic = vetTextField.text ?? "no clinic"
+            medical.vetOrder = doctorNotesTextView.text ?? "no orders"
+            
             PetManager.shared.setMedical(
                 petId: selectedPet.id,
-                symptoms: symptomsTextView.text ?? "no symptoms",
-                dateOfVisit: dateOfVisitDatePicker.date,
-                clinic: vetTextField.text ?? "no clinic",
-                vetOrder: doctorNotesTextView.text ?? "no orders") { [weak self] result in
+                medical: medical) { [weak self] result in
                     guard let self = self else { return }
                     
                     switch result {
-                    case .success(_):
+                    case .success(let medicalId):
+                        print(medicalId)
                         self.navigationController?.popViewController(animated: true)
                         
                     case .failure(let error):
@@ -210,13 +216,20 @@ class MedicalRecordViewController: UIViewController {
                         self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                     }
                 }
-        } else {
-            guard let medical = medical else { return }
-            
-            medical.dateOfVisit = dateOfVisitDatePicker.date // in case only update date
-            
-            PetManager.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical)
-            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        // update medical
+        medical.dateOfVisit = dateOfVisitDatePicker.date // in case only update date
+        
+        PetManager.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical) { result in
+            switch result {
+            case .success(let medicalId):
+                print(medicalId)
+                self.navigationController?.popViewController(animated: true)
+                
+            case .failure(let error):
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+            }
         }
     }
 }

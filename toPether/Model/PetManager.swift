@@ -17,6 +17,7 @@ class PetManager {
     let dataBase = Firestore.firestore()
     
     // MARK: - pet
+    
     func getBirthday(year: Int, month: Int) -> Date? {
         let calendar = Calendar.current
         let today = Date()
@@ -105,23 +106,18 @@ class PetManager {
         }
     }
     
-    /* ---------------------Medical---------------------------- */
-    // MARK: Medical
-    func setMedical(petId: String, symptoms: String, dateOfVisit: Date, clinic: String, vetOrder: String, completion: @escaping (Result<Medical, Error>) -> Void) {
+    // MARK: - Medical
+    
+    func setMedical(petId: String, medical: Medical, completion: @escaping (Result<String, Error>) -> Void) {
         
         let medicals = Firestore.firestore().collection("pets").document(petId).collection("medicals")
         let document = medicals.document()
         
-        let medicalRecord = Medical()
-        medicalRecord.id = document.documentID
-        medicalRecord.symptoms = symptoms
-        medicalRecord.dateOfVisit = dateOfVisit
-        medicalRecord.clinic = clinic
-        medicalRecord.vetOrder = vetOrder
+        medical.id = document.documentID
         
         do {
-            try document.setData(from: medicalRecord)
-            completion(Result.success(medicalRecord))
+            try document.setData(from: medical)
+            completion(Result.success(medical.id))
         } catch let error {
             print("set medicalRecord error:", error)
             completion(Result.failure(error))
@@ -143,12 +139,12 @@ class PetManager {
         }
     }
     
-    func updateMedical(petId: String, recordId: String, medical: Medical) { // completion
+    func updateMedical(petId: String, recordId: String, medical: Medical, completion: @escaping (Result<String, Error>) -> Void) {
         do {
             try dataBase.collection("pets").document(petId).collection("medicals").document(recordId).setData(from: medical)
-            print("update medical:", medical.id)
+            completion(.success("update medical: \(medical.id)"))
         } catch {
-            print("update medical error", error)
+            completion(.failure(error))
         }
     }
     
