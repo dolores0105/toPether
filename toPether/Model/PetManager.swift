@@ -245,19 +245,15 @@ class PetManager {
         }
     }
     
-    /* ---------------------Message---------------------------- */
-    // MARK: Message
-    func setMessage(petId: String, senderId: String, sentTime: Date, content: String, completion: @escaping (Result<Message, Error>) -> Void) {
+    // MARK: - Message
+    
+    func setMessage(petId: String, message: Message, completion: @escaping (Result<Message, Error>) -> Void) {
         
-        let messages = Firestore.firestore().collection("pets").document(petId).collection("messages")
+        let messages = dataBase.collection("pets").document(petId).collection("messages")
         let document = messages.document()
-        
-        let message = Message()
+
         message.id = document.documentID
-        message.senderId = senderId
-        message.sentTime = sentTime
-        message.content = content
-        
+
         do {
             try document.setData(from: message)
             completion(Result.success(message))

@@ -303,7 +303,12 @@ extension MessageViewController {
     @objc private func tapSend(_ sender: IconButton) {
         guard let messageContent = messageContent, let currentUser = MemberModel.shared.current else { return }
         
-        PetManager.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: messageContent) { [weak self] result in
+        let message = Message()
+        message.senderId = currentUser.id
+        message.sentTime = Date()
+        message.content = messageContent
+        
+        PetManager.shared.setMessage(petId: selectedPet.id, message: message) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let message):
