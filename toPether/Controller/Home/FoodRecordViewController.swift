@@ -292,19 +292,23 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                     let price = priceTextField.text,
                     let market = marketTextField.text,
                     let note = noteTextView.text  else { return }
+            let food = Food()
+            food.name = name
+            food.weight = weight
+            food.unit = unit
+            food.price = price
+            food.market = market
+            food.dateOfPurchase = dateOfPurchaseDatePicker.date
+            food.note = note
+            
             PetManager.shared.setFood(
                 petId: selectedPetId,
-                name: name,
-                weight: weight,
-                unit: unit,
-                price: price,
-                market: market,
-                dateOfPurchase: dateOfPurchaseDatePicker.date,
-                note: note) { [weak self] result in
+                food: food) { [weak self] result in
                     guard let self = self else { return }
                     
                     switch result {
-                    case .success(_):
+                    case .success(let foodId):
+                        print(foodId)
                         
                         LottieAnimation.shared.stopAnimation(lottieAnimation: self.loadingAnimationView)
                         

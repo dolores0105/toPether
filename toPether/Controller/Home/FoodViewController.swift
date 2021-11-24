@@ -94,31 +94,6 @@ class FoodViewController: UIViewController {
             foodTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        /* food CRUD
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        dateComponents.year = 2021
-        dateComponents.month = 8
-        dateComponents.day = 7
-        let mockdate = dateComponents.date
-        
-        PetManager.shared.setFood(
-            petId: selectedPet.id,
-            name: "Test food name",
-            weight: "800 weight",
-            unit: "kg",
-            price: "$ 1000",
-            market: "Shoppe",
-            dateOfPurchase: mockdate!,
-            note: "mock note") { result in
-            switch result {
-            case .success(let food):
-                print("food mock", food.dateOfPurchase)
-            case .failure(let error):
-                print("food mock error", error)
-            }
-        }
-         */
         PetManager.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {

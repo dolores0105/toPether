@@ -174,26 +174,17 @@ class PetManager {
         }
     }
     
-    /* ---------------------Food---------------------------- */
-    // MARK: Food
-    func setFood(petId: String, name: String, weight: String, unit: String, price: String, market: String, dateOfPurchase: Date, note: String, completion: @escaping (Result<Food, Error>) -> Void) {
+    // MARK: - Food
+    func setFood(petId: String, food: Food, completion: @escaping (Result<String, Error>) -> Void) {
         
         let foods = Firestore.firestore().collection("pets").document(petId).collection("foods")
         let document = foods.document()
         
-        let foodRecord = Food()
-        foodRecord.id = document.documentID
-        foodRecord.name = name
-        foodRecord.weight = weight
-        foodRecord.unit = unit
-        foodRecord.price = price
-        foodRecord.market = market
-        foodRecord.dateOfPurchase = dateOfPurchase
-        foodRecord.note = note
-        
+        food.id = document.documentID
+
         do {
-            try document.setData(from: foodRecord)
-            completion(Result.success(foodRecord))
+            try document.setData(from: food)
+            completion(Result.success("set food \(food.id)"))
         } catch let error {
             print("set foodRecord error:", error)
             completion(Result.failure(error))
