@@ -1,5 +1,5 @@
 //
-//  PetModel.swift
+//  PetManager.swift
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/19.
@@ -9,14 +9,14 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation
 
-class PetModel {
+class PetManager {
     
     private init() {}
-    static let shared = PetModel()
+    static let shared = PetManager()
     
     let dataBase = Firestore.firestore()
     
-    // MARK: pet
+    // MARK: - pet
     func getBirthday(year: Int, month: Int) -> Date? {
         let calendar = Calendar.current
         let today = Date()
@@ -30,22 +30,14 @@ class PetModel {
         return (components.year, components.month)
     }
     
-    func setPetData(name: String, gender: String, year: Int, month: Int, photo: UIImage, memberIds: [String], completion: @escaping (Result<String, Error>) -> Void) {
+    func setPetData(pet: Pet, photo: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
         guard let jpegData06 = photo.jpegData(compressionQuality: 0.2) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
-        guard let birthday = getBirthday(year: year, month: month) else { return }
+        let document = dataBase.collection("pets").document()
         
-        let pets = Firestore.firestore().collection("pets")
-        let document = pets.document()
-        
-        let pet = Pet()
         pet.id = document.documentID
-        pet.name = name
-        pet.gender = gender
-        pet.birthday = birthday
         pet.photo = imageBase64String
-        pet.memberIds = memberIds
         
         do {
             try document.setData(from: pet)
@@ -57,7 +49,6 @@ class PetModel {
         }
     }
     
-    // MARK: Query pets
     // Use petIds array of a members data to query pets data that is owned by that member
     func queryPets(ids: [String], completion: @escaping (Result<[Pet], Error>) -> Void) {
 
@@ -79,23 +70,28 @@ class PetModel {
         }
     }
     
-    func queryPet(id: String, completion: @escaping (Pet?) -> Void) {
+    func queryPet(id: String, completion: @escaping (Result<Pet?, Error>) -> Void) {
         dataBase.collection("pets").document(id).getDocument { (querySnapshot, error) in
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+            
             if let pet = try? querySnapshot?.data(as: Pet.self) {
-                completion(pet)
+                completion(.success(pet))
             } else {
-                completion(nil)
+                completion(.success(nil))
             }
         }
     }
     
-    // MARK: update
-    func updatePet(id: String, pet: Pet) {
+    // modify pet info or remove member from pet
+    func updatePet(id: String, pet: Pet, completion: @escaping (Result<String, Error>) -> Void) {
         do {
             try dataBase.collection("pets").document(id).setData(from: pet)
-            print("update pet:", pet.id)
+            completion(.success("update pet: \(pet.id)"))
         } catch {
-            print("update error", error)
+            completion(.failure(error))
         }
     }
     

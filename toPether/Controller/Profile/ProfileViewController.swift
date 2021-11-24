@@ -163,7 +163,7 @@ extension ProfileViewController: UITableViewDelegate {
             
             let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
                                                 message: "You'd need to be invited again, or you could not view previous info of this pet")
-            {
+            { // action after user tapped delete
                 // get the deleting pet
                 let pet = self.pets[indexPath.row]
                 
@@ -173,7 +173,15 @@ extension ProfileViewController: UITableViewDelegate {
                 
                 // update that pet's memberIds
                 pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-                PetModel.shared.updatePet(id: pet.id, pet: pet)
+                PetModel.shared.updatePet(id: pet.id, pet: pet) { result in
+                    switch result {
+                    case .success(let petId):
+                        print(petId)
+                        
+                    case .failure(let error):
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    }
+                }
                 
             }
             

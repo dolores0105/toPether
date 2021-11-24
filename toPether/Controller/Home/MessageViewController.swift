@@ -139,13 +139,19 @@ extension MessageViewController: UITableViewDelegate {
                             
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
-                            PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet)
-                            
-                            // filter messages
-                            self.filterMessages {
-                                self.messageTableView.reloadData()
+                            PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet) { result in
+                                switch result {
+                                case .success(let petId):
+                                    print(petId)
+                                    self.filterMessages {
+                                        self.messageTableView.reloadData()
+                                    }
+                                    
+                                case .failure(let error):
+                                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                                }
                             }
-
+                            
                         } else {
                             self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
                         }

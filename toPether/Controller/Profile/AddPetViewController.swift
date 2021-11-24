@@ -201,14 +201,14 @@ class AddPetViewController: UIViewController {
         if selectedPet == nil { // Create a pet
             var memberIds = [String]()
             memberIds.append(currentUser.id)
-            PetModel.shared.setPetData(
-                name: nameTextField.text ?? "no value",
-                gender: genderTextField.text ?? "male",
-                year: selectedYear ?? 0,
-                month: selectedMonth ?? 0,
-                photo: petImageView.image ?? Img.iconsEdit.obj,
-                memberIds: memberIds
-            ) { [weak self] result in
+            
+            let pet = Pet()
+            pet.name = nameTextField.text ?? "no value"
+            pet.gender = genderTextField.text ?? "male"
+            pet.birthday = PetModel.shared.getBirthday(year: selectedYear ?? 0, month: selectedMonth ?? 0) ?? Date()
+            pet.memberIds = memberIds
+            
+            PetModel.shared.setPetData(pet: pet, photo: petImageView.image ?? Img.iconsEdit.obj) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
@@ -233,8 +233,18 @@ class AddPetViewController: UIViewController {
             }
         } else { // Update pet
             guard let selectedPet = selectedPet else { return }
-            PetModel.shared.updatePet(id: selectedPet.id, pet: selectedPet)
-            navigationController?.popViewController(animated: true)
+            PetModel.shared.updatePet(id: selectedPet.id, pet: selectedPet) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let petId):
+                    print(petId)
+                    self.navigationController?.popViewController(animated: true)
+                    
+                case .failure(let error):
+                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                }
+            }
         }
     }
 }

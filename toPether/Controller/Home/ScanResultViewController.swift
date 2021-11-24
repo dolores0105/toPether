@@ -114,13 +114,19 @@ class ScanResultViewController: UIViewController {
         MemberModel.shared.updateMember(member: scannedMember)
         
         self.pet.memberIds.append(scannedMember.id)
-        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
-        
-        self.animationView.isHidden = false
-        self.animationView?.play(completion: { _ in
-            self.dismiss(animated: true, completion: nil)
-            self.delegate?.backToHomeVC()
-        })
+        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet) { result in
+            switch result {
+            case .success(let petId):
+                print(petId)
+                self.animationView.isHidden = false
+                self.animationView?.play(completion: { _ in
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate?.backToHomeVC()
+                })
+            case .failure(let error):
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+            }
+        }
     }
     
     @objc private func tapConfirm() {

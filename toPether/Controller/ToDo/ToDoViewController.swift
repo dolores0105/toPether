@@ -90,9 +90,17 @@ class ToDoViewController: UIViewController {
                         self.executorNameCache[todo.executorId] = member.name
                     }
                     
-                    PetModel.shared.queryPet(id: todo.petId) { pet in
-                        guard let pet = pet else { return }
-                        self.petNameCache[todo.petId] = pet.name
+                    PetModel.shared.queryPet(id: todo.petId) { result in
+                        
+                        switch result {
+                        case .success(let pet):
+                            
+                            guard let pet = pet else { return }
+                            self.petNameCache[todo.petId] = pet.name
+                            
+                        case .failure(let error):
+                            self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        }
                     }
                 }
                 
