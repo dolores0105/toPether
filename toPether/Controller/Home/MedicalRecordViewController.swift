@@ -193,7 +193,7 @@ class MedicalRecordViewController: UIViewController {
     
     @objc func tapOK() {
         if medical == nil {
-            PetModel.shared.setMedical(
+            PetManager.shared.setMedical(
                 petId: selectedPet.id,
                 symptoms: symptomsTextView.text ?? "no symptoms",
                 dateOfVisit: dateOfVisitDatePicker.date,
@@ -215,7 +215,7 @@ class MedicalRecordViewController: UIViewController {
             
             medical.dateOfVisit = dateOfVisitDatePicker.date // in case only update date
             
-            PetModel.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical)
+            PetManager.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical)
             self.navigationController?.popViewController(animated: true)
         }
     }

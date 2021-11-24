@@ -90,7 +90,7 @@ class ToDoViewController: UIViewController {
                         self.executorNameCache[todo.executorId] = member.name
                     }
                     
-                    PetModel.shared.queryPet(id: todo.petId) { result in
+                    PetManager.shared.queryPet(id: todo.petId) { result in
                         
                         switch result {
                         case .success(let pet):

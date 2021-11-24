@@ -85,7 +85,7 @@ class ProfileViewController: UIViewController {
     
     // MARK: functions
     func queryData(currentUser: Member) {
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -173,7 +173,7 @@ extension ProfileViewController: UITableViewDelegate {
                 
                 // update that pet's memberIds
                 pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-                PetModel.shared.updatePet(id: pet.id, pet: pet) { result in
+                PetManager.shared.updatePet(id: pet.id, pet: pet) { result in
                     switch result {
                     case .success(let petId):
                         print(petId)

@@ -102,7 +102,7 @@ class FoodViewController: UIViewController {
         dateComponents.day = 7
         let mockdate = dateComponents.date
         
-        PetModel.shared.setFood(
+        PetManager.shared.setFood(
             petId: selectedPet.id,
             name: "Test food name",
             weight: "800 weight",
@@ -119,7 +119,7 @@ class FoodViewController: UIViewController {
             }
         }
          */
-        PetModel.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let foods):
@@ -134,7 +134,7 @@ class FoodViewController: UIViewController {
             }
         }
         
-        PetModel.shared.addFoodsListener(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.addFoodsListener(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -200,7 +200,7 @@ extension FoodViewController: UITableViewDelegate {
             guard let self = self else { return }
             
             let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") {
-                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
+                PetManager.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
             }
             
             self.present(deleteAlert, animated: true)

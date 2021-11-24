@@ -69,7 +69,7 @@ class MessageViewController: UIViewController {
         configSendButton()
         
         // MARK: Data
-        PetModel.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let messages):
@@ -139,7 +139,7 @@ extension MessageViewController: UITableViewDelegate {
                             
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
-                            PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet) { result in
+                            PetManager.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet) { result in
                                 switch result {
                                 case .success(let petId):
                                     print(petId)
@@ -303,7 +303,7 @@ extension MessageViewController {
     @objc private func tapSend(_ sender: IconButton) {
         guard let messageContent = messageContent, let currentUser = MemberModel.shared.current else { return }
         
-        PetModel.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: messageContent) { [weak self] result in
+        PetManager.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: messageContent) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let message):

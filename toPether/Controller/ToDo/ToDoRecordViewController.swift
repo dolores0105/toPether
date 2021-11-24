@@ -38,7 +38,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var selectedPetName: String? {
         didSet {
             guard let selectedPetName = selectedPetName, let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
-            PetModel.shared.queryPet(id: petId) { result in
+            PetManager.shared.queryPet(id: petId) { result in
                 
                 switch result {
                 case .success(let pet):
@@ -98,7 +98,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         
         // MARK: Data
         guard let currentUser = MemberModel.shared.current else { return }
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let pets):
@@ -110,7 +110,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 
                 if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
 
-                    PetModel.shared.queryPet(id: petId) { result in
+                    PetManager.shared.queryPet(id: petId) { result in
                         
                         switch result {
                         case .success(let pet):
@@ -237,7 +237,7 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
             petTextField.text = selectedPetName
             
             let selectedPetId = Array(petNamesCache.keys)[row]
-            PetModel.shared.queryPet(id: selectedPetId) { result in
+            PetManager.shared.queryPet(id: selectedPetId) { result in
                 
                 switch result {
                 case .success(let pet):

@@ -114,7 +114,7 @@ class ScanResultViewController: UIViewController {
         MemberModel.shared.updateMember(member: scannedMember)
         
         self.pet.memberIds.append(scannedMember.id)
-        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet) { result in
+        PetManager.shared.updatePet(id: self.pet.id, pet: self.pet) { result in
             switch result {
             case .success(let petId):
                 print(petId)

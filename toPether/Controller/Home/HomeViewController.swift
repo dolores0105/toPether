@@ -142,7 +142,7 @@ class HomeViewController: UIViewController {
     }
     
     func queryData(currentUser: Member) {
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             
             switch result {

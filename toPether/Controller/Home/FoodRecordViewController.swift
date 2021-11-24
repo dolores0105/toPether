@@ -292,7 +292,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
                     let price = priceTextField.text,
                     let market = marketTextField.text,
                     let note = noteTextView.text  else { return }
-            PetModel.shared.setFood(
+            PetManager.shared.setFood(
                 petId: selectedPetId,
                 name: name,
                 weight: weight,
@@ -319,7 +319,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         }
         
         food.dateOfPurchase = dateOfPurchaseDatePicker.date // in case only update date
-        PetModel.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
+        PetManager.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
         self.navigationController?.popViewController(animated: true)
     }
 }
