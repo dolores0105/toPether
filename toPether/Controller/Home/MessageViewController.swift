@@ -129,8 +129,9 @@ extension MessageViewController: UITableViewDelegate {
 
                     let blockedMemberId = self.unblockedmessages[indexPath.row].senderId
                     
-                    MemberModel.shared.queryMember(id: blockedMemberId) { member in
-
+                    MemberModel.shared.queryMember(id: blockedMemberId) { [weak self] member in
+                        guard let self = self else { return }
+                        
                         if let member = member { // the member is existing
                             
                             // delete petIds of that member
@@ -139,10 +140,11 @@ extension MessageViewController: UITableViewDelegate {
                             
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
-                            PetManager.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet) { result in
+                            
+                            PetManager.shared.updatePetObject(petId: self.selectedPet.id, objectType: .pet, object: self.selectedPet) { result in
                                 switch result {
-                                case .success(let petId):
-                                    print(petId)
+                                case .success(let string):
+                                    print(string)
                                     self.filterMessages {
                                         self.messageTableView.reloadData()
                                     }

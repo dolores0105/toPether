@@ -51,14 +51,14 @@ class HomeViewController: UIViewController {
     }()
     
     private lazy var emptyTitleLabel: MediumLabel = {
-        let emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou haven’t in a pet group", textColor: .deepBlueGrey)
+        let emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou aren't in a pet group.", textColor: .deepBlueGrey)
         emptyTitleLabel.textAlignment = .center
         emptyTitleLabel.numberOfLines = 0
         return emptyTitleLabel
     }()
     
     private lazy var emptyContentLabel: RegularLabel = {
-        let emptyContentLabel = RegularLabel(size: 18, text: "Go profile page \nfor creating one or getting invited", textColor: .deepBlueGrey)
+        let emptyContentLabel = RegularLabel(size: 18, text: "Go to profile page \nto create one or get invited", textColor: .deepBlueGrey)
         emptyContentLabel.textAlignment = .center
         emptyContentLabel.numberOfLines = 0
         return emptyContentLabel

@@ -233,12 +233,13 @@ class AddPetViewController: UIViewController {
             }
         } else { // Update pet
             guard let selectedPet = selectedPet else { return }
-            PetManager.shared.updatePet(id: selectedPet.id, pet: selectedPet) { [weak self] result in
+
+            PetManager.shared.updatePetObject(petId: selectedPet.id, objectType: .pet, object: selectedPet) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
-                case .success(let petId):
-                    print(petId)
+                case .success(let string):
+                    print(string)
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let error):

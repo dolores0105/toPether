@@ -9,6 +9,12 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation
 
+enum PetObjectType {
+    case pet
+    case food
+    case medical
+}
+
 class PetManager {
     
     private init() {}
@@ -86,16 +92,6 @@ class PetManager {
         }
     }
     
-    // modify pet info or remove member from pet
-    func updatePet(id: String, pet: Pet, completion: @escaping (Result<String, Error>) -> Void) {
-        do {
-            try dataBase.collection("pets").document(id).setData(from: pet)
-            completion(.success("update pet: \(pet.id)"))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
     func addPetListener(pet: Pet, completion: @escaping (Result<Pet, Error>) -> Void) -> ListenerRegistration {
         dataBase.collection("pets").document(pet.id).addSnapshotListener { documentSnapshot, error in
             if let pet = try? documentSnapshot?.data(as: Pet.self) {
@@ -136,15 +132,6 @@ class PetManager {
             } else if let error = error {
                 completion(Result.failure(error))
             }
-        }
-    }
-    
-    func updateMedical(petId: String, recordId: String, medical: Medical, completion: @escaping (Result<String, Error>) -> Void) {
-        do {
-            try dataBase.collection("pets").document(petId).collection("medicals").document(recordId).setData(from: medical)
-            completion(.success("update medical: \(medical.id)"))
-        } catch {
-            completion(.failure(error))
         }
     }
     
@@ -207,19 +194,9 @@ class PetManager {
             }
         }
     }
-    
-    func updateFood(petId: String, recordId: String, food: Food) {
-        do {
-            try dataBase.collection("pets").document(petId).collection("foods").document(recordId).setData(from: food)
-            print("update food:", food.id)
-        } catch {
-            print("update food error", error)
-        }
-    }
-    
+
     func deleteFood(petId: String, recordId: String) {
-        dataBase.collection("pets").document(petId).collection("foods").document(recordId).delete() {
-            error in
+        dataBase.collection("pets").document(petId).collection("foods").document(recordId).delete() { error in
             if let error = error {
                 print("Error removing food document: \(error)")
             } else {
@@ -293,4 +270,36 @@ class PetManager {
             }
         }
     }
+    
+    // MARK: - General functions
+    func updatePetObject <T: Codable> (petId: String, recordId: String? = nil, objectType: PetObjectType, object: T, completion:  @escaping (Result<String, Error>) -> Void) {
+        
+        let documentRef: DocumentReference?
+        
+        switch objectType {
+        case .pet: // modify pet info or remove member from pet
+            documentRef = dataBase.collection("pets").document(petId)
+        case .food:
+            guard let recordId = recordId else { return }
+            documentRef = dataBase.collection("pets").document(petId).collection("foods").document(recordId)
+        case .medical:
+            guard let recordId = recordId else { return }
+            documentRef = dataBase.collection("pets").document(petId).collection("medicals").document(recordId)
+        }
+        
+        do {
+            guard let documentRef = documentRef else { return }
+            try documentRef.setData(from: object)
+            
+            guard let recordId = recordId else {
+                completion(.success("updated pet \(petId)"))
+                return
+            }
+            completion(.success("updated pet \(petId)'s  \(recordId)"))
+            
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
 }

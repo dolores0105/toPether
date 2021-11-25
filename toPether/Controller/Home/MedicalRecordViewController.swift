@@ -217,11 +217,11 @@ class MedicalRecordViewController: UIViewController {
         }
         // update medical
         medical.dateOfVisit = dateOfVisitDatePicker.date // in case only update date
-        
-        PetManager.shared.updateMedical(petId: selectedPet.id, recordId: medical.id, medical: medical) { result in
+
+        PetManager.shared.updatePetObject(petId: selectedPet.id, recordId: medical.id, objectType: .medical, object: medical) { result in
             switch result {
-            case .success(let medicalId):
-                print(medicalId)
+            case .success(let string):
+                print(string)
                 self.navigationController?.popViewController(animated: true)
                 
             case .failure(let error):

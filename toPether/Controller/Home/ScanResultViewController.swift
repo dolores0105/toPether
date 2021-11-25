@@ -114,10 +114,11 @@ class ScanResultViewController: UIViewController {
         MemberModel.shared.updateMember(member: scannedMember)
         
         self.pet.memberIds.append(scannedMember.id)
-        PetManager.shared.updatePet(id: self.pet.id, pet: self.pet) { result in
+
+        PetManager.shared.updatePetObject(petId: pet.id, objectType: .pet, object: pet) { result in
             switch result {
-            case .success(let petId):
-                print(petId)
+            case .success(let string):
+                print(string)
                 self.animationView.isHidden = false
                 self.animationView?.play(completion: { _ in
                     self.dismiss(animated: true, completion: nil)

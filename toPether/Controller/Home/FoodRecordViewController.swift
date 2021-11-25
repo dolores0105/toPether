@@ -312,8 +312,18 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         }
         
         food.dateOfPurchase = dateOfPurchaseDatePicker.date // in case only update date
-        PetManager.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
-        self.navigationController?.popViewController(animated: true)
+
+        PetManager.shared.updatePetObject(petId: selectedPetId, recordId: food.id, objectType: .food, object: food) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let string):
+                print(string)
+                self.navigationController?.popViewController(animated: true)
+            case .failure(let error):
+                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+            }
+        }
     }
     
     private func setFoodValue(food: Food) -> Food {

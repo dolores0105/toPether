@@ -173,16 +173,15 @@ extension ProfileViewController: UITableViewDelegate {
                 
                 // update that pet's memberIds
                 pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-                PetManager.shared.updatePet(id: pet.id, pet: pet) { result in
+                PetManager.shared.updatePetObject(petId: pet.id, objectType: .pet, object: pet) { result in
                     switch result {
-                    case .success(let petId):
-                        print(petId)
-                        
+                    case .success(let string):
+                        print(string)
+
                     case .failure(let error):
                         self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                     }
                 }
-                
             }
             
             self.present(deleteAlert, animated: true)
