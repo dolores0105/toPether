@@ -82,18 +82,10 @@ class HomeViewController: UIViewController {
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(.added(members: let members)):
+            case .success(.added(members: let members)), .success(.modified(members: let members)), .success(.removed(members: let members)):
                 self.queryData(currentUser: members.first ?? self.currentUser)
                 MemberModel.shared.current = members.first
-                
-            case .success(.modified(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                
-            case .success(.removed(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                
+
             case .failure(let error):
                 print("lisener error at profileVC", error)
                 self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
@@ -104,17 +96,7 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         self.navigationItem.title = "toPether"
         
         self.tabBarController?.tabBar.isHidden = false
@@ -141,7 +123,7 @@ class HomeViewController: UIViewController {
         // switch
     }
     
-    func queryData(currentUser: Member) {
+    private func queryData(currentUser: Member) {
         PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             
@@ -165,7 +147,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func authorizeCamera() -> Bool {
+    private func authorizeCamera() -> Bool {
         let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
         switch cameraStatus {
         case .notDetermined:
@@ -191,7 +173,7 @@ class HomeViewController: UIViewController {
         return false
     }
     
-    func presentGoSettingAlert() {
+    private func presentGoSettingAlert() {
         
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: "toPether would like to access the Camera", message: "Please turn on the setting for scanning members' QRCode", preferredStyle: .alert)
