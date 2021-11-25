@@ -139,7 +139,7 @@ extension FoodViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: FoodTableViewCell.identifier, for: indexPath)
         guard let foodCell = cell as? FoodTableViewCell else { return cell }
         foodCell.selectionStyle = .none
         

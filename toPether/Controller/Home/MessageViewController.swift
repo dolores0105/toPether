@@ -179,9 +179,9 @@ extension MessageViewController: UITableViewDataSource {
         
         var msgCell: MessageTableViewCell?
         if message.senderId ==  MemberModel.shared.current?.id {
-            msgCell = tableView.dequeueReusableCell(withIdentifier: "RightMessageTableViewCell", for: indexPath) as? RightMessageTableViewCell
+            msgCell = tableView.dequeueReusableCell(withIdentifier: RightMessageTableViewCell.identifier, for: indexPath) as? RightMessageTableViewCell
         } else {
-            msgCell = tableView.dequeueReusableCell(withIdentifier: "LeftMessageTableViewCell", for: indexPath) as? LeftMessageTableViewCell
+            msgCell = tableView.dequeueReusableCell(withIdentifier: LeftMessageTableViewCell.identifier, for: indexPath) as? LeftMessageTableViewCell
         }
         msgCell?.reload(message: message, senderName: senderName)
         return msgCell ?? .init()

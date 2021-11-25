@@ -203,7 +203,7 @@ extension ToDoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ToDoTableViewCell.identifier, for: indexPath)
         guard let toDoCell = cell as? ToDoTableViewCell else { return cell }
         
         let todo = toDos[indexPath.row]

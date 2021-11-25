@@ -144,7 +144,7 @@ extension MedicalViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: MedicalTableViewCell.identifier, for: indexPath)
         guard let medicalCell = cell as? MedicalTableViewCell else { return cell }
         medicalCell.selectionStyle = .none
         

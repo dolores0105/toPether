@@ -132,7 +132,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: PetTableViewCell.identifier, for: indexPath)
         guard let petCell = cell as? PetTableViewCell else { return cell }
         petCell.selectionStyle = .none
         petCell.reload(pet: pets[indexPath.row])
