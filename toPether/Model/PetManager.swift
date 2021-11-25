@@ -3,7 +3,6 @@
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/19.
-// swiftlint:disable function_parameter_count
 
 import FirebaseFirestore
 import FirebaseFirestoreSwift
@@ -20,7 +19,7 @@ class PetManager {
     private init() {}
     static let shared = PetManager()
     
-    let dataBase = Firestore.firestore()
+    let dataBase = Firestore.firestore().collection("pets")
     
     // MARK: - pet
     
@@ -41,7 +40,7 @@ class PetManager {
         guard let jpegData06 = photo.jpegData(compressionQuality: 0.2) else { return }
         let imageBase64String = jpegData06.base64EncodedString()
         
-        let document = dataBase.collection("pets").document()
+        let document = dataBase.document()
         
         pet.id = document.documentID
         pet.photo = imageBase64String
@@ -63,7 +62,7 @@ class PetManager {
             completion(Result.failure(CommonError.emptyArrayInFilter))
             return
         }
-        dataBase.collection("pets").whereField(FieldPath.documentID(), in: ids).order(by: FieldPath.documentID()).getDocuments { (querySnapshot, error) in
+        dataBase.whereField(FieldPath.documentID(), in: ids).order(by: FieldPath.documentID()).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
                 let pets = querySnapshot.documents.compactMap({ querySnapshot in
@@ -78,7 +77,7 @@ class PetManager {
     }
     
     func queryPet(id: String, completion: @escaping (Result<Pet?, Error>) -> Void) {
-        dataBase.collection("pets").document(id).getDocument { (querySnapshot, error) in
+        dataBase.document(id).getDocument { (querySnapshot, error) in
             
             if let error = error {
                 completion(.failure(error))
@@ -93,7 +92,7 @@ class PetManager {
     }
     
     func addPetListener(pet: Pet, completion: @escaping (Result<Pet, Error>) -> Void) -> ListenerRegistration {
-        dataBase.collection("pets").document(pet.id).addSnapshotListener { documentSnapshot, error in
+        dataBase.document(pet.id).addSnapshotListener { documentSnapshot, error in
             if let pet = try? documentSnapshot?.data(as: Pet.self) {
                 completion(.success(pet))
             } else if let error = error {
@@ -106,7 +105,7 @@ class PetManager {
     
     func setMedical(petId: String, medical: Medical, completion: @escaping (Result<String, Error>) -> Void) {
         
-        let medicals = Firestore.firestore().collection("pets").document(petId).collection("medicals")
+        let medicals = dataBase.document(petId).collection("medicals")
         let document = medicals.document()
         
         medical.id = document.documentID
@@ -121,7 +120,7 @@ class PetManager {
     }
     
     func queryMedicals(petId: String, completion: @escaping (Result<[Medical], Error>) -> Void) {
-        dataBase.collection("pets").document(petId).collection("medicals").order(by: "dateOfVisit", descending: true).getDocuments { (querySnapshot, error) in
+        dataBase.document(petId).collection("medicals").order(by: "dateOfVisit", descending: true).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
                 let medicals = querySnapshot.documents.compactMap({ querySnapshot in
@@ -135,18 +134,8 @@ class PetManager {
         }
     }
     
-    func deleteMedical(petId: String, recordId: String) { // completion
-        dataBase.collection("pets").document(petId).collection("medicals").document(recordId).delete() { error in
-            if let error = error {
-                print("Error removing medical document: \(error)")
-            } else {
-                print("removed", recordId)
-            }
-        }
-    }
-    
     func addMedicalsListener(petId: String, completion: @escaping (Result<[Medical], Error>) -> Void) {
-        dataBase.collection("pets").document(petId).collection("medicals").addSnapshotListener { querySnapshot, error in
+        dataBase.document(petId).collection("medicals").addSnapshotListener { querySnapshot, error in
             
             if let querySnapshot = querySnapshot {
                 let medicals = querySnapshot.documents.compactMap({ querySnapshot in
@@ -164,7 +153,7 @@ class PetManager {
     // MARK: - Food
     func setFood(petId: String, food: Food, completion: @escaping (Result<String, Error>) -> Void) {
         
-        let foods = Firestore.firestore().collection("pets").document(petId).collection("foods")
+        let foods = dataBase.document(petId).collection("foods")
         let document = foods.document()
         
         food.id = document.documentID
@@ -180,7 +169,7 @@ class PetManager {
     
     func queryFoods(petId: String, completion: @escaping (Result<[Food], Error>) -> Void) {
         
-        dataBase.collection("pets").document(petId).collection("foods").order(by: "dateOfPurchase", descending: true).getDocuments { (querySnapshot, error) in
+        dataBase.document(petId).collection("foods").order(by: "dateOfPurchase", descending: true).getDocuments { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 
@@ -195,18 +184,8 @@ class PetManager {
         }
     }
 
-    func deleteFood(petId: String, recordId: String) {
-        dataBase.collection("pets").document(petId).collection("foods").document(recordId).delete() { error in
-            if let error = error {
-                print("Error removing food document: \(error)")
-            } else {
-                print("removed food", recordId)
-            }
-        }
-    }
-    
     func addFoodsListener(petId: String, completion: @escaping (Result<[Food], Error>) -> Void) {
-        dataBase.collection("pets").document(petId).collection("foods").addSnapshotListener { querySnapshot, error in
+        dataBase.document(petId).collection("foods").addSnapshotListener { querySnapshot, error in
             
             if let querySnapshot = querySnapshot {
                 let foods = querySnapshot.documents.compactMap({ querySnapshot in
@@ -226,7 +205,7 @@ class PetManager {
     
     func setMessage(petId: String, message: Message, completion: @escaping (Result<Message, Error>) -> Void) {
         
-        let messages = dataBase.collection("pets").document(petId).collection("messages")
+        let messages = dataBase.document(petId).collection("messages")
         let document = messages.document()
 
         message.id = document.documentID
@@ -241,7 +220,7 @@ class PetManager {
     }
     
     func queryMessages(petId: String, completion: @escaping (Result<[Message], Error>) -> Void) {
-        dataBase.collection("pets").document(petId).collection("messages").order(by: "sentTime", descending: false).getDocuments { (querySnapshot, error) in
+        dataBase.document(petId).collection("messages").order(by: "sentTime", descending: false).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot {
                 
                 let messages = querySnapshot.documents.compactMap({ querySnapshot in
@@ -256,7 +235,7 @@ class PetManager {
     }
     
     func addMessagesListener(petId: String, completion: @escaping (Result<[Message], Error>) -> Void) {
-        dataBase.collection("pets").document(petId).collection("messages").addSnapshotListener { querySnapshot, error in
+        dataBase.document(petId).collection("messages").addSnapshotListener { querySnapshot, error in
             
             if let querySnapshot = querySnapshot {
                 let messages = querySnapshot.documents.compactMap({ querySnapshot in
@@ -278,13 +257,13 @@ class PetManager {
         
         switch objectType {
         case .pet: // modify pet info or remove member from pet
-            documentRef = dataBase.collection("pets").document(petId)
+            documentRef = dataBase.document(petId)
         case .food:
             guard let recordId = recordId else { return }
-            documentRef = dataBase.collection("pets").document(petId).collection("foods").document(recordId)
+            documentRef = dataBase.document(petId).collection("foods").document(recordId)
         case .medical:
             guard let recordId = recordId else { return }
-            documentRef = dataBase.collection("pets").document(petId).collection("medicals").document(recordId)
+            documentRef = dataBase.document(petId).collection("medicals").document(recordId)
         }
         
         do {
@@ -301,5 +280,27 @@ class PetManager {
             completion(.failure(error))
         }
     }
-
+    
+    func deletePetObject(petId: String, recordId: String, objectType: PetObjectType, completion:  @escaping (Result<String, Error>) -> Void) {
+        
+        let documentRef: DocumentReference?
+        
+        switch objectType {
+        case .pet: // modify pet info or remove member from pet
+            documentRef = dataBase.document(petId)
+        case .food:
+            documentRef = dataBase.document(petId).collection("foods").document(recordId)
+        case .medical:
+            documentRef = dataBase.document(petId).collection("medicals").document(recordId)
+        }
+        
+        guard let documentRef = documentRef else { return }
+        documentRef.delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success("deleted pet \(petId)'s  \(recordId)"))
+            }
+        }
+    }
 }

@@ -170,12 +170,20 @@ extension FoodViewController: UITableViewDataSource {
 
 extension FoodViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "delete") {
-            [weak self] (_, _, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") {
-                PetManager.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
+            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") { [weak self] in
+                guard let self = self else { return }
+                
+                PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id, objectType: .food) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string)
+                    case .failure(let error):
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    }
+                }
             }
             
             self.present(deleteAlert, animated: true)
