@@ -57,7 +57,7 @@ class SettingViewController: UIViewController {
             
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
-            self.presentErrorAlert(title: "Something went wrong", message: signOutError.localizedDescription + " Please try again")
+            self.presentErrorAlert(message: signOutError.localizedDescription + " Please try again")
         }
     }
 }

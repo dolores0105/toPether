@@ -96,7 +96,7 @@ class MessageViewController: UIViewController {
                 
             case .failure(let error):
                 print(error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -141,12 +141,12 @@ extension MessageViewController: UITableViewDelegate {
                                     }
                                     
                                 case .failure(let error):
-                                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                                 }
                             }
                             
                         } else {
-                            self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
+                            self.presentErrorAlert(message: "The member doesn't exist, please try a again later")
                         }
                     }
                 }
@@ -312,7 +312,7 @@ extension MessageViewController {
                 
             case .failure(let error):
                 print(error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }

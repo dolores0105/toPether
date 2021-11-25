@@ -125,7 +125,7 @@ class ScanResultViewController: UIViewController {
                     self.delegate?.backToHomeVC()
                 })
             case .failure(let error):
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }

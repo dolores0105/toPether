@@ -201,7 +201,7 @@ class MedicalRecordViewController: UIViewController {
                         
                     case .failure(let error):
                         print("set medical record error:", error)
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             return
@@ -216,7 +216,7 @@ class MedicalRecordViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
                 
             case .failure(let error):
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }

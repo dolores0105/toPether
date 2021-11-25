@@ -47,7 +47,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     self.queryMemberNames(pet: pet)
                     
                 case .failure(let error):
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
         }
@@ -109,7 +109,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                             self.queryMemberNames(pet: pet)
                             
                         case .failure(let error):
-                            self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                         }
                     }
                 } else {
@@ -119,7 +119,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 
             case .failure(let error):
                 print("Query currentUser's pets error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     
@@ -148,7 +148,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     
                 case .failure(let error):
                     print("Create todo error", error)
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
             return
@@ -186,7 +186,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Query members' names error, please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Query members' names error, please try again")
             }
         }
     }
@@ -236,7 +236,7 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                     self.queryMemberNames(pet: pet)
                     
                 case .failure(let error):
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
             

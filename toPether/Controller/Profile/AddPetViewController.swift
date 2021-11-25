@@ -219,7 +219,7 @@ class AddPetViewController: UIViewController {
                     
                 case .failure(let error):
                     print("update petId to currentUser error:", error)
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
         } else { // Update pet
@@ -234,7 +234,7 @@ class AddPetViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let error):
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
         }
