@@ -164,7 +164,7 @@ extension FoodViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") { [weak self] in
+            self.presentDeleteAlert(title: "Delete food record") { [weak self] in
                 guard let self = self else { return }
                 
                 PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id, objectType: .food) { result in
@@ -172,12 +172,10 @@ extension FoodViewController: UITableViewDelegate {
                     case .success(let string):
                         print(string)
                     case .failure(let error):
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             }
-            
-            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

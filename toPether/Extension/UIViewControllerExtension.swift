@@ -22,7 +22,7 @@ extension UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func presentErrorAlert(title: String?, message: String?, completion: (() -> Void)? = nil) {
+    func presentErrorAlert(title: String? = "Something went wrong", message: String?, completion: (() -> Void)? = nil) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -46,6 +46,20 @@ extension UIViewController {
         
         alert.addAction(blockAction)
         alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func presentDeleteAlert(title: String, message: String? = "Do you want to delete this record?", completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            guard let completion = completion else { return }
+            completion()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
         
         present(alert, animated: true, completion: nil)
     }

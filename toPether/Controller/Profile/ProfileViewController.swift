@@ -152,9 +152,8 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
-                                                message: "You'd need to be invited again, or you could not view previous info of this pet")
-            { // action after user tapped delete
+            self.presentDeleteAlert(title: "Delete furkid",
+                                    message: "You'd need to be invited again, or you could not view previous info of this pet") { // action after user tapped delete
                 // get the deleting pet
                 let pet = self.pets[indexPath.row]
                 
@@ -170,12 +169,10 @@ extension ProfileViewController: UITableViewDelegate {
                         print(string)
 
                     case .failure(let error):
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             }
-            
-            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

@@ -32,7 +32,6 @@
 		392B4752273C07A2001F203B /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4751273C07A2001F203B /* ShadowView.swift */; };
 		392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */; };
 		392B4756273CC2F8001F203B /* lottieLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4755273CC2F8001F203B /* lottieLoading.json */; };
-		392B4758273D5EB8001F203B /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4757273D5EB7001F203B /* Alert.swift */; };
 		392CDBF8274633E20000A514 /* lottieDogSitting.json in Resources */ = {isa = PBXBuildFile; fileRef = 392CDBF7274633E20000A514 /* lottieDogSitting.json */; };
 		392CDBFA2746602D0000A514 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */; };
 		392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBFB2747B6630000A514 /* EULAViewController.swift */; };
@@ -113,7 +112,6 @@
 		392B4751273C07A2001F203B /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		392B4755273CC2F8001F203B /* lottieLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieLoading.json; sourceTree = "<group>"; };
-		392B4757273D5EB7001F203B /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		392CDBF7274633E20000A514 /* lottieDogSitting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieDogSitting.json; sourceTree = "<group>"; };
 		392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		392CDBFB2747B6630000A514 /* EULAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAViewController.swift; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 				3981607F272D9DA30033930D /* LineView.swift */,
 				395570FF273514CD003AF098 /* CardView.swift */,
 				392B4751273C07A2001F203B /* ShadowView.swift */,
-				392B4757273D5EB7001F203B /* Alert.swift */,
 				39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */,
 				39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */,
 				3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */,
@@ -562,7 +559,6 @@
 				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
-				392B4758273D5EB8001F203B /* Alert.swift in Sources */,
 				39557100273514CD003AF098 /* CardView.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
 				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,

@@ -169,20 +169,17 @@ extension MedicalViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete medical record", message: "Do you want to delete this record?") {
+            self.presentDeleteAlert(title: "Delete medical record") {
 
                 PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id, objectType: .medical) { result in
                     switch result {
                     case .success(let string):
                         print(string)
                     case .failure(let error):
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             }
-            
-            self.present(deleteAlert, animated: true)
-            
             
             completionHandler(true)
         }

@@ -234,7 +234,7 @@ extension ToDoViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete todo", message: "Do you want to delete this todo?") {
+            self.presentDeleteAlert(title: "Delete todo", message: "Do you want to delete this todo?") {
                 
                 let deleteId = self.toDos[indexPath.row].id
                 let deleteContent = self.toDos[indexPath.row].content
@@ -245,15 +245,13 @@ extension ToDoViewController: UITableViewDelegate {
                         print("deleted \(deleteId), \(deleteContent)")
                         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
                     } else {
-                        print("delete error")
-                        self.presentErrorAlert(title: "Something went wrong", message: "Please try again")
+                        
+                        self.presentErrorAlert(message: "Please try again")
                     }
                 }
                 
             }
-            
-            self.present(deleteAlert, animated: true)
-            
+                        
             completionHandler(true)
         }
         
