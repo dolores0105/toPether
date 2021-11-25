@@ -94,32 +94,7 @@ class FoodViewController: UIViewController {
             foodTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        /* food CRUD
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        dateComponents.year = 2021
-        dateComponents.month = 8
-        dateComponents.day = 7
-        let mockdate = dateComponents.date
-        
-        PetModel.shared.setFood(
-            petId: selectedPet.id,
-            name: "Test food name",
-            weight: "800 weight",
-            unit: "kg",
-            price: "$ 1000",
-            market: "Shoppe",
-            dateOfPurchase: mockdate!,
-            note: "mock note") { result in
-            switch result {
-            case .success(let food):
-                print("food mock", food.dateOfPurchase)
-            case .failure(let error):
-                print("food mock error", error)
-            }
-        }
-         */
-        PetModel.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let foods):
@@ -134,7 +109,7 @@ class FoodViewController: UIViewController {
             }
         }
         
-        PetModel.shared.addFoodsListener(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.addFoodsListener(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -195,12 +170,20 @@ extension FoodViewController: UITableViewDataSource {
 
 extension FoodViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "delete") {
-            [weak self] (_, _, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") {
-                PetModel.shared.deleteFood(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id)
+            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") { [weak self] in
+                guard let self = self else { return }
+                
+                PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id, objectType: .food) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string)
+                    case .failure(let error):
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    }
+                }
             }
             
             self.present(deleteAlert, animated: true)

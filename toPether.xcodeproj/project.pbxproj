@@ -12,7 +12,7 @@
 		3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFontExtension.swift */; };
 		3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColorExtension.swift */; };
 		390791A3271E66E500B4735B /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A2271E66E400B4735B /* BorderButton.swift */; };
-		390791A6271E78F800B4735B /* PetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A5271E78F800B4735B /* PetModel.swift */; };
+		390791A6271E78F800B4735B /* PetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A5271E78F800B4735B /* PetManager.swift */; };
 		390791A8271E8C9900B4735B /* DataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A7271E8C9900B4735B /* DataStructure.swift */; };
 		390791AA271ECECA00B4735B /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A9271ECEC900B4735B /* CircleButton.swift */; };
 		390791AC271ECF1E00B4735B /* IconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AB271ECF1E00B4735B /* IconButton.swift */; };
@@ -93,7 +93,7 @@
 		3907919C271DB56900B4735B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		3907919E271DB6A600B4735B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		390791A2271E66E400B4735B /* BorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
-		390791A5271E78F800B4735B /* PetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetModel.swift; sourceTree = "<group>"; };
+		390791A5271E78F800B4735B /* PetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetManager.swift; sourceTree = "<group>"; };
 		390791A7271E8C9900B4735B /* DataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructure.swift; sourceTree = "<group>"; };
 		390791A9271ECEC900B4735B /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		390791AB271ECF1E00B4735B /* IconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconButton.swift; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 		390791A4271E78C400B4735B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				390791A5271E78F800B4735B /* PetModel.swift */,
+				390791A5271E78F800B4735B /* PetManager.swift */,
 				395FD00F27215D18005911AA /* MemberModel.swift */,
 				395D04AE27391B9D0013AF9A /* ToDoManager.swift */,
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
@@ -573,7 +573,7 @@
 				3960E6B027414E81003E05FE /* BlueBorderTextView.swift in Sources */,
 				392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,
-				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
+				390791A6271E78F800B4735B /* PetManager.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				39856C52273E59AA0071AE13 /* LottieWraper.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,

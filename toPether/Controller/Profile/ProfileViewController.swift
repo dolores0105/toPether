@@ -85,7 +85,7 @@ class ProfileViewController: UIViewController {
     
     // MARK: functions
     func queryData(currentUser: Member) {
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -163,7 +163,7 @@ extension ProfileViewController: UITableViewDelegate {
             
             let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
                                                 message: "You'd need to be invited again, or you could not view previous info of this pet")
-            {
+            { // action after user tapped delete
                 // get the deleting pet
                 let pet = self.pets[indexPath.row]
                 
@@ -173,8 +173,15 @@ extension ProfileViewController: UITableViewDelegate {
                 
                 // update that pet's memberIds
                 pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-                PetModel.shared.updatePet(id: pet.id, pet: pet)
-                
+                PetManager.shared.updatePetObject(petId: pet.id, objectType: .pet, object: pet) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string)
+
+                    case .failure(let error):
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    }
+                }
             }
             
             self.present(deleteAlert, animated: true)

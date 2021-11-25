@@ -127,7 +127,7 @@ class PetTableViewCell: UITableViewCell {
     func addListener(pet: Pet) {
             listener?.remove() // remove instance listener, Stop listening to changes
         // add pet listener
-            listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
+            listener = PetManager.shared.addPetListener(pet: pet, completion: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let pet):

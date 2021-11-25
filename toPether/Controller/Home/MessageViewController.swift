@@ -69,7 +69,7 @@ class MessageViewController: UIViewController {
         configSendButton()
         
         // MARK: Data
-        PetModel.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let messages):
@@ -129,8 +129,9 @@ extension MessageViewController: UITableViewDelegate {
 
                     let blockedMemberId = self.unblockedmessages[indexPath.row].senderId
                     
-                    MemberModel.shared.queryMember(id: blockedMemberId) { member in
-
+                    MemberModel.shared.queryMember(id: blockedMemberId) { [weak self] member in
+                        guard let self = self else { return }
+                        
                         if let member = member { // the member is existing
                             
                             // delete petIds of that member
@@ -139,13 +140,20 @@ extension MessageViewController: UITableViewDelegate {
                             
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
-                            PetModel.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet)
                             
-                            // filter messages
-                            self.filterMessages {
-                                self.messageTableView.reloadData()
+                            PetManager.shared.updatePetObject(petId: self.selectedPet.id, objectType: .pet, object: self.selectedPet) { result in
+                                switch result {
+                                case .success(let string):
+                                    print(string)
+                                    self.filterMessages {
+                                        self.messageTableView.reloadData()
+                                    }
+                                    
+                                case .failure(let error):
+                                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                                }
                             }
-
+                            
                         } else {
                             self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
                         }
@@ -297,7 +305,12 @@ extension MessageViewController {
     @objc private func tapSend(_ sender: IconButton) {
         guard let messageContent = messageContent, let currentUser = MemberModel.shared.current else { return }
         
-        PetModel.shared.setMessage(petId: selectedPet.id, senderId: currentUser.id, sentTime: Date(), content: messageContent) { [weak self] result in
+        let message = Message()
+        message.senderId = currentUser.id
+        message.sentTime = Date()
+        message.content = messageContent
+        
+        PetManager.shared.setMessage(petId: selectedPet.id, message: message) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let message):

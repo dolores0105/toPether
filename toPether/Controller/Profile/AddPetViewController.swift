@@ -183,7 +183,7 @@ class AddPetViewController: UIViewController {
         uploadImageView.isHidden = true
         nameTextField.text = pet.name
         genderTextField.text = pet.gender
-        (selectedYear, selectedMonth) = PetModel.shared.getYearMonth(from: pet.birthday)
+        (selectedYear, selectedMonth) = PetManager.shared.getYearMonth(from: pet.birthday)
         ageTextField.text = "\(selectedYear ?? 0) year" + " \(selectedMonth ?? 0) month"
     }
     
@@ -201,14 +201,14 @@ class AddPetViewController: UIViewController {
         if selectedPet == nil { // Create a pet
             var memberIds = [String]()
             memberIds.append(currentUser.id)
-            PetModel.shared.setPetData(
-                name: nameTextField.text ?? "no value",
-                gender: genderTextField.text ?? "male",
-                year: selectedYear ?? 0,
-                month: selectedMonth ?? 0,
-                photo: petImageView.image ?? Img.iconsEdit.obj,
-                memberIds: memberIds
-            ) { [weak self] result in
+            
+            let pet = Pet()
+            pet.name = nameTextField.text ?? "no value"
+            pet.gender = genderTextField.text ?? "male"
+            pet.birthday = PetManager.shared.getBirthday(year: selectedYear ?? 0, month: selectedMonth ?? 0) ?? Date()
+            pet.memberIds = memberIds
+            
+            PetManager.shared.setPetData(pet: pet, photo: petImageView.image ?? Img.iconsEdit.obj) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
@@ -233,8 +233,19 @@ class AddPetViewController: UIViewController {
             }
         } else { // Update pet
             guard let selectedPet = selectedPet else { return }
-            PetModel.shared.updatePet(id: selectedPet.id, pet: selectedPet)
-            navigationController?.popViewController(animated: true)
+
+            PetManager.shared.updatePetObject(petId: selectedPet.id, objectType: .pet, object: selectedPet) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let string):
+                    print(string)
+                    self.navigationController?.popViewController(animated: true)
+                    
+                case .failure(let error):
+                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                }
+            }
         }
     }
 }
@@ -284,7 +295,7 @@ extension AddPetViewController: UITextFieldDelegate {
             guard let selectedPet = selectedPet else { return }
             selectedPet.name = nameTextField.text!
             selectedPet.gender = genderTextField.text!
-            guard let birthday = PetModel.shared.getBirthday(year: selectedYear!, month: selectedMonth!) else { return }
+            guard let birthday = PetManager.shared.getBirthday(year: selectedYear!, month: selectedMonth!) else { return }
             selectedPet.birthday = birthday
             
         } else {

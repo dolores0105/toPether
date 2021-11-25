@@ -37,13 +37,18 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var petNamesCache = [String: String]()
     private var selectedPetName: String? {
         didSet {
-            guard let selectedPetName = selectedPetName else { return }
-            guard let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
-            PetModel.shared.queryPet(id: petId) { pet in
-                guard let pet = pet else {
-                    return
+            guard let selectedPetName = selectedPetName, let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
+            PetManager.shared.queryPet(id: petId) { result in
+                
+                switch result {
+                case .success(let pet):
+                    
+                    guard let pet = pet else { return }
+                    self.queryMemberNames(pet: pet)
+                    
+                case .failure(let error):
+                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                 }
-                self.queryMemberNames(pet: pet)
             }
         }
     }
@@ -93,7 +98,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         
         // MARK: Data
         guard let currentUser = MemberModel.shared.current else { return }
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let pets):
@@ -104,12 +109,18 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
                 
                 if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
-                    
-                    PetModel.shared.queryPet(id: petId) { pet in
-                        guard let pet = pet else {
-                            return
+
+                    PetManager.shared.queryPet(id: petId) { result in
+                        
+                        switch result {
+                        case .success(let pet):
+                            
+                            guard let pet = pet else { return }
+                            self.queryMemberNames(pet: pet)
+                            
+                        case .failure(let error):
+                            self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
                         }
-                        self.queryMemberNames(pet: pet)
                     }
                 } else {
                     self.petTextField.text = self.petNamesCache.first?.value
@@ -226,12 +237,17 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
             petTextField.text = selectedPetName
             
             let selectedPetId = Array(petNamesCache.keys)[row]
-            PetModel.shared.queryPet(id: selectedPetId) { pet in
-                guard let pet = pet else {
-                    return // didn't find pet
-                }
+            PetManager.shared.queryPet(id: selectedPetId) { result in
                 
-                self.queryMemberNames(pet: pet)
+                switch result {
+                case .success(let pet):
+                    
+                    guard let pet = pet else { return }
+                    self.queryMemberNames(pet: pet)
+                    
+                case .failure(let error):
+                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                }
             }
             
         case executorPickerView:

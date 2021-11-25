@@ -99,7 +99,7 @@ class MedicalViewController: UIViewController {
         ])
         
         // MARK: data
-        PetModel.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let records):
@@ -111,7 +111,7 @@ class MedicalViewController: UIViewController {
             }
         }
         
-        PetModel.shared.addMedicalsListener(petId: selectedPet.id) { [weak self] result in
+        PetManager.shared.addMedicalsListener(petId: selectedPet.id) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -180,7 +180,14 @@ extension MedicalViewController: UITableViewDelegate {
             
             let deleteAlert = Alert.deleteAlert(title: "Delete medical record", message: "Do you want to delete this record?") {
 
-                PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id)
+                PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id, objectType: .medical) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string)
+                    case .failure(let error):
+                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    }
+                }
             }
             
             self.present(deleteAlert, animated: true)
