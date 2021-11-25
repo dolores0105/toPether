@@ -47,6 +47,7 @@
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
 		395A2EF6274F919300A44C17 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */; };
+		395A2EF8274F92EC00A44C17 /* UICollectionViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */; };
 		395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */; };
 		395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AE27391B9D0013AF9A /* ToDoManager.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
@@ -128,6 +129,7 @@
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
 		395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
+		395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCellExtension.swift; sourceTree = "<group>"; };
 		395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
 		395D04AE27391B9D0013AF9A /* ToDoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoManager.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				392B474B273A9FC1001F203B /* DictionaryExtension.swift */,
 				392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */,
 				395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */,
+				395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -597,6 +600,7 @@
 				3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */,
 				390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */,
 				39856C54273E78F80071AE13 /* IconLabelVerticalStackView.swift in Sources */,
+				395A2EF8274F92EC00A44C17 /* UICollectionViewCellExtension.swift in Sources */,
 				394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */,
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,
