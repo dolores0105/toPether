@@ -286,24 +286,13 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         configLoadingAnimation()
         
         guard let food = food else {
-            guard let name = nameTextField.text,
-                    let weight = weightTextField.text,
-                    let unit = unitTextField.text,
-                    let price = priceTextField.text,
-                    let market = marketTextField.text,
-                    let note = noteTextView.text  else { return }
-            let food = Food()
-            food.name = name
-            food.weight = weight
-            food.unit = unit
-            food.price = price
-            food.market = market
-            food.dateOfPurchase = dateOfPurchaseDatePicker.date
-            food.note = note
+
+            var newFood = Food()
+            newFood = setFoodValue(food: newFood)
             
             PetManager.shared.setFood(
                 petId: selectedPetId,
-                food: food) { [weak self] result in
+                food: newFood) { [weak self] result in
                     guard let self = self else { return }
                     
                     switch result {
@@ -326,35 +315,30 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         PetManager.shared.updateFood(petId: selectedPetId, recordId: food.id, food: food)
         self.navigationController?.popViewController(animated: true)
     }
+    
+    private func setFoodValue(food: Food) -> Food {
+        food.name = nameTextField.text ?? "no value"
+        food.weight = weightTextField.text ?? "no value"
+        food.unit = unitTextField.text ?? "no value"
+        food.price = priceTextField.text ?? "no value"
+        food.market = marketTextField.text ?? "no value"
+        food.dateOfPurchase = dateOfPurchaseDatePicker.date
+        food.note = noteTextView.text ?? "no value"
+        
+        return food
+    }
 }
 
 extension FoodRecordViewController: UITextViewDelegate {
     
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && textView.hasText {
-//            messageContent = textView.text
-//        }
-//    }
-//
     func textViewDidChange(_ textView: UITextView) {
         if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && textView.hasText {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
 
-            guard let food = food,
-                    let name = nameTextField.text,
-                    let weight = weightTextField.text,
-                    let unit = unitTextField.text,
-                    let price = priceTextField.text,
-                    let market = marketTextField.text,
-                    let note = noteTextView.text else { return }
-            food.name = name
-            food.weight = weight
-            food.unit = unit
-            food.price = price
-            food.market = market
-            food.note = note
+            guard var food = food else { return }
+            food = setFoodValue(food: food)
 
         } else {
             
@@ -372,19 +356,8 @@ extension FoodRecordViewController: UITextFieldDelegate {
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
 
-            guard let food = food,
-                    let name = nameTextField.text,
-                    let weight = weightTextField.text,
-                    let unit = unitTextField.text,
-                    let price = priceTextField.text,
-                    let market = marketTextField.text,
-                    let note = noteTextView.text else { return }
-            food.name = name
-            food.weight = weight
-            food.unit = unit
-            food.price = price
-            food.market = market
-            food.note = note
+            guard var food = food else { return }
+            food = setFoodValue(food: food)
 
         } else {
             okButton.isEnabled = false

@@ -195,15 +195,12 @@ class MedicalRecordViewController: UIViewController {
         guard let medical = medical else {
             
             // create medical
-            let medical = Medical()
-            medical.symptoms = symptomsTextView.text ?? "no symptoms"
-            medical.dateOfVisit = dateOfVisitDatePicker.date
-            medical.clinic = vetTextField.text ?? "no clinic"
-            medical.vetOrder = doctorNotesTextView.text ?? "no orders"
+            var newMedical = Medical()
+            newMedical = setMedicalValue(medical: newMedical)
             
             PetManager.shared.setMedical(
                 petId: selectedPet.id,
-                medical: medical) { [weak self] result in
+                medical: newMedical) { [weak self] result in
                     guard let self = self else { return }
                     
                     switch result {
@@ -232,6 +229,15 @@ class MedicalRecordViewController: UIViewController {
             }
         }
     }
+    
+    private func setMedicalValue(medical: Medical) -> Medical {
+        medical.symptoms = symptomsTextView.text ?? "no symptoms"
+        medical.dateOfVisit = dateOfVisitDatePicker.date
+        medical.clinic = vetTextField.text ?? "no clinic"
+        medical.vetOrder = doctorNotesTextView.text ?? "no orders"
+        
+        return medical
+    }
 }
 
 extension MedicalRecordViewController: UITextViewDelegate {
@@ -242,11 +248,8 @@ extension MedicalRecordViewController: UITextViewDelegate {
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
             
-            guard let medical = medical, let symptoms = symptomsTextView.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextView.text else { return }
-            medical.symptoms = symptoms
-            medical.dateOfVisit = dateOfVisitDatePicker.date
-            medical.clinic = clinic
-            medical.vetOrder = vetOrder
+            guard var medical = medical else { return }
+            medical = setMedicalValue(medical: medical)
             
         } else {
             okButton.isEnabled = false
@@ -263,11 +266,8 @@ extension MedicalRecordViewController: UITextFieldDelegate {
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
             
-            guard let medical = medical, let symptoms = symptomsTextView.text, let clinic = vetTextField.text, let vetOrder = doctorNotesTextView.text else { return }
-            medical.symptoms = symptoms
-            medical.dateOfVisit = dateOfVisitDatePicker.date
-            medical.clinic = clinic
-            medical.vetOrder = vetOrder
+            guard var medical = medical else { return }
+            medical = setMedicalValue(medical: medical)
             
         } else {
             okButton.isEnabled = false
