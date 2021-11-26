@@ -53,7 +53,7 @@ class ToDoViewController: UIViewController {
     }
     
     private func addToDoListenerOnDate(date: Date) {
-        guard let currentUser = MemberModel.shared.current else { return }
+        guard let currentUser = MemberManager.shared.current else { return }
         listener = ToDoManager.shared.addToDosListenerOnDate(petIds: currentUser.petIds, date: date) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -62,7 +62,7 @@ class ToDoViewController: UIViewController {
                 
                 for todo in todos where self.executorNameCache[todo.executorId] == nil || self.petNameCache[todo.petId] == nil {
                     
-                    MemberModel.shared.queryMember(id: todo.executorId) { member in
+                    MemberManager.shared.queryMember(id: todo.executorId) { member in
                         guard let member = member else {
                             self.executorNameCache[todo.executorId] = "anonymous"
                             return

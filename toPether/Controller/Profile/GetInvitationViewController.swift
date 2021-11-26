@@ -35,7 +35,7 @@ class GetInvitationViewController: UIViewController {
         configAnimationView()
         
         // MARK: data
-        MemberModel.shared.addUserListener { [weak self] result in
+        MemberManager.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(.added(data: _ )):

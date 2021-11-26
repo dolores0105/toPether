@@ -29,7 +29,7 @@ class EmptyPetViewController: UIViewController {
 
 extension EmptyPetViewController {
     private func configWelcomeLabel() {
-        welcomeLabel = MediumLabel(size: 19, text: "Hello \(MemberModel.shared.current?.name ?? "")", textColor: .mainBlue)
+        welcomeLabel = MediumLabel(size: 19, text: "Hello \(MemberManager.shared.current?.name ?? "")", textColor: .mainBlue)
         welcomeLabel.numberOfLines = 1
         view.addSubview(welcomeLabel)
         NSLayoutConstraint.activate([
@@ -82,14 +82,14 @@ extension EmptyPetViewController {
     }
     
     @objc func tapCreate(_: RoundButton) {
-        guard let currenUser = MemberModel.shared.current else { return }
+        guard let currenUser = MemberManager.shared.current else { return }
         let addPetViewController = AddPetViewController(currentUser: currenUser, selectedPet: nil, isFirstSignIn: true)
 //        addPetViewController.modalPresentationStyle = .fullScreen
         self.present(addPetViewController, animated: true, completion: nil)
     }
     
     @objc func tapGetInvitation(_: RoundButton) {
-        guard let currenUser = MemberModel.shared.current else { return }
+        guard let currenUser = MemberManager.shared.current else { return }
         let getInvitationVC = GetInvitationViewController(currentUser: currenUser, isFirstSignIn: true)
 //        getInvitationVC.modalPresentationStyle = .fullScreen
         self.present(getInvitationVC, animated: true, completion: nil)

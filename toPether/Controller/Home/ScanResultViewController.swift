@@ -85,7 +85,7 @@ class ScanResultViewController: UIViewController {
     
     func queryMember(memberId: String) {
         // check the invitedMemberId that user inputs is existing
-        MemberModel.shared.queryMember(id: memberId) { [weak self] member in
+        MemberManager.shared.queryMember(id: memberId) { [weak self] member in
             guard let self = self else { return }
             if let member = member { // the member is existing
                 
@@ -111,7 +111,7 @@ class ScanResultViewController: UIViewController {
     @objc private func tapInvite() {
         guard let scannedMember = scannedMember else { return }
         scannedMember.petIds.append(self.pet.id)
-        MemberModel.shared.updateMember(member: scannedMember)
+        MemberManager.shared.updateMember(member: scannedMember)
         
         self.pet.memberIds.append(scannedMember.id)
 

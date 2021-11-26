@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController {
     private var secondImageView = UIImageView(image: Img.iconsPang.obj)
     private var guideGetInvitationLabel = RegularLabel(size: 16, text: "Tap QR Code button to be invited", textColor: .deepBlueGrey)
     
-    private var currentUser: Member! = MemberModel.shared.current // update needed
+    private var currentUser: Member! = MemberManager.shared.current // update needed
     private var pets = [Pet]()
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,8 +49,8 @@ class ProfileViewController: UIViewController {
         configPetTableView()
         
         // MARK: Query data
-        queryData(currentUser: MemberModel.shared.current ?? self.currentUser)
-        MemberModel.shared.addUserListener { [weak self] result in
+        queryData(currentUser: MemberManager.shared.current ?? self.currentUser)
+        MemberManager.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(.added(data: let member)):
@@ -111,9 +111,9 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func nameEndEditing(_ textField: UITextField) {
-        guard let currentUser = MemberModel.shared.current else { return }
-        MemberModel.shared.current?.name = nameTextField.text ?? currentUser.name
-        MemberModel.shared.updateCurrentUser()
+        guard let currentUser = MemberManager.shared.current else { return }
+        MemberManager.shared.current?.name = nameTextField.text ?? currentUser.name
+        MemberManager.shared.updateCurrentUser()
         view.endEditing(true)
     }
     
@@ -123,7 +123,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc func tapAddPet(sender: UIButton) {
-        let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
+        let addPetViewController = AddPetViewController(currentUser: MemberManager.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
@@ -143,7 +143,7 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPet = pets[indexPath.row]
-        let editPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: selectedPet, isFirstSignIn: false)
+        let editPetViewController = AddPetViewController(currentUser: MemberManager.shared.current ?? currentUser, selectedPet: selectedPet, isFirstSignIn: false)
         self.navigationController?.pushViewController(editPetViewController, animated: true)
     }
 }
@@ -160,11 +160,11 @@ extension ProfileViewController: UITableViewDelegate {
                 let pet = self.pets[indexPath.row]
                 
                 // update deleted petIds
-                MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
-                MemberModel.shared.updateCurrentUser()
+                MemberManager.shared.current?.petIds.removeAll { $0 == pet.id }
+                MemberManager.shared.updateCurrentUser()
                 
                 // update that pet's memberIds
-                pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
+                pet.memberIds.removeAll { $0 == MemberManager.shared.current?.id }
                 
                 PetManager.shared.updatePet(id: pet.id, pet: pet) { result in
                     switch result {

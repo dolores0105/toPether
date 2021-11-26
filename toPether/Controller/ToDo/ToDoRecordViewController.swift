@@ -86,7 +86,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configOkButton()
         
         // MARK: Data
-        guard let currentUser = MemberModel.shared.current else { return }
+        guard let currentUser = MemberManager.shared.current else { return }
         PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -132,7 +132,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
             
             guard let petName = petTextField.text,
             let todoContent = contentTextView.text,
-            let executorName = executorTextField.text, let currentUser = MemberModel.shared.current else { return }
+            let executorName = executorTextField.text, let currentUser = MemberManager.shared.current else { return }
             
             guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
             
@@ -174,7 +174,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func queryMemberNames(pet: Pet) {
-        MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+        MemberManager.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let members):
