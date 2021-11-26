@@ -110,39 +110,18 @@ class HomeViewController: UIViewController {
                 }
             }
         case .restricted, .denied:
-            presentGoSettingAlert()
+            self.presentSettingAlert()
             
         case .authorized:
             return true
             
         @unknown default:
-            presentGoSettingAlert()
+            self.presentSettingAlert()
         }
         
         return false
     }
     
-    private func presentGoSettingAlert() {
-        
-        DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "toPether would like to access the Camera", message: "Please turn on the setting for scanning members' QRCode", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let settingAction = UIAlertAction(title: "Setting", style: .default) { settingAction in
-                guard let settingUrl = URL(string: UIApplication.openSettingsURLString) else { return }
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(settingUrl, options: [:], completionHandler: { (success) in
-                        print("跳至設定")
-                    })
-                } else {
-                    UIApplication.shared.openURL(settingUrl)
-                }
-            }
-            
-            alertController.addAction(cancelAction)
-            alertController.addAction(settingAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
     // MARK: - UI properties
     
     private lazy var cardView: CardView = {
