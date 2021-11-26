@@ -17,7 +17,6 @@ class MedicalViewController: UIViewController {
     }
     private var selectedPet: Pet!
     private var medicals = [Medical]()
-    private var listener: ListenerRegistration?
 
     private var searching = false
     private var keyword: String?
@@ -32,20 +31,34 @@ class MedicalViewController: UIViewController {
         configSearchBar()
         configMedicalTableView()
         
-        // MARK: data
-        PetManager.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let records):
-                self.medicals = records
-                self.medicalTableView.reloadData()
-                
-            case .failure(let error):
-                print("query medical error", error)
-            }
-        }
+        addListener(petId: selectedPet.id)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        PetManager.shared.addMedicalsListener(petId: selectedPet.id) { [weak self] result in
+        self.navigationItem.title = "Medical"
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj,
+                                                                 style: .plain,
+                                                                 target: self,
+                                                                 action: #selector(tapAdd))
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Button Functions
+    
+    @objc func tapAdd(sender: UIButton) {
+        let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: nil)
+        navigationController?.pushViewController(medicalRecordVC, animated: true)
+    }
+    
+    // MARK: - Functions
+    
+    private func addListener(petId: String) {
+        PetManager.shared.addMedicalsListener(petId: petId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -65,25 +78,6 @@ class MedicalViewController: UIViewController {
                 self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationItem.title = "Medical"
-        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
-
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    
-    // MARK: - Button Functions
-    
-    @objc func tapAdd(sender: UIButton) {
-        let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: nil)
-        navigationController?.pushViewController(medicalRecordVC, animated: true)
     }
     
     // MARK: - UI properties
@@ -112,12 +106,15 @@ class MedicalViewController: UIViewController {
         return medicalTableView
     }()
     
-    private lazy var emptyContentLabel = RegularLabel(size: 18, text: "Empty records \nTap Plus to create one", textColor: .deepBlueGrey)
+    private lazy var emptyContentLabel = RegularLabel(size: 18,
+                                                      text: "Empty records \nTap Plus to create one",
+                                                      textColor: .deepBlueGrey)
     
     private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
 
-// MARK: extension
+// MARK: - UITableViewDataSource
+
 extension MedicalViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -130,7 +127,7 @@ extension MedicalViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MedicalTableViewCell.identifier, for: indexPath)
-        guard let medicalCell = cell as? MedicalTableViewCell else { return cell }
+        guard let medicalCell = cell as? MedicalTableViewCell else { return UITableViewCell() }
         medicalCell.selectionStyle = .none
         
         if searching {
@@ -149,6 +146,8 @@ extension MedicalViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension MedicalViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
@@ -156,7 +155,9 @@ extension MedicalViewController: UITableViewDelegate {
             
             self.presentDeleteAlert(title: "Delete medical record") {
 
-                PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id, objectType: .medical) { result in
+                PetManager.shared.deletePetObject(petId: self.selectedPet.id,
+                                                  recordId: self.medicals[indexPath.row].id,
+                                                  objectType: .medical) { result in
                     switch result {
                     case .success(let string):
                         print(string)
@@ -177,6 +178,8 @@ extension MedicalViewController: UITableViewDelegate {
         return swipeAction
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension MedicalViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -211,6 +214,8 @@ extension MedicalViewController: UISearchBarDelegate {
         }
     }
 }
+
+// MARK: - UI configure extension
 
 extension MedicalViewController {
 
@@ -271,5 +276,4 @@ extension MedicalViewController {
             emptyAnimationView.heightAnchor.constraint(equalTo: emptyAnimationView.widthAnchor)
         ])
     }
-    
 }
