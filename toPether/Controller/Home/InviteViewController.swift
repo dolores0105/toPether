@@ -26,16 +26,7 @@ class InviteViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationItem.title = "Scan QR Code"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 20) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white, titleTextSize: 20)
 
         self.tabBarController?.tabBar.isHidden = true
         
@@ -83,7 +74,7 @@ class InviteViewController: UIViewController {
             
         } catch {
             print(error)
-            presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
         }
     }
 }

@@ -32,7 +32,6 @@
 		392B4752273C07A2001F203B /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4751273C07A2001F203B /* ShadowView.swift */; };
 		392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */; };
 		392B4756273CC2F8001F203B /* lottieLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4755273CC2F8001F203B /* lottieLoading.json */; };
-		392B4758273D5EB8001F203B /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4757273D5EB7001F203B /* Alert.swift */; };
 		392CDBF8274633E20000A514 /* lottieDogSitting.json in Resources */ = {isa = PBXBuildFile; fileRef = 392CDBF7274633E20000A514 /* lottieDogSitting.json */; };
 		392CDBFA2746602D0000A514 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */; };
 		392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBFB2747B6630000A514 /* EULAViewController.swift */; };
@@ -47,6 +46,8 @@
 		3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710327353562003AF098 /* MessageTableViewCell.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
+		395A2EF6274F919300A44C17 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */; };
+		395A2EF8274F92EC00A44C17 /* UICollectionViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */; };
 		395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */; };
 		395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AE27391B9D0013AF9A /* ToDoManager.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
@@ -113,7 +114,6 @@
 		392B4751273C07A2001F203B /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		392B4755273CC2F8001F203B /* lottieLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieLoading.json; sourceTree = "<group>"; };
-		392B4757273D5EB7001F203B /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		392CDBF7274633E20000A514 /* lottieDogSitting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieDogSitting.json; sourceTree = "<group>"; };
 		392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		392CDBFB2747B6630000A514 /* EULAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +128,8 @@
 		3955710327353562003AF098 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
+		395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
+		395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCellExtension.swift; sourceTree = "<group>"; };
 		395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
 		395D04AE27391B9D0013AF9A /* ToDoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoManager.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
@@ -245,7 +247,6 @@
 				3981607F272D9DA30033930D /* LineView.swift */,
 				395570FF273514CD003AF098 /* CardView.swift */,
 				392B4751273C07A2001F203B /* ShadowView.swift */,
-				392B4757273D5EB7001F203B /* Alert.swift */,
 				39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */,
 				39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */,
 				3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */,
@@ -280,6 +281,8 @@
 				392B4747273A4CE8001F203B /* DateExtension.swift */,
 				392B474B273A9FC1001F203B /* DictionaryExtension.swift */,
 				392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */,
+				395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */,
+				395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -562,10 +565,10 @@
 				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
-				392B4758273D5EB8001F203B /* Alert.swift in Sources */,
 				39557100273514CD003AF098 /* CardView.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
 				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,
+				395A2EF6274F919300A44C17 /* UITableViewCellExtension.swift in Sources */,
 				392CDBFA2746602D0000A514 /* UIViewControllerExtension.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
@@ -597,6 +600,7 @@
 				3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */,
 				390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */,
 				39856C54273E78F80071AE13 /* IconLabelVerticalStackView.swift in Sources */,
+				395A2EF8274F92EC00A44C17 /* UICollectionViewCellExtension.swift in Sources */,
 				394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */,
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,

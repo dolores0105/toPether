@@ -27,16 +27,7 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Profile"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsSetting.obj, style: .plain, target: self, action: #selector(tapSetting))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
@@ -78,7 +69,7 @@ class ProfileViewController: UIViewController {
 
             case .failure(let error):
                 print("lisener error at profileVC", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -141,7 +132,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: PetTableViewCell.identifier, for: indexPath)
         guard let petCell = cell as? PetTableViewCell else { return cell }
         petCell.selectionStyle = .none
         petCell.reload(pet: pets[indexPath.row])
@@ -161,9 +152,8 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
-                                                message: "You'd need to be invited again, or you could not view previous info of this pet")
-            { // action after user tapped delete
+            self.presentDeleteAlert(title: "Delete furkid",
+                                    message: "You'd need to be invited again, or you could not view previous info of this pet") { // action after user tapped delete
                 // get the deleting pet
                 let pet = self.pets[indexPath.row]
                 
@@ -179,12 +169,10 @@ extension ProfileViewController: UITableViewDelegate {
                         print(string)
 
                     case .failure(let error):
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             }
-            
-            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

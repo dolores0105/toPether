@@ -31,18 +31,9 @@ class MedicalViewController: UIViewController {
     private var searchedMedicals = [Medical]()
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
+
         self.navigationItem.title = "Medical"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
 
@@ -128,7 +119,7 @@ class MedicalViewController: UIViewController {
                 
             case .failure(let error):
                 print("query medical error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -153,7 +144,7 @@ extension MedicalViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: MedicalTableViewCell.identifier, for: indexPath)
         guard let medicalCell = cell as? MedicalTableViewCell else { return cell }
         medicalCell.selectionStyle = .none
         
@@ -178,20 +169,17 @@ extension MedicalViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete medical record", message: "Do you want to delete this record?") {
+            self.presentDeleteAlert(title: "Delete medical record") {
 
                 PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id, objectType: .medical) { result in
                     switch result {
                     case .success(let string):
                         print(string)
                     case .failure(let error):
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             }
-            
-            self.present(deleteAlert, animated: true)
-            
             
             completionHandler(true)
         }

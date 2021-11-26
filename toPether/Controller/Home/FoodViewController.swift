@@ -30,16 +30,7 @@ class FoodViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Food"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
         
@@ -105,7 +96,7 @@ class FoodViewController: UIViewController {
                 self.foodTableView.reloadData()
             case .failure(let error):
                 print("query foods error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
         
@@ -126,7 +117,7 @@ class FoodViewController: UIViewController {
                 
             case .failure(let error):
                 print("listen foods error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -148,7 +139,7 @@ extension FoodViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: FoodTableViewCell.identifier, for: indexPath)
         guard let foodCell = cell as? FoodTableViewCell else { return cell }
         foodCell.selectionStyle = .none
         
@@ -173,7 +164,7 @@ extension FoodViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete food record", message: "Do you want to delete this record?") { [weak self] in
+            self.presentDeleteAlert(title: "Delete food record") { [weak self] in
                 guard let self = self else { return }
                 
                 PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id, objectType: .food) { result in
@@ -181,12 +172,10 @@ extension FoodViewController: UITableViewDelegate {
                     case .success(let string):
                         print(string)
                     case .failure(let error):
-                        self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
             }
-            
-            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

@@ -42,16 +42,7 @@ class MessageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Message"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
 
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -105,7 +96,7 @@ class MessageViewController: UIViewController {
                 
             case .failure(let error):
                 print(error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -150,12 +141,12 @@ extension MessageViewController: UITableViewDelegate {
                                     }
                                     
                                 case .failure(let error):
-                                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                                 }
                             }
                             
                         } else {
-                            self.presentErrorAlert(title: "Something went wrong", message: "The member doesn't exist, please trya again later")
+                            self.presentErrorAlert(message: "The member doesn't exist, please try a again later")
                         }
                     }
                 }
@@ -188,9 +179,9 @@ extension MessageViewController: UITableViewDataSource {
         
         var msgCell: MessageTableViewCell?
         if message.senderId ==  MemberModel.shared.current?.id {
-            msgCell = tableView.dequeueReusableCell(withIdentifier: "RightMessageTableViewCell", for: indexPath) as? RightMessageTableViewCell
+            msgCell = tableView.dequeueReusableCell(withIdentifier: RightMessageTableViewCell.identifier, for: indexPath) as? RightMessageTableViewCell
         } else {
-            msgCell = tableView.dequeueReusableCell(withIdentifier: "LeftMessageTableViewCell", for: indexPath) as? LeftMessageTableViewCell
+            msgCell = tableView.dequeueReusableCell(withIdentifier: LeftMessageTableViewCell.identifier, for: indexPath) as? LeftMessageTableViewCell
         }
         msgCell?.reload(message: message, senderName: senderName)
         return msgCell ?? .init()
@@ -321,7 +312,7 @@ extension MessageViewController {
                 
             case .failure(let error):
                 print(error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }

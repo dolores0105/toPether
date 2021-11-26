@@ -41,16 +41,7 @@ class AddPetViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Furkid"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .mainBlue
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
 
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -228,7 +219,7 @@ class AddPetViewController: UIViewController {
                     
                 case .failure(let error):
                     print("update petId to currentUser error:", error)
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
         } else { // Update pet
@@ -243,7 +234,7 @@ class AddPetViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let error):
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
         }

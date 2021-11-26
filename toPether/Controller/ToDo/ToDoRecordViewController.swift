@@ -47,7 +47,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     self.queryMemberNames(pet: pet)
                     
                 case .failure(let error):
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
         }
@@ -64,17 +64,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Todo"
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .mainBlue
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
 
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -119,7 +109,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                             self.queryMemberNames(pet: pet)
                             
                         case .failure(let error):
-                            self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                         }
                     }
                 } else {
@@ -129,7 +119,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 
             case .failure(let error):
                 print("Query currentUser's pets error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     
@@ -158,7 +148,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                     
                 case .failure(let error):
                     print("Create todo error", error)
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
             return
@@ -196,7 +186,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Query members' names error, please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Query members' names error, please try again")
             }
         }
     }
@@ -246,7 +236,7 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                     self.queryMemberNames(pet: pet)
                     
                 case .failure(let error):
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
             
