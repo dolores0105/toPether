@@ -110,7 +110,7 @@ class ToDoViewController: UIViewController {
             guard let self = self else { return }
             
             switch result {
-            case .success(.added(todos: let todos)):
+            case .success(.added(data: let todos)):
                 
                 var badgeStepper: Int = 0
                 
@@ -123,7 +123,7 @@ class ToDoViewController: UIViewController {
                     self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
-            case .success(.modified(todos: let todos)):
+            case .success(.modified(data: let todos)):
                 
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
                 
@@ -138,7 +138,7 @@ class ToDoViewController: UIViewController {
                     self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
-            case .success(.removed(todos: let todos)):
+            case .success(.removed(data: let todos)):
             
                 var badgeStepper: Int = 0
                 

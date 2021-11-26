@@ -53,17 +53,17 @@ class ProfileViewController: UIViewController {
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(.added(member: let member)):
+            case .success(.added(data: let member)):
 //                guard let currentUser = members.first else { return }
                 self.queryData(currentUser: member)
                 self.nameTextField.text = member.name
 
-            case .success(.modified(member: let member)):
+            case .success(.modified(data: let member)):
 //                guard let currentUser = members.first else { return }
                 self.queryData(currentUser: member)
                 self.nameTextField.text = member.name
 
-            case .success(.removed(member: let member)):
+            case .success(.removed(data: let member)):
 //                guard let currentUser = members.first else { return }
                 self.queryData(currentUser: member)
 

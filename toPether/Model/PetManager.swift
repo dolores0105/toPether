@@ -281,7 +281,6 @@ class PetManager {
         }
     }
     
-    // todo
     func deletePetObject(petId: String, recordId: String, objectType: PetObjectType, completion:  @escaping (Result<String, Error>) -> Void) {
         
         let documentRef: DocumentReference?

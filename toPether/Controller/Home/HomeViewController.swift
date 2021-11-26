@@ -26,9 +26,9 @@ class HomeViewController: UIViewController {
             guard let self = self else { return }
             
             switch result {
-            case .success(.added(member: let member)),
-                 .success(.modified(member: let member)),
-                 .success(.removed(member: let member)):
+            case .success(.added(data: let member)),
+                 .success(.modified(data: let member)),
+                 .success(.removed(data: let member)):
                 self.queryData(currentUser: member)
 
             case .failure(let error):
@@ -147,7 +147,7 @@ class HomeViewController: UIViewController {
         petCollectionView.bounces = true
         petCollectionView.allowsSelection = false
         petCollectionView.isPagingEnabled = true
-        petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: "PetCollectionViewCell")
+        petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.identifier)
         petCollectionView.delegate = self
         petCollectionView.dataSource = self
         petCollectionView.translatesAutoresizingMaskIntoConstraints = false
