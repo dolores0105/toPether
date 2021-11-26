@@ -270,14 +270,20 @@ extension ToDoViewController: ToDoTableViewCellDelegate {
         
         toDos[indexPath.row].doneStatus.toggle()
 
-        ToDoManager.shared.updateToDo(todo: toDos[indexPath.row]) { todo in
-            guard let todo = todo else {
-                return // find todo failed
+        ToDoManager.shared.updateToDo(todo: toDos[indexPath.row]) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let todo):
+                if todo.doneStatus {
+                    self.configAnimation()
+                }
+                print("updated todo: \(todo.id)")
+                
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription)
             }
-            if todo.doneStatus {
-                configAnimation()
-            }
-            toDoTableView.reloadRows(at: [indexPath], with: .none)
+            self.toDoTableView.reloadRows(at: [indexPath], with: .none)
         }
     }
     

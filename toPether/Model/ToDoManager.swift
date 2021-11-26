@@ -31,13 +31,15 @@ class ToDoManager {
         }
     }
     
-    func updateToDo(todo: ToDo, completion: (ToDo?) -> Void) {
+    // MARK: - Update
+    
+    func updateToDo(todo: ToDo, completion: @escaping (Result<ToDo, Error>) -> Void) {
         do {
             try dataBase.document(todo.id).setData(from: todo)
-            completion(todo)
+            completion(.success(todo))
+            
         } catch {
-            print("update todo error", error)
-            completion(nil)
+            completion(.failure(error))
         }
     }
     

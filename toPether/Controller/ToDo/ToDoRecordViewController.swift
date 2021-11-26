@@ -161,12 +161,17 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         }
         
         todo.dueTime = timeDatePicker.date // in case only update date
-        ToDoManager.shared.updateToDo(todo: todo) { todo in
-            guard todo != nil else {
-                print("Update todo failed")
-                return
+        ToDoManager.shared.updateToDo(todo: todo) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let todo):
+                self.navigationController?.popViewController(animated: true)
+                print("updated todo: \(todo.id)")
+                
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription)
             }
-            navigationController?.popViewController(animated: true)
         }
 
     }
