@@ -131,17 +131,25 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         guard let todo = todo else {
             
             guard let petName = petTextField.text,
-            let todoContent = contentTextView.text,
-            let executorName = executorTextField.text, let currentUser = MemberManager.shared.current else { return }
+                  let executorName = executorTextField.text,
+                  let currentUser = MemberManager.shared.current else { return }
             
-            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            guard let petId = petNamesCache.someKey(forValue: petName),
+                  let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
             
-            ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: executorId, petId: petId, dueTime: timeDatePicker.date, content: todoContent) { [weak self] result in
+            let todo = ToDo()
+            todo.creatorId = currentUser.id
+            todo.executorId = executorId
+            todo.petId = petId
+            todo.dueTime = timeDatePicker.date
+            todo.content = contentTextView.text ?? "no value"
+            
+            ToDoManager.shared.setToDo(todo: todo) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
-                case .success(let todo):
-                    print("Create todo", todo.content)
+                case .success(let todoId):
+                    print(todoId)
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let error):
@@ -153,12 +161,17 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         }
         
         todo.dueTime = timeDatePicker.date // in case only update date
-        ToDoManager.shared.updateToDo(todo: todo) { todo in
-            guard todo != nil else {
-                print("Update todo failed")
-                return
+        ToDoManager.shared.updateToDo(todo: todo) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let todo):
+                self.navigationController?.popViewController(animated: true)
+                print("updated todo: \(todo.id)")
+                
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription)
             }
-            navigationController?.popViewController(animated: true)
         }
 
     }
