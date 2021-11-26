@@ -8,12 +8,6 @@
 import Firebase
 import Foundation
 
-enum TodoListenerType {
-    case added(todos: [ToDo])
-    case modified(todos: [ToDo])
-    case removed(todos: [ToDo])
-}
-
 class ToDoManager {
     
     private init() {}
@@ -149,7 +143,7 @@ class ToDoManager {
         }
     }
     
-    func todoListener(completion: @escaping (Result<TodoListenerType, Error>) -> Void) {
+    func todoListener(completion: @escaping (Result<ListenerType<[ToDo]>, Error>) -> Void) {
         
         guard let currentUser = MemberModel.shared.current else { return }
         
@@ -165,15 +159,15 @@ class ToDoManager {
                     switch diff.type {
                     case .added:
                         print("added todos")
-                        completion(.success(.added(todos: todos)))
+                        completion(.success(.added(data: todos)))
                         
                     case .modified:
                         print("modified todo")
-                        completion(.success(.modified(todos: todos)))
+                        completion(.success(.modified(data: todos)))
                         
                     case .removed:
                         print("removed todo")
-                        completion(.success(.removed(todos: todos)))
+                        completion(.success(.removed(data: todos)))
                     }
                 }
                 

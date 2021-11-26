@@ -9,7 +9,6 @@ import FirebaseFirestoreSwift
 import Foundation
 
 enum PetObjectType {
-    case pet
     case food
     case medical
 }
@@ -47,19 +46,19 @@ class PetManager {
         
         do {
             try document.setData(from: pet)
-            completion(Result.success(pet.id))
-            print(pet)
+            completion(.success(pet.id))
+
         } catch let error {
-            print("set pet data error:", error)
-            completion(Result.failure(error))
+
+            completion(.failure(error))
         }
     }
     
     // Use petIds array of a members data to query pets data that is owned by that member
     func queryPets(ids: [String], completion: @escaping (Result<[Pet], Error>) -> Void) {
 
-        guard !ids.isEmpty else { // if ids is an empty array
-            completion(Result.failure(CommonError.emptyArrayInFilter))
+        guard !ids.isEmpty else {
+            completion(.failure(CommonError.emptyArrayInFilter))
             return
         }
         dataBase.whereField(FieldPath.documentID(), in: ids).order(by: FieldPath.documentID()).getDocuments { (querySnapshot, error) in
@@ -68,15 +67,15 @@ class PetManager {
                 let pets = querySnapshot.documents.compactMap({ querySnapshot in
                     try? querySnapshot.data(as: Pet.self)
                 })
-                completion(Result.success(pets.sorted(by: ids)))
+                completion(.success(pets.sorted(by: ids)))
                 
             } else if let error = error {
-                completion(Result.failure(error))
+                completion(.failure(error))
             }
         }
     }
     
-    func queryPet(id: String, completion: @escaping (Result<Pet?, Error>) -> Void) {
+    func queryPet(id: String, completion: @escaping (Result<Pet, Error>) -> Void) {
         dataBase.document(id).getDocument { (querySnapshot, error) in
             
             if let error = error {
@@ -85,12 +84,20 @@ class PetManager {
             
             if let pet = try? querySnapshot?.data(as: Pet.self) {
                 completion(.success(pet))
-            } else {
-                completion(.success(nil))
             }
         }
     }
     
+    // modify pet info or remove member from pet
+    func updatePet(id: String, pet: Pet, completion: @escaping (Result<String, Error>) -> Void) {
+        do {
+            try dataBase.document(id).setData(from: pet)
+            completion(.success("update pet: \(pet.id)"))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
     func addPetListener(pet: Pet, completion: @escaping (Result<Pet, Error>) -> Void) -> ListenerRegistration {
         dataBase.document(pet.id).addSnapshotListener { documentSnapshot, error in
             if let pet = try? documentSnapshot?.data(as: Pet.self) {
@@ -112,10 +119,10 @@ class PetManager {
         
         do {
             try document.setData(from: medical)
-            completion(Result.success(medical.id))
+            completion(.success(medical.id))
         } catch let error {
             print("set medicalRecord error:", error)
-            completion(Result.failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -126,10 +133,10 @@ class PetManager {
                 let medicals = querySnapshot.documents.compactMap({ querySnapshot in
                     try? querySnapshot.data(as: Medical.self)
                 })
-                completion(Result.success(medicals))
+                completion(.success(medicals))
                 
             } else if let error = error {
-                completion(Result.failure(error))
+                completion(.failure(error))
             }
         }
     }
@@ -160,10 +167,10 @@ class PetManager {
 
         do {
             try document.setData(from: food)
-            completion(Result.success("set food \(food.id)"))
+            completion(.success("set food \(food.id)"))
         } catch let error {
             print("set foodRecord error:", error)
-            completion(Result.failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -176,10 +183,10 @@ class PetManager {
                 let foods = querySnapshot.documents.compactMap({ querySnapshot in
                     try? querySnapshot.data(as: Food.self)
                 })
-                completion(Result.success(foods))
+                completion(.success(foods))
                 
             } else if let error = error {
-                completion(Result.failure(error))
+                completion(.failure(error))
             }
         }
     }
@@ -212,10 +219,10 @@ class PetManager {
 
         do {
             try document.setData(from: message)
-            completion(Result.success(message))
+            completion(.success(message))
         } catch let error {
             print("set message error:", error)
-            completion(Result.failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -226,10 +233,10 @@ class PetManager {
                 let messages = querySnapshot.documents.compactMap({ querySnapshot in
                     try? querySnapshot.data(as: Message.self)
                 })
-                completion(Result.success(messages))
+                completion(.success(messages))
                 
             } else if let error = error {
-                completion(Result.failure(error))
+                completion(.failure(error))
             }
         }
     }
@@ -251,18 +258,15 @@ class PetManager {
     }
     
     // MARK: - General functions
-    func updatePetObject <T: Codable> (petId: String, recordId: String? = nil, objectType: PetObjectType, object: T, completion:  @escaping (Result<String, Error>) -> Void) {
+    // PetObjectType + associated value
+    func updatePetObject<T: Codable>(petId: String, recordId: String, objectType: PetObjectType, object: T, completion:  @escaping (Result<String, Error>) -> Void) {
         
         let documentRef: DocumentReference?
         
         switch objectType {
-        case .pet: // modify pet info or remove member from pet
-            documentRef = dataBase.document(petId)
         case .food:
-            guard let recordId = recordId else { return }
             documentRef = dataBase.document(petId).collection("foods").document(recordId)
         case .medical:
-            guard let recordId = recordId else { return }
             documentRef = dataBase.document(petId).collection("medicals").document(recordId)
         }
         
@@ -270,10 +274,6 @@ class PetManager {
             guard let documentRef = documentRef else { return }
             try documentRef.setData(from: object)
             
-            guard let recordId = recordId else {
-                completion(.success("updated pet \(petId)"))
-                return
-            }
             completion(.success("updated pet \(petId)'s  \(recordId)"))
             
         } catch {
@@ -286,8 +286,6 @@ class PetManager {
         let documentRef: DocumentReference?
         
         switch objectType {
-        case .pet: // modify pet info or remove member from pet
-            documentRef = dataBase.document(petId)
         case .food:
             documentRef = dataBase.document(petId).collection("foods").document(recordId)
         case .medical:

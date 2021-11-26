@@ -63,4 +63,20 @@ extension UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
+    
+    func presentSettingAlert(title: String = "toPether would like to access the Camera", message: String = "Please turn on the setting for scanning members' QRCode", completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let settingAction = UIAlertAction(title: "Setting", style: .default) { settingAction in
+            guard let settingUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+            UIApplication.shared.open(settingUrl, options: [:], completionHandler: { (success) in
+                print("跳至設定")
+            })
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
 }
