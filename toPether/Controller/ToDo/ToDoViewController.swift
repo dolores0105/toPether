@@ -75,7 +75,6 @@ class ToDoViewController: UIViewController {
                         switch result {
                         case .success(let pet):
                             
-                            guard let pet = pet else { return }
                             self.petNameCache[todo.petId] = pet.name
                             
                         case .failure(let error):

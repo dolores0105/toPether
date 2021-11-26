@@ -43,7 +43,6 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 switch result {
                 case .success(let pet):
                     
-                    guard let pet = pet else { return }
                     self.queryMemberNames(pet: pet)
                     
                 case .failure(let error):
@@ -105,7 +104,6 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                         switch result {
                         case .success(let pet):
                             
-                            guard let pet = pet else { return }
                             self.queryMemberNames(pet: pet)
                             
                         case .failure(let error):
@@ -232,7 +230,6 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
                 switch result {
                 case .success(let pet):
                     
-                    guard let pet = pet else { return }
                     self.queryMemberNames(pet: pet)
                     
                 case .failure(let error):

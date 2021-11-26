@@ -132,7 +132,7 @@ extension MessageViewController: UITableViewDelegate {
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
                             
-                            PetManager.shared.updatePetObject(petId: self.selectedPet.id, objectType: .pet, object: self.selectedPet) { result in
+                            PetManager.shared.updatePet(id: self.selectedPet.id, pet: self.selectedPet) { result in
                                 switch result {
                                 case .success(let string):
                                     print(string)
@@ -144,7 +144,7 @@ extension MessageViewController: UITableViewDelegate {
                                     self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                                 }
                             }
-                            
+
                         } else {
                             self.presentErrorAlert(message: "The member doesn't exist, please try a again later")
                         }

@@ -225,7 +225,7 @@ class AddPetViewController: UIViewController {
         } else { // Update pet
             guard let selectedPet = selectedPet else { return }
 
-            PetManager.shared.updatePetObject(petId: selectedPet.id, objectType: .pet, object: selectedPet) { [weak self] result in
+            PetManager.shared.updatePet(id: selectedPet.id, pet: selectedPet) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {

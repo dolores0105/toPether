@@ -165,7 +165,8 @@ extension ProfileViewController: UITableViewDelegate {
                 
                 // update that pet's memberIds
                 pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-                PetManager.shared.updatePetObject(petId: pet.id, objectType: .pet, object: pet) { result in
+                
+                PetManager.shared.updatePet(id: pet.id, pet: pet) { result in
                     switch result {
                     case .success(let string):
                         print(string)
