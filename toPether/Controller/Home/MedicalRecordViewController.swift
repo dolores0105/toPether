@@ -17,25 +17,6 @@ class MedicalRecordViewController: UIViewController {
     private var selectedPet: Pet!
     private var medical: Medical?
     
-    private var scrollView: UIScrollView!
-    private var symptomsLabel: MediumLabel!
-    private var symptomsTextView: BlueBorderTextView!
-    private var dateOfVisitLabel: MediumLabel!
-    private let dateOfVisitDatePicker = UIDatePicker()
-    private var vetLabel: MediumLabel!
-    private var vetTextField: BlueBorderTextField!
-    private var doctorNotesLabel: MediumLabel!
-    private var doctorNotesTextView: BlueBorderTextView!
-    private var okButton: RoundButton!
-    
-    override func viewWillAppear(_ animated: Bool) {
- 
-        self.navigationItem.title = "Medical record"
-        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
-        
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,140 +35,22 @@ class MedicalRecordViewController: UIViewController {
         renderExistingData(medical: medical)
     }
     
-    // MARK: layout
-    private func configScrollView() {
-        scrollView = UIScrollView()
-        let fullsize = UIScreen.main.bounds.size
-        scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: fullsize.width, height: 550)
-        scrollView.isScrollEnabled = true
-        view.addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-    
-    private func configSymptomsLabel() {
-        symptomsLabel = MediumLabel(size: 16, text: "Symptoms", textColor: .mainBlue)
-        scrollView.addSubview(symptomsLabel)
-        NSLayoutConstraint.activate([
-            symptomsLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 20),
-            symptomsLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            symptomsLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configSymptomsTextView() {
-        symptomsTextView = BlueBorderTextView(self, textSize: 16, height: 64)
-        scrollView.addSubview(symptomsTextView)
-        NSLayoutConstraint.activate([
-            symptomsTextView.topAnchor.constraint(equalTo: symptomsLabel.bottomAnchor, constant: 8),
-            symptomsTextView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            symptomsTextView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configDateOfVisitLabel() {
-        dateOfVisitLabel = MediumLabel(size: 16, text: "Date of visit", textColor: .mainBlue)
-        scrollView.addSubview(dateOfVisitLabel)
-        NSLayoutConstraint.activate([
-            dateOfVisitLabel.topAnchor.constraint(equalTo: symptomsTextView.bottomAnchor, constant: 24),
-            dateOfVisitLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            dateOfVisitLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configDateOfVisitDatePicker() {
-        dateOfVisitDatePicker.datePickerMode = .date
-        dateOfVisitDatePicker.preferredDatePickerStyle = .compact
-        dateOfVisitDatePicker.backgroundColor = .white
-        dateOfVisitDatePicker.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(dateOfVisitDatePicker)
-        NSLayoutConstraint.activate([
-            dateOfVisitDatePicker.topAnchor.constraint(equalTo: dateOfVisitLabel.bottomAnchor, constant: 8),
-            dateOfVisitDatePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            dateOfVisitDatePicker.heightAnchor.constraint(equalToConstant: 48)
-        ])
-    }
-    
-    private func configVetLabel() {
-        vetLabel = MediumLabel(size: 16, text: "Name of Vet", textColor: .mainBlue)
-        scrollView.addSubview(vetLabel)
-        NSLayoutConstraint.activate([
-            vetLabel.topAnchor.constraint(equalTo: dateOfVisitDatePicker.bottomAnchor, constant: 24),
-            vetLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            vetLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configVetTextField() {
-        vetTextField = BlueBorderTextField(text: nil)
-        vetTextField.delegate = self
-        scrollView.addSubview(vetTextField)
-        NSLayoutConstraint.activate([
-            vetTextField.topAnchor.constraint(equalTo: vetLabel.bottomAnchor, constant: 8),
-            vetTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            vetTextField.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configDoctorNotesLabel() {
-        doctorNotesLabel = MediumLabel(size: 16, text: "Doctor's notes", textColor: .mainBlue)
-        scrollView.addSubview(doctorNotesLabel)
-        NSLayoutConstraint.activate([
-            doctorNotesLabel.topAnchor.constraint(equalTo: vetTextField.bottomAnchor, constant: 24),
-            doctorNotesLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            doctorNotesLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configDoctorNotesTextView() {
-        doctorNotesTextView = BlueBorderTextView(self, textSize: 16, height: 64)
-        scrollView.addSubview(doctorNotesTextView)
-        NSLayoutConstraint.activate([
-            doctorNotesTextView.topAnchor.constraint(equalTo: doctorNotesLabel.bottomAnchor, constant: 8),
-            doctorNotesTextView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            doctorNotesTextView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
-        ])
-    }
-    
-    private func configOkButton() {
-        okButton = RoundButton(text: "OK", size: 18)
-        if medical != nil {
-            okButton.isEnabled = true
-            okButton.backgroundColor = .mainYellow
-        } else {
-            okButton.isEnabled = false
-            okButton.backgroundColor = .lightBlueGrey
-        }
-        okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
-        view.addSubview(okButton)
-        NSLayoutConstraint.activate([
-            okButton.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
-            okButton.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32),
-            okButton.topAnchor.constraint(equalTo: doctorNotesTextView.bottomAnchor, constant: 40)
-        ])
-    }
-    
-    func renderExistingData(medical: Medical?) {
-        guard let medical = medical else { return }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        symptomsTextView.text = medical.symptoms
-        vetTextField.text = medical.clinic
-        doctorNotesTextView.text = medical.vetOrder
-        dateOfVisitDatePicker.date = medical.dateOfVisit
+        self.navigationItem.title = "Medical record"
+        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
+        
+        self.tabBarController?.tabBar.isHidden = true
     }
     
-    @objc func tapOK() {
+    // MARK: - Button Functions
+    
+    @objc private func tapOK() {
         guard let medical = medical else {
             
-            // create medical
             var newMedical = Medical()
-            newMedical = setMedicalValue(medical: newMedical)
+            newMedical = setMedicalValues(medical: newMedical)
             
             PetManager.shared.setMedical(
                 petId: selectedPet.id,
@@ -206,10 +69,13 @@ class MedicalRecordViewController: UIViewController {
                 }
             return
         }
-        // update medical
+        
         medical.dateOfVisit = dateOfVisitDatePicker.date // in case only update date
 
-        PetManager.shared.updatePetObject(petId: selectedPet.id, recordId: medical.id, objectType: .medical, object: medical) { result in
+        PetManager.shared.updatePetObject(petId: selectedPet.id,
+                                          recordId: medical.id,
+                                          objectType: .medical,
+                                          object: medical) { result in
             switch result {
             case .success(let string):
                 print(string)
@@ -221,7 +87,18 @@ class MedicalRecordViewController: UIViewController {
         }
     }
     
-    private func setMedicalValue(medical: Medical) -> Medical {
+    // MARK: - Data Functions
+    
+    private func renderExistingData(medical: Medical?) {
+        guard let medical = medical else { return }
+        
+        symptomsTextView.text = medical.symptoms
+        vetTextField.text = medical.clinic
+        doctorNotesTextView.text = medical.vetOrder
+        dateOfVisitDatePicker.date = medical.dateOfVisit
+    }
+    
+    private func setMedicalValues(medical: Medical) -> Medical {
         medical.symptoms = symptomsTextView.text ?? "no symptoms"
         medical.dateOfVisit = dateOfVisitDatePicker.date
         medical.clinic = vetTextField.text ?? "no clinic"
@@ -229,7 +106,61 @@ class MedicalRecordViewController: UIViewController {
         
         return medical
     }
+    
+    // MARK: - UI properties
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        let fullsize = UIScreen.main.bounds.size
+        scrollView.delegate = self
+        scrollView.contentSize = CGSize(width: fullsize.width, height: 550)
+        scrollView.isScrollEnabled = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private lazy var symptomsLabel = MediumLabel(size: 16, text: "Symptoms", textColor: .mainBlue)
+    
+    private lazy var symptomsTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+    
+    private lazy var dateOfVisitLabel = MediumLabel(size: 16, text: "Date of visit", textColor: .mainBlue)
+    
+    private lazy var dateOfVisitDatePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .compact
+        picker.backgroundColor = .white
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
+    }()
+    
+    private lazy var vetLabel = MediumLabel(size: 16, text: "Name of Vet", textColor: .mainBlue)
+    
+    private lazy var vetTextField: BlueBorderTextField = {
+        let vetTextField = BlueBorderTextField(text: nil)
+        vetTextField.delegate = self
+        return vetTextField
+    }()
+    
+    private lazy var doctorNotesLabel = MediumLabel(size: 16, text: "Doctor's notes", textColor: .mainBlue)
+    
+    private lazy var doctorNotesTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+    
+    private lazy var okButton: RoundButton = {
+        let okButton = RoundButton(text: "OK", size: 18)
+        if medical != nil {
+            okButton.isEnabled = true
+            okButton.backgroundColor = .mainYellow
+        } else {
+            okButton.isEnabled = false
+            okButton.backgroundColor = .lightBlueGrey
+        }
+        okButton.addTarget(self, action: #selector(tapOK), for: .touchUpInside)
+        return okButton
+    }()
 }
+
+// MARK: - UITextViewDelegate
 
 extension MedicalRecordViewController: UITextViewDelegate {
     
@@ -240,7 +171,7 @@ extension MedicalRecordViewController: UITextViewDelegate {
             okButton.backgroundColor = .mainYellow
             
             guard var medical = medical else { return }
-            medical = setMedicalValue(medical: medical)
+            medical = setMedicalValues(medical: medical)
             
         } else {
             okButton.isEnabled = false
@@ -248,6 +179,8 @@ extension MedicalRecordViewController: UITextViewDelegate {
         }
     }
 }
+
+// MARK: - UITextFieldDelegate
 
 extension MedicalRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -258,11 +191,115 @@ extension MedicalRecordViewController: UITextFieldDelegate {
             okButton.backgroundColor = .mainYellow
             
             guard var medical = medical else { return }
-            medical = setMedicalValue(medical: medical)
+            medical = setMedicalValues(medical: medical)
             
         } else {
             okButton.isEnabled = false
             okButton.backgroundColor = .lightBlueGrey
         }
+    }
+}
+
+// MARK: - UI configure extension
+
+extension MedicalRecordViewController {
+    
+    private func configScrollView() {
+        view.addSubview(scrollView)
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func configSymptomsLabel() {
+        scrollView.addSubview(symptomsLabel)
+        NSLayoutConstraint.activate([
+            symptomsLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 20),
+            symptomsLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            symptomsLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configSymptomsTextView() {
+        scrollView.addSubview(symptomsTextView)
+        NSLayoutConstraint.activate([
+            symptomsTextView.topAnchor.constraint(equalTo: symptomsLabel.bottomAnchor, constant: 8),
+            symptomsTextView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                                                      constant: 32),
+            symptomsTextView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                                                       constant: -32)
+        ])
+    }
+    
+    private func configDateOfVisitLabel() {
+        scrollView.addSubview(dateOfVisitLabel)
+        NSLayoutConstraint.activate([
+            dateOfVisitLabel.topAnchor.constraint(equalTo: symptomsTextView.bottomAnchor, constant: 24),
+            dateOfVisitLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                                                      constant: 32),
+            dateOfVisitLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                                                       constant: -32)
+        ])
+    }
+    
+    private func configDateOfVisitDatePicker() {
+        scrollView.addSubview(dateOfVisitDatePicker)
+        NSLayoutConstraint.activate([
+            dateOfVisitDatePicker.topAnchor.constraint(equalTo: dateOfVisitLabel.bottomAnchor, constant: 8),
+            dateOfVisitDatePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            dateOfVisitDatePicker.heightAnchor.constraint(equalToConstant: 48)
+        ])
+    }
+    
+    private func configVetLabel() {
+        scrollView.addSubview(vetLabel)
+        NSLayoutConstraint.activate([
+            vetLabel.topAnchor.constraint(equalTo: dateOfVisitDatePicker.bottomAnchor, constant: 24),
+            vetLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            vetLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configVetTextField() {
+        scrollView.addSubview(vetTextField)
+        NSLayoutConstraint.activate([
+            vetTextField.topAnchor.constraint(equalTo: vetLabel.bottomAnchor, constant: 8),
+            vetTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            vetTextField.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configDoctorNotesLabel() {
+        scrollView.addSubview(doctorNotesLabel)
+        NSLayoutConstraint.activate([
+            doctorNotesLabel.topAnchor.constraint(equalTo: vetTextField.bottomAnchor, constant: 24),
+            doctorNotesLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                                                      constant: 32),
+            doctorNotesLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                                                       constant: -32)
+        ])
+    }
+    
+    private func configDoctorNotesTextView() {
+        scrollView.addSubview(doctorNotesTextView)
+        NSLayoutConstraint.activate([
+            doctorNotesTextView.topAnchor.constraint(equalTo: doctorNotesLabel.bottomAnchor,
+                                                     constant: 8),
+            doctorNotesTextView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                                                         constant: 32),
+            doctorNotesTextView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -64)
+        ])
+    }
+    
+    private func configOkButton() {
+        view.addSubview(okButton)
+        NSLayoutConstraint.activate([
+            okButton.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            okButton.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -32),
+            okButton.topAnchor.constraint(equalTo: doctorNotesTextView.bottomAnchor, constant: 40)
+        ])
     }
 }
