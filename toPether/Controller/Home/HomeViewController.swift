@@ -11,7 +11,7 @@ import Photos
 class HomeViewController: UIViewController {
 
     private var pets = [Pet]()
-    private var currentUser: Member! = MemberModel.shared.current
+    private var currentUser: Member! = MemberManager.shared.current
     private var petIndex: Int = 0
     
     override func viewDidLoad() {
@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
         configCollectionView()
         configButtonStackView()
 
-        MemberModel.shared.addUserListener { [weak self] result in
+        MemberManager.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             
             switch result {

@@ -1,5 +1,5 @@
 //
-//  MemberModel.swift
+//  MemberManager.swift
 //  toPether
 //
 //  Created by 林宜萱 on 2021/10/21.
@@ -13,10 +13,10 @@ enum ListenerType<T> {
     case removed(data: T)
 }
 
-class MemberModel {
+class MemberManager {
     
     private init() {}
-    static let shared = MemberModel()
+    static let shared = MemberManager()
     
     let dataBase = Firestore.firestore()
     var current: Member? // set value at splash page
@@ -30,7 +30,6 @@ class MemberModel {
         member.id = uid
         member.name = name ?? ""
         member.petIds = []
-//        member.qrCode = uid
 
         checkUserExists(uid: uid) { isExist in
             if !isExist {

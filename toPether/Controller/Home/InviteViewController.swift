@@ -100,7 +100,7 @@ extension InviteViewController: AVCaptureMetadataOutputObjectsDelegate {
                     
                     configLoadingAnimation()
                     
-                    MemberModel.shared.queryMember(id: invitedMemberId) { member in
+                    MemberManager.shared.queryMember(id: invitedMemberId) { member in
                         guard let member = member else { return }
                         self.showScannedResult(member: member)
                     }

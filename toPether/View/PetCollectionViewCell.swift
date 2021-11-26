@@ -157,7 +157,7 @@ class PetCollectionViewCell: UICollectionViewCell {
                 
                 // self.pet?.memberIds.count != pet.memberIds.count &&
                 if !pet.memberIds.isEmpty {
-                    MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+                    MemberManager.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
                         switch result {
                         case .success(let members):
                             guard let self = self else { return }

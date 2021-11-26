@@ -204,8 +204,8 @@ class AddPetViewController: UIViewController {
                 
                 switch result {
                 case .success(let petId):
-                    MemberModel.shared.current?.petIds.append(petId)
-                    MemberModel.shared.updateCurrentUser()
+                    MemberManager.shared.current?.petIds.append(petId)
+                    MemberManager.shared.updateCurrentUser()
                     
                     if self.isFirstSignIn {
                         let tabBarViewController = TabBarViewController()

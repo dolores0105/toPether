@@ -145,7 +145,7 @@ class ToDoManager {
     
     func todoListener(completion: @escaping (Result<ListenerType<[ToDo]>, Error>) -> Void) {
         
-        guard let currentUser = MemberModel.shared.current else { return }
+        guard let currentUser = MemberManager.shared.current else { return }
         
         dataBase.collection("todos").whereField("executorId", isEqualTo: currentUser.id).addSnapshotListener { (querySnapshot, error) in
             

@@ -31,8 +31,8 @@ extension EmptyUserViewController: UITextFieldDelegate {
 //            nextButton.isEnabled = true
 //            nextButton.backgroundColor = .mainYellow
 //
-//            MemberModel.shared.current?.name = nameTextField.text ?? ""
-//            MemberModel.shared.updateCurrentUser()
+//            MemberManager.shared.current?.name = nameTextField.text ?? ""
+//            MemberManager.shared.updateCurrentUser()
 //
 //        } else {
 //            nextButton.isEnabled = false
@@ -57,7 +57,7 @@ extension EmptyUserViewController {
     func configNameTextField() {
         nameTextField = BlueBorderTextField(text: nil)
         nameTextField.becomeFirstResponder()
-        nameTextField.text = MemberModel.shared.current?.name
+        nameTextField.text = MemberManager.shared.current?.name
         nameTextField.delegate = self
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
@@ -85,8 +85,8 @@ extension EmptyUserViewController {
             nextButton.isEnabled = true
             nextButton.backgroundColor = .mainYellow
             
-            MemberModel.shared.current?.name = nameTextField.text ?? ""
-            MemberModel.shared.updateCurrentUser()
+            MemberManager.shared.current?.name = nameTextField.text ?? ""
+            MemberManager.shared.updateCurrentUser()
             
         } else {
             nextButton.isEnabled = false

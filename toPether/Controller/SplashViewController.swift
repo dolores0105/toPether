@@ -37,16 +37,16 @@ class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         if let current = Auth.auth().currentUser {
 
-            MemberModel.shared.queryCurrentUser(id: current.uid) { [weak self] result in
+            MemberManager.shared.queryCurrentUser(id: current.uid) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let current):
-                    MemberModel.shared.current = current
+                    MemberManager.shared.current = current
                     self.gotoTabbarVC()
                     
                 case .failure(let error):
                     print(error)
-                    MemberModel.shared.setMember(uid: current.uid, name: current.displayName, completion: self.loginHandler)
+                    MemberManager.shared.setMember(uid: current.uid, name: current.displayName, completion: self.loginHandler)
                 }
             }
             
@@ -86,12 +86,12 @@ class SplashViewController: UIViewController {
         switch result {
         case .success((let member, let isExist)):
             if isExist {
-                MemberModel.shared.current = member
+                MemberManager.shared.current = member
                 gotoTabbarVC()
                 LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
                 
             } else {
-                MemberModel.shared.current = member
+                MemberManager.shared.current = member
                 gotoEmptySetting()
                 LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
             }
@@ -148,7 +148,7 @@ extension SplashViewController: ASAuthorizationControllerDelegate {
                 if let user = authDataResult?.user {
                     print("Nice! You're now signed in as \(user.uid), email: \(user.email ?? "unknown")") // User is signed in to Firebase with Apple
                     
-                    MemberModel.shared.setMember(uid: user.uid, name: appleIDCredential.fullName?.givenName, completion: self.loginHandler)
+                    MemberManager.shared.setMember(uid: user.uid, name: appleIDCredential.fullName?.givenName, completion: self.loginHandler)
 
                 } else if let error = error {
                     print("sign in error:", error.localizedDescription)

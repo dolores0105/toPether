@@ -67,7 +67,7 @@ class MessageViewController: UIViewController {
                 self.messages = messages
 
                 for message in messages where self.senderNameCache[message.senderId] == nil {
-                    MemberModel.shared.queryMember(id: message.senderId) { [weak self] member in
+                    MemberManager.shared.queryMember(id: message.senderId) { [weak self] member in
                         guard let self = self else { return }
                         guard let member = member else {
                             self.senderNameCache[message.senderId] = "anonymous"
@@ -112,7 +112,7 @@ class MessageViewController: UIViewController {
 extension MessageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         
-        if messages[indexPath.row].senderId != MemberModel.shared.current?.id {
+        if messages[indexPath.row].senderId != MemberManager.shared.current?.id {
             let block = UIAction(title: "Block member", image: Img.iconsBlock.obj) { _ in
                 self.presentBlockAlert(title: "Block this member",
                                        message: "Make him/she leave the group, and couln't see the pet info no longer. \n The members in the group also couldn't see his/her messages") { [weak self] in
@@ -120,14 +120,14 @@ extension MessageViewController: UITableViewDelegate {
 
                     let blockedMemberId = self.unblockedmessages[indexPath.row].senderId
                     
-                    MemberModel.shared.queryMember(id: blockedMemberId) { [weak self] member in
+                    MemberManager.shared.queryMember(id: blockedMemberId) { [weak self] member in
                         guard let self = self else { return }
                         
                         if let member = member { // the member is existing
                             
                             // delete petIds of that member
                             member.petIds.removeAll { $0 == self.selectedPet.id }
-                            MemberModel.shared.updateMember(member: member)
+                            MemberManager.shared.updateMember(member: member)
                             
                             // delete memberId of the pet
                             self.selectedPet.memberIds.removeAll { $0 == blockedMemberId }
@@ -178,7 +178,7 @@ extension MessageViewController: UITableViewDataSource {
         let senderName = senderNameCache[message.senderId]
         
         var msgCell: MessageTableViewCell?
-        if message.senderId ==  MemberModel.shared.current?.id {
+        if message.senderId ==  MemberManager.shared.current?.id {
             msgCell = tableView.dequeueReusableCell(withIdentifier: RightMessageTableViewCell.identifier, for: indexPath) as? RightMessageTableViewCell
         } else {
             msgCell = tableView.dequeueReusableCell(withIdentifier: LeftMessageTableViewCell.identifier, for: indexPath) as? LeftMessageTableViewCell
@@ -294,7 +294,7 @@ extension MessageViewController {
     }
     
     @objc private func tapSend(_ sender: IconButton) {
-        guard let messageContent = messageContent, let currentUser = MemberModel.shared.current else { return }
+        guard let messageContent = messageContent, let currentUser = MemberManager.shared.current else { return }
         
         let message = Message()
         message.senderId = currentUser.id
