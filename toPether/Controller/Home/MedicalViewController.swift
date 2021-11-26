@@ -18,76 +18,19 @@ class MedicalViewController: UIViewController {
     private var selectedPet: Pet!
     private var medicals = [Medical]()
     private var listener: ListenerRegistration?
-    
-    private var navigationBackgroundView: NavigationBackgroundView!
-    private var petNameLabel: RegularLabel!
-    private var searchBar: BorderSearchBar!
-    private var medicalTableView: UITableView!
-    private var emptyContentLabel = RegularLabel(size: 18, text: "Empty records \nTap Plus to create one", textColor: .deepBlueGrey)
-    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 
     private var searching = false
     private var keyword: String?
     private var searchedMedicals = [Medical]()
     
-    override func viewWillAppear(_ animated: Bool) {
-
-        self.navigationItem.title = "Medical"
-        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
-
-        self.tabBarController?.tabBar.isHidden = true
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
-        navigationBackgroundView = NavigationBackgroundView()
-        view.addSubview(navigationBackgroundView)
-        NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor ),
-            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
-        ])
-        
-        petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
-        view.addSubview(petNameLabel)
-        NSLayoutConstraint.activate([
-            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ])
-        
-        searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
-        searchBar.delegate = self
-        view.addSubview(searchBar)
-        NSLayoutConstraint.activate([
-            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
-        ])
-        
-        medicalTableView = UITableView()
-        medicalTableView.register(MedicalTableViewCell.self, forCellReuseIdentifier: "MedicalTableViewCell")
-        medicalTableView.separatorColor = .clear
-        medicalTableView.backgroundColor = .white
-        medicalTableView.estimatedRowHeight = 100
-        medicalTableView.rowHeight = UITableView.automaticDimension
-        medicalTableView.allowsSelection = true
-        medicalTableView.delegate = self
-        medicalTableView.dataSource = self
-        medicalTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(medicalTableView)
-        NSLayoutConstraint.activate([
-            medicalTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-            medicalTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
+        configNavigationBackgroundView()
+        configPetNameLabel()
+        configSearchBar()
+        configMedicalTableView()
         
         // MARK: data
         PetManager.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
@@ -124,12 +67,54 @@ class MedicalViewController: UIViewController {
         }
     }
     
-    // MARK: Functions
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationItem.title = "Medical"
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    
+    // MARK: - Button Functions
     
     @objc func tapAdd(sender: UIButton) {
         let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: nil)
         navigationController?.pushViewController(medicalRecordVC, animated: true)
     }
+    
+    // MARK: - UI properties
+    
+    private lazy var navigationBackgroundView = NavigationBackgroundView()
+    
+    private lazy var petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
+    
+    private lazy var searchBar: BorderSearchBar = {
+        let searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
+        searchBar.delegate = self
+        return searchBar
+    }()
+    
+    private lazy var medicalTableView: UITableView = {
+        let medicalTableView = UITableView()
+        medicalTableView.register(MedicalTableViewCell.self, forCellReuseIdentifier: MedicalTableViewCell.identifier)
+        medicalTableView.separatorColor = .clear
+        medicalTableView.backgroundColor = .white
+        medicalTableView.estimatedRowHeight = 100
+        medicalTableView.rowHeight = UITableView.automaticDimension
+        medicalTableView.allowsSelection = true
+        medicalTableView.delegate = self
+        medicalTableView.dataSource = self
+        medicalTableView.translatesAutoresizingMaskIntoConstraints = false
+        return medicalTableView
+    }()
+    
+    private lazy var emptyContentLabel = RegularLabel(size: 18, text: "Empty records \nTap Plus to create one", textColor: .deepBlueGrey)
+    
+    private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
 
 // MARK: extension
@@ -229,6 +214,43 @@ extension MedicalViewController: UISearchBarDelegate {
 
 extension MedicalViewController {
 
+    private func configNavigationBackgroundView() {
+        view.addSubview(navigationBackgroundView)
+        NSLayoutConstraint.activate([
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor ),
+            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
+        ])
+    }
+    
+    private func configPetNameLabel() {
+        view.addSubview(petNameLabel)
+        NSLayoutConstraint.activate([
+            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+    
+    private func configSearchBar() {
+        view.addSubview(searchBar)
+        NSLayoutConstraint.activate([
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configMedicalTableView() {
+        view.addSubview(medicalTableView)
+        NSLayoutConstraint.activate([
+            medicalTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
+            medicalTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
     private func configEmptyContentLabel() {
         emptyContentLabel.textAlignment = .center
         emptyContentLabel.numberOfLines = 0
@@ -249,4 +271,5 @@ extension MedicalViewController {
             emptyAnimationView.heightAnchor.constraint(equalTo: emptyAnimationView.widthAnchor)
         ])
     }
+    
 }
