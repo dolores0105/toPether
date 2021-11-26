@@ -9,6 +9,140 @@ import UIKit
 import Photos
 
 class HomeViewController: UIViewController {
+
+    private var pets = [Pet]()
+    private var currentUser: Member! = MemberModel.shared.current
+    private var petIndex: Int = 0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .mainBlue
+        configCardView()
+        configCollectionView()
+        configButtonStackView()
+
+        MemberModel.shared.addUserListener { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(.added(members: let members)), .success(.modified(members: let members)), .success(.removed(members: let members)):
+                self.queryData(currentUser: members.first ?? self.currentUser)
+                MemberModel.shared.current = members.first
+
+            case .failure(let error):
+                print("lisener error at profileVC", error)
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
+        self.navigationItem.title = "toPether"
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - button functions
+    
+    @objc private func tapMessageButton(_: BorderButton) {
+        let messageVC = MessageViewController(selectedPet: self.pets[petIndex])
+        navigationController?.pushViewController(messageVC, animated: true)
+    }
+    
+    @objc private func tapFoodButton(_: BorderButton) {
+        let foodVC = FoodViewController(selectedPet: self.pets[petIndex])
+        navigationController?.pushViewController(foodVC, animated: true)
+    }
+    
+    @objc private func tapMedicalButton(_: BorderButton) {
+        let medicalVC = MedicalViewController(selectedPet: self.pets[petIndex])
+        navigationController?.pushViewController(medicalVC, animated: true)
+    }
+
+    // MARK: - data functions
+    
+    private func queryData(currentUser: Member) {
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let pets):
+                self.pets = pets
+                self.petCollectionView.reloadData()
+
+                self.buttonStackView.isHidden = false
+                self.emptyTitleLabel.removeFromSuperview()
+                self.emptyContentLabel.removeFromSuperview()
+                self.emptyAnimationView.removeFromSuperview()
+                self.petCollectionView.isHidden = false
+                
+            case .failure(let error):
+                
+                if error as? CommonError == CommonError.emptyArrayInFilter {
+                    self.buttonStackView.isHidden = true
+                    self.configEmptyTitleLabel()
+                    self.configEmptyContentLabel()
+                    self.configEmptyAnimation()
+                    self.petCollectionView.isHidden = true
+                    
+                } else {
+                    self.presentErrorAlert(message: error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    private func authorizeCamera() -> Bool {
+        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        switch cameraStatus {
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        let inviteVC = InviteViewController(pet: self.pets[self.petIndex])
+                        self.navigationController?.pushViewController(inviteVC, animated: true)
+                        _ = self.authorizeCamera()
+                    }
+                }
+            }
+        case .restricted, .denied:
+            presentGoSettingAlert()
+            
+        case .authorized:
+            return true
+            
+        @unknown default:
+            presentGoSettingAlert()
+        }
+        
+        return false
+    }
+    
+    private func presentGoSettingAlert() {
+        
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: "toPether would like to access the Camera", message: "Please turn on the setting for scanning members' QRCode", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let settingAction = UIAlertAction(title: "Setting", style: .default) { settingAction in
+                guard let settingUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(settingUrl, options: [:], completionHandler: { (success) in
+                        print("跳至設定")
+                    })
+                } else {
+                    UIApplication.shared.openURL(settingUrl)
+                }
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(settingAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    // MARK: - UI properties
     
     private lazy var cardView: CardView = {
         let cardView = CardView(color: .white, cornerRadius: 20)
@@ -65,144 +199,11 @@ class HomeViewController: UIViewController {
     }()
     
     private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
-
-    private var pets = [Pet]()
-    private var currentUser: Member! = MemberModel.shared.current
-    private var petIndex: Int = 0
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .mainBlue
-        configCardView()
-        configCollectionView()
-        configButtonStackView()
-        
-        queryData(currentUser: currentUser)
-        MemberModel.shared.addUserListener { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(.added(members: let members)), .success(.modified(members: let members)), .success(.removed(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-
-            case .failure(let error):
-                print("lisener error at profileVC", error)
-                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
-            }
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
-        self.navigationItem.title = "toPether"
-        
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
-    // MARK: - functions
-    
-    @objc private func tapMessageButton(_: BorderButton) {
-        let messageVC = MessageViewController(selectedPet: self.pets[petIndex])
-        navigationController?.pushViewController(messageVC, animated: true)
-    }
-    
-    @objc private func tapFoodButton(_: BorderButton) {
-        let foodVC = FoodViewController(selectedPet: self.pets[petIndex])
-        navigationController?.pushViewController(foodVC, animated: true)
-    }
-    
-    @objc private func tapMedicalButton(_: BorderButton) {
-        let medicalVC = MedicalViewController(selectedPet: self.pets[petIndex])
-        navigationController?.pushViewController(medicalVC, animated: true)
-    }
-    
-    @objc private func tapXXXButton(_ sender: BorderButton) {
-        // switch
-    }
-    
-    private func queryData(currentUser: Member) {
-        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let pets):
-                self.pets = pets
-                self.petCollectionView.reloadData()
-                print("fetch pets at profile:", self.pets)
-                self.buttonStackView.isHidden = false
-                self.emptyTitleLabel.removeFromSuperview()
-                self.emptyContentLabel.removeFromSuperview()
-                self.emptyAnimationView.removeFromSuperview()
-                
-            case .failure(let error):
-                print(error)
-                self.buttonStackView.isHidden = true
-                self.configEmptyTitleLabel()
-                self.configEmptyContentLabel()
-                self.configEmptyAnimation()
-            }
-        }
-    }
-    
-    private func authorizeCamera() -> Bool {
-        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        switch cameraStatus {
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                if granted {
-                    DispatchQueue.main.async {
-                        let inviteVC = InviteViewController(pet: self.pets[self.petIndex])
-                        self.navigationController?.pushViewController(inviteVC, animated: true)
-                        _ = self.authorizeCamera()
-                    }
-                }
-            }
-        case .restricted, .denied:
-            presentGoSettingAlert()
-            
-        case .authorized:
-            return true
-            
-        @unknown default:
-            presentGoSettingAlert()
-        }
-        
-        return false
-    }
-    
-    private func presentGoSettingAlert() {
-        
-        DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "toPether would like to access the Camera", message: "Please turn on the setting for scanning members' QRCode", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let settingAction = UIAlertAction(title: "Setting", style: .default) { settingAction in
-                guard let settingUrl = URL(string: UIApplication.openSettingsURLString) else { return }
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(settingUrl, options: [:], completionHandler: { (success) in
-                        print("跳至設定")
-                    })
-                } else {
-                    UIApplication.shared.openURL(settingUrl)
-                }
-            }
-            
-            alertController.addAction(cancelAction)
-            alertController.addAction(settingAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
 }
 
 // MARK: - CollectionViewDelegate+DataSource
 
 extension HomeViewController: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pets.count
@@ -210,7 +211,7 @@ extension HomeViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PetCollectionViewCell.identifier, for: indexPath)
-        guard let petCell = cell as? PetCollectionViewCell else { return cell }
+        guard let petCell = cell as? PetCollectionViewCell else { return UICollectionViewCell() }
 
         petCell.reload(pet: self.pets[indexPath.item])
 
@@ -230,7 +231,7 @@ extension HomeViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - CellDelegate
+// MARK: - PetCollectionViewCellDelegate
 
 extension HomeViewController: PetCollectionViewCellDelegate {
     
