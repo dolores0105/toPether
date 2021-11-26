@@ -15,22 +15,17 @@ class ToDoManager {
     
     let dataBase = Firestore.firestore().collection("todos")
     
-    func setToDo(creatorId: String, executorId: String, petId: String, dueTime: Date, content: String, completion: @escaping (Result<ToDo, Error>) -> Void) {
-
+    // MARK: - Create
+    
+    func setToDo(todo: ToDo, completion: @escaping (Result<String, Error>) -> Void) {
         let document = dataBase.document()
         
-        let todo = ToDo()
         todo.id = document.documentID
-        todo.creatorId = creatorId
-        todo.executorId = executorId
-        todo.petId = petId
-        todo.dueTime = dueTime
-        todo.content = content
         todo.doneStatus = false
         
         do {
             try document.setData(from: todo)
-            completion(.success(todo))
+            completion(.success("set new todo: \(todo.id)"))
         } catch let error {
             completion(.failure(error))
         }
