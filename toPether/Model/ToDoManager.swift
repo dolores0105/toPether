@@ -13,11 +13,11 @@ class ToDoManager {
     private init() {}
     static let shared = ToDoManager()
     
-    let dataBase = Firestore.firestore()
+    let dataBase = Firestore.firestore().collection("todos")
     
     func setToDo(creatorId: String, executorId: String, petId: String, dueTime: Date, content: String, completion: @escaping (Result<ToDo, Error>) -> Void) {
-        let todos = dataBase.collection("todos")
-        let document = todos.document()
+
+        let document = dataBase.document()
         
         let todo = ToDo()
         todo.id = document.documentID
@@ -38,12 +38,12 @@ class ToDoManager {
     
     func queryToDosOnDate(petIds: [String], date: Date, completion: @escaping (Result<[ToDo], Error>) -> Void) {
         
-        guard !petIds.isEmpty else { // if petIds is an empty array
+        guard !petIds.isEmpty else {
             completion(Result.failure(CommonError.emptyArrayInFilter))
             return
         }
         
-        dataBase.collection("todos").whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
+        dataBase.whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 let todos = querySnapshot.documents.compactMap({ querySnapshot in
@@ -69,12 +69,12 @@ class ToDoManager {
     
     func queryToDos(petIds: [String], completion: @escaping (Result<[ToDo], Error>) -> Void) {
         
-        guard !petIds.isEmpty else { // if petIds is an empty array
+        guard !petIds.isEmpty else {
             completion(Result.failure(CommonError.emptyArrayInFilter))
             return
         }
         
-        dataBase.collection("todos").whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
+        dataBase.whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 let todos = querySnapshot.documents.compactMap({ querySnapshot in
@@ -96,7 +96,7 @@ class ToDoManager {
             return nil
         }
         
-        let listener = dataBase.collection("todos").whereField("petId", in: petIds).addSnapshotListener { (querySnapshot, error) in
+        let listener = dataBase.whereField("petId", in: petIds).addSnapshotListener { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 let todos = querySnapshot.documents.compactMap({ querySnapshot in
@@ -124,7 +124,7 @@ class ToDoManager {
     
     func updateToDo(todo: ToDo, completion: (ToDo?) -> Void) {
         do {
-            try dataBase.collection("todos").document(todo.id).setData(from: todo)
+            try dataBase.document(todo.id).setData(from: todo)
             completion(todo)
         } catch {
             print("update todo error", error)
@@ -133,7 +133,7 @@ class ToDoManager {
     }
     
     func deleteToDo(id: String, completion: @escaping(Bool) -> Void) {
-        dataBase.collection("todos").document(id).delete() { error in
+        dataBase.document(id).delete() { error in
             if let error = error {
                 print("delete todo error", error)
                 completion(false)
@@ -147,7 +147,7 @@ class ToDoManager {
         
         guard let currentUser = MemberManager.shared.current else { return }
         
-        dataBase.collection("todos").whereField("executorId", isEqualTo: currentUser.id).addSnapshotListener { (querySnapshot, error) in
+        dataBase.whereField("executorId", isEqualTo: currentUser.id).addSnapshotListener { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 
