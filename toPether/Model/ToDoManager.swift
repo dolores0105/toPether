@@ -43,13 +43,14 @@ class ToDoManager {
         }
     }
     
-    func deleteToDo(id: String, completion: @escaping(Bool) -> Void) {
+    // MARK: - Delete
+    
+    func deleteToDo(id: String, completion: @escaping(Result<String, Error>) -> Void) {
         dataBase.document(id).delete { error in
             if let error = error {
-                print("delete todo error", error)
-                completion(false)
+                completion(.failure(error))
             } else {
-                completion(true)
+                completion(.success("deleted todo \(id)"))
             }
         }
     }

@@ -238,14 +238,13 @@ extension ToDoViewController: UITableViewDelegate {
                 let deleteId = self.toDos[indexPath.row].id
                 let deleteContent = self.toDos[indexPath.row].content
                 
-                ToDoManager.shared.deleteToDo(id: deleteId) { deleteDone in
-                    if deleteDone {
-                        
-                        print("deleted \(deleteId), \(deleteContent)")
+                ToDoManager.shared.deleteToDo(id: deleteId) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string + deleteContent)
                         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
-                    } else {
-                        
-                        self.presentErrorAlert(message: "Please try again")
+                    case .failure(let error):
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
                 
