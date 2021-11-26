@@ -53,19 +53,19 @@ class ProfileViewController: UIViewController {
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(.added(members: let members)):
-                guard let currentUser = members.first else { return }
-                self.queryData(currentUser: currentUser)
-                self.nameTextField.text = currentUser.name
+            case .success(.added(member: let member)):
+//                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: member)
+                self.nameTextField.text = member.name
 
-            case .success(.modified(members: let members)):
-                guard let currentUser = members.first else { return }
-                self.queryData(currentUser: currentUser)
-                self.nameTextField.text = currentUser.name
+            case .success(.modified(member: let member)):
+//                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: member)
+                self.nameTextField.text = member.name
 
-            case .success(.removed(members: let members)):
-                guard let currentUser = members.first else { return }
-                self.queryData(currentUser: currentUser)
+            case .success(.removed(member: let member)):
+//                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: member)
 
             case .failure(let error):
                 print("lisener error at profileVC", error)
@@ -88,6 +88,7 @@ class ProfileViewController: UIViewController {
                 self.guideCreateLabel.removeFromSuperview()
                 self.secondImageView.removeFromSuperview()
                 self.guideGetInvitationLabel.removeFromSuperview()
+                self.petTableView.isHidden = false
                 
             case .failure(let error):
                 print(error)
@@ -95,6 +96,7 @@ class ProfileViewController: UIViewController {
                 self.configGuideCreateLabel()
                 self.configSecondImageView()
                 self.configGuideInvitationLabel()
+                self.petTableView.isHidden = true
             }
         }
     }

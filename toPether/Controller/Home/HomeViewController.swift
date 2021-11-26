@@ -24,13 +24,14 @@ class HomeViewController: UIViewController {
 
         MemberModel.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
+            
             switch result {
-            case .success(.added(members: let members)), .success(.modified(members: let members)), .success(.removed(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
+            case .success(.added(member: let member)),
+                 .success(.modified(member: let member)),
+                 .success(.removed(member: let member)):
+                self.queryData(currentUser: member)
 
             case .failure(let error):
-                print("lisener error at profileVC", error)
                 self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }

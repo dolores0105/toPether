@@ -8,9 +8,9 @@
 import Firebase
 
 enum ListenerType {
-    case added(members: [Member])
-    case modified(members: [Member])
-    case removed(members: [Member])
+    case added(member: Member)
+    case modified(member: Member)
+    case removed(member: Member)
 }
 
 class MemberModel {
@@ -121,7 +121,8 @@ class MemberModel {
     
     func addUserListener(completion: @escaping (Result<ListenerType, Error>) -> Void) {
         guard let user = current else { return }
-        dataBase.collection("members").whereField("id", isEqualTo: user.id).addSnapshotListener { querySnapshot, error in
+        dataBase.collection("members").whereField("id", isEqualTo: user.id).addSnapshotListener { [weak self] querySnapshot, error in
+            guard let self = self else { return }
             
             if let querySnapshot = querySnapshot {
                 
@@ -129,18 +130,21 @@ class MemberModel {
                     try? querySnapshot.data(as: Member.self)
                 })
                 
+                guard let currentUser = members.first else { return }
+                self.current = currentUser
+                
                 querySnapshot.documentChanges.forEach { diff in
                     switch diff.type {
                     case .added:
                         print("add")
-                        completion(.success(.added(members: members)))
+                        completion(.success(.added(member: currentUser)))
                         
                     case .modified:
                         print("modifi")
-                        completion(.success(.modified(members: members)))
+                        completion(.success(.modified(member: currentUser)))
                     case .removed:
                         print("remove")
-                        completion(.success(.removed(members: members)))
+                        completion(.success(.removed(member: currentUser)))
                     }
                 }
                 
