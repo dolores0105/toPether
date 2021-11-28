@@ -130,6 +130,20 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return food
     }
     
+    private func checkHaveText() -> Bool {
+        if nameTextField.hasText &&
+            weightTextField.hasText &&
+            unitTextField.hasText &&
+            priceTextField.hasText &&
+            marketTextField.hasText &&
+            noteTextView.hasText {
+            return true
+            
+        } else {
+            return false
+        }
+    }
+    
     // MARK: - UI properties
     
     private lazy var scrollView: UIScrollView = {
@@ -220,7 +234,7 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
 extension FoodRecordViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && textView.hasText {
+        if checkHaveText() {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
@@ -241,7 +255,7 @@ extension FoodRecordViewController: UITextViewDelegate {
 extension FoodRecordViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if nameTextField.hasText && weightTextField.hasText && unitTextField.hasText && priceTextField.hasText && marketTextField.hasText && noteTextView.hasText {
+        if checkHaveText() {
 
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow

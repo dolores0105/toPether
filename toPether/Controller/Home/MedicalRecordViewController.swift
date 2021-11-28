@@ -107,6 +107,14 @@ class MedicalRecordViewController: UIViewController {
         return medical
     }
     
+    private func checkHaveText() -> Bool {
+        if symptomsTextView.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // MARK: - UI properties
     
     private lazy var scrollView: UIScrollView = {
@@ -165,7 +173,7 @@ class MedicalRecordViewController: UIViewController {
 extension MedicalRecordViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        if symptomsTextView.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+        if checkHaveText() {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
@@ -185,7 +193,7 @@ extension MedicalRecordViewController: UITextViewDelegate {
 extension MedicalRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if symptomsTextView.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+        if checkHaveText() {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
