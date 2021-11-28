@@ -130,11 +130,8 @@ extension MedicalViewController: UITableViewDataSource {
         guard let medicalCell = cell as? MedicalTableViewCell else { return UITableViewCell() }
         medicalCell.selectionStyle = .none
         
-        if searching {
-            medicalCell.reload(medical: searchedMedicals[indexPath.row])
-        } else {
-            medicalCell.reload(medical: medicals[indexPath.row])
-        }
+        let medical = searching ? searchedMedicals[indexPath.row] : medicals[indexPath.row]
+        medicalCell.reload(medical: medical)
         
         return cell
     }
@@ -175,6 +172,7 @@ extension MedicalViewController: UITableViewDelegate {
         
         let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
         swipeAction.performsFirstActionWithFullSwipe = false
+        
         return swipeAction
     }
 }
@@ -182,6 +180,7 @@ extension MedicalViewController: UITableViewDelegate {
 // MARK: - UISearchBarDelegate
 
 extension MedicalViewController: UISearchBarDelegate {
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         keyword = searchBar.text
         search(keyword: searchText)
