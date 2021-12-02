@@ -156,7 +156,10 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return scrollView
     }()
     
-    private lazy var nameLabel = MediumLabel(size: 16, text: "Name", textColor: .mainBlue)
+    private lazy var nameLabel: MediumLabel = {
+        let nameLabel = MediumLabel(size: 16, text: "Name", textColor: .mainBlue)
+        return nameLabel
+    }()
     
     private lazy var nameTextField: BlueBorderTextField = {
         let nameTextField = BlueBorderTextField(text: nil)
@@ -164,7 +167,10 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return nameTextField
     }()
     
-    private lazy var weightLabel = MediumLabel(size: 16, text: "Weight", textColor: .mainBlue)
+    private lazy var weightLabel: MediumLabel = {
+        let weightLabel = MediumLabel(size: 16, text: "Weight", textColor: .mainBlue)
+        return weightLabel
+    }()
     
     private lazy var weightTextField: BlueBorderTextField = {
         let weightTextField = BlueBorderTextField(text: nil)
@@ -188,7 +194,10 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return unitTextField
     }()
     
-    private lazy var priceLabel = MediumLabel(size: 16, text: "Price", textColor: .mainBlue)
+    private lazy var priceLabel: MediumLabel = {
+        let priceLabel = MediumLabel(size: 16, text: "Price", textColor: .mainBlue)
+        return priceLabel
+    }()
     
     private lazy var priceTextField: BlueBorderTextField = {
         let priceTextField = BlueBorderTextField(text: nil)
@@ -197,7 +206,10 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return priceTextField
     }()
     
-    private lazy var marketLabel = MediumLabel(size: 16, text: "Purchase from", textColor: .mainBlue)
+    private lazy var marketLabel: MediumLabel = {
+        let marketLabel = MediumLabel(size: 16, text: "Purchase from", textColor: .mainBlue)
+        return marketLabel
+    }()
     
     private lazy var marketTextField: BlueBorderTextField = {
         let marketTextField = BlueBorderTextField(text: nil)
@@ -205,7 +217,10 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return marketTextField
     }()
     
-    private lazy var dateOfPurchaseLabel = MediumLabel(size: 16, text: "Date of Purchase", textColor: .mainBlue)
+    private lazy var dateOfPurchaseLabel: MediumLabel = {
+        let dateOfPurchaseLabel = MediumLabel(size: 16, text: "Date of Purchase", textColor: .mainBlue)
+        return dateOfPurchaseLabel
+    }()
     
     private lazy var dateOfPurchaseDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -216,9 +231,15 @@ class FoodRecordViewController: UIViewController, UIScrollViewDelegate {
         return datePicker
     }()
     
-    private lazy var noteLabel = MediumLabel(size: 16, text: "Notes", textColor: .mainBlue)
+    private lazy var noteLabel: MediumLabel = {
+        let noteLabel = MediumLabel(size: 16, text: "Notes", textColor: .mainBlue)
+        return noteLabel
+    }()
     
-    private lazy var noteTextView = BlueBorderTextView(self, textSize: 16, height: 72)
+    private lazy var noteTextView: BlueBorderTextView = {
+        let noteTextView = BlueBorderTextView(self, textSize: 16, height: 72)
+        return noteTextView
+    }()
     
     private lazy var okButton: RoundButton = {
         let okButton = RoundButton(text: "OK", size: 18)

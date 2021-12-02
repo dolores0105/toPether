@@ -82,9 +82,15 @@ class MedicalViewController: UIViewController {
     
     // MARK: - UI properties
     
-    private lazy var navigationBackgroundView = NavigationBackgroundView()
+    private lazy var navigationBackgroundView: NavigationBackgroundView = {
+        let navigationBackgroundView = NavigationBackgroundView()
+        return navigationBackgroundView
+    }()
     
-    private lazy var petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
+    private lazy var petNameLabel: RegularLabel = {
+        let petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
+        return petNameLabel
+    }()
     
     private lazy var searchBar: BorderSearchBar = {
         let searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
@@ -106,9 +112,12 @@ class MedicalViewController: UIViewController {
         return medicalTableView
     }()
     
-    private lazy var emptyContentLabel = RegularLabel(size: 18,
-                                                      text: "Empty records \nTap Plus to create one",
-                                                      textColor: .deepBlueGrey)
+    private lazy var emptyContentLabel: RegularLabel = {
+        let emptyContentLabel = RegularLabel(size: 18,
+                                             text: "Empty records \nTap Plus to create one",
+                                             textColor: .deepBlueGrey)
+        return emptyContentLabel
+    }()
     
     private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
