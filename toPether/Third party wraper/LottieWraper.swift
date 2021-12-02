@@ -27,6 +27,16 @@ class LottieAnimation {
         return lottieAnimation
     }
     
+    func createOneTimeAnimation(lottieName: String) -> AnimationView {
+        let lottieAnimation = AnimationView.init(name: lottieName)
+        lottieAnimation.contentMode = .scaleAspectFit
+        lottieAnimation.translatesAutoresizingMaskIntoConstraints = false
+        lottieAnimation.loopMode = .playOnce
+        lottieAnimation.play(completion: nil)
+        
+        return lottieAnimation
+    }
+    
     func stopAnimation(lottieAnimation: AnimationView) {
         
         lottieAnimation.stop()
