@@ -16,97 +16,53 @@ class FoodViewController: UIViewController {
     private var selectedPet: Pet!
     private var foods = [Food]()
     
-    private var navigationBackgroundView: NavigationBackgroundView!
-    private var petNameLabel: RegularLabel!
-    private var searchBar: UISearchBar!
-    private var foodTableView: UITableView!
-    private var emptyContentLabel = RegularLabel(size: 18, text: "Empty records \nTap Plus to create one", textColor: .deepBlueGrey)
-    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
-    
     private var searching = false
     private var keyword: String?
     private var searchedFoods = [Food]()
-    
-    override func viewWillAppear(_ animated: Bool) {
-
-        self.navigationItem.title = "Food"
-        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
-        
-        self.tabBarController?.tabBar.isHidden = true
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
-        navigationBackgroundView = NavigationBackgroundView()
-        view.addSubview(navigationBackgroundView)
-        NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
-        ])
+        configNavigationBackgroundView()
+        configPetNameLabel()
+        configSearchBar()
+        configFoodTableView()
         
-        petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
-        view.addSubview(petNameLabel)
-        NSLayoutConstraint.activate([
-            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ])
+        addListener(petId: selectedPet.id)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        self.navigationItem.title = "Food"
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         
-        searchBar = BorderSearchBar(placeholder: "Search for food name or notes")
-        searchBar.delegate = self
-        view.addSubview(searchBar)
-        NSLayoutConstraint.activate([
-            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
-        ])
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj,
+                                                                 style: .plain,
+                                                                 target: self,
+                                                                 action: #selector(tapAdd))
         
-        foodTableView = UITableView()
-        foodTableView.register(FoodTableViewCell.self, forCellReuseIdentifier: "FoodTableViewCell")
-        foodTableView.separatorColor = .clear
-        foodTableView.backgroundColor = .white
-        foodTableView.estimatedRowHeight = 100
-        foodTableView.rowHeight = UITableView.automaticDimension
-        foodTableView.allowsSelection = true
-        foodTableView.delegate = self
-        foodTableView.dataSource = self
-        foodTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(foodTableView)
-        NSLayoutConstraint.activate([
-            foodTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-            foodTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            foodTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            foodTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
-        PetManager.shared.queryFoods(petId: selectedPet.id) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let foods):
-                for index in foods {
-                    print(index.dateOfPurchase)
-                }
-                self.foods = foods
-                self.foodTableView.reloadData()
-            case .failure(let error):
-                print("query foods error", error)
-                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
-            }
-        }
-        
-        PetManager.shared.addFoodsListener(petId: selectedPet.id) { [weak self] result in
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Button Functions
+    
+    @objc func tapAdd(_: UIButton) {
+        let foodRecordVC = FoodRecordViewController(selectedPetId: selectedPet.id, food: nil)
+        navigationController?.pushViewController(foodRecordVC, animated: true)
+    }
+    
+    // MARK: - Data Functions
+    private func addListener(petId: String) {
+        PetManager.shared.addFoodsListener(petId: petId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let records):
                 self.foods = records
                 self.foodTableView.reloadData()
+                
                 if self.foods.isEmpty {
                     self.configEmptyContentLabel()
                     self.configEmptyAnimation()
@@ -122,32 +78,68 @@ class FoodViewController: UIViewController {
         }
     }
     
-    @objc func tapAdd(_: UIButton) {
-        let foodRecordVC = FoodRecordViewController(selectedPetId: selectedPet.id, food: nil)
-        navigationController?.pushViewController(foodRecordVC, animated: true)
-    }
+    // MARK: - UI Properties
+    
+    private lazy var navigationBackgroundView: NavigationBackgroundView = {
+        let navigationBackgroundView = NavigationBackgroundView()
+        return navigationBackgroundView
+    }()
+    
+    private lazy var petNameLabel: RegularLabel = {
+        let petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
+        return petNameLabel
+    }()
+    
+    private lazy var searchBar: BorderSearchBar = {
+        let searchBar = BorderSearchBar(placeholder: "Search for food name or notes")
+        searchBar.delegate = self
+        return searchBar
+    }()
+    
+    private lazy var foodTableView: UITableView = {
+        let foodTableView = UITableView()
+        foodTableView.register(FoodTableViewCell.self, forCellReuseIdentifier: FoodTableViewCell.identifier)
+        foodTableView.separatorColor = .clear
+        foodTableView.backgroundColor = .white
+        foodTableView.estimatedRowHeight = 100
+        foodTableView.rowHeight = UITableView.automaticDimension
+        foodTableView.allowsSelection = true
+        foodTableView.delegate = self
+        foodTableView.dataSource = self
+        foodTableView.translatesAutoresizingMaskIntoConstraints = false
+        return foodTableView
+    }()
+    
+    private lazy var emptyContentLabel: RegularLabel = {
+        let emptyContentLabel = RegularLabel(size: 18,
+                                             text: "Empty records \nTap Plus to create one",
+                                             textColor: .deepBlueGrey)
+        return emptyContentLabel
+    }()
+
+    private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
 
+// MARK: - UITableViewDataSource
+
 extension FoodViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searching {
             return searchedFoods.count
         } else {
             return foods.count
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FoodTableViewCell.identifier, for: indexPath)
-        guard let foodCell = cell as? FoodTableViewCell else { return cell }
+        guard let foodCell = cell as? FoodTableViewCell else { return UITableViewCell() }
+        
         foodCell.selectionStyle = .none
         
-        if searching {
-            foodCell.reload(food: searchedFoods[indexPath.row])
-        } else {
-            foodCell.reload(food: foods[indexPath.row])
-        }
+        let food = searching ? searchedFoods[indexPath.row] : foods[indexPath.row]
+        foodCell.reload(food: food)
         
         return foodCell
     }
@@ -159,15 +151,19 @@ extension FoodViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension FoodViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            self.presentDeleteAlert(title: "Delete food record") { [weak self] in
-                guard let self = self else { return }
+            self.presentDeleteAlert(title: "Delete food record") {
                 
-                PetManager.shared.deletePetObject(petId: self.selectedPet.id, recordId: self.foods[indexPath.row].id, objectType: .food) { result in
+                PetManager.shared.deletePetObject(petId: self.selectedPet.id,
+                                                  recordId: self.foods[indexPath.row].id,
+                                                  objectType: .food) { result in
                     switch result {
                     case .success(let string):
                         print(string)
@@ -185,11 +181,15 @@ extension FoodViewController: UITableViewDelegate {
         
         let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
         swipeAction.performsFirstActionWithFullSwipe = false
+        
         return swipeAction
     }
 }
 
+// MARK: - UISearchBarDelegate
+
 extension FoodViewController: UISearchBarDelegate {
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         keyword = searchBar.text
         searching = true
@@ -223,7 +223,46 @@ extension FoodViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - UI configure extension
+
 extension FoodViewController {
+    
+    private func configNavigationBackgroundView() {
+        view.addSubview(navigationBackgroundView)
+        NSLayoutConstraint.activate([
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
+        ])
+    }
+    
+    private func configPetNameLabel() {
+        view.addSubview(petNameLabel)
+        NSLayoutConstraint.activate([
+            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+    
+    private func configSearchBar() {
+        view.addSubview(searchBar)
+        NSLayoutConstraint.activate([
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configFoodTableView() {
+        view.addSubview(foodTableView)
+        NSLayoutConstraint.activate([
+            foodTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
+            foodTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            foodTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            foodTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
     
     private func configEmptyContentLabel() {
         emptyContentLabel.textAlignment = .center

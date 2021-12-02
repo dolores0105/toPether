@@ -107,6 +107,14 @@ class MedicalRecordViewController: UIViewController {
         return medical
     }
     
+    private func checkHaveText() -> Bool {
+        if symptomsTextView.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // MARK: - UI properties
     
     private lazy var scrollView: UIScrollView = {
@@ -119,11 +127,20 @@ class MedicalRecordViewController: UIViewController {
         return scrollView
     }()
     
-    private lazy var symptomsLabel = MediumLabel(size: 16, text: "Symptoms", textColor: .mainBlue)
+    private lazy var symptomsLabel: MediumLabel = {
+        let symptomsLabel = MediumLabel(size: 16, text: "Symptoms", textColor: .mainBlue)
+        return symptomsLabel
+    }()
     
-    private lazy var symptomsTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+    private lazy var symptomsTextView: BlueBorderTextView = {
+        let symptomsTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+        return symptomsTextView
+    }()
     
-    private lazy var dateOfVisitLabel = MediumLabel(size: 16, text: "Date of visit", textColor: .mainBlue)
+    private lazy var dateOfVisitLabel: MediumLabel = {
+        let dateOfVisitLabel = MediumLabel(size: 16, text: "Date of visit", textColor: .mainBlue)
+        return dateOfVisitLabel
+    }()
     
     private lazy var dateOfVisitDatePicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -134,7 +151,10 @@ class MedicalRecordViewController: UIViewController {
         return picker
     }()
     
-    private lazy var vetLabel = MediumLabel(size: 16, text: "Name of Vet", textColor: .mainBlue)
+    private lazy var vetLabel: MediumLabel = {
+        let vetLabel = MediumLabel(size: 16, text: "Name of Vet", textColor: .mainBlue)
+        return vetLabel
+    }()
     
     private lazy var vetTextField: BlueBorderTextField = {
         let vetTextField = BlueBorderTextField(text: nil)
@@ -142,9 +162,15 @@ class MedicalRecordViewController: UIViewController {
         return vetTextField
     }()
     
-    private lazy var doctorNotesLabel = MediumLabel(size: 16, text: "Doctor's notes", textColor: .mainBlue)
+    private lazy var doctorNotesLabel: MediumLabel = {
+        let doctorNotesLabel = MediumLabel(size: 16, text: "Doctor's notes", textColor: .mainBlue)
+        return doctorNotesLabel
+    }()
     
-    private lazy var doctorNotesTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+    private lazy var doctorNotesTextView: BlueBorderTextView = {
+        let doctorNotesTextView = BlueBorderTextView(self, textSize: 16, height: 64)
+        return doctorNotesTextView
+    }()
     
     private lazy var okButton: RoundButton = {
         let okButton = RoundButton(text: "OK", size: 18)
@@ -165,7 +191,7 @@ class MedicalRecordViewController: UIViewController {
 extension MedicalRecordViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        if symptomsTextView.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+        if checkHaveText() {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow
@@ -185,7 +211,7 @@ extension MedicalRecordViewController: UITextViewDelegate {
 extension MedicalRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if symptomsTextView.hasText && vetTextField.hasText && doctorNotesTextView.hasText {
+        if checkHaveText() {
             
             okButton.isEnabled = true
             okButton.backgroundColor = .mainYellow

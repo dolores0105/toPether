@@ -14,6 +14,7 @@ class MessageViewController: UIViewController {
         self.selectedPet = selectedPet
     }
     private var selectedPet: Pet!
+    
     private var messages = [Message]()
     private var messageContent: String?
     private var senderNameCache = [String: String]() { // senderId -> memberName
@@ -22,16 +23,6 @@ class MessageViewController: UIViewController {
         }
     }
     
-    private var navigationBackgroundView: NavigationBackgroundView!
-    private var backgroundView: UIView!
-    private var petNameLabel: RegularLabel!
-    private var searchBar: UISearchBar!
-    private var messageTableView: UITableView!
-    private var inputTextView: UITextView!
-    private var sendButton: IconButton!
-    private var emptyContentLabel = RegularLabel(size: 18, text: "No one chatted \nSend something to start", textColor: .deepBlueGrey)
-    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
-    
     private var searching = false
     private var keyword: String?
     private var searchedMessages = [Message]()
@@ -39,13 +30,7 @@ class MessageViewController: UIViewController {
     private var unblockedmessages = [Message]()
     private var blackList = [String]()
     
-    override func viewWillAppear(_ animated: Bool) {
-
-        self.navigationItem.title = "Message"
-        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
-
-        self.tabBarController?.tabBar.isHidden = true
-    }
+    // MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,16 +44,30 @@ class MessageViewController: UIViewController {
         configInputTextView()
         configSendButton()
         
-        // MARK: Data
-        PetManager.shared.addMessagesListener(petId: selectedPet.id) { [weak self] result in
+        addListener(petId: selectedPet.id)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        self.navigationItem.title = "Message"
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Data Functions
+    
+    private func addListener(petId: String) {
+        PetManager.shared.addMessagesListener(petId: petId) { [weak self] result in
             guard let self = self else { return }
+            
             switch result {
             case .success(let messages):
                 self.messages = messages
 
                 for message in messages where self.senderNameCache[message.senderId] == nil {
-                    MemberManager.shared.queryMember(id: message.senderId) { [weak self] member in
-                        guard let self = self else { return }
+                    MemberManager.shared.queryMember(id: message.senderId) { member in
+
                         guard let member = member else {
                             self.senderNameCache[message.senderId] = "anonymous"
                             return
@@ -107,7 +106,107 @@ class MessageViewController: UIViewController {
         }
         completion()
     }
+    
+    // MARK: - Button Functions
+    
+    @objc private func tapSend(_ sender: IconButton) {
+        guard let messageContent = messageContent, let currentUser = MemberManager.shared.current else { return }
+        
+        let message = Message()
+        message.senderId = currentUser.id
+        message.sentTime = Date()
+        message.content = messageContent
+        
+        PetManager.shared.setMessage(petId: selectedPet.id, message: message) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let message):
+                print(message.sentTime, message.content)
+                self.inputTextView.text = ""
+                self.sendButton.alpha = 0.5
+                self.sendButton.isEnabled = false
+                
+            case .failure(let error):
+                print(error)
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+            }
+        }
+    }
+    
+    // MARK: - UI properties
+    
+    private lazy var navigationBackgroundView: NavigationBackgroundView = {
+        let navigationBackgroundView = NavigationBackgroundView()
+        return navigationBackgroundView
+    }()
+    
+    private lazy var backgroundView: UIView = {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .white
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        return backgroundView
+    }()
+    
+    private lazy var petNameLabel: RegularLabel = {
+        let petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
+        return petNameLabel
+    }()
+    
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = BorderSearchBar(placeholder: "Search for messages")
+        searchBar.delegate = self
+        return searchBar
+    }()
+    
+    private lazy var messageTableView: UITableView = {
+        let messageTableView = UITableView()
+        messageTableView.register(RightMessageTableViewCell.self, forCellReuseIdentifier: RightMessageTableViewCell.identifier)
+        messageTableView.register(LeftMessageTableViewCell.self, forCellReuseIdentifier: LeftMessageTableViewCell.identifier)
+        messageTableView.separatorColor = .clear
+        messageTableView.backgroundColor = .white
+        messageTableView.estimatedRowHeight = 60
+        messageTableView.rowHeight = UITableView.automaticDimension
+        messageTableView.allowsSelection = false
+        messageTableView.delegate = self
+        messageTableView.dataSource = self
+        messageTableView.translatesAutoresizingMaskIntoConstraints = false
+        return messageTableView
+    }()
+    
+    private lazy var inputTextView: UITextView = {
+        let inputTextView = UITextView()
+        inputTextView.backgroundColor = .white
+        inputTextView.textColor = .mainBlue
+        inputTextView.font = UIFont.regular(size: 15)
+        inputTextView.textAlignment = .left
+        inputTextView.isEditable = true
+        inputTextView.isSelectable = true
+        inputTextView.isScrollEnabled = true
+        inputTextView.layer.cornerRadius = 10
+        inputTextView.delegate = self
+        inputTextView.textContainer.maximumNumberOfLines = 5
+        inputTextView.textContainer.lineBreakMode = .byWordWrapping
+        inputTextView.translatesAutoresizingMaskIntoConstraints = false
+        return inputTextView
+    }()
+    private lazy var sendButton: IconButton = {
+        let sendButton = IconButton(self, action: #selector(tapSend), img: Img.iconsSend)
+        sendButton.backgroundColor = .mainBlue
+        sendButton.alpha = 0.5
+        sendButton.isEnabled = false
+        return sendButton
+    }()
+    private lazy var emptyContentLabel: RegularLabel = {
+        let emptyContentLabel = RegularLabel(size: 18, text: "No one chatted \nSend something to start", textColor: .deepBlueGrey)
+        emptyContentLabel.textAlignment = .center
+        emptyContentLabel.numberOfLines = 0
+        return emptyContentLabel
+    }()
+    
+    private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
+
+// MARK: - UITableViewDelegate
 
 extension MessageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -163,9 +262,11 @@ extension MessageViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension MessageViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if searching {
             return searchedMessages.count
         } else {
@@ -188,137 +289,10 @@ extension MessageViewController: UITableViewDataSource {
     }
 }
 
-extension MessageViewController {
-    
-    private func configNavigationBackgroundView() {
-        navigationBackgroundView = NavigationBackgroundView()
-        view.addSubview(navigationBackgroundView)
-        NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
-        ])
-    }
-    
-    private func configBackgroundView() {
-        backgroundView = UIView()
-        backgroundView.backgroundColor = .white
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(backgroundView)
-        NSLayoutConstraint.activate([
-            backgroundView.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
-            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundView.heightAnchor.constraint(equalToConstant: 100)
-        ])
-    }
-    
-    private func configPetNameLabel() {
-        petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
-        view.addSubview(petNameLabel)
-        NSLayoutConstraint.activate([
-            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ])
-    }
-    
-    private func configSearchBar() {
-        searchBar = BorderSearchBar(placeholder: "Search for messages")
-        searchBar.delegate = self
-        view.addSubview(searchBar)
-        NSLayoutConstraint.activate([
-            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
-        ])
-    }
-    
-    private func configMessageTableView() {
-        messageTableView = UITableView()
-        messageTableView.register(RightMessageTableViewCell.self, forCellReuseIdentifier: "RightMessageTableViewCell")
-        messageTableView.register(LeftMessageTableViewCell.self, forCellReuseIdentifier: "LeftMessageTableViewCell")
-        messageTableView.separatorColor = .clear
-        messageTableView.backgroundColor = .white
-        messageTableView.estimatedRowHeight = 60
-        messageTableView.rowHeight = UITableView.automaticDimension
-        messageTableView.allowsSelection = false
-        messageTableView.delegate = self
-        messageTableView.dataSource = self
-        messageTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(messageTableView)
-        NSLayoutConstraint.activate([
-            messageTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-            messageTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            messageTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            messageTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -72)
-        ])
-    }
-    
-    private func configInputTextView() {
-        inputTextView = UITextView()
-        inputTextView.backgroundColor = .white
-        inputTextView.textColor = .mainBlue
-        inputTextView.font = UIFont.regular(size: 15)
-        inputTextView.textAlignment = .left
-        inputTextView.isEditable = true
-        inputTextView.isSelectable = true
-        inputTextView.isScrollEnabled = true
-        inputTextView.layer.cornerRadius = 10
-        inputTextView.delegate = self
-        inputTextView.textContainer.maximumNumberOfLines = 5
-        inputTextView.textContainer.lineBreakMode = .byWordWrapping
-//        inputTextView.addDoneOnKeyboardWithTarget(self, action: #selector(tapSend))
-        inputTextView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(inputTextView)
-        NSLayoutConstraint.activate([
-            inputTextView.topAnchor.constraint(equalTo: messageTableView.bottomAnchor, constant: 12),
-            inputTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            inputTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -80),
-            inputTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
-        ])
-    }
-    
-    private func configSendButton() {
-        sendButton = IconButton(self, action: #selector(tapSend), img: Img.iconsSend)
-        sendButton.backgroundColor = .mainBlue
-        sendButton.alpha = 0.5
-        sendButton.isEnabled = false
-        view.addSubview(sendButton)
-        NSLayoutConstraint.activate([
-            sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            sendButton.centerYAnchor.constraint(equalTo: inputTextView.centerYAnchor),
-            sendButton.widthAnchor.constraint(equalToConstant: 44),
-            sendButton.heightAnchor.constraint(equalTo: sendButton.widthAnchor)
-        ])
-    }
-    
-    @objc private func tapSend(_ sender: IconButton) {
-        guard let messageContent = messageContent, let currentUser = MemberManager.shared.current else { return }
-        
-        let message = Message()
-        message.senderId = currentUser.id
-        message.sentTime = Date()
-        message.content = messageContent
-        
-        PetManager.shared.setMessage(petId: selectedPet.id, message: message) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let message):
-                print(message.sentTime, message.content)
-                self.inputTextView.text = ""
-                self.sendButton.alpha = 0.5
-                self.sendButton.isEnabled = false
-                
-            case .failure(let error):
-                print(error)
-                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
-            }
-        }
-    }
-}
+// MARK: - UITextViewDelegate
 
 extension MessageViewController: UITextViewDelegate {
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.hasText && textView.text != "" {
             messageContent = textView.text
@@ -336,6 +310,8 @@ extension MessageViewController: UITextViewDelegate {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension MessageViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -370,10 +346,81 @@ extension MessageViewController: UISearchBarDelegate {
             searchBar.endEditing(true)
         }
     }
+}
+
+// MARK: - UI configure extension
+
+extension MessageViewController {
+    
+    private func configNavigationBackgroundView() {
+        view.addSubview(navigationBackgroundView)
+        NSLayoutConstraint.activate([
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor,
+                                                             multiplier: 1 / 12)
+        ])
+    }
+    
+    private func configBackgroundView() {
+        view.addSubview(backgroundView)
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+    }
+    
+    private func configPetNameLabel() {
+        view.addSubview(petNameLabel)
+        NSLayoutConstraint.activate([
+            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+    
+    private func configSearchBar() {
+        view.addSubview(searchBar)
+        NSLayoutConstraint.activate([
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configMessageTableView() {
+        view.addSubview(messageTableView)
+        NSLayoutConstraint.activate([
+            messageTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
+            messageTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            messageTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            messageTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -72)
+        ])
+    }
+    
+    private func configInputTextView() {
+        view.addSubview(inputTextView)
+        NSLayoutConstraint.activate([
+            inputTextView.topAnchor.constraint(equalTo: messageTableView.bottomAnchor, constant: 12),
+            inputTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            inputTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -80),
+            inputTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    private func configSendButton() {
+        view.addSubview(sendButton)
+        NSLayoutConstraint.activate([
+            sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            sendButton.centerYAnchor.constraint(equalTo: inputTextView.centerYAnchor),
+            sendButton.widthAnchor.constraint(equalToConstant: 44),
+            sendButton.heightAnchor.constraint(equalTo: sendButton.widthAnchor)
+        ])
+    }
     
     private func configEmptyContentLabel() {
-        emptyContentLabel.textAlignment = .center
-        emptyContentLabel.numberOfLines = 0
         view.addSubview(emptyContentLabel)
         NSLayoutConstraint.activate([
             emptyContentLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),

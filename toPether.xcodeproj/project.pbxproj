@@ -322,11 +322,11 @@
 				39EDD1A3271D126800B4DAFA /* HomeViewController.swift */,
 				3917612C27292E90007FC7C1 /* MedicalViewController.swift */,
 				3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */,
-				39C6669F2726B30100400C84 /* InviteViewController.swift */,
 				39816077272D8BCE0033930D /* FoodViewController.swift */,
 				39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */,
-				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
 				3955710127352BAB003AF098 /* MessageViewController.swift */,
+				39C6669F2726B30100400C84 /* InviteViewController.swift */,
+				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
