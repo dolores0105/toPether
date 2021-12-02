@@ -25,21 +25,22 @@ class ScanResultViewController: UIViewController {
     private var scannedMember: Member?
     
     private var animator: UIViewPropertyAnimator!
-    private var floatingView: UIView! {
-        didSet {
-            floatingView.layer.cornerRadius = 10
-            floatingView.layer.masksToBounds = true
-        }
-    }
-    
-    private var titleLabel: MediumLabel!
-    private var petImageView: UIImageView!
-    private var contentLabel: RegularLabel!
-    private var confirmButton: RoundButton!
-    private var cancelButton: BorderButton!
-    private var animationView: AnimationView!
     
     weak var delegate: ScanResultViewControllerDelegate?
+    
+    // MARK: - Life Cycles
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configFloatingView()
+        configTitleLabel()
+        configPetImageView()
+        configContentLabel()
+        configCancelButton()
+        
+        queryMember(memberId: scannedMemberId)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -53,39 +54,11 @@ class ScanResultViewController: UIViewController {
             }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        floatingView = UIView()
-        floatingView.backgroundColor = .white
-        floatingView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(floatingView)
-        NSLayoutConstraint.activate([
-            floatingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            floatingView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            floatingView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3),
-            floatingView.heightAnchor.constraint(equalTo: floatingView.widthAnchor, constant: 72)
-        ])
-        
-        floatingView.transform = CGAffineTransform(translationX: 0, y: floatingView.bounds.height)
-        
-        configTitleLabel()
-        configPetImageView()
-        configContentLabel()
-        configCancelButton()
-        queryMember(memberId: scannedMemberId)
-        
-        let pan = UIPanGestureRecognizer(
-            target: self,
-            action: #selector(panOnFloatingView(_:)))
-        floatingView.isUserInteractionEnabled = true
-        floatingView.addGestureRecognizer(pan)
-        
-    }
+    // MARK: - Data Functions
     
-    func queryMember(memberId: String) {
+    private func queryMember(memberId: String) {
         // check the invitedMemberId that user inputs is existing
-        MemberModel.shared.queryMember(id: memberId) { [weak self] member in
+        MemberManager.shared.queryMember(id: memberId) { [weak self] member in
             guard let self = self else { return }
             if let member = member { // the member is existing
                 
@@ -108,19 +81,27 @@ class ScanResultViewController: UIViewController {
         }
     }
     
+    // MARK: - @objc Functions
+    
     @objc private func tapInvite() {
         guard let scannedMember = scannedMember else { return }
         scannedMember.petIds.append(self.pet.id)
-        MemberModel.shared.updateMember(member: scannedMember)
+        MemberManager.shared.updateMember(member: scannedMember)
         
         self.pet.memberIds.append(scannedMember.id)
-        PetModel.shared.updatePet(id: self.pet.id, pet: self.pet)
-        
-        self.animationView.isHidden = false
-        self.animationView?.play(completion: { _ in
-            self.dismiss(animated: true, completion: nil)
-            self.delegate?.backToHomeVC()
-        })
+        PetManager.shared.updatePet(id: pet.id, pet: pet) { result in
+            switch result {
+            case .success(let string):
+                print(string)
+                self.animationView.isHidden = false
+                self.animationView.play(completion: { _ in
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate?.backToHomeVC()
+                })
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+            }
+        }
     }
     
     @objc private func tapConfirm() {
@@ -165,13 +146,81 @@ class ScanResultViewController: UIViewController {
             break
         }
     }
+    
+    // MARK: - UI Properties
+    
+    private lazy var floatingView: UIView = {
+            
+        let floatingView = UIView()
+        floatingView.backgroundColor = .white
+        floatingView.translatesAutoresizingMaskIntoConstraints = false
+        
+        floatingView.transform = CGAffineTransform(translationX: 0, y: floatingView.bounds.height)
+        
+        floatingView.layer.cornerRadius = 10
+        floatingView.layer.masksToBounds = true
+        
+        let pan = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(panOnFloatingView(_:)))
+        floatingView.isUserInteractionEnabled = true
+        floatingView.addGestureRecognizer(pan)
+        
+        return floatingView
+    }()
+    
+    private lazy var titleLabel: MediumLabel = {
+        let titleLabel = MediumLabel(size: 24, text: "Scan success", textColor: .mainBlue)
+        titleLabel.textAlignment = .center
+        return titleLabel
+    }()
+    
+    private lazy var petImageView: UIImageView = {
+        let petImageView = UIImageView(image: pet.photoImage)
+        petImageView.layer.cornerRadius = 10
+        petImageView.clipsToBounds = true
+        petImageView.contentMode = .scaleAspectFill
+        petImageView.translatesAutoresizingMaskIntoConstraints = false
+        return petImageView
+    }()
+    
+    private lazy var contentLabel: RegularLabel = {
+        let contentLabel = RegularLabel(size: 18, text: nil, textColor: .mainBlue)
+        contentLabel.numberOfLines = 0
+        contentLabel.textAlignment = .center
+        return contentLabel
+    }()
+    
+    private var confirmButton: RoundButton!
+    
+    private var cancelButton: BorderButton = {
+        let cancelButton = BorderButton()
+        cancelButton.layer.borderWidth = 0
+        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitleColor(.deepBlueGrey, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.medium(size: 18)
+        cancelButton.addTarget(self, action: #selector(tapCancel), for: .touchUpInside)
+        return cancelButton
+    }()
+    
+    private lazy var animationView = LottieAnimation.shared.createOneTimeAnimation(lottieName: "lottieSuccess")
 }
+
+// MARK: - UI configure extension
 
 extension ScanResultViewController {
     
+    private func configFloatingView() {
+        view.addSubview(floatingView)
+        NSLayoutConstraint.activate([
+            floatingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            floatingView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            floatingView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2 / 3),
+            floatingView.heightAnchor.constraint(equalTo: floatingView.widthAnchor, constant: 72)
+        ])
+    }
+    
     private func configTitleLabel() {
-        titleLabel = MediumLabel(size: 24, text: "Scan success", textColor: .mainBlue)
-        titleLabel.textAlignment = .center
         floatingView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: floatingView.topAnchor, constant: 32),
@@ -181,11 +230,6 @@ extension ScanResultViewController {
     }
     
     private func configPetImageView() {
-        petImageView = UIImageView(image: pet.photoImage)
-        petImageView.layer.cornerRadius = 10
-        petImageView.clipsToBounds = true
-        petImageView.contentMode = .scaleAspectFill
-        petImageView.translatesAutoresizingMaskIntoConstraints = false
         floatingView.addSubview(petImageView)
         NSLayoutConstraint.activate([
             petImageView.widthAnchor.constraint(equalToConstant: 80),
@@ -196,9 +240,6 @@ extension ScanResultViewController {
     }
     
     private func configContentLabel() {
-        contentLabel = RegularLabel(size: 18, text: nil, textColor: .mainBlue)
-        contentLabel.numberOfLines = 0
-        contentLabel.textAlignment = .center
         floatingView.addSubview(contentLabel)
         NSLayoutConstraint.activate([
             contentLabel.centerYAnchor.constraint(equalTo: floatingView.centerYAnchor, constant: 25),
@@ -232,12 +273,6 @@ extension ScanResultViewController {
     }
     
     private func configCancelButton() {
-        cancelButton = BorderButton()
-        cancelButton.layer.borderWidth = 0
-        cancelButton.setTitle("Cancel", for: .normal)
-        cancelButton.setTitleColor(.deepBlueGrey, for: .normal)
-        cancelButton.titleLabel?.font = UIFont.medium(size: 18)
-        cancelButton.addTarget(self, action: #selector(tapCancel), for: .touchUpInside)
         floatingView.addSubview(cancelButton)
         NSLayoutConstraint.activate([
             cancelButton.bottomAnchor.constraint(equalTo: floatingView.bottomAnchor, constant: -20),
@@ -248,9 +283,6 @@ extension ScanResultViewController {
     }
     
     private func configLottieAnimation() {
-        animationView = .init(name: "lottieSuccess")
-        animationView.contentMode = .scaleAspectFit
-        animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.isHidden = true
         view.addSubview(animationView)
         NSLayoutConstraint.activate([

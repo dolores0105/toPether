@@ -25,7 +25,7 @@ class Pet: BaseObject, Codable {
     }
     
     var ageInfo: String? {
-        guard case let (year?, month?) = PetModel.shared.getYearMonth(from: birthday) else { return nil }
+        guard case let (year?, month?) = PetManager.shared.getYearMonth(from: birthday) else { return nil }
         return String(year) + "y  " + String(month) + "m"
     }
 }

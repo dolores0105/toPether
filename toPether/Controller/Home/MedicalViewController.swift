@@ -17,101 +17,48 @@ class MedicalViewController: UIViewController {
     }
     private var selectedPet: Pet!
     private var medicals = [Medical]()
-    private var listener: ListenerRegistration?
-    
-    private var navigationBackgroundView: NavigationBackgroundView!
-    private var petNameLabel: RegularLabel!
-    private var searchBar: BorderSearchBar!
-    private var medicalTableView: UITableView!
-    private var emptyContentLabel = RegularLabel(size: 18, text: "Empty records \nTap Plus to create one", textColor: .deepBlueGrey)
-    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 
     private var searching = false
     private var keyword: String?
     private var searchedMedicals = [Medical]()
     
-    override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
-        self.navigationItem.title = "Medical"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
-
-        self.tabBarController?.tabBar.isHidden = true
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        configNavigationBackgroundView()
+        configPetNameLabel()
+        configSearchBar()
+        configMedicalTableView()
         
-        navigationBackgroundView = NavigationBackgroundView()
-        view.addSubview(navigationBackgroundView)
-        NSLayoutConstraint.activate([
-            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor ),
-            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
-        ])
+        addListener(petId: selectedPet.id)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
-        view.addSubview(petNameLabel)
-        NSLayoutConstraint.activate([
-            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ])
+        self.navigationItem.title = "Medical"
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         
-        searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
-        searchBar.delegate = self
-        view.addSubview(searchBar)
-        NSLayoutConstraint.activate([
-            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
-        ])
-        
-        medicalTableView = UITableView()
-        medicalTableView.register(MedicalTableViewCell.self, forCellReuseIdentifier: "MedicalTableViewCell")
-        medicalTableView.separatorColor = .clear
-        medicalTableView.backgroundColor = .white
-        medicalTableView.estimatedRowHeight = 100
-        medicalTableView.rowHeight = UITableView.automaticDimension
-        medicalTableView.allowsSelection = true
-        medicalTableView.delegate = self
-        medicalTableView.dataSource = self
-        medicalTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(medicalTableView)
-        NSLayoutConstraint.activate([
-            medicalTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-            medicalTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
-        // MARK: data
-        PetModel.shared.queryMedicals(petId: selectedPet.id) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let records):
-                self.medicals = records
-                self.medicalTableView.reloadData()
-                
-            case .failure(let error):
-                print("query medical error", error)
-            }
-        }
-        
-        PetModel.shared.addMedicalsListener(petId: selectedPet.id) { [weak self] result in
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj,
+                                                                 style: .plain,
+                                                                 target: self,
+                                                                 action: #selector(tapAdd))
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Button Functions
+    
+    @objc func tapAdd(sender: UIButton) {
+        let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: nil)
+        navigationController?.pushViewController(medicalRecordVC, animated: true)
+    }
+    
+    // MARK: - Functions
+    
+    private func addListener(petId: String) {
+        PetManager.shared.addMedicalsListener(petId: petId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -128,20 +75,55 @@ class MedicalViewController: UIViewController {
                 
             case .failure(let error):
                 print("query medical error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
     
-    // MARK: Functions
+    // MARK: - UI properties
     
-    @objc func tapAdd(sender: UIButton) {
-        let medicalRecordVC = MedicalRecordViewController(selectedPet: selectedPet, medical: nil)
-        navigationController?.pushViewController(medicalRecordVC, animated: true)
-    }
+    private lazy var navigationBackgroundView: NavigationBackgroundView = {
+        let navigationBackgroundView = NavigationBackgroundView()
+        return navigationBackgroundView
+    }()
+    
+    private lazy var petNameLabel: RegularLabel = {
+        let petNameLabel = RegularLabel(size: 16, text: "of \(selectedPet.name)", textColor: .lightBlueGrey)
+        return petNameLabel
+    }()
+    
+    private lazy var searchBar: BorderSearchBar = {
+        let searchBar = BorderSearchBar(placeholder: "Search for symptoms or notes")
+        searchBar.delegate = self
+        return searchBar
+    }()
+    
+    private lazy var medicalTableView: UITableView = {
+        let medicalTableView = UITableView()
+        medicalTableView.register(MedicalTableViewCell.self, forCellReuseIdentifier: MedicalTableViewCell.identifier)
+        medicalTableView.separatorColor = .clear
+        medicalTableView.backgroundColor = .white
+        medicalTableView.estimatedRowHeight = 100
+        medicalTableView.rowHeight = UITableView.automaticDimension
+        medicalTableView.allowsSelection = true
+        medicalTableView.delegate = self
+        medicalTableView.dataSource = self
+        medicalTableView.translatesAutoresizingMaskIntoConstraints = false
+        return medicalTableView
+    }()
+    
+    private lazy var emptyContentLabel: RegularLabel = {
+        let emptyContentLabel = RegularLabel(size: 18,
+                                             text: "Empty records \nTap Plus to create one",
+                                             textColor: .deepBlueGrey)
+        return emptyContentLabel
+    }()
+    
+    private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
 
-// MARK: extension
+// MARK: - UITableViewDataSource
+
 extension MedicalViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -153,15 +135,12 @@ extension MedicalViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalTableViewCell", for: indexPath)
-        guard let medicalCell = cell as? MedicalTableViewCell else { return cell }
+        let cell = tableView.dequeueReusableCell(withIdentifier: MedicalTableViewCell.identifier, for: indexPath)
+        guard let medicalCell = cell as? MedicalTableViewCell else { return UITableViewCell() }
         medicalCell.selectionStyle = .none
         
-        if searching {
-            medicalCell.reload(medical: searchedMedicals[indexPath.row])
-        } else {
-            medicalCell.reload(medical: medicals[indexPath.row])
-        }
+        let medical = searching ? searchedMedicals[indexPath.row] : medicals[indexPath.row]
+        medicalCell.reload(medical: medical)
         
         return cell
     }
@@ -173,18 +152,26 @@ extension MedicalViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension MedicalViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete medical record", message: "Do you want to delete this record?") {
+            self.presentDeleteAlert(title: "Delete medical record") {
 
-                PetModel.shared.deleteMedical(petId: self.selectedPet.id, recordId: self.medicals[indexPath.row].id)
+                PetManager.shared.deletePetObject(petId: self.selectedPet.id,
+                                                  recordId: self.medicals[indexPath.row].id,
+                                                  objectType: .medical) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string)
+                    case .failure(let error):
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                    }
+                }
             }
-            
-            self.present(deleteAlert, animated: true)
-            
             
             completionHandler(true)
         }
@@ -194,11 +181,15 @@ extension MedicalViewController: UITableViewDelegate {
         
         let swipeAction = UISwipeActionsConfiguration(actions: [deleteAction])
         swipeAction.performsFirstActionWithFullSwipe = false
+        
         return swipeAction
     }
 }
 
+// MARK: - UISearchBarDelegate
+
 extension MedicalViewController: UISearchBarDelegate {
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         keyword = searchBar.text
         search(keyword: searchText)
@@ -232,8 +223,47 @@ extension MedicalViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - UI configure extension
+
 extension MedicalViewController {
 
+    private func configNavigationBackgroundView() {
+        view.addSubview(navigationBackgroundView)
+        NSLayoutConstraint.activate([
+            navigationBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor ),
+            navigationBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBackgroundView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 12)
+        ])
+    }
+    
+    private func configPetNameLabel() {
+        view.addSubview(petNameLabel)
+        NSLayoutConstraint.activate([
+            petNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            petNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+    
+    private func configSearchBar() {
+        view.addSubview(searchBar)
+        NSLayoutConstraint.activate([
+            searchBar.centerYAnchor.constraint(equalTo: navigationBackgroundView.bottomAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+        ])
+    }
+    
+    private func configMedicalTableView() {
+        view.addSubview(medicalTableView)
+        NSLayoutConstraint.activate([
+            medicalTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
+            medicalTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            medicalTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            medicalTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
     private func configEmptyContentLabel() {
         emptyContentLabel.textAlignment = .center
         emptyContentLabel.numberOfLines = 0

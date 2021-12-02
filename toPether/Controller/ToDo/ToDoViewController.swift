@@ -32,17 +32,7 @@ class ToDoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Todos"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
         
         self.tabBarController?.tabBar.isHidden = false
@@ -57,23 +47,13 @@ class ToDoViewController: UIViewController {
         configToDoTableView()
         
         // MARK: Data
-//        guard let currentUser = MemberModel.shared.current else { return }
-//        ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: "6L4OiWOL0iWVVtM5YaZQqDEANqm1", petId: "BbvvFffk6bqm9q0gJraM", dueTime: Date(), content: "乖乖吃肉肉") { result in
-//            switch result {
-//            case .success(let todo):
-//                print(todo.petId, todo.content, todo.dueTime)
-//            case .failure(let error):
-//                print("set todo error", error)
-//            }
-//        }
-
         addToDoListenerOnDate(date: Date())
         
         addToDoListenerNotification()
     }
     
     private func addToDoListenerOnDate(date: Date) {
-        guard let currentUser = MemberModel.shared.current else { return }
+        guard let currentUser = MemberManager.shared.current else { return }
         listener = ToDoManager.shared.addToDosListenerOnDate(petIds: currentUser.petIds, date: date) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -82,7 +62,7 @@ class ToDoViewController: UIViewController {
                 
                 for todo in todos where self.executorNameCache[todo.executorId] == nil || self.petNameCache[todo.petId] == nil {
                     
-                    MemberModel.shared.queryMember(id: todo.executorId) { member in
+                    MemberManager.shared.queryMember(id: todo.executorId) { member in
                         guard let member = member else {
                             self.executorNameCache[todo.executorId] = "anonymous"
                             return
@@ -90,9 +70,16 @@ class ToDoViewController: UIViewController {
                         self.executorNameCache[todo.executorId] = member.name
                     }
                     
-                    PetModel.shared.queryPet(id: todo.petId) { pet in
-                        guard let pet = pet else { return }
-                        self.petNameCache[todo.petId] = pet.name
+                    PetManager.shared.queryPet(id: todo.petId) { result in
+                        
+                        switch result {
+                        case .success(let pet):
+                            
+                            self.petNameCache[todo.petId] = pet.name
+                            
+                        case .failure(let error):
+                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                        }
                     }
                 }
                 
@@ -100,7 +87,7 @@ class ToDoViewController: UIViewController {
                 
             case .failure(let error):
                 print("listen todo error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -123,7 +110,7 @@ class ToDoViewController: UIViewController {
             guard let self = self else { return }
             
             switch result {
-            case .success(.added(todos: let todos)):
+            case .success(.added(data: let todos)):
                 
                 var badgeStepper: Int = 0
                 
@@ -136,7 +123,7 @@ class ToDoViewController: UIViewController {
                     self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
-            case .success(.modified(todos: let todos)):
+            case .success(.modified(data: let todos)):
                 
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: todos.compactMap{ $0.id })
                 
@@ -151,7 +138,7 @@ class ToDoViewController: UIViewController {
                     self.createNotification(todo: todo, badgeStepper: badgeStepper as NSNumber)
                 }
                 
-            case .success(.removed(todos: let todos)):
+            case .success(.removed(data: let todos)):
             
                 var badgeStepper: Int = 0
                 
@@ -164,7 +151,7 @@ class ToDoViewController: UIViewController {
                 
             case .failure(let error):
                 print("add todoListeners for notifications error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
@@ -203,7 +190,7 @@ class ToDoViewController: UIViewController {
         UNUserNotificationCenter.current().add(request) { error in
             if error != nil {
                 print("add notification failed")
-                self.presentErrorAlert(title: "Something went wrong", message: error?.localizedDescription ?? "" + " Please try again")
+                self.presentErrorAlert(message: error?.localizedDescription ?? "" + " Please try again")
             }
         }
     }
@@ -215,7 +202,7 @@ extension ToDoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ToDoTableViewCell.identifier, for: indexPath)
         guard let toDoCell = cell as? ToDoTableViewCell else { return cell }
         
         let todo = toDos[indexPath.row]
@@ -246,26 +233,23 @@ extension ToDoViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete todo", message: "Do you want to delete this todo?") {
+            self.presentDeleteAlert(title: "Delete todo", message: "Do you want to delete this todo?") {
                 
                 let deleteId = self.toDos[indexPath.row].id
                 let deleteContent = self.toDos[indexPath.row].content
                 
-                ToDoManager.shared.deleteToDo(id: deleteId) { deleteDone in
-                    if deleteDone {
-                        
-                        print("deleted \(deleteId), \(deleteContent)")
+                ToDoManager.shared.deleteToDo(id: deleteId) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string + deleteContent)
                         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [deleteId])
-                    } else {
-                        print("delete error")
-                        self.presentErrorAlert(title: "Something went wrong", message: "Please try again")
+                    case .failure(let error):
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                     }
                 }
                 
             }
-            
-            self.present(deleteAlert, animated: true)
-            
+                        
             completionHandler(true)
         }
         
@@ -285,14 +269,20 @@ extension ToDoViewController: ToDoTableViewCellDelegate {
         
         toDos[indexPath.row].doneStatus.toggle()
 
-        ToDoManager.shared.updateToDo(todo: toDos[indexPath.row]) { todo in
-            guard let todo = todo else {
-                return // find todo failed
+        ToDoManager.shared.updateToDo(todo: toDos[indexPath.row]) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let todo):
+                if todo.doneStatus {
+                    self.configAnimation()
+                }
+                print("updated todo: \(todo.id)")
+                
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription)
             }
-            if todo.doneStatus {
-                configAnimation()
-            }
-            toDoTableView.reloadRows(at: [indexPath], with: .none)
+            self.toDoTableView.reloadRows(at: [indexPath], with: .none)
         }
     }
     

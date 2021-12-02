@@ -8,107 +8,70 @@
 import Firebase
 import Foundation
 
-enum TodoListenerType {
-    case added(todos: [ToDo])
-    case modified(todos: [ToDo])
-    case removed(todos: [ToDo])
-}
-
 class ToDoManager {
     
     private init() {}
     static let shared = ToDoManager()
     
-    let dataBase = Firestore.firestore()
+    let dataBase = Firestore.firestore().collection("todos")
     
-    func setToDo(creatorId: String, executorId: String, petId: String, dueTime: Date, content: String, completion: @escaping (Result<ToDo, Error>) -> Void) {
-        let todos = dataBase.collection("todos")
-        let document = todos.document()
+    // MARK: - Create
+    
+    func setToDo(todo: ToDo, completion: @escaping (Result<String, Error>) -> Void) {
+        let document = dataBase.document()
         
-        let todo = ToDo()
         todo.id = document.documentID
-        todo.creatorId = creatorId
-        todo.executorId = executorId
-        todo.petId = petId
-        todo.dueTime = dueTime
-        todo.content = content
         todo.doneStatus = false
         
         do {
             try document.setData(from: todo)
-            completion(.success(todo))
+            completion(.success("set new todo: \(todo.id)"))
         } catch let error {
             completion(.failure(error))
         }
     }
     
-    func queryToDosOnDate(petIds: [String], date: Date, completion: @escaping (Result<[ToDo], Error>) -> Void) {
-        
-        guard !petIds.isEmpty else { // if petIds is an empty array
-            completion(Result.failure(CommonError.emptyArrayInFilter))
-            return
-        }
-        
-        dataBase.collection("todos").whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
+    // MARK: - Update
+    
+    func updateToDo(todo: ToDo, completion: @escaping (Result<ToDo, Error>) -> Void) {
+        do {
+            try dataBase.document(todo.id).setData(from: todo)
+            completion(.success(todo))
             
-            if let querySnapshot = querySnapshot {
-                let todos = querySnapshot.documents.compactMap({ querySnapshot in
-                    try? querySnapshot.data(as: ToDo.self)
-                })
-                
-                let todosOnDate = todos.compactMap { todo -> ToDo? in
-                    if todo.dueTime.hasSame(.day, as: date) {
-                        return todo
-                    } else {
-                        return nil
-                    }
-                }
-                
-                let sepcificDateToDos = todosOnDate.sorted { $0.dueTime > $1.dueTime }
-                completion(.success(sepcificDateToDos))
-                
-            } else if let error = error {
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - Delete
+    
+    func deleteToDo(id: String, completion: @escaping(Result<String, Error>) -> Void) {
+        dataBase.document(id).delete { error in
+            if let error = error {
                 completion(.failure(error))
+            } else {
+                completion(.success("deleted todo \(id)"))
             }
         }
     }
     
-    func queryToDos(petIds: [String], completion: @escaping (Result<[ToDo], Error>) -> Void) {
-        
-        guard !petIds.isEmpty else { // if petIds is an empty array
-            completion(Result.failure(CommonError.emptyArrayInFilter))
-            return
-        }
-        
-        dataBase.collection("todos").whereField("petId", in: petIds).getDocuments { (querySnapshot, error) in
-            
-            if let querySnapshot = querySnapshot {
-                let todos = querySnapshot.documents.compactMap({ querySnapshot in
-                    try? querySnapshot.data(as: ToDo.self)
-                })
-                let sortedToDos = todos.sorted { $0.dueTime > $1.dueTime }
-                completion(.success(sortedToDos))
-                
-            } else if let error = error {
-                completion(.failure(error))
-            }
-        }
-    }
+    // MARK: - Listener
     
     func addToDosListenerOnDate(petIds: [String], date: Date, completion: @escaping (Result<[ToDo], Error>) -> Void) -> ListenerRegistration? {
         
-        guard !petIds.isEmpty else { // if petIds is an empty array
+        guard !petIds.isEmpty else {
             completion(Result.failure(CommonError.emptyArrayInFilter))
             return nil
         }
         
-        let listener = dataBase.collection("todos").whereField("petId", in: petIds).addSnapshotListener { (querySnapshot, error) in
+        let listener = dataBase.whereField("petId", in: petIds).addSnapshotListener { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 let todos = querySnapshot.documents.compactMap({ querySnapshot in
                     try? querySnapshot.data(as: ToDo.self)
                 })
                 
+                // Display todos of the picked date
                 let todosOnDate = todos.compactMap { todo -> ToDo? in
                     if todo.dueTime.hasSame(.day, as: date) {
                         return todo
@@ -128,32 +91,12 @@ class ToDoManager {
         return listener
     }
     
-    func updateToDo(todo: ToDo, completion: (ToDo?) -> Void) {
-        do {
-            try dataBase.collection("todos").document(todo.id).setData(from: todo)
-            completion(todo)
-        } catch {
-            print("update todo error", error)
-            completion(nil)
-        }
-    }
-    
-    func deleteToDo(id: String, completion: @escaping(Bool) -> Void) {
-        dataBase.collection("todos").document(id).delete() { error in
-            if let error = error {
-                print("delete todo error", error)
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
-    
-    func todoListener(completion: @escaping (Result<TodoListenerType, Error>) -> Void) {
+    // for push notification
+    func todoListener(completion: @escaping (Result<ListenerType<[ToDo]>, Error>) -> Void) {
         
-        guard let currentUser = MemberModel.shared.current else { return }
+        guard let currentUser = MemberManager.shared.current else { return }
         
-        dataBase.collection("todos").whereField("executorId", isEqualTo: currentUser.id).addSnapshotListener { (querySnapshot, error) in
+        dataBase.whereField("executorId", isEqualTo: currentUser.id).addSnapshotListener { (querySnapshot, error) in
             
             if let querySnapshot = querySnapshot {
                 
@@ -164,16 +107,13 @@ class ToDoManager {
                 querySnapshot.documentChanges.forEach { diff in
                     switch diff.type {
                     case .added:
-                        print("added todos")
-                        completion(.success(.added(todos: todos)))
+                        completion(.success(.added(data: todos)))
                         
                     case .modified:
-                        print("modified todo")
-                        completion(.success(.modified(todos: todos)))
+                        completion(.success(.modified(data: todos)))
                         
                     case .removed:
-                        print("removed todo")
-                        completion(.success(.removed(todos: todos)))
+                        completion(.success(.removed(data: todos)))
                     }
                 }
                 

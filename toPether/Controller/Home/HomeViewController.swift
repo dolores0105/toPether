@@ -4,83 +4,50 @@
 //
 //  Created by 林宜萱 on 2021/10/18.
 //
-// swiftlint:disable function_body_length
+
 import UIKit
 import Photos
 
 class HomeViewController: UIViewController {
-    
-    private var cardView: CardView!
-    var petCollectionView: UICollectionView!
-    let buttonStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 28
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    private var emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou haven’t in a pet group", textColor: .deepBlueGrey)
-    private var emptyContentLabel = RegularLabel(size: 18, text: "Go profile page \nfor creating one or getting invited", textColor: .deepBlueGrey)
-    private let emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 
-    var pets = [Pet]()
-    var currentUser: Member! = MemberModel.shared.current
-    var members = [Member]()
-    var petIndex: Int = 0
+    private var pets = [Pet]()
+    private var currentUser: Member! = MemberManager.shared.current
+    private var petIndex: Int = 0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .mainBlue
+        configCardView()
+        configCollectionView()
+        configButtonStackView()
+
+        MemberManager.shared.addUserListener { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(.added(data: let member)),
+                 .success(.modified(data: let member)),
+                 .success(.removed(data: let member)):
+                self.queryData(currentUser: member)
+
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+            }
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
-        // MARK: Navigation controller
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        super.viewWillAppear(animated)
         
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         self.navigationItem.title = "toPether"
         
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // MARK: UI objects layout
-        view.backgroundColor = .mainBlue
-        configCardView()
-        configCollectionView()
-        configButtonStackView()
-        
-        queryData(currentUser: currentUser)
-        MemberModel.shared.addUserListener { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(.added(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                
-            case .success(.modified(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                
-            case .success(.removed(members: let members)):
-                self.queryData(currentUser: members.first ?? self.currentUser)
-                MemberModel.shared.current = members.first
-                
-            case .failure(let error):
-                print("lisener error at profileVC", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
-            }
-        }
-    }
+    // MARK: - button functions
     
-    // MARK: functions
     @objc private func tapMessageButton(_: BorderButton) {
         let messageVC = MessageViewController(selectedPet: self.pets[petIndex])
         navigationController?.pushViewController(messageVC, animated: true)
@@ -95,36 +62,41 @@ class HomeViewController: UIViewController {
         let medicalVC = MedicalViewController(selectedPet: self.pets[petIndex])
         navigationController?.pushViewController(medicalVC, animated: true)
     }
+
+    // MARK: - data functions
     
-    @objc private func tapXXXButton(_: BorderButton) {
-        // switch
-    }
-    
-    func queryData(currentUser: Member) {
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+    private func queryData(currentUser: Member) {
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let pets):
                 self.pets = pets
                 self.petCollectionView.reloadData()
-                print("fetch pets at profile:", self.pets)
+
                 self.buttonStackView.isHidden = false
                 self.emptyTitleLabel.removeFromSuperview()
                 self.emptyContentLabel.removeFromSuperview()
                 self.emptyAnimationView.removeFromSuperview()
+                self.petCollectionView.isHidden = false
                 
             case .failure(let error):
-                print(error)
-                self.buttonStackView.isHidden = true
-                self.configEmptyTitleLabel()
-                self.configEmptyContentLabel()
-                self.configEmptyAnimation()
+                
+                if error as? CommonError == CommonError.emptyArrayInFilter {
+                    self.buttonStackView.isHidden = true
+                    self.configEmptyTitleLabel()
+                    self.configEmptyContentLabel()
+                    self.configEmptyAnimation()
+                    self.petCollectionView.isHidden = true
+                    
+                } else {
+                    self.presentErrorAlert(message: error.localizedDescription)
+                }
             }
         }
     }
     
-    func authorizeCamera() -> Bool {
+    private func authorizeCamera() -> Bool {
         let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
         switch cameraStatus {
         case .notDetermined:
@@ -138,55 +110,88 @@ class HomeViewController: UIViewController {
                 }
             }
         case .restricted, .denied:
-            presentGoSettingAlert()
+            self.presentSettingAlert()
             
         case .authorized:
             return true
             
         @unknown default:
-            presentGoSettingAlert()
+            self.presentSettingAlert()
         }
         
         return false
     }
     
-    func presentGoSettingAlert() {
-        
-        DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "toPether would like to access the Camera", message: "Please turn on the setting for scanning members' QRCode", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let settingAction = UIAlertAction(title: "Setting", style: .default) { settingAction in
-                guard let settingUrl = URL(string: UIApplication.openSettingsURLString) else { return }
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(settingUrl, options: [:], completionHandler: { (success) in
-                        print("跳至設定")
-                    })
-                } else {
-                    UIApplication.shared.openURL(settingUrl)
-                }
-            }
-            
-            alertController.addAction(cancelAction)
-            alertController.addAction(settingAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
+    // MARK: - UI properties
+    
+    private lazy var cardView: CardView = {
+        let cardView = CardView(color: .white, cornerRadius: 20)
+        return cardView
+    }()
+    
+    private lazy var collectionViewFlowLayout: UICollectionViewFlowLayout = {
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionViewFlowLayout.minimumLineSpacing = 0
+        collectionViewFlowLayout.minimumInteritemSpacing = 0
+        collectionViewFlowLayout.scrollDirection = .horizontal
+        collectionViewFlowLayout.itemSize.width = view.bounds.width
+        collectionViewFlowLayout.itemSize.height = view.bounds.height / 3 * 2
+        return collectionViewFlowLayout
+    }()
+    
+    private lazy var petCollectionView: UICollectionView = {
+        let petCollectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewFlowLayout)
+        petCollectionView.backgroundColor = .clear
+        petCollectionView.showsHorizontalScrollIndicator = false
+        petCollectionView.bounces = true
+        petCollectionView.allowsSelection = false
+        petCollectionView.isPagingEnabled = true
+        petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.identifier)
+        petCollectionView.delegate = self
+        petCollectionView.dataSource = self
+        petCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        return petCollectionView
+    }()
+    
+    private lazy var buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 28
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var emptyTitleLabel: MediumLabel = {
+        let emptyTitleLabel = MediumLabel(size: 20, text: "Oh...\nYou aren't in a pet group.", textColor: .deepBlueGrey)
+        emptyTitleLabel.textAlignment = .center
+        emptyTitleLabel.numberOfLines = 0
+        return emptyTitleLabel
+    }()
+    
+    private lazy var emptyContentLabel: RegularLabel = {
+        let emptyContentLabel = RegularLabel(size: 18, text: "Go to profile page \nto create one or get invited", textColor: .deepBlueGrey)
+        emptyContentLabel.textAlignment = .center
+        emptyContentLabel.numberOfLines = 0
+        return emptyContentLabel
+    }()
+    
+    private lazy var emptyAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieDogSitting")
 }
 
-// MARK: Extension
+// MARK: - CollectionViewDelegate+DataSource
+
 extension HomeViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pets.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PetCollectionViewCell", for: indexPath)
-        guard let petCell = cell as? PetCollectionViewCell else { return cell }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PetCollectionViewCell.identifier, for: indexPath)
+        guard let petCell = cell as? PetCollectionViewCell else { return UICollectionViewCell() }
 
         petCell.reload(pet: self.pets[indexPath.item])
 
@@ -197,14 +202,19 @@ extension HomeViewController: UICollectionViewDataSource {
 }
 
 extension HomeViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = petCollectionView.visibleCells.first, let index = petCollectionView.indexPath(for: cell)?.row else { return }
+        
         petIndex = index
         print("current index by didEndDisplaying:", petIndex)
     }
 }
 
+// MARK: - PetCollectionViewCellDelegate
+
 extension HomeViewController: PetCollectionViewCellDelegate {
+    
     func pushToInviteVC(pet: Pet) {
         if authorizeCamera() {
             let inviteVC = InviteViewController(pet: pet)
@@ -213,10 +223,11 @@ extension HomeViewController: PetCollectionViewCellDelegate {
     }
 }
 
+// MARK: - UI settings
+
 extension HomeViewController {
     
     private func configCardView() {
-        cardView = CardView(color: .white, cornerRadius: 20)
         view.addSubview(cardView)
         NSLayoutConstraint.activate([
             cardView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -227,25 +238,6 @@ extension HomeViewController {
     }
     
     private func configCollectionView() {
-        let petsLayout = UICollectionViewFlowLayout()
-        petsLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        petsLayout.minimumLineSpacing = 0
-        petsLayout.minimumInteritemSpacing = 0
-        petsLayout.scrollDirection = .horizontal
-        petsLayout.itemSize.width = view.bounds.width
-        petsLayout.itemSize.height = view.bounds.height / 3 * 2
-        
-        petCollectionView = UICollectionView(frame: .zero, collectionViewLayout: petsLayout)
-        petCollectionView.backgroundColor = .clear
-        petCollectionView.showsHorizontalScrollIndicator = false
-        petCollectionView.bounces = true
-        petCollectionView.allowsSelection = false
-        petCollectionView.isPagingEnabled = true
-        petCollectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: "PetCollectionViewCell")
-        petCollectionView.delegate = self
-        petCollectionView.dataSource = self
-        
-        petCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(petCollectionView)
         NSLayoutConstraint.activate([
             petCollectionView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
@@ -257,14 +249,14 @@ extension HomeViewController {
     
     private func configButtonStackView() {
         view.addSubview(buttonStackView)
+        
         let buttons = [
             IconButton(self, action: #selector(tapMessageButton), img: .iconsMessage),
             IconButton(self, action: #selector(tapFoodButton), img: .iconsFood),
             IconButton(self, action: #selector(tapMedicalButton), img: .iconsMedicalRecords)
-//            IconButton(self, action: #selector(tapXXXButton), img: .iconsGallery)
         ]
+        
         buttons.forEach { button in
-            let fullWidth = UIScreen.main.bounds.width
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalToConstant: 56),
                 button.widthAnchor.constraint(equalToConstant: 72)
@@ -274,7 +266,6 @@ extension HomeViewController {
             buttonStackView.addArrangedSubview(button)
         }
         
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             buttonStackView.topAnchor.constraint(equalTo: petCollectionView.bottomAnchor, constant: 8),
             buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -282,8 +273,6 @@ extension HomeViewController {
     }
     
     private func configEmptyTitleLabel() {
-        emptyTitleLabel.textAlignment = .center
-        emptyTitleLabel.numberOfLines = 0
         view.addSubview(emptyTitleLabel)
         NSLayoutConstraint.activate([
             emptyTitleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 120),
@@ -293,8 +282,6 @@ extension HomeViewController {
     }
     
     private func configEmptyContentLabel() {
-        emptyContentLabel.textAlignment = .center
-        emptyContentLabel.numberOfLines = 0
         view.addSubview(emptyContentLabel)
         NSLayoutConstraint.activate([
             emptyContentLabel.topAnchor.constraint(equalTo: emptyTitleLabel.bottomAnchor, constant: 16),

@@ -21,22 +21,13 @@ class ProfileViewController: UIViewController {
     private var secondImageView = UIImageView(image: Img.iconsPang.obj)
     private var guideGetInvitationLabel = RegularLabel(size: 16, text: "Tap QR Code button to be invited", textColor: .deepBlueGrey)
     
-    private var currentUser: Member! = MemberModel.shared.current // update needed
+    private var currentUser: Member! = MemberManager.shared.current // update needed
     private var pets = [Pet]()
 
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Profile"
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .mainBlue
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsSetting.obj, style: .plain, target: self, action: #selector(tapSetting))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: Img.iconsQrcode.obj, style: .plain, target: self, action: #selector(tapQrcode))
@@ -58,34 +49,34 @@ class ProfileViewController: UIViewController {
         configPetTableView()
         
         // MARK: Query data
-        queryData(currentUser: MemberModel.shared.current ?? self.currentUser)
-        MemberModel.shared.addUserListener { [weak self] result in
+        queryData(currentUser: MemberManager.shared.current ?? self.currentUser)
+        MemberManager.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(.added(members: let members)):
-                guard let currentUser = members.first else { return }
-                self.queryData(currentUser: currentUser)
-                self.nameTextField.text = currentUser.name
+            case .success(.added(data: let member)):
+//                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: member)
+                self.nameTextField.text = member.name
 
-            case .success(.modified(members: let members)):
-                guard let currentUser = members.first else { return }
-                self.queryData(currentUser: currentUser)
-                self.nameTextField.text = currentUser.name
+            case .success(.modified(data: let member)):
+//                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: member)
+                self.nameTextField.text = member.name
 
-            case .success(.removed(members: let members)):
-                guard let currentUser = members.first else { return }
-                self.queryData(currentUser: currentUser)
+            case .success(.removed(data: let member)):
+//                guard let currentUser = members.first else { return }
+                self.queryData(currentUser: member)
 
             case .failure(let error):
                 print("lisener error at profileVC", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }
     
     // MARK: functions
     func queryData(currentUser: Member) {
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -97,6 +88,7 @@ class ProfileViewController: UIViewController {
                 self.guideCreateLabel.removeFromSuperview()
                 self.secondImageView.removeFromSuperview()
                 self.guideGetInvitationLabel.removeFromSuperview()
+                self.petTableView.isHidden = false
                 
             case .failure(let error):
                 print(error)
@@ -104,6 +96,7 @@ class ProfileViewController: UIViewController {
                 self.configGuideCreateLabel()
                 self.configSecondImageView()
                 self.configGuideInvitationLabel()
+                self.petTableView.isHidden = true
             }
         }
     }
@@ -118,9 +111,9 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func nameEndEditing(_ textField: UITextField) {
-        guard let currentUser = MemberModel.shared.current else { return }
-        MemberModel.shared.current?.name = nameTextField.text ?? currentUser.name
-        MemberModel.shared.updateCurrentUser()
+        guard let currentUser = MemberManager.shared.current else { return }
+        MemberManager.shared.current?.name = nameTextField.text ?? currentUser.name
+        MemberManager.shared.updateCurrentUser()
         view.endEditing(true)
     }
     
@@ -130,7 +123,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc func tapAddPet(sender: UIButton) {
-        let addPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
+        let addPetViewController = AddPetViewController(currentUser: MemberManager.shared.current ?? currentUser, selectedPet: nil, isFirstSignIn: false)
         self.navigationController?.pushViewController(addPetViewController, animated: true)
     }
 }
@@ -141,7 +134,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PetTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: PetTableViewCell.identifier, for: indexPath)
         guard let petCell = cell as? PetTableViewCell else { return cell }
         petCell.selectionStyle = .none
         petCell.reload(pet: pets[indexPath.row])
@@ -150,7 +143,7 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPet = pets[indexPath.row]
-        let editPetViewController = AddPetViewController(currentUser: MemberModel.shared.current ?? currentUser, selectedPet: selectedPet, isFirstSignIn: false)
+        let editPetViewController = AddPetViewController(currentUser: MemberManager.shared.current ?? currentUser, selectedPet: selectedPet, isFirstSignIn: false)
         self.navigationController?.pushViewController(editPetViewController, animated: true)
     }
 }
@@ -161,23 +154,28 @@ extension ProfileViewController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             
-            let deleteAlert = Alert.deleteAlert(title: "Delete furkid",
-                                                message: "You'd need to be invited again, or you could not view previous info of this pet")
-            {
+            self.presentDeleteAlert(title: "Delete furkid",
+                                    message: "You'd need to be invited again, or you could not view previous info of this pet") { // action after user tapped delete
                 // get the deleting pet
                 let pet = self.pets[indexPath.row]
                 
                 // update deleted petIds
-                MemberModel.shared.current?.petIds.removeAll { $0 == pet.id }
-                MemberModel.shared.updateCurrentUser()
+                MemberManager.shared.current?.petIds.removeAll { $0 == pet.id }
+                MemberManager.shared.updateCurrentUser()
                 
                 // update that pet's memberIds
-                pet.memberIds.removeAll { $0 == MemberModel.shared.current?.id }
-                PetModel.shared.updatePet(id: pet.id, pet: pet)
+                pet.memberIds.removeAll { $0 == MemberManager.shared.current?.id }
                 
+                PetManager.shared.updatePet(id: pet.id, pet: pet) { result in
+                    switch result {
+                    case .success(let string):
+                        print(string)
+
+                    case .failure(let error):
+                        self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                    }
+                }
             }
-            
-            self.present(deleteAlert, animated: true)
             
             completionHandler(true)
         }

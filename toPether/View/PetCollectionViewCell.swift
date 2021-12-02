@@ -150,14 +150,14 @@ class PetCollectionViewCell: UICollectionViewCell {
     func addListener(pet: Pet) {
         listener?.remove() // remove instance listener, Stop listening to changes
 
-        listener = PetModel.shared.addPetListener(pet: pet, completion: { [weak self] result in
+        listener = PetManager.shared.addPetListener(pet: pet, completion: { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let pet):
                 
                 // self.pet?.memberIds.count != pet.memberIds.count &&
                 if !pet.memberIds.isEmpty {
-                    MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+                    MemberManager.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
                         switch result {
                         case .success(let members):
                             guard let self = self else { return }

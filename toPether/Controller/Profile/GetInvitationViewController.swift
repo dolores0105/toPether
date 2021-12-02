@@ -35,12 +35,12 @@ class GetInvitationViewController: UIViewController {
         configAnimationView()
         
         // MARK: data
-        MemberModel.shared.addUserListener { [weak self] result in
+        MemberManager.shared.addUserListener { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(.added(members: _ )):
+            case .success(.added(data: _ )):
                 break
-            case .success(.modified(members: _ )):
+            case .success(.modified(data: _ )):
                 self.animationView?.play(completion: { _ in
                     
                     if self.isFirstSignIn {
@@ -57,11 +57,11 @@ class GetInvitationViewController: UIViewController {
                     
                 })
                 
-            case .success(.removed(members: _ )):
+            case .success(.removed(data: _ )):
                 break
             case .failure(let error):
                 print("lisener error at getInvitationVC", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     }

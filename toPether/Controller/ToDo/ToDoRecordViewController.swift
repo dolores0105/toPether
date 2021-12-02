@@ -37,13 +37,17 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var petNamesCache = [String: String]()
     private var selectedPetName: String? {
         didSet {
-            guard let selectedPetName = selectedPetName else { return }
-            guard let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
-            PetModel.shared.queryPet(id: petId) { pet in
-                guard let pet = pet else {
-                    return
+            guard let selectedPetName = selectedPetName, let petId = self.petNamesCache.someKey(forValue: selectedPetName) else { return }
+            PetManager.shared.queryPet(id: petId) { result in
+                
+                switch result {
+                case .success(let pet):
+                    
+                    self.queryMemberNames(pet: pet)
+                    
+                case .failure(let error):
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
-                self.queryMemberNames(pet: pet)
             }
         }
     }
@@ -59,17 +63,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
 
         self.navigationItem.title = "Todo"
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
-        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.medium(size: 22) as Any, NSAttributedString.Key.foregroundColor: UIColor.mainBlue]
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        appearance.shadowColor = .clear
-        navigationController?.navigationBar.tintColor = .mainBlue
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
 
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -92,8 +86,8 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configOkButton()
         
         // MARK: Data
-        guard let currentUser = MemberModel.shared.current else { return }
-        PetModel.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
+        guard let currentUser = MemberManager.shared.current else { return }
+        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let pets):
@@ -104,12 +98,17 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
                 
                 if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
-                    
-                    PetModel.shared.queryPet(id: petId) { pet in
-                        guard let pet = pet else {
-                            return
+
+                    PetManager.shared.queryPet(id: petId) { result in
+                        
+                        switch result {
+                        case .success(let pet):
+                            
+                            self.queryMemberNames(pet: pet)
+                            
+                        case .failure(let error):
+                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                         }
-                        self.queryMemberNames(pet: pet)
                     }
                 } else {
                     self.petTextField.text = self.petNamesCache.first?.value
@@ -118,7 +117,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 
             case .failure(let error):
                 print("Query currentUser's pets error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
             }
         }
     
@@ -132,34 +131,47 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         guard let todo = todo else {
             
             guard let petName = petTextField.text,
-            let todoContent = contentTextView.text,
-            let executorName = executorTextField.text, let currentUser = MemberModel.shared.current else { return }
+                  let executorName = executorTextField.text,
+                  let currentUser = MemberManager.shared.current else { return }
             
-            guard let petId = petNamesCache.someKey(forValue: petName), let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
+            guard let petId = petNamesCache.someKey(forValue: petName),
+                  let executorId = memberNamesCache.someKey(forValue: executorName) else { return }
             
-            ToDoManager.shared.setToDo(creatorId: currentUser.id, executorId: executorId, petId: petId, dueTime: timeDatePicker.date, content: todoContent) { [weak self] result in
+            let todo = ToDo()
+            todo.creatorId = currentUser.id
+            todo.executorId = executorId
+            todo.petId = petId
+            todo.dueTime = timeDatePicker.date
+            todo.content = contentTextView.text ?? "no value"
+            
+            ToDoManager.shared.setToDo(todo: todo) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
-                case .success(let todo):
-                    print("Create todo", todo.content)
+                case .success(let todoId):
+                    print(todoId)
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let error):
                     print("Create todo error", error)
-                    self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Please try again")
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
                 }
             }
             return
         }
         
         todo.dueTime = timeDatePicker.date // in case only update date
-        ToDoManager.shared.updateToDo(todo: todo) { todo in
-            guard todo != nil else {
-                print("Update todo failed")
-                return
+        ToDoManager.shared.updateToDo(todo: todo) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let todo):
+                self.navigationController?.popViewController(animated: true)
+                print("updated todo: \(todo.id)")
+                
+            case .failure(let error):
+                self.presentErrorAlert(message: error.localizedDescription)
             }
-            navigationController?.popViewController(animated: true)
         }
 
     }
@@ -175,7 +187,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func queryMemberNames(pet: Pet) {
-        MemberModel.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
+        MemberManager.shared.queryMembers(ids: pet.memberIds) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let members):
@@ -185,7 +197,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
                 }
             case .failure(let error):
                 print("query members' names error", error)
-                self.presentErrorAlert(title: "Something went wrong", message: error.localizedDescription + " Query members' names error, please try again")
+                self.presentErrorAlert(message: error.localizedDescription + " Query members' names error, please try again")
             }
         }
     }
@@ -226,12 +238,16 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
             petTextField.text = selectedPetName
             
             let selectedPetId = Array(petNamesCache.keys)[row]
-            PetModel.shared.queryPet(id: selectedPetId) { pet in
-                guard let pet = pet else {
-                    return // didn't find pet
-                }
+            PetManager.shared.queryPet(id: selectedPetId) { result in
                 
-                self.queryMemberNames(pet: pet)
+                switch result {
+                case .success(let pet):
+                    
+                    self.queryMemberNames(pet: pet)
+                    
+                case .failure(let error):
+                    self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                }
             }
             
         case executorPickerView:

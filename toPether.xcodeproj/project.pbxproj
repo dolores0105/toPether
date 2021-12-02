@@ -12,7 +12,7 @@
 		3907919D271DB56900B4735B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919C271DB56900B4735B /* UIFontExtension.swift */; };
 		3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3907919E271DB6A600B4735B /* UIColorExtension.swift */; };
 		390791A3271E66E500B4735B /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A2271E66E400B4735B /* BorderButton.swift */; };
-		390791A6271E78F800B4735B /* PetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A5271E78F800B4735B /* PetModel.swift */; };
+		390791A6271E78F800B4735B /* PetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A5271E78F800B4735B /* PetManager.swift */; };
 		390791A8271E8C9900B4735B /* DataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A7271E8C9900B4735B /* DataStructure.swift */; };
 		390791AA271ECECA00B4735B /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791A9271ECEC900B4735B /* CircleButton.swift */; };
 		390791AC271ECF1E00B4735B /* IconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390791AB271ECF1E00B4735B /* IconButton.swift */; };
@@ -32,7 +32,6 @@
 		392B4752273C07A2001F203B /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4751273C07A2001F203B /* ShadowView.swift */; };
 		392B4754273CB54B001F203B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */; };
 		392B4756273CC2F8001F203B /* lottieLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 392B4755273CC2F8001F203B /* lottieLoading.json */; };
-		392B4758273D5EB8001F203B /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B4757273D5EB7001F203B /* Alert.swift */; };
 		392CDBF8274633E20000A514 /* lottieDogSitting.json in Resources */ = {isa = PBXBuildFile; fileRef = 392CDBF7274633E20000A514 /* lottieDogSitting.json */; };
 		392CDBFA2746602D0000A514 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */; };
 		392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392CDBFB2747B6630000A514 /* EULAViewController.swift */; };
@@ -47,13 +46,15 @@
 		3955710427353562003AF098 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3955710327353562003AF098 /* MessageTableViewCell.swift */; };
 		39558C9D2727CED900523D43 /* GetInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39558C9C2727CED900523D43 /* GetInvitationViewController.swift */; };
 		39558C9F2728498A00523D43 /* LottieDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 39558C9E2728498A00523D43 /* LottieDone.json */; };
+		395A2EF6274F919300A44C17 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */; };
+		395A2EF8274F92EC00A44C17 /* UICollectionViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */; };
 		395D04AD27390AB70013AF9A /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */; };
 		395D04AF27391B9D0013AF9A /* ToDoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D04AE27391B9D0013AF9A /* ToDoManager.swift */; };
 		395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD0072720517A005911AA /* PetTableViewCell.swift */; };
 		395FD00A272052D8005911AA /* MediumLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD009272052D8005911AA /* MediumLabel.swift */; };
 		395FD00C27213C3B005911AA /* RoundCornerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00B27213C3B005911AA /* RoundCornerImageView.swift */; };
 		395FD00E27214AB6005911AA /* RegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00D27214AB6005911AA /* RegularLabel.swift */; };
-		395FD01027215D18005911AA /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberModel.swift */; };
+		395FD01027215D18005911AA /* MemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FD00F27215D18005911AA /* MemberManager.swift */; };
 		3960E6B027414E81003E05FE /* BlueBorderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */; };
 		39709FE227325F28001B29F3 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE127325F28001B29F3 /* UIViewExtension.swift */; };
 		39709FE427326682001B29F3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39709FE327326682001B29F3 /* TabBarViewController.swift */; };
@@ -93,7 +94,7 @@
 		3907919C271DB56900B4735B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		3907919E271DB6A600B4735B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		390791A2271E66E400B4735B /* BorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
-		390791A5271E78F800B4735B /* PetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetModel.swift; sourceTree = "<group>"; };
+		390791A5271E78F800B4735B /* PetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetManager.swift; sourceTree = "<group>"; };
 		390791A7271E8C9900B4735B /* DataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructure.swift; sourceTree = "<group>"; };
 		390791A9271ECEC900B4735B /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		390791AB271ECF1E00B4735B /* IconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconButton.swift; sourceTree = "<group>"; };
@@ -113,7 +114,6 @@
 		392B4751273C07A2001F203B /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		392B4753273CB54A001F203B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		392B4755273CC2F8001F203B /* lottieLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieLoading.json; sourceTree = "<group>"; };
-		392B4757273D5EB7001F203B /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		392CDBF7274633E20000A514 /* lottieDogSitting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottieDogSitting.json; sourceTree = "<group>"; };
 		392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		392CDBFB2747B6630000A514 /* EULAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAViewController.swift; sourceTree = "<group>"; };
@@ -128,13 +128,15 @@
 		3955710327353562003AF098 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		39558C9C2727CED900523D43 /* GetInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInvitationViewController.swift; sourceTree = "<group>"; };
 		39558C9E2728498A00523D43 /* LottieDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieDone.json; sourceTree = "<group>"; };
+		395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
+		395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCellExtension.swift; sourceTree = "<group>"; };
 		395D04AC27390AB70013AF9A /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
 		395D04AE27391B9D0013AF9A /* ToDoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoManager.swift; sourceTree = "<group>"; };
 		395FD0072720517A005911AA /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		395FD009272052D8005911AA /* MediumLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumLabel.swift; sourceTree = "<group>"; };
 		395FD00B27213C3B005911AA /* RoundCornerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCornerImageView.swift; sourceTree = "<group>"; };
 		395FD00D27214AB6005911AA /* RegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularLabel.swift; sourceTree = "<group>"; };
-		395FD00F27215D18005911AA /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
+		395FD00F27215D18005911AA /* MemberManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManager.swift; sourceTree = "<group>"; };
 		3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBorderTextView.swift; sourceTree = "<group>"; };
 		39709FE127325F28001B29F3 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		39709FE327326682001B29F3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -245,7 +247,6 @@
 				3981607F272D9DA30033930D /* LineView.swift */,
 				395570FF273514CD003AF098 /* CardView.swift */,
 				392B4751273C07A2001F203B /* ShadowView.swift */,
-				392B4757273D5EB7001F203B /* Alert.swift */,
 				39856C53273E78F80071AE13 /* IconLabelVerticalStackView.swift */,
 				39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */,
 				3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */,
@@ -280,6 +281,8 @@
 				392B4747273A4CE8001F203B /* DateExtension.swift */,
 				392B474B273A9FC1001F203B /* DictionaryExtension.swift */,
 				392CDBF92746602D0000A514 /* UIViewControllerExtension.swift */,
+				395A2EF5274F919200A44C17 /* UITableViewCellExtension.swift */,
+				395A2EF7274F92EC00A44C17 /* UICollectionViewCellExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -287,8 +290,8 @@
 		390791A4271E78C400B4735B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				390791A5271E78F800B4735B /* PetModel.swift */,
-				395FD00F27215D18005911AA /* MemberModel.swift */,
+				390791A5271E78F800B4735B /* PetManager.swift */,
+				395FD00F27215D18005911AA /* MemberManager.swift */,
 				395D04AE27391B9D0013AF9A /* ToDoManager.swift */,
 				390791A7271E8C9900B4735B /* DataStructure.swift */,
 				CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */,
@@ -319,11 +322,11 @@
 				39EDD1A3271D126800B4DAFA /* HomeViewController.swift */,
 				3917612C27292E90007FC7C1 /* MedicalViewController.swift */,
 				3988E26D272BE00600AACFD6 /* MedicalRecordViewController.swift */,
-				39C6669F2726B30100400C84 /* InviteViewController.swift */,
 				39816077272D8BCE0033930D /* FoodViewController.swift */,
 				39840D2E272E9A19004BA4A2 /* FoodRecordViewController.swift */,
-				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
 				3955710127352BAB003AF098 /* MessageViewController.swift */,
+				39C6669F2726B30100400C84 /* InviteViewController.swift */,
+				3902C38227340BFB0088D04B /* ScanResultViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -555,17 +558,17 @@
 				3981607A272D97C60033930D /* BorderSearchBar.swift in Sources */,
 				CEDC483B2736EF4C00E5A95C /* LeftMessageTableViewCell.swift in Sources */,
 				3917613127298C28007FC7C1 /* BorderView.swift in Sources */,
-				395FD01027215D18005911AA /* MemberModel.swift in Sources */,
+				395FD01027215D18005911AA /* MemberManager.swift in Sources */,
 				3955710227352BAB003AF098 /* MessageViewController.swift in Sources */,
 				39EDD1A4271D126800B4DAFA /* HomeViewController.swift in Sources */,
 				395FD00A272052D8005911AA /* MediumLabel.swift in Sources */,
 				3907919F271DB6A600B4735B /* UIColorExtension.swift in Sources */,
 				39C6669E27267F4F00400C84 /* UITextFieldExtension.swift in Sources */,
 				39EDD1A0271D126800B4DAFA /* AppDelegate.swift in Sources */,
-				392B4758273D5EB8001F203B /* Alert.swift in Sources */,
 				39557100273514CD003AF098 /* CardView.swift in Sources */,
 				394A771D2722FE6C00978254 /* AddPetViewController.swift in Sources */,
 				CE8FEFB3272EE6BE00B47D38 /* CommonError.swift in Sources */,
+				395A2EF6274F919300A44C17 /* UITableViewCellExtension.swift in Sources */,
 				392CDBFA2746602D0000A514 /* UIViewControllerExtension.swift in Sources */,
 				394A771B2722990B00978254 /* ArrayExtension.swift in Sources */,
 				3981607E272D9C920033930D /* DotView.swift in Sources */,
@@ -573,7 +576,7 @@
 				3960E6B027414E81003E05FE /* BlueBorderTextView.swift in Sources */,
 				392CDBFC2747B6640000A514 /* EULAViewController.swift in Sources */,
 				39816080272D9DA30033930D /* LineView.swift in Sources */,
-				390791A6271E78F800B4735B /* PetModel.swift in Sources */,
+				390791A6271E78F800B4735B /* PetManager.swift in Sources */,
 				3907919A271DA7B100B4735B /* PetCollectionViewCell.swift in Sources */,
 				39856C52273E59AA0071AE13 /* LottieWraper.swift in Sources */,
 				390791AA271ECECA00B4735B /* CircleButton.swift in Sources */,
@@ -597,6 +600,7 @@
 				3988E26E272BE00600AACFD6 /* MedicalRecordViewController.swift in Sources */,
 				390791B2271FFE4900B4735B /* NavigationBackgroundView.swift in Sources */,
 				39856C54273E78F80071AE13 /* IconLabelVerticalStackView.swift in Sources */,
+				395A2EF8274F92EC00A44C17 /* UICollectionViewCellExtension.swift in Sources */,
 				394A771F272305B000978254 /* BlueBorderTextField.swift in Sources */,
 				390791B0271FFB8900B4735B /* ProfileViewController.swift in Sources */,
 				395FD0082720517A005911AA /* PetTableViewCell.swift in Sources */,
