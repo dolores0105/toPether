@@ -34,7 +34,7 @@
 <img src="https://github.com/dolores0105/toPether/blob/main/screenshots/ShowQRCode.png" width="540" height=""/>
 
 
-- Scan the QRCode of the member to invite him/she to the specific group 
+- Scan the QRCode of the member to invite him/her to the specific group 
 
 <img src="https://github.com/dolores0105/toPether/blob/main/screenshots/ScanQRCode.png" width="540" height=""/>
 
@@ -46,25 +46,25 @@
 
 
 ### Messages
-- Text a message to the members for the casual information sync
+- Text a message to the members for the instant information sync
 
 <img src="https://github.com/dolores0105/toPether/blob/main/screenshots/Message.png" width="540" height=""/>
 
 ### Todos
-- Take a todo list for reminding a member of something needs to do for the pet
+- Make a todo list for reminding a member of something that needs to do for the pet
 
 <img src="https://github.com/dolores0105/toPether/blob/main/screenshots/TakeTodo.png" width="540" height=""/>
 
 
 ## Technical Highlights
 - Developed readable and maintainable codes in Swift using **OOP** and **MVC** architecture.
-- Implemented **Auto Layout programmatically** to make app compatible for all the iPhones.
+- Implemented **Auto Layout programmatically** to make the app compatible with all the iPhones.
 - **Customized and reused UI components** to optimize maintainability and brevity of codes.
-- Utilized **AVFoundation** for QRCode scanner for inviting member into the pet group with more convenience.
+- Utilized **AVFoundation** for QRCode scanner for inviting members into the pet group with more convenience.
 - Implemented **Firestore Snapshot Listener** to perform real-time data synchronization and interactions **across Collections**.
 - Completed account system via **Sign in with Apple**, and integrated **Firebase Auth** and **Firestore** database. 
-- Applied **User Notifications** for reminding users of their todo lists.
-- Used **Singleton** to access the single instance which centralizing data management.
+- Applied **User Notifications** for reminding users of their to-do lists.
+- Used **Singleton** to access the single instance centralizing data management.
 - Transformed image into **Base64 encoded string** to increase uploading efficiency.
 
 
