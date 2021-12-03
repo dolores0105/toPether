@@ -1,7 +1,7 @@
 # toPether
 
 <p align="center">
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/toPetherIconwithName.png" width="160" height="226"/>
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/toPetherIconwithName.png" width="160" height="226"/>
 </p>
 
 <p align="center">
@@ -25,36 +25,35 @@
 #### Create a pet group
 - Create a new pet group by filling in some pet information
 
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/CreatePetGroup.png" width="540" height=""/>
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/CreatePetGroup.png" width="540" height=""/>
 
 
 #### Invite member/Join into the pet group
 - Show QRCode to be scanned
 
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/ShowQRCode.png" width="540" height=""/>
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/ShowQRCode.png" width="540" height=""/>
 
 
 - Scan the QRCode of the member to invite him/she to the specific group 
 
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/ScanQRCode.png" width="540" height=""/>
-
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/ScanQRCode.png" width="540" height=""/>
 
 ### Records
 #### Food/Medical records
 - Record food/medical notes of the pet with members, and view the history records
 
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/Take%20record.png" width="540" height=""/>
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/TakeRecord.png" width="540" height=""/>
 
 
 ### Messages
 - Text a message to the members for the casual information sync
 
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/Message.png" width="540" height=""/>
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/Message.png" width="540" height=""/>
 
 ### Todos
 - Take a todo list for reminding a member of something needs to do for the pet
 
-<img src="https://github.com/dolores0105/forScreenshots/blob/master/TakeTodo.png" width="540" height=""/>
+<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/TakeTodo.png" width="540" height=""/>
 
 
 ## Technical Highlights
