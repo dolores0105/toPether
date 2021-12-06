@@ -51,10 +51,7 @@ class SplashViewController: UIViewController {
             }
             
         } else {
-//            configBgView()
-//            configLogoView()
             logoImageAnimation()
-//            setupSignInButton()
         }
     }
     
