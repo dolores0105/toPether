@@ -51,10 +51,7 @@ class SplashViewController: UIViewController {
             }
             
         } else {
-//            configBgView()
-//            configLogoView()
             logoImageAnimation()
-//            setupSignInButton()
         }
     }
     
@@ -440,12 +437,12 @@ extension SplashViewController {
     }
     
     @objc private func tapPrivacy() {
-        let privacyPolicyViewController = PrivacyPolicyViewController()
+        let privacyPolicyViewController = WebViewController(urlString: "https://www.privacypolicies.com/live/ee7f5a2b-33d3-4b00-bf9b-32d784f8cb81")
         present(privacyPolicyViewController, animated: true, completion: nil)
     }
     
     @objc private func tapEULA() {
-        let eulaViewController = EULAViewController()
+        let eulaViewController = WebViewController(urlString: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
         present(eulaViewController, animated: true, completion: nil)
     }
     

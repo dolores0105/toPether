@@ -13,6 +13,8 @@ class EmptyUserViewController: UIViewController {
     private var nameTextField: BlueBorderTextField!
     private var nextButton: RoundButton!
     
+    // MARK: - Life Cycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,30 +23,30 @@ class EmptyUserViewController: UIViewController {
         configNameTextField()
         configButton()
     }
+    
+    // MARK: - @objc Functions
+    
+    @objc private func tapNext(_: RoundButton) {
+        let emptyPetViewController = EmptyPetViewController()
+        emptyPetViewController.modalPresentationStyle = .fullScreen
+        self.present(emptyPetViewController, animated: true, completion: nil)
+    }
 }
+
+// MARK: - UITextFieldDelegate
 
 extension EmptyUserViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
-//        if nameTextField.hasText {
-//
-//            nextButton.isEnabled = true
-//            nextButton.backgroundColor = .mainYellow
-//
-//            MemberManager.shared.current?.name = nameTextField.text ?? ""
-//            MemberManager.shared.updateCurrentUser()
-//
-//        } else {
-//            nextButton.isEnabled = false
-//            nextButton.backgroundColor = .lightBlueGrey
-//        }
+
         buttonIsEnabled()
     }
 }
 
+// MARK: - UI Configure Functions
+
 extension EmptyUserViewController {
     
-    func configLabel() {
+    private func configLabel() {
         label = MediumLabel(size: 19, text: "What should we call you?", textColor: .mainBlue)
         view.addSubview(label)
         NSLayoutConstraint.activate([
@@ -54,7 +56,7 @@ extension EmptyUserViewController {
         ])
     }
     
-    func configNameTextField() {
+    private func configNameTextField() {
         nameTextField = BlueBorderTextField(text: nil)
         nameTextField.becomeFirstResponder()
         nameTextField.text = MemberManager.shared.current?.name
@@ -67,7 +69,7 @@ extension EmptyUserViewController {
         ])
     }
     
-    func configButton() {
+    private func configButton() {
         nextButton = RoundButton(text: "Next", size: 18)
         buttonIsEnabled()
         nextButton.addTarget(self, action: #selector(tapNext), for: .touchUpInside)
@@ -79,7 +81,7 @@ extension EmptyUserViewController {
         ])
     }
     
-    func buttonIsEnabled() {
+    private func buttonIsEnabled() {
         if nameTextField.hasText {
             
             nextButton.isEnabled = true
@@ -92,11 +94,5 @@ extension EmptyUserViewController {
             nextButton.isEnabled = false
             nextButton.backgroundColor = .lightBlueGrey
         }
-    }
-    
-    @objc func tapNext(_: RoundButton) {
-        let emptyPetViewController = EmptyPetViewController()
-        emptyPetViewController.modalPresentationStyle = .fullScreen
-        self.present(emptyPetViewController, animated: true, completion: nil)
     }
 }

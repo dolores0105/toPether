@@ -15,6 +15,8 @@ class EmptyPetViewController: UIViewController {
     private var getInvitationGuideLabel: MediumLabel!
     private var getInvitationButton: RoundButton!
     
+    // MARK: - Life Cycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,9 +27,26 @@ class EmptyPetViewController: UIViewController {
         configGetInvitationGuideLabel()
         configGetInvitationButton()
     }
+    
+    // MARK: - @objc Functions
+    
+    @objc func tapCreate(_: RoundButton) {
+        guard let currenUser = MemberManager.shared.current else { return }
+        let addPetViewController = AddPetViewController(currentUser: currenUser, selectedPet: nil, isFirstSignIn: true)
+        self.present(addPetViewController, animated: true, completion: nil)
+    }
+    
+    @objc func tapGetInvitation(_: RoundButton) {
+        guard let currenUser = MemberManager.shared.current else { return }
+        let getInvitationVC = GetInvitationViewController(currentUser: currenUser, isFirstSignIn: true)
+        self.present(getInvitationVC, animated: true, completion: nil)
+    }
 }
 
+// MARK: - UI Configure Functions
+
 extension EmptyPetViewController {
+    
     private func configWelcomeLabel() {
         welcomeLabel = MediumLabel(size: 19, text: "Hello \(MemberManager.shared.current?.name ?? "")", textColor: .mainBlue)
         welcomeLabel.numberOfLines = 1
@@ -79,19 +98,5 @@ extension EmptyPetViewController {
             getInvitationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             getInvitationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
-    }
-    
-    @objc func tapCreate(_: RoundButton) {
-        guard let currenUser = MemberManager.shared.current else { return }
-        let addPetViewController = AddPetViewController(currentUser: currenUser, selectedPet: nil, isFirstSignIn: true)
-//        addPetViewController.modalPresentationStyle = .fullScreen
-        self.present(addPetViewController, animated: true, completion: nil)
-    }
-    
-    @objc func tapGetInvitation(_: RoundButton) {
-        guard let currenUser = MemberManager.shared.current else { return }
-        let getInvitationVC = GetInvitationViewController(currentUser: currenUser, isFirstSignIn: true)
-//        getInvitationVC.modalPresentationStyle = .fullScreen
-        self.present(getInvitationVC, animated: true, completion: nil)
     }
 }
