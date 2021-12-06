@@ -11,12 +11,6 @@ import Firebase
 
 class ToDoViewController: UIViewController {
 
-    private var cardView: CardView!
-    private var calendar: UIDatePicker!
-    private var toDoTableView: UITableView!
-    private var animationView: AnimationView!
-    private var listener: ListenerRegistration?
-    
     private var toDos = [ToDo]()
     private var executorNameCache = [String: String]() {
         didSet {
@@ -29,14 +23,9 @@ class ToDoViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-
-        self.navigationItem.title = "Todos"
-        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
-        
-        self.tabBarController?.tabBar.isHidden = false
-    }
+    private var listener: ListenerRegistration?
+    
+// MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +40,17 @@ class ToDoViewController: UIViewController {
         
         addToDoListenerNotification()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        self.navigationItem.title = "Todos"
+        self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: Img.iconsAddWhite.obj, style: .plain, target: self, action: #selector(tapAdd))
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - Data Functions
     
     private func addToDoListenerOnDate(date: Date) {
         guard let currentUser = MemberManager.shared.current else { return }
@@ -92,19 +92,6 @@ class ToDoViewController: UIViewController {
         }
     }
     
-    @objc private func tapAdd(_ sender: UIBarButtonItem) {
-        let toDoRecordViewController = ToDoRecordViewController(todo: nil, petName: nil, executorName: nil)
-        navigationController?.pushViewController(toDoRecordViewController, animated: true)
-    }
-    
-    @objc func tapDate(sender: UIDatePicker) {
-        let date = sender.date
-        
-        listener?.remove()
-        
-        addToDoListenerOnDate(date: date)
-    }
-    
     private func addToDoListenerNotification() {
         ToDoManager.shared.todoListener { [weak self] result in
             guard let self = self else { return }
@@ -115,7 +102,6 @@ class ToDoViewController: UIViewController {
                 var badgeStepper: Int = 0
                 
                 for todo in todos {
-                    
                     if todo.dueTime.hasSame(.day, as: Date()) {
                         badgeStepper += 1
                     }
@@ -130,7 +116,6 @@ class ToDoViewController: UIViewController {
                 var badgeStepper: Int = 0
                 
                 for todo in todos {
-                    
                     if todo.dueTime.hasSame(.day, as: Date()) {
                         badgeStepper += 1
                     }
@@ -143,7 +128,6 @@ class ToDoViewController: UIViewController {
                 var badgeStepper: Int = 0
                 
                 for todo in todos {
-                    
                     if todo.dueTime.hasSame(.day, as: Date()) {
                         badgeStepper += 1
                     }
@@ -180,10 +164,8 @@ class ToDoViewController: UIViewController {
         dateComponents.month = month
         dateComponents.day = day
         dateComponents.hour = 7
-//        dateComponents.minute = 39
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
         let request = UNNotificationRequest(identifier: todo.id, content: content, trigger: trigger)
         
@@ -194,7 +176,31 @@ class ToDoViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - @objc Functions
+    
+    @objc private func tapAdd(_ sender: UIBarButtonItem) {
+        let toDoRecordViewController = ToDoRecordViewController(todo: nil, petName: nil, executorName: nil)
+        navigationController?.pushViewController(toDoRecordViewController, animated: true)
+    }
+    
+    @objc func tapDate(sender: UIDatePicker) {
+        let date = sender.date
+        
+        listener?.remove()
+        
+        addToDoListenerOnDate(date: date)
+    }
+    
+    // MARK: - UI Properties
+    
+    private var cardView: CardView!
+    private var calendar: UIDatePicker!
+    private var toDoTableView: UITableView!
+    private var animationView: AnimationView!
 }
+
+// MARK: - UITableViewDataSource
 
 extension ToDoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -227,6 +233,8 @@ extension ToDoViewController: UITableViewDataSource {
         }
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension ToDoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -262,6 +270,8 @@ extension ToDoViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - ToDoTableViewCellDelegate
+
 extension ToDoViewController: ToDoTableViewCellDelegate {
     func didChangeDoneStatusOnCell(_ cell: ToDoTableViewCell) {
        
@@ -287,6 +297,8 @@ extension ToDoViewController: ToDoTableViewCellDelegate {
     }
     
 }
+
+// MARK: - UI Configure functions
 
 extension ToDoViewController {
     

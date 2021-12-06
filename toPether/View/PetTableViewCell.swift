@@ -83,21 +83,6 @@ class PetTableViewCell: UITableViewCell {
             editImageView.widthAnchor.constraint(equalTo: editImageView.heightAnchor),
             editImageView.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16)
         ])
-        
-//        memberNumberButton = UIButton()
-//        memberNumberButton.translatesAutoresizingMaskIntoConstraints = false
-//        memberNumberButton.titleLabel?.font = UIFont.regular(size: 14)
-//        memberNumberButton.setTitleColor(.deepBlueGrey, for: .normal)
-//        memberNumberButton.backgroundColor = .lightBlueGrey
-//        memberNumberButton.layer.cornerRadius = 10
-//        contentView.addSubview(memberNumberButton)
-//        NSLayoutConstraint.activate([
-//            memberNumberButton.centerYAnchor.constraint(equalTo: genderImageView.centerYAnchor),
-//            memberNumberButton.trailingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: -16),
-//            memberNumberButton.widthAnchor.constraint(equalToConstant: 50),
-//            memberNumberButton.heightAnchor.constraint(equalToConstant: 20)
-//        ])
-        
     }
     
     required init?(coder: NSCoder) {
@@ -120,13 +105,11 @@ class PetTableViewCell: UITableViewCell {
         } else {
             genderImageView.image = Img.iconsGenderFemale.obj
         }
-        
-//        memberNumberButton.setTitle("+ \(pet.memberIds.count)", for: .normal)
     }
     
     func addListener(pet: Pet) {
-            listener?.remove() // remove instance listener, Stop listening to changes
-        // add pet listener
+            listener?.remove()
+        
             listener = PetManager.shared.addPetListener(pet: pet, completion: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
