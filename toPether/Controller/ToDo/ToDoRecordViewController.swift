@@ -18,20 +18,6 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
     private var todo: ToDo?
     private var petName: String?
     private var executorName: String?
-
-    private var scrollView: UIScrollView!
-    private var petsLabel: MediumLabel!
-    private var petTextField: BlueBorderTextField!
-    private var petPickerView: UIPickerView!
-    private var contentLabel: MediumLabel!
-    private var contentTextView: BlueBorderTextView!
-    private var timeLabel: MediumLabel!
-    private let timeDatePicker = UIDatePicker()
-    private var executorsLabel: MediumLabel!
-    private var executorTextField: BlueBorderTextField!
-    private var executorPickerView: UIPickerView!
-    private var notificationGuideLabel: RegularLabel!
-    private var okButton: RoundButton!
     
     private var pets = [Pet]()
     private var petNamesCache = [String: String]()
@@ -60,13 +46,7 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-
-        self.navigationItem.title = "Todo"
-        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
-
-        self.tabBarController?.tabBar.isHidden = true
-    }
+// MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,44 +65,21 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
         configNotificationGuideLabel()
         configOkButton()
         
-        // MARK: Data
         guard let currentUser = MemberManager.shared.current else { return }
-        PetManager.shared.queryPets(ids: currentUser.petIds) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let pets):
-                self.pets = pets
-                
-                for pet in pets where self.petNamesCache[pet.id] == nil {
-                    self.petNamesCache[pet.id] = pet.name
-                }
-                
-                if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
-
-                    PetManager.shared.queryPet(id: petId) { result in
-                        
-                        switch result {
-                        case .success(let pet):
-                            
-                            self.queryMemberNames(pet: pet)
-                            
-                        case .failure(let error):
-                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
-                        }
-                    }
-                } else {
-                    self.petTextField.text = self.petNamesCache.first?.value
-                    self.selectedPetName = self.petTextField.text
-                }
-                
-            case .failure(let error):
-                print("Query currentUser's pets error", error)
-                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
-            }
-        }
+        queryPets(petIds: currentUser.petIds)
     
         renderExistingData(todo: self.todo, petName: self.petName, executorName: self.executorName)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        self.navigationItem.title = "Todo"
+        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - @objc Functions
     
     @objc private func tapOK(sender: RoundButton) {
         
@@ -176,6 +133,44 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
 
     }
     
+    // MARK: - Data Functions
+    
+    private func queryPets(petIds: [String]) {
+        PetManager.shared.queryPets(ids: petIds) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let pets):
+                self.pets = pets
+                
+                for pet in pets where self.petNamesCache[pet.id] == nil {
+                    self.petNamesCache[pet.id] = pet.name
+                }
+                
+                if let petName = self.petName, let petId = self.petNamesCache.someKey(forValue: petName) {
+
+                    PetManager.shared.queryPet(id: petId) { result in
+                        
+                        switch result {
+                        case .success(let pet):
+                            
+                            self.queryMemberNames(pet: pet)
+                            
+                        case .failure(let error):
+                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                        }
+                    }
+                } else {
+                    self.petTextField.text = self.petNamesCache.first?.value
+                    self.selectedPetName = self.petTextField.text
+                }
+                
+            case .failure(let error):
+                print("Query currentUser's pets error", error)
+                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+            }
+        }
+    }
+    
     private func renderExistingData(todo: ToDo?, petName: String?, executorName: String?) {
         
         guard let todo = todo, let petName = petName, let executorName = executorName else { return }
@@ -212,7 +207,25 @@ class ToDoRecordViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
+    
+    // MARK: - UI Properties
+    
+    private var scrollView: UIScrollView!
+    private var petsLabel: MediumLabel!
+    private var petTextField: BlueBorderTextField!
+    private var petPickerView: UIPickerView!
+    private var contentLabel: MediumLabel!
+    private var contentTextView: BlueBorderTextView!
+    private var timeLabel: MediumLabel!
+    private let timeDatePicker = UIDatePicker()
+    private var executorsLabel: MediumLabel!
+    private var executorTextField: BlueBorderTextField!
+    private var executorPickerView: UIPickerView!
+    private var notificationGuideLabel: RegularLabel!
+    private var okButton: RoundButton!
 }
+
+// MARK: - UIPickerViewDelegate
 
 extension ToDoRecordViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -259,6 +272,8 @@ extension ToDoRecordViewController: UIPickerViewDelegate {
     }
 }
 
+// MARK: - UIPickerViewDataSource
+
 extension ToDoRecordViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         switch pickerView {
@@ -282,6 +297,8 @@ extension ToDoRecordViewController: UIPickerViewDataSource {
         }
     }
 }
+
+// MARK: - UITextViewDelegate
 
 extension ToDoRecordViewController: UITextViewDelegate {
     
@@ -308,6 +325,8 @@ extension ToDoRecordViewController: UITextViewDelegate {
         }
     }
 }
+
+// MARK: - UITextFieldDelegate
 
 extension ToDoRecordViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -340,6 +359,8 @@ extension ToDoRecordViewController: UITextFieldDelegate {
         }
     }
 }
+
+// MARK: - UI Configure Functions
 
 extension ToDoRecordViewController {
     private func configScrollView() {

@@ -125,8 +125,7 @@ class PetCollectionViewCell: UICollectionViewCell {
     }
 
     func reload(pet: Pet) {
-//        updateCell(pet: pet, members: members)
-        
+
         self.pet = pet // initialize pet for reloading each time
         addListener(pet: pet)
     }
