@@ -14,8 +14,6 @@ class LottieAnimation {
 
     private init() { }
     
-//    var lottieAnimation: AnimationView?
-    
      func createLoopAnimation(lottieName: String) -> AnimationView {
         
         let lottieAnimation = AnimationView.init(name: lottieName)
@@ -32,7 +30,6 @@ class LottieAnimation {
         lottieAnimation.contentMode = .scaleAspectFit
         lottieAnimation.translatesAutoresizingMaskIntoConstraints = false
         lottieAnimation.loopMode = .playOnce
-        lottieAnimation.play(completion: nil)
         
         return lottieAnimation
     }
