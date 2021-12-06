@@ -1,5 +1,5 @@
 //
-//  PrivacyPolicyViewController.swift
+//  WebViewController.swift
 //  toPether
 //
 //  Created by 林宜萱 on 2021/11/11.
@@ -9,15 +9,20 @@ import UIKit
 import WebKit
 import Lottie
 
-class PrivacyPolicyViewController: UIViewController {
+class WebViewController: UIViewController {
+    
+    convenience init(urlString: String) {
+        self.init()
+        self.urlString = urlString
+    }
+    private var urlString: String!
 
     private let loadingAnimationView = LottieAnimation.shared.createLoopAnimation(lottieName: "lottieLoading")
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let privacyPolicyURL = "https://www.privacypolicies.com/live/ee7f5a2b-33d3-4b00-bf9b-32d784f8cb81"
-        loadURL(urlString: privacyPolicyURL)
+        loadURL(urlString: urlString)
     }
     
     private func loadURL(urlString: String) {
@@ -40,7 +45,9 @@ class PrivacyPolicyViewController: UIViewController {
     }
 }
 
-extension PrivacyPolicyViewController: WKNavigationDelegate {
+// MARK: - WKNavigationDelegate
+
+extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         print(error.localizedDescription)
     }

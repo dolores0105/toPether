@@ -14,13 +14,7 @@ class SettingViewController: UIViewController {
     private var deleteAccountButton: SettingButton!
     private var signOutButton: SettingButton!
     
-    override func viewWillAppear(_ animated: Bool) {
-
-        self.navigationItem.title = "Settings"
-        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
-
-        self.tabBarController?.tabBar.isHidden = true
-    }
+    // MARK: - Life Cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +26,22 @@ class SettingViewController: UIViewController {
         configSignOutButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+
+        self.navigationItem.title = "Settings"
+        self.setNavigationBarColor(bgColor: .white, textColor: .mainBlue, tintColor: .mainBlue)
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - @objc Functions
+    
     @objc private func tapPrivacy(_ sender: SettingButton) {
-        let privacyPolicyViewController = PrivacyPolicyViewController()
+        let privacyPolicyViewController = WebViewController(urlString: "https://www.privacypolicies.com/live/ee7f5a2b-33d3-4b00-bf9b-32d784f8cb81")
         navigationController?.pushViewController(privacyPolicyViewController, animated: true)
     }
     
     @objc private func tapDeleteAccount(_ sender: SettingButton) {
-        
         let alertController = UIAlertController(title: "Delete account",
                                                 message: "It's means all your datas would be cleaned. If you wish to do it, please contact yihsuanlin.dolores@gmail.com",
                                                 preferredStyle: .alert)
@@ -61,6 +64,8 @@ class SettingViewController: UIViewController {
         }
     }
 }
+
+// MARK: - UI Configure Functions
 
 extension SettingViewController {
     
