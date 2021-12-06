@@ -217,15 +217,13 @@
 				3988E26B272BDA1A00AACFD6 /* Home */,
 				3988E26C272BDA2C00AACFD6 /* Profile */,
 				39816074272D40400033930D /* ToDo */,
-				394A77182721D65700978254 /* SplashViewController.swift */,
-				39709FE327326682001B29F3 /* TabBarViewController.swift */,
-				39709FE527328340001B29F3 /* EmptyUserViewController.swift */,
-				39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */,
+				395B86AE275DDC8300EF8520 /* SignIn */,
+				395B86AF275DDCC500EF8520 /* Base */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		39079195271D7D2100B4735B /* UIObjects */ = {
+		39079195271D7D2100B4735B /* BaseComponent */ = {
 			isa = PBXGroup;
 			children = (
 				390791A2271E66E400B4735B /* BorderButton.swift */,
@@ -249,7 +247,7 @@
 				39856C55273E7FC90071AE13 /* IconLabelHorizontalStackView.swift */,
 				3960E6AF27414E81003E05FE /* BlueBorderTextView.swift */,
 			);
-			path = UIObjects;
+			path = BaseComponent;
 			sourceTree = "<group>";
 		};
 		39079198271DA78000B4735B /* View */ = {
@@ -295,6 +293,24 @@
 				CE8FEFB2272EE6BE00B47D38 /* CommonError.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		395B86AE275DDC8300EF8520 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				394A77182721D65700978254 /* SplashViewController.swift */,
+				39709FE527328340001B29F3 /* EmptyUserViewController.swift */,
+				39709FE7273293B0001B29F3 /* EmptyPetViewController.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		395B86AF275DDCC500EF8520 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				39709FE327326682001B29F3 /* TabBarViewController.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		39816074272D40400033930D /* ToDo */ = {
@@ -368,7 +384,7 @@
 				390791A4271E78C400B4735B /* Model */,
 				39079198271DA78000B4735B /* View */,
 				39079194271D715700B4735B /* Controller */,
-				39079195271D7D2100B4735B /* UIObjects */,
+				39079195271D7D2100B4735B /* BaseComponent */,
 				390778E2271D70B700B4735B /* Resource */,
 			);
 			path = toPether;
@@ -781,7 +797,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.4;
+				MARKETING_VERSION = 0.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = dolores.toPether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -819,7 +835,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.4;
+				MARKETING_VERSION = 0.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = dolores.toPether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
