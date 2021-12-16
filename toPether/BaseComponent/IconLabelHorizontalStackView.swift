@@ -25,7 +25,5 @@ class IconLabelHorizontalStackView: UIStackView {
         addArrangedSubview(firstVerticalStackView)
         addArrangedSubview(secondVerticalStackView)
         addArrangedSubview(thirdVerticalStackView)
-        
     }
-
 }

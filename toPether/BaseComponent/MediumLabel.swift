@@ -16,10 +16,6 @@ class MediumLabel: UILabel {
         self.text = text
         self.textColor = textColor
         translatesAutoresizingMaskIntoConstraints = false
-        
-//        NSLayoutConstraint.activate([
-//            heightAnchor.constraint(equalToConstant: 24)
-//        ])
     }
     
     override var canBecomeFirstResponder: Bool {

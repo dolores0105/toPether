@@ -17,5 +17,4 @@ class RoundCornerImageView: UIImageView {
         layer.cornerRadius = 10
         translatesAutoresizingMaskIntoConstraints = false
     }
-
 }
