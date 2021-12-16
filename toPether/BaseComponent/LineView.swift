@@ -15,7 +15,7 @@ class LineView: UIView {
         
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: width),
+            widthAnchor.constraint(equalToConstant: width)
         ])
     }
 }

@@ -32,8 +32,5 @@ class IconLabelVerticalStackView: UIStackView {
         
         addArrangedSubview(iconImageView)
         addArrangedSubview(textLabel)
-        
     }
-
 }
-
