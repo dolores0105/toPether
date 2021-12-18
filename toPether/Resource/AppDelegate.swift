@@ -41,10 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
-//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-//        return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.portrait.rawValue)
-//    }
     
     // MARK: UISceneSession Lifecycle
 
@@ -69,14 +65,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
+
         let window = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window
         let todoViewController = ToDoViewController()
         let tabBarController = window?.rootViewController as? TabBarViewController
-        
+
         tabBarController?.selectedIndex = 1
         let navigationController = tabBarController?.viewControllers?.first as? UINavigationController
         navigationController?.pushViewController(todoViewController, animated: true)
+        UIApplication.shared.applicationIconBadgeNumber -= 1
         
         completionHandler()
     }

@@ -322,12 +322,12 @@
 			path = ToDo;
 			sourceTree = "<group>";
 		};
-		39856C50273E598A0071AE13 /* Third party wraper */ = {
+		39856C50273E598A0071AE13 /* Third party wrapper */ = {
 			isa = PBXGroup;
 			children = (
 				39856C51273E59AA0071AE13 /* LottieWraper.swift */,
 			);
-			path = "Third party wraper";
+			path = "Third party wrapper";
 			sourceTree = "<group>";
 		};
 		3988E26B272BDA1A00AACFD6 /* Home */ = {
@@ -379,7 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				39840D3027311A3C004BA4A2 /* toPether.entitlements */,
-				39856C50273E598A0071AE13 /* Third party wraper */,
+				39856C50273E598A0071AE13 /* Third party wrapper */,
 				3907919B271DB54800B4735B /* Extension */,
 				390791A4271E78C400B4735B /* Model */,
 				39079198271DA78000B4735B /* View */,
@@ -797,7 +797,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.6;
+				MARKETING_VERSION = 0.4.7;
 				PRODUCT_BUNDLE_IDENTIFIER = dolores.toPether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -835,7 +835,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.6;
+				MARKETING_VERSION = 0.4.7;
 				PRODUCT_BUNDLE_IDENTIFIER = dolores.toPether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -22,11 +22,4 @@ class RoundButton: UIButton {
             heightAnchor.constraint(equalToConstant: 48)
         ])
     }
-    
-//    override var isSelected: Bool {
-//        didSet {
-//            backgroundColor = isSelected ? UIColor.mainBlue : UIColor.lightBlueGrey
-//            isSelected ? setTitleColor(.lightBlueGrey, for: .normal) : setTitleColor(.deepBlueGrey, for: .normal)
-//        }
-//    }
 }
