@@ -60,30 +60,43 @@ class ToDoViewController: UIViewController {
             case .success(let todos):
                 self.toDos = todos
                 
+                let group: DispatchGroup = DispatchGroup()
+                let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+                
                 for todo in todos where self.executorNameCache[todo.executorId] == nil || self.petNameCache[todo.petId] == nil {
-                    
-                    MemberManager.shared.queryMember(id: todo.executorId) { member in
-                        guard let member = member else {
-                            self.executorNameCache[todo.executorId] = "anonymous"
-                            return
-                        }
-                        self.executorNameCache[todo.executorId] = member.name
-                    }
-                    
-                    PetManager.shared.queryPet(id: todo.petId) { result in
-                        
-                        switch result {
-                        case .success(let pet):
-                            
-                            self.petNameCache[todo.petId] = pet.name
-                            
-                        case .failure(let error):
-                            self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                
+                    group.enter()
+                    queue.async {
+                        MemberManager.shared.queryMember(id: todo.executorId) { member in
+                            guard let member = member else {
+                                self.executorNameCache[todo.executorId] = "anonymous"
+                                return
+                            }
+                            self.executorNameCache[todo.executorId] = member.name
                         }
                     }
+                    group.leave()
+                    
+                    group.enter()
+                    queue.async {
+                        PetManager.shared.queryPet(id: todo.petId) { result in
+                            
+                            switch result {
+                            case .success(let pet):
+                                
+                                self.petNameCache[todo.petId] = pet.name
+                                
+                            case .failure(let error):
+                                self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                            }
+                        }
+                    }
+                    group.leave()
                 }
                 
-                self.toDoTableView.reloadData()
+                group.notify(queue: DispatchQueue.main) {
+                    self.toDoTableView.reloadData()
+                }
                 
             case .failure(let error):
                 print("listen todo error", error)
