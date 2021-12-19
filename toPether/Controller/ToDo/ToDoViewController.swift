@@ -66,32 +66,34 @@ class ToDoViewController: UIViewController {
                 for todo in todos where self.executorNameCache[todo.executorId] == nil || self.petNameCache[todo.petId] == nil {
                 
                     group.enter()
-                    queue.async {
+                    queue.async(group: group) {
                         MemberManager.shared.queryMember(id: todo.executorId) { member in
                             guard let member = member else {
                                 self.executorNameCache[todo.executorId] = "anonymous"
+                                group.leave()
                                 return
                             }
                             self.executorNameCache[todo.executorId] = member.name
+                            group.leave()
                         }
                     }
-                    group.leave()
                     
                     group.enter()
-                    queue.async {
+                    queue.async(group: group) {
                         PetManager.shared.queryPet(id: todo.petId) { result in
                             
                             switch result {
                             case .success(let pet):
                                 
                                 self.petNameCache[todo.petId] = pet.name
+                                group.leave()
                                 
                             case .failure(let error):
                                 self.presentErrorAlert(message: error.localizedDescription + " Please try again")
+                                group.leave()
                             }
                         }
                     }
-                    group.leave()
                 }
                 
                 group.notify(queue: DispatchQueue.main) {
