@@ -48,7 +48,8 @@ class MessageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
+        super.viewWillAppear(animated)
+        
         self.navigationItem.title = "Message"
         self.setNavigationBarColor(bgColor: .mainBlue, textColor: .white, tintColor: .white)
 
@@ -80,8 +81,8 @@ class MessageViewController: UIViewController {
                     self.messageTableView.reloadData()
                 }
                 
-                if self.unblockedmessages.count > 9 {
-                    let pathToLastRow = NSIndexPath(row: self.unblockedmessages.count - 1, section: 0)
+                if self.unblockedmessages.count > 1 {
+                    let pathToLastRow = IndexPath(row: self.unblockedmessages.count - 1, section: 0)
                     self.messageTableView.scrollToRow(at: pathToLastRow as IndexPath, at: .bottom, animated: true)
                 }
                 
